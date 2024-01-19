@@ -199,14 +199,22 @@ Rails.application.routes.draw do
   #   get 'add/:id', to: 'message_list_add',
   #   get 'history/:id', to: 'get_history',
   # end
-  resources :messages, only: [] do
-    collection do
-      get 'list', to: 'message#view'
-    end
+  # resources :messages, only: [] do
+  #   collection do
+  #     get 'list', to: 'message#view'
+  #   end
 
-    member do
-      get 'history/:id', to: 'message#get_history', as: :history
-      get 'add/:id', to: 'message#message_list_add', as: :add
+  #   member do
+  #     get 'history/:id', to: 'message#get_history', as: :history
+  #     get 'add/:id', to: 'message#message_list_add', as: :add
+  #   end
+  # end
+
+  resources :users, only: %i[new create] do
+    collection do
+      get 'password_forgot', to: 'users#password_forgot', as: :password_forgot
+      get 'password_reset', to: 'users#password_edit', as: :password_edit
+      get 'email_certified/:id', to: 'users#email_certified_show', as: :email_certified_show
     end
   end
 
@@ -225,16 +233,28 @@ Rails.application.routes.draw do
 
   # マッチ
   # アピール
-  get 'match/appealed/list' => 'match#appealed_list_view'
-  get 'match/appeal/list_check' => 'match#appeal_check'
-  get 'match/matching/list' => 'match#matching_list_view'
+  # get 'match/appealed/list' => 'match#appealed_list_view'
+  # get 'match/appeal/list_check' => 'match#appeal_check'
+  # get 'match/matching/list' => 'match#matching_list_view'
   # スカウト
-  get 'match/scouted/list' => 'match#scouted_show'
+  # get 'match/scouted/list' => 'match#scouted_show'
   # スカウトした一覧
-  get 'match/scout/list_check' => 'match#scout_check'
+  # get 'match/scout/list_check' => 'match#scout_check'
+  resources :matches, only: [] do
+    collection do
+      # マッチ
+      get 'appealed/list', to: 'match#appealed_list_view'
+      get 'appeal/list_check', to: 'match#appeal_check'
+      get 'matching/list', to: 'match#matching_list_view'
+
+      # スカウト
+      get 'scouted/list', to: 'match#scouted_show'
+    end
+  end
 
   # 問い合わせ
-  get 'inquiry/input' => 'inquiry#input_page'
+  # get 'inquiry/input' => 'inquiry#input_page'
+  get 'inquiry/input', to: 'inquiry#input_page', as: :inquiry_input
 
   # 管理者
   get 'admin/login' => 'admin#login'
@@ -258,7 +278,8 @@ Rails.application.routes.draw do
   # post 'user/password_reset' => 'user#password_reset'
 
   # メールアドレス認証
-  post 'email/certified/:id' => 'user#email_certified'
+  # post 'email/certified/:id' => 'user#email_certified'
+  post 'email/certified/:id', to: 'user#email_certified', as: :email_certified
 
   patch 'my_page/update' => 'my_page#update'
 
