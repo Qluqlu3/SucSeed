@@ -1,0 +1,31 @@
+<%= stylesheet_link_tag "admin" %>
+
+<h1 class="admin-main-title">管理者ログイン</h1>
+
+<!--エラー-->
+<div>
+  <div>
+    <% flash.each do |key, value| %>
+      <div class="admin-alert-box alert-<%= key %>"><%= value %></div>
+    <% end %>
+  </div>
+</div>
+<!--エラー-->
+
+<div class="admin-wrapper">
+  <div class="admin-login-from-box">
+    <%= form_for :admin, url: "/admin/login" do |f| %>
+      <div class="form-group">
+        <label>ユーザーID</label>
+        <%= f.text_field :user_id, class: "form-control", placeholder: "ユーザーID" %>
+      </div>
+      <div class="form-group">
+        <%= f.label "パスワード" %>
+        <%= f.password_field :password, class: "form-control", placeholder: "パスワード" %>
+      </div>
+      <div class="text-right">
+        <%= f.submit "ログイン", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

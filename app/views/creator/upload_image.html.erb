@@ -1,0 +1,55 @@
+<h3>creator#media</h3>
+<h1>メディアアップロード</h1>
+
+<div>
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+</div>
+
+<div>
+  <% if @creator_image.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <ul>
+        <% @creator_image.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+  <% if @get_image != nil %>
+    <div class="row">
+    <% @get_image.each do |get_image| %>
+        <div class="col-md-4">
+          <div class="thumbnail">
+            <%= image_tag "#{get_image.media_data}", class: "img-responsive" %>
+            <div class="caption">
+              <%= link_to("/creator/#{get_image.id}/delete", {method:"post"}) do %>
+                <button type="button" class="btn btn-outline-primary">
+                  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 削除
+                </button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+    <% end %>
+    </div>
+  <% end %>
+
+
+<%= form_for @creator_image, url: "/creator/upload" do |f| %>
+  <% (6 - @count.to_i).times do %>
+    <div>
+      <div class="form-group">
+        <%= f.label "ファイルを選択する" %>
+        <%= f.file_field :media_data, class: "form-control-file", accept: "image/jpg, image/jpeg, image/png" %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="right_side">
+    <%= f.submit "登録", class: "btn btn-primary btn-lg" %>
+  </div>
+<% end %>

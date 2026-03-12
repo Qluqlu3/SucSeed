@@ -1,0 +1,48 @@
+<%=stylesheet_link_tag "admin_edit" %>
+
+<div class="row admin-row">
+  <div class="col-2 admin-col-2">
+    <ul class="nav flex-column admin-side-menu">
+      <li class="nav-item admin-top-link">
+        <%= link_to "ユーザー管理", "/admin/management/user", class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "日記管理", "/admin/management/diary", class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "日記コメント", "/admin/management/diary_comment", class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "ギャラリー管理", "/admin/management/gallery", class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "問い合わせ管理", "/admin/management/inquiry", class: "nav-link" %>
+      </li>
+    </ul>
+  </div>
+  <div class="col-10 admin-col-9">
+    <h1 class="admin-main-title">ユーザー編集</h1>
+      <div class="">
+        <%= form_for @user, url: "/admin/user/edit/#{@user.id}" do |f| %>
+          <div class="card">
+            <div class="card-body">
+              <%= image_tag "#{@user.avatar_path}", class: "img-circle", alt: "アバター画像", size: "100%x100%" %>
+              <%= f.file_field :avatar_path, class: "form-control-file", id: "exampleFormControlFile1", accept: "image/jpg, image/jpeg, image/png" %>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <%= f.text_area :profile, class: "form-control", placeholder: "紹介文", size: "20x15", value: @user.profile %>
+            </div>
+          </div>
+
+          <div class="card text-right">
+            <div class="card-body">
+              <%= f.button "変更", type: "submit" , class: "btn btn-warning btn-lg", confirm: "変更しますか？" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+  </div>
+</div>

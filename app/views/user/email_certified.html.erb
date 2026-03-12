@@ -1,0 +1,11 @@
+<%= stylesheet_link_tag "user" %>
+
+<p class="certified_text"><%= @user.name %>さんメールアドレスの認証をお願いいたします。</p>
+
+<div class="certified-box text-center">
+  <%= form_for :certified, url: "/email/certified/#{session[:id]}" do |f| %>
+    <%= f.button type: "submit", method: "post", class: "btn btn-success certified-btn" do %>
+      メールアドレス認証
+    <% end %>
+  <% end %>
+</div>

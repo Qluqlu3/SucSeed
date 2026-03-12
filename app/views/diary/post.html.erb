@@ -1,0 +1,53 @@
+<%= stylesheet_link_tag "diary" %>
+
+<h1>日記投稿</h1>
+
+<div>
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+</div>
+
+<div>
+  <% if @diary.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <ul>
+        <% @diary.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+
+<div class="panel panel-default diary-panel">
+  <div class="panel-heading diary-panel-header">
+    <h3 class="panel-title">
+      <%= image_tag "#{@user.avatar_path}", class: "img-circle", size: "50x50" %>
+      <%= @user.name %>
+    </h3>
+  </div>
+  <%= form_for @diary, url: "/diary/post" do |f| %>
+    <div class="panel-body main-panel">
+      <div class="form-group">
+        <%= f.text_area :content, class: "form-control", placeholder: "文章など", size: "10x10" %>
+      </div>
+    </div>
+    <%= f.fields_for :diary_media do |k| %>
+      <div class="panel-body panel-img">
+        <label class="file-box">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          <%= k.file_field :media_data %>
+        </label>
+        <label class="file-box">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          <%= k.file_field :media_data, class: "file_send_none", accept: "image/jpg, image/jpeg, image/png" %>
+        </label>
+      </div>
+    <% end %>
+    <div class="panel-footer post-btn">
+      <%= f.submit "投稿", class: "btn btn-lg btn-primary" %>
+    </div>
+  <% end %>
+</div>

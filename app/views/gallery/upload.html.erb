@@ -1,0 +1,50 @@
+<%= stylesheet_link_tag "gallery" %>
+<%=stylesheet_link_tag "tagify-style.css" %>
+<link rel="stylesheet" href="bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" />
+
+<h1>gallery#upload</h1>
+
+<div>
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+</div>
+
+<div>
+  <% if @gallery.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <ul>
+        <% @gallery.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+<%= form_for @gallery, url: "/gallery/upload" do |f| %>
+  <div>
+    <div class="form-group">
+      <%= f.label "ファイルを選択する" %>
+      <%= f.file_field :data, class: "form-control-file", accept: "image/jpg, image/jpeg, image/png" %>
+    </div>
+  </div>
+  <div class="tag-field">
+    <%= f.text_field :tag_list, value: @gallery.tag_list.join(','), class: "", id: "tagme" %>
+  </div>
+  <div class="right_side">
+    <%= f.submit "登録", class: "btn btn-primary btn-lg" %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+    $(function() {
+        $('#tagme').tagify();
+        $('form').submit(function() {
+            $('#tagme').tagify('serialize');
+        });
+    });
+</script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
+<%=javascript_include_tag "jquery.tagify.js" %>
