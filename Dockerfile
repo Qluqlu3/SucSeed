@@ -9,14 +9,14 @@ FROM ruby:3.3.0-slim
 #   imagemagick              … mini_magick（画像リサイズ）の実行バイナリ
 #   git                      … Gemfile で github: 参照している gem があるときに必要
 RUN apt-get update -qq && \
-    apt-get install -y --no-install-recommends \
-      build-essential \
-      default-libmysqlclient-dev \
-      nodejs \
-      npm \
-      git \
-      imagemagick && \
-    rm -rf /var/lib/apt/lists/*
+  apt-get install -y --no-install-recommends \
+  build-essential \
+  default-libmysqlclient-dev \
+  nodejs \
+  npm \
+  git \
+  imagemagick && \
+  rm -rf /var/lib/apt/lists/*
 
 # コンテナ内の作業ディレクトリを /app に固定
 WORKDIR /app
