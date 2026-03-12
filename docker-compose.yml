@@ -1,0 +1,85 @@
+# ────────────────────────────────────────────
+# docker-compose.yml
+#   開発環境用の2サービス構成
+#     db  … MySQL 8.0 コンテナ
+#     web … Rails アプリコンテナ (Dockerfile でビルド)
+#
+# 起動コマンド:
+#   docker compose up --build       # 初回 or Gemfile 変更後
+#   docker compose up               # 2回目以降
+#   docker compose down             # 停止・コンテナ削除
+#   docker compose down -v          # ボリューム(DBデータ)ごと削除してリセット
+# ────────────────────────────────────────────
+
+services:
+
+  # ──────────────────────────────────────────
+  # db サービス: MySQL 8.0
+  # ──────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    # MySQL 8.0 ではデフォルト認証プラグインが変わっているため
+    # mysql_native_password を明示して mysql2 gem との互換性を確保
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_DATABASE:      ${DB_NAME:-sucseed_development}
+    ports:
+      # ホスト側 3306 → コンテナ内 3306 (ローカルから直接 MySQL に接続したい場合に便利)
+      - "3306:3306"
+    volumes:
+      # DB データをホストの名前付きボリュームに永続化
+      # コンテナを削除してもデータは消えない
+      - db_data:/var/lib/mysql
+    healthcheck:
+      # Rails が起動する前に MySQL が Ready になるまで待つ
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-password}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ──────────────────────────────────────────
+  # web サービス: Rails アプリ
+  # ──────────────────────────────────────────
+  web:
+    # Dockerfile からビルド (プロジェクトルートの Dockerfile を使用)
+    build: .
+    # entrypoint.sh + rails server を起動
+    command: bundle exec rails server -b 0.0.0.0
+    environment:
+      # DB 接続情報 (database.yml が ENV から読む変数と一致させる)
+      DB_HOST:     db          # docker-compose のサービス名がホスト名になる
+      DB_PORT:     3306
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME:     ${DB_NAME:-sucseed_development}
+      # Rails の動作モード
+      RAILS_ENV:   ${RAILS_ENV:-development}
+      # SECRET_KEY_BASE は必須 (本番は必ず強力なランダム値を設定)
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-devsecret_please_change_in_production}
+    ports:
+      # ホスト 3000 → コンテナ 3000
+      - "3000:3000"
+    volumes:
+      # ホストのコードをコンテナにマウント (コード変更がリアルタイムで反映)
+      - .:/app
+      # bundle install 済みの gem キャッシュを別ボリュームで保持
+      # これがないとマウントで上書きされて gem が消える
+      - bundle_cache:/usr/local/bundle
+      # アップロードファイルの永続化
+      - uploads:/app/public/uploads
+    depends_on:
+      db:
+        # db の healthcheck が healthy になってから web を起動
+        condition: service_healthy
+    # コンテナ内で binding.pry / byebug を使うために標準入出力をアタッチ
+    stdin_open: true
+    tty: true
+
+# ────────────────────────────────────────────
+# 名前付きボリューム定義
+# ────────────────────────────────────────────
+volumes:
+  db_data:       # MySQL のデータ永続化
+  bundle_cache:  # bundle install 済み gem のキャッシュ
+  uploads:       # CarrierWave アップロードファイルの永続化
