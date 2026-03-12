@@ -1,15 +1,11 @@
-# Docker環境・ローカル共通設定
-# 接続情報はすべて環境変数(.env)から読み込む
-# ローカル直接起動の場合は .env をプロジェクトルートに置くか
-# direnv / dotenv 等で環境変数をセットすること
+# DB 接続設定
+# 値は環境変数から読み込む。デフォルト値は docker-compose.yml の設定に合わせてある。
+# Docker を使わず rails server を直接起動する場合は .env を作成して環境変数をセットする。
 default: &default
   adapter: mysql2
   encoding: utf8
-  # スレッドプール数（RAILS_MAX_THREADS が未設定なら 5）
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  # Dockerコンテナ内では DB_HOST=db（docker-compose のサービス名）
-  # ローカル直接起動時は DB_HOST=127.0.0.1 を指定
-  host:     <%= ENV.fetch("DB_HOST",     "db") %>
+  host:     <%= ENV.fetch("DB_HOST",     "db") %>      # Docker内: db  /  直接起動: 127.0.0.1
   port:     <%= ENV.fetch("DB_PORT",     "3306") %>
   username: <%= ENV.fetch("DB_USERNAME", "root") %>
   password: <%= ENV.fetch("DB_PASSWORD", "password") %>
@@ -22,6 +18,9 @@ test:
   <<: *default
   database: <%= ENV.fetch("DB_NAME_TEST", "sucseed_test") %>
 
-production:
-  <<: *default
-  database: <%= ENV.fetch("DB_NAME", "sucseed_production") %>
+# デプロイ時のメモ（今は使わない）
+# production:
+#   <<: *default
+#   database: sucseed_production
+#   # 本番では DATABASE_URL 環境変数でまるごと指定する方がシンプル
+#   # url: <%= ENV['DATABASE_URL'] %>
