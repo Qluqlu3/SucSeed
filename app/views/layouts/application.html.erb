@@ -6,6 +6,8 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%# jQuery / Popper / Bootstrap を Sprockets 経由で読み込む %>
+    <%= javascript_include_tag "vendor", 'data-turbolinks-track': 'reload' %>
     <%# esbuild が app/assets/builds/application.js を生成する。type: module が必要 %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>

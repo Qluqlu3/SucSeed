@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "esbuild app/javascript/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
-    "build:watch": "yarn build --watch"
+    "build:watch": "yarn build --watch=forever"
   },
   "dependencies": {
     "react": "^19.2.4",
