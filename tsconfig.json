@@ -22,15 +22,10 @@
     // パスエイリアス（将来モノレポ移行時に frontend/src を指せる）
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["app/javascript/components/*"],
-      "@pages/*":      ["app/javascript/pages/*"]
+      "@components/*": ["frontend/components/*"],
+      "@pages/*": ["frontend/pages/*"]
     }
   },
-  "include": [
-    "app/javascript/**/*.ts",
-    "app/javascript/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["frontend/**/*.ts", "frontend/**/*.tsx"],
+  "exclude": ["node_modules"]
 }

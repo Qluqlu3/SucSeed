@@ -10,7 +10,14 @@ interface Props {
 
 export const HelloReact = ({ name }: Props) => {
   return (
-    <div style={{ padding: "8px 16px", background: "#d1fae5", borderRadius: 6, display: "inline-block" }}>
+    <div
+      style={{
+        padding: '8px 16px',
+        background: '#d1fae5',
+        borderRadius: 6,
+        display: 'inline-block',
+      }}
+    >
       👋 Hello from <strong>React</strong>, {name}!
     </div>
   );

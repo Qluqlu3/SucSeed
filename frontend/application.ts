@@ -1,4 +1,4 @@
-// app/javascript/application.ts
+// frontend/application.ts
 //
 // esbuild のエントリーポイント。
 // ここで import したものが app/assets/builds/application.js にバンドルされ
@@ -8,4 +8,4 @@
 //   このファイルを frontend/src/main.tsx に移動し、
 //   Rails 側は API レスポンスのみ返すように変更する。
 
-import "./components/mount";
+import './components/mount';
