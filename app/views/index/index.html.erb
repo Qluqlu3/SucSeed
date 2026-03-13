@@ -1,5 +1,8 @@
 <%= stylesheet_link_tag "index" %>
 
+<%# React 動作確認用マウントポイント。確認できたら削除して OK %>
+<div data-react-component="HelloReact" data-props='{"name":"SucSeed"}'></div>
+
 <div class="alert-box">
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>

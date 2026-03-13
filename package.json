@@ -1,5 +1,18 @@
 {
   "name": "SucSeed",
   "private": true,
-  "dependencies": {}
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "esbuild": "^0.27.4",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
+    "build:watch": "yarn build --watch"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
 }

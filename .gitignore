@@ -29,3 +29,6 @@
 # 環境変数ファイル（機密情報を含むためGit管理外）
 .env
 .env.local
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

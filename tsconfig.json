@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    // ES2020 以降の構文を使えるようにする（async/await, optional chaining 等）
+    "target": "ES2020",
+    // ブラウザ環境の型定義（DOM API）を有効化
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    // .tsx (JSX) ファイルを React 形式でコンパイル
+    // react-jsx にすると import React が不要になる（React 17+ 推奨）
+    "jsx": "react-jsx",
+    // バンドルは esbuild が行うので tsc は型チェックのみ担当
+    "noEmit": true,
+    // 厳格な型チェックを有効化（バグを早期発見できる）
+    "strict": true,
+    // ESM の import/export を使う
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    // デフォルトエクスポートのインポートを柔軟に扱う
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    // ファイル名の大文字小文字を厳密に区別（Linux/macOS 間の問題防止）
+    "forceConsistentCasingInFileNames": true,
+    // パスエイリアス（将来モノレポ移行時に frontend/src を指せる）
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["app/javascript/components/*"],
+      "@pages/*":      ["app/javascript/pages/*"]
+    }
+  },
+  "include": [
+    "app/javascript/**/*.ts",
+    "app/javascript/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
