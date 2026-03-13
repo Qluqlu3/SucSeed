@@ -45,11 +45,11 @@ end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  # listen: < 3.2 の上限はRails 6 リリース当初のもので古すぎる。
+  # spring-watcher-listen はこの古い上限に依存しているため一緒に削除。
+  # Docker 環境では spring はほぼ不要だが spring.rb が存在するので gem は残す。
+  gem 'listen', '~> 3.8'
   gem 'web-console', '>= 3.3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :test do
