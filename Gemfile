@@ -72,6 +72,11 @@ gem 'bcrypt', '>= 3.1.12'
 gem 'carrierwave', '>= 1.2.3'
 gem 'mini_magick', '>= 4.8.0'
 
+# jsbundling-rails: esbuild/rollup/webpack などを Rails と繋ぐ公式 gem
+# esbuild でバンドルした JS を app/assets/builds/ に出力し
+# Sprockets がそれを通常のアセットとして扱えるようにする
+gem 'jsbundling-rails'
+
 # タグ
 gem 'acts-as-taggable-on', '>= 6.0.0'
 

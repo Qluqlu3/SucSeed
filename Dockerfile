@@ -18,6 +18,10 @@ RUN apt-get update -qq && \
   imagemagick && \
   rm -rf /var/lib/apt/lists/*
 
+# yarn: jsbundling-rails (esbuild) が JS パッケージ管理に使う
+# npm 経由でグローバルインストールするのが Docker では最もシンプル
+RUN npm install -g yarn
+
 # コンテナ内の作業ディレクトリを /app に固定
 WORKDIR /app
 
