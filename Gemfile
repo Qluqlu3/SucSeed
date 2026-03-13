@@ -3,21 +3,17 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.3.0'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.5'
+# Rails 7.1: Ruby 3.3 に正式対応。6.1 では Ruby 3.3 の Logger 定数変更で起動不能になる
+gem 'rails', '~> 7.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.4.4', '< 0.6.0'
 # Use Puma as the app server
 # 3.x は Ruby 3.x 系で動作しないため 6.x に上げる
 gem 'puma', '~> 6.0'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'mini_racer', platforms: :ruby
-
-# Use CoffeeScript for .coffee assets and views
+# sass-rails 5.x は sprockets 4 / Rails 7 と非互換。sassc-rails は drop-in 代替
+gem 'sassc-rails'
+# uglifier は ExecJS(Node.js)が必要で環境依存が強い。Rails 7 では不要
+# CoffeeScript ファイル (.coffee) がまだ残っているため coffee-rails は維持
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
@@ -66,8 +62,8 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootstrap', '~> 4.3.1'
 gem 'jquery-rails', '~> 4.3.3'
 
-# error
-gem 'rails-i18n', '~> 6.0.0'
+# rails-i18n 7.x が Rails 7.1 対応版
+gem 'rails-i18n', '~> 7.0'
 
 # 暗号化
 gem 'bcrypt', '>= 3.1.12'
