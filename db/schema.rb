@@ -2,17 +2,16 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_25_161150) do
-
-  create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2019_02_25_161150) do
+  create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "user_id", null: false
     t.string "password_digest", null: false
@@ -21,11 +20,11 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.timestamp "deleted_at"
   end
 
-  create_table "art_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "art_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 30, null: false
   end
 
-  create_table "creators", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "creators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "user_id", null: false
     t.string "title", limit: 30, null: false
     t.bigint "art_category_id", null: false
@@ -40,7 +39,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_f0c5a1a18a"
   end
 
-  create_table "diaries", id: :string, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "diaries", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "user_id", null: false
     t.text "content", null: false
     t.timestamp "created_at", null: false
@@ -49,7 +48,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_f03fd03c63"
   end
 
-  create_table "diary_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "diary_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "diary_id", null: false
     t.string "user_id", null: false
     t.string "comment", limit: 100, null: false
@@ -59,7 +58,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_75f0ca877d"
   end
 
-  create_table "diary_goods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "diary_goods", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "diary_id", null: false
     t.string "user_id", null: false
     t.timestamp "created_at", null: false
@@ -67,7 +66,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_da8d03400c"
   end
 
-  create_table "favorites", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "user_id", null: false
     t.string "favorite_user_id", null: false
     t.timestamp "created_at", null: false
@@ -75,7 +74,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_d15744e438"
   end
 
-  create_table "galleries", id: :string, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "galleries", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "user_id", null: false
     t.string "data", null: false
     t.string "comment", limit: 100, null: false
@@ -84,7 +83,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_05f824a025"
   end
 
-  create_table "gallery_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "gallery_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "gallery_id", null: false
     t.string "user_id", null: false
     t.string "comment", limit: 100, null: false
@@ -94,7 +93,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_a90bc1d938"
   end
 
-  create_table "gallery_goods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "gallery_goods", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "gallery_id", null: false
     t.string "user_id", null: false
     t.timestamp "created_at", null: false
@@ -102,7 +101,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_2769ec3bc8"
   end
 
-  create_table "heirs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "heirs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "user_id", null: false
     t.bigint "art_category_id", null: false
     t.text "introduction"
@@ -112,7 +111,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_94084789b8"
   end
 
-  create_table "inquiries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "inquiries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "user_id"
     t.bigint "inquiry_category_id", null: false
     t.text "content", null: false
@@ -126,11 +125,11 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_7fdff2c1ec"
   end
 
-  create_table "inquiry_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "inquiry_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
   end
 
-  create_table "matches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "matches", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "user_id", null: false
     t.string "target_user_id", null: false
     t.boolean "is_scout", null: false
@@ -142,7 +141,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["user_id"], name: "fk_rails_1766d8a780"
   end
 
-  create_table "message_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "message_lists", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "creator_user_id", null: false
     t.string "heir_user_id", null: false
     t.timestamp "created_at", null: false
@@ -151,7 +150,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["heir_user_id"], name: "fk_rails_8e0dafab66"
   end
 
-  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "send_user_id", null: false
     t.string "receive_user_id", null: false
     t.text "content", null: false
@@ -160,21 +159,21 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["send_user_id"], name: "fk_rails_6613941af1"
   end
 
-  create_table "news", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "news", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "user_id", null: false
     t.text "content", null: false
     t.timestamp "created_at", null: false
     t.index ["user_id"], name: "fk_rails_7b6cb9343d"
   end
 
-  create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
     t.string "tagger_type"
     t.integer "tagger_id"
     t.string "context", limit: 128
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
@@ -186,13 +185,13 @@ ActiveRecord::Schema.define(version: 2019_02_25_161150) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name", collation: "utf8_bin"
+  create_table "tags", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", collation: "utf8mb3_bin"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "users", id: :string, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "email", limit: 256, null: false
     t.string "avatar_path"
