@@ -26,7 +26,9 @@ RUN gem install bundler
 
 # Gemfile だけ先にコピーして bundle install する
 # → アプリコードを変えても Gemfile が変わっていなければこのレイヤーはキャッシュが効く
-COPY Gemfile Gemfile.lock ./
+# Gemfile* とすることで Gemfile.lock がなくても COPY が失敗しない
+# （lock がある場合はそのバージョンで固定、ない場合は bundle が最新解決する）
+COPY Gemfile* ./
 RUN bundle install --jobs 4 --retry 3
 
 # アプリ全体をコンテナにコピー（.dockerignore で不要ファイルは除外済み）
