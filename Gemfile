@@ -81,8 +81,8 @@ gem 'better_errors', '>= 2.5.0'
 
 gem 'activeadmin', '>= 1.3.1'
 
-# アイコン
-gem 'font-awesome-sass', '~>5.0.6'
+# font-awesome-sass 5.x は旧 Ruby Sass gem に依存→廃止済み。6.x で sassc 対応
+gem 'font-awesome-sass', '~> 6.0'
 
 gem 'binding_of_caller', '>= 0.8.0'
 
