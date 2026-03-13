@@ -8,7 +8,8 @@ gem 'rails', '~> 6.1.5'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.4.4', '< 0.6.0'
 # Use Puma as the app server
-gem 'puma', '~> 3.12.6'
+# 3.x は Ruby 3.x 系で動作しないため 6.x に上げる
+gem 'puma', '~> 6.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
