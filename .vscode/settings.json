@@ -1,0 +1,8 @@
+{
+  // Tailwind v4 の @source / @import "tailwindcss" などを CSS エラーとして扱わない
+  "css.customData": [],
+  "css.validate": false,
+
+  // biome.json と package.json のスキーマ URL を信頼する
+  "json.schemaDownload.enable": true
+}

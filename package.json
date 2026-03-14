@@ -2,6 +2,7 @@
   "name": "SucSeed",
   "private": true,
   "devDependencies": {
+    "@biomejs/biome": "^2.4.7",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "esbuild": "^0.27.4",
@@ -11,7 +12,10 @@
     "build": "esbuild frontend/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
     "build:watch": "yarn build --watch=forever",
     "build:css": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --minify",
-    "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always"
+    "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always",
+    "lint": "biome check frontend/",
+    "lint:fix": "biome check --write frontend/",
+    "format": "biome format --write frontend/"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.2.1",
