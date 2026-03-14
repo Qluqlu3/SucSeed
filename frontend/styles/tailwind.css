@@ -19,7 +19,7 @@
  * @source のパスを新しい構成に合わせて更新する。
  */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Rails ERB テンプレートをスキャン対象に追加 */
 @source "../../app/views/**/*.html.erb";

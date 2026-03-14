@@ -10,8 +10,8 @@ interface Props {
 
 export const HelloReact = ({ name }: Props) => {
   return (
-    <div className="inline-block rounded-md bg-emerald-100 px-4 py-2 text-emerald-800 font-medium shadow-sm">
-      👋 Hello from <strong>React</strong> + <span className="text-sky-600">Tailwind</span>, {name}!
+    <div className='inline-block rounded-md bg-emerald-100 px-4 py-2 text-emerald-800 font-medium shadow-sm'>
+      👋 Hello from <strong>React</strong> + <span className='text-sky-600'>Tailwind</span>, {name}!
     </div>
   );
 };
