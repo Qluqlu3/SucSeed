@@ -53,18 +53,8 @@ services:
     stdin_open: true   # byebug / binding.pry をコンテナ内で使えるようにする
     tty: true
 
-  # ── esbuild watch ──────────────────────────────────────
-  # JS/TSX ファイルの変更を監視して自動的に app/assets/builds/ へ再バンドル
-  # web サービスと同じコードを共有しているため同じイメージ・ボリュームを使う
-  #
-  # 【仕組み】
-  #   1. app/javascript/ 以下のファイルを変更する
-  #   2. esbuild が検知して app/assets/builds/application.js を再生成
-  #   3. ブラウザをリロードすると最新の JS が読み込まれる
-  #
-  # 【モノレポ移行時】
-  #   このサービスを削除し、代わりに frontend/ サービスとして
-  #   Vite dev server を起動する docker-compose サービスを追加する
+  # ── esbuild watch（JS/TSX）──────────────────────────────
+  # frontend/ 以下の JS/TSX ファイルを監視して app/assets/builds/application.js へ再バンドル
   js:
     build: .
     command: yarn build:watch
@@ -73,6 +63,20 @@ services:
       - bundle_cache:/usr/local/bundle
     environment:
       RAILS_ENV: development
+
+  # ── Tailwind CSS watch（CSS）────────────────────────────
+  # frontend/styles/tailwind.css を監視して app/assets/builds/tailwind.css を再生成
+  # ERB・TSX に書いた Tailwind クラスのツリーシェイキングもここで行われる
+  css:
+    build: .
+    command: yarn build:css:watch
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    environment:
+      RAILS_ENV: development
+    stdin_open: true
+    tty: true
 
 # 名前付きボリュームの定義（docker が自動で作成・管理する）
 volumes:

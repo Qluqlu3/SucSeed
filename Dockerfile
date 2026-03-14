@@ -12,10 +12,14 @@ RUN apt-get update -qq && \
   apt-get install -y --no-install-recommends \
   build-essential \
   default-libmysqlclient-dev \
-  nodejs \
-  npm \
+  curl \
   git \
   imagemagick && \
+  rm -rf /var/lib/apt/lists/*
+
+# Node.js 20 LTS（Tailwind CSS v4 が Node >= 20 を要求するため apt 版 18 は使わない）
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+  apt-get install -y --no-install-recommends nodejs && \
   rm -rf /var/lib/apt/lists/*
 
 # yarn: jsbundling-rails (esbuild) が JS パッケージ管理に使う

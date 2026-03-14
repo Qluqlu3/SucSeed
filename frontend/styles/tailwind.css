@@ -1,0 +1,28 @@
+/*
+ * frontend/styles/tailwind.css
+ *
+ * Tailwind CSS v4 のエントリーポイント。
+ * @tailwindcss/cli が読み込み、app/assets/builds/tailwind.css に出力する。
+ *
+ * ── Tailwind v4 の仕組み ──────────────────────────────────────
+ * v3 と違い tailwind.config.js は不要。
+ * @import "tailwindcss" 一行で base / components / utilities が全部有効になる。
+ *
+ * ── スキャン対象 (@source) ──────────────────────────────────
+ * Tailwind はクラス名を使っているファイルをスキャンして
+ * 実際に使われたユーティリティだけを出力に含める（Tree-shaking）。
+ * Docker 内では自動検知が効きにくいため @source で明示する。
+ * パスはこのファイルからの相対パス。
+ *
+ * ── モノレポ移行時 ────────────────────────────────────────────
+ * このファイルを frontend/src/styles/tailwind.css に移動するだけでよい。
+ * @source のパスを新しい構成に合わせて更新する。
+ */
+
+@import "tailwindcss";
+
+/* Rails ERB テンプレートをスキャン対象に追加 */
+@source "../../app/views/**/*.html.erb";
+
+/* React コンポーネント（TypeScript / TSX）をスキャン対象に追加 */
+@source "../**/*.{ts,tsx}";
