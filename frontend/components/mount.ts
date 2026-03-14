@@ -15,6 +15,7 @@
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HelloReact } from './HelloReact';
+import { IndexPage } from './IndexPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -32,6 +33,7 @@ type MountFn = (node: HTMLElement) => void;
 
 const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
+  IndexPage: (node) => mount(IndexPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
