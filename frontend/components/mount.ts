@@ -16,6 +16,10 @@ import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HelloReact } from './HelloReact';
 import { IndexPage } from './IndexPage';
+import { UserRegistPage } from './UserRegistPage';
+import { PasswordForgotPage } from './PasswordForgotPage';
+import { PasswordResetPage } from './PasswordResetPage';
+import { EmailCertifiedPage } from './EmailCertifiedPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -34,6 +38,10 @@ type MountFn = (node: HTMLElement) => void;
 const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
   IndexPage: (node) => mount(IndexPage, node),
+  UserRegistPage: (node) => mount(UserRegistPage, node),
+  PasswordForgotPage: (node) => mount(PasswordForgotPage, node),
+  PasswordResetPage: (node) => mount(PasswordResetPage, node),
+  EmailCertifiedPage: (node) => mount(EmailCertifiedPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
