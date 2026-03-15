@@ -1,6 +1,8 @@
 <%= stylesheet_link_tag "user" %>
 
-<p class="certified_text"><%= @user.name %>さんメールアドレスの認証をお願いいたします。</p>
+<% page_props = { user_name: @user.name, user_id: session[:id] } %>
+<%= content_tag :div, '', data: { react_component: 'EmailCertifiedPage', props: page_props.to_json } %>
+
 
 <div class="certified-box text-center">
   <%= form_for :certified, url: "/email/certified/#{session[:id]}" do |f| %>
