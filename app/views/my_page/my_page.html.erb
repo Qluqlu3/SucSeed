@@ -1,8 +1,26 @@
 <%= stylesheet_link_tag "my_page" %>
 
-<h1>プロフィール</h1>
+<div class="alert-box">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+</div>
 
-<div class="all-cover-box">
+<%
+  page_props = {
+    user: {
+      name:       @user.name,
+      avatarPath: @user.avatar_path.to_s,
+      isMan:      @user.is_man,
+      email:      @user.email,
+      birthday:   @user.birthday.to_s,
+      profile:    @user.profile
+    },
+    profileIncomplete: @created == 1,
+    isCreator:         session[:creator].present?
+  }
+%>
+<%= content_tag :div, '', data: { react_component: 'MyPage', props: page_props.to_json } %>
   <div class="wrapper">
   <!--  setting-->
     <div class="dropdown setting-dropdown">
