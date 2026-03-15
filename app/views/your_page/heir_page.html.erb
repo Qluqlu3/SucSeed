@@ -1,12 +1,29 @@
 <%= stylesheet_link_tag "your_page" %>
 
-<!--通知・エラー-->
-<div>
+<div class="alert-box">
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>
   <% end %>
 </div>
-<!--</div>-->
+
+<%
+  page_props = {
+    user: {
+      id:         @user.id,
+      name:       @user.name,
+      avatarPath: @user.avatar_path.to_s,
+      isMan:      @user.is_man,
+      birthday:   @user.birthday.to_s,
+      profile:    @user.profile
+    },
+    artName:      @art_name&.name,
+    isScouted:    @scout.present?,
+    loggedIn:     session[:id].present?,
+    isCreator:    session[:creator].present?,
+    targetUserId: params[:id].to_i
+  }
+%>
+<%= content_tag :div, '', data: { react_component: 'HeirPage', props: page_props.to_json } %>
 
 <div class="all-cover-box">
   <div class="background-img-box">

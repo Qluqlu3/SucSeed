@@ -23,6 +23,7 @@ import { EmailCertifiedPage } from './EmailCertifiedPage';
 import { MyPage } from './MyPage';
 import { MyPageUpdatePage } from './MyPageUpdatePage';
 import { YourPage } from './YourPage';
+import { HeirPage } from './HeirPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -48,6 +49,7 @@ const COMPONENTS: Record<string, MountFn> = {
   MyPage: (node) => mount(MyPage, node),
   MyPageUpdatePage: (node) => mount(MyPageUpdatePage, node),
   YourPage: (node) => mount(YourPage, node),
+  HeirPage: (node) => mount(HeirPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
