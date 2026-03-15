@@ -16,13 +16,11 @@ interface Props {
 export const EmailCertifiedPage = ({ user_name, user_id }: Props) => {
   return (
     <>
-      <p className="certified_text">
-        {user_name}さんメールアドレスの認証をお願いいたします。
-      </p>
-      <div className="certified-box text-center">
-        <form action={`/email/certified/${user_id}`} method="post">
-          <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-          <button type="submit" className="btn btn-success certified-btn">
+      <p className='certified_text'>{user_name}さんメールアドレスの認証をお願いいたします。</p>
+      <div className='certified-box text-center'>
+        <form action={`/email/certified/${user_id}`} method='post'>
+          <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+          <button type='submit' className='btn btn-success certified-btn'>
             メールアドレス認証
           </button>
         </form>
