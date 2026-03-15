@@ -15,27 +15,27 @@
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Creator {
-  user_id: string;
+  userId: string;
   name: string;
   // creators.title（職種・屋号など）
   title: string;
   // CarrierWave が返すアップロード済み画像パス（例: /uploads/user/avatar_path/1/a.jpg）
-  avatar_path: string;
-  created_at: string;
+  avatarPath: string;
+  createdAt: string;
 }
 
 interface Props {
   creators: Creator[];
   // 後継者ログイン時のみ存在する。未ログイン・職人ログインは null
   recommend: Creator[] | null;
-  logged_in: boolean;
-  is_creator: boolean;
+  loggedIn: boolean;
+  isCreator: boolean;
 }
 
 // ── ユーティリティ ───────────────────────────────────────────────────
 
 // 登録から 3 日以内なら NEW バッジを表示する。
-// 元 ERB の `distance_of_time_in_words_to_now(created_at).to_i <= 3` に相当。
+// 元 ERB の `distance_of_time_in_words_to_now(createdAt).to_i <= 3` に相当。
 const isNew = (createdAt: string): boolean => {
   const diffMs = Date.now() - new Date(createdAt).getTime();
   return diffMs <= 3 * 24 * 60 * 60 * 1000;
@@ -45,20 +45,16 @@ const isNew = (createdAt: string): boolean => {
 
 // 職人プロフィールカード（一覧・おすすめ共通）
 const CreatorCard = ({ creator }: { creator: Creator }) => (
-  <div className="col-lg-3 my-card-col new-box">
-    <a href={`/page/creator/${creator.user_id}`} className="nav-link">
-      <div className="card profile-card new-tag-content">
-        {isNew(creator.created_at) && <span className="new-tag">NEW</span>}
-        <div className="text-center">
-          <img
-            src={creator.avatar_path}
-            className="rounded-circle avatar"
-            alt={creator.name}
-          />
+  <div className='col-lg-3 my-card-col new-box'>
+    <a href={`/page/creator/${creator.userId}`} className='nav-link'>
+      <div className='card profile-card new-tag-content'>
+        {isNew(creator.createdAt) && <span className='new-tag'>NEW</span>}
+        <div className='text-center'>
+          <img src={creator.avatarPath} className='rounded-circle avatar' alt={creator.name} />
         </div>
-        <div className="card-body">
-          <h4 className="card-box-name text-center">{creator.name}</h4>
-          <p className="card-box-title text-center">{creator.title}</p>
+        <div className='card-body'>
+          <h4 className='card-box-name text-center'>{creator.name}</h4>
+          <p className='card-box-title text-center'>{creator.title}</p>
         </div>
       </div>
     </a>
@@ -68,18 +64,18 @@ const CreatorCard = ({ creator }: { creator: Creator }) => (
 // サービス説明（未ログイン時のみ表示）
 const ServiceDescription = () => (
   <>
-    <div className="bg-1 text-center bar" />
-    <div className="col-lg-12 text-center zone">
-      <h3 className="info-title">どんなシステム？</h3>
-      <div className="col-lg-12 row justify-content-around my-row">
-        <div className="col-lg-4">
-          <div className="three-box">
+    <div className='bg-1 text-center bar' />
+    <div className='col-lg-12 text-center zone'>
+      <h3 className='info-title'>どんなシステム？</h3>
+      <div className='col-lg-12 row justify-content-around my-row'>
+        <div className='col-lg-4'>
+          <div className='three-box'>
             <img
-              src="/assets/user.png"
-              className="img-responsive margin img-circle img-icon"
+              src='/assets/user.png'
+              className='img-responsive margin img-circle img-icon'
               width={100}
               height={100}
-              alt="後継者を募れる"
+              alt='後継者を募れる'
             />
             <h3>後継者を募れる</h3>
             <p>
@@ -89,14 +85,14 @@ const ServiceDescription = () => (
             </p>
           </div>
         </div>
-        <div className="col-lg-4">
-          <div className="three-box">
+        <div className='col-lg-4'>
+          <div className='three-box'>
             <img
-              src="/assets/info.png"
-              className="img-responsive margin img-circle img-icon"
+              src='/assets/info.png'
+              className='img-responsive margin img-circle img-icon'
               width={100}
               height={100}
-              alt="詳細情報を入れる"
+              alt='詳細情報を入れる'
             />
             <h3>詳細情報を入れる</h3>
             <p>
@@ -106,14 +102,14 @@ const ServiceDescription = () => (
             </p>
           </div>
         </div>
-        <div className="col-lg-4">
-          <div className="three-box">
+        <div className='col-lg-4'>
+          <div className='three-box'>
             <img
-              src="/assets/handshake.png"
-              className="img-responsive margin img-circle img-icon"
+              src='/assets/handshake.png'
+              className='img-responsive margin img-circle img-icon'
               width={100}
               height={100}
-              alt="マッチング"
+              alt='マッチング'
             />
             <h3>マッチング</h3>
             <p>
@@ -129,45 +125,45 @@ const ServiceDescription = () => (
 );
 
 // ── メインコンポーネント ──────────────────────────────────────────────
-export const IndexPage = ({ creators, recommend, logged_in }: Props) => {
+export const IndexPage = ({ creators, recommend, loggedIn }: Props) => {
   return (
     <>
       {/* メインビジュアル */}
-      <div className="text-center main-visual-box">
+      <div className='text-center main-visual-box'>
         <img
-          src="/assets/main1.jpg"
-          className="img-responsive margin main-visual"
-          alt="メインヴィジュアル"
-          width="100%"
+          src='/assets/main1.jpg'
+          className='img-responsive margin main-visual'
+          alt='メインヴィジュアル'
+          width='100%'
         />
         <h1>
-          <img src="/assets/title.png" width="115%" height="115%" alt="SucSeed" />
+          <img src='/assets/title.png' width='115%' height='115%' alt='SucSeed' />
         </h1>
       </div>
 
       {/* 未ログイン：サービス説明 */}
-      {!logged_in && <ServiceDescription />}
+      {!loggedIn && <ServiceDescription />}
 
       {/* おすすめ職人（後継者ログイン時のみ） */}
       {recommend && recommend.length > 0 && (
         <>
-          <div className="row card-group justify-content-center my-row">
-            <p className="recommend-title">おすすめ職人さん</p>
+          <div className='row card-group justify-content-center my-row'>
+            <p className='recommend-title'>おすすめ職人さん</p>
             {recommend.map((creator) => (
-              <CreatorCard key={creator.user_id} creator={creator} />
+              <CreatorCard key={creator.userId} creator={creator} />
             ))}
           </div>
-          <div className="recommend-bar" />
+          <div className='recommend-bar' />
         </>
       )}
 
       {/* 職人カード一覧 */}
       {/* 元 ERB は 4 件ごとに row を分けていたが Bootstrap の col で自動折り返しするため不要 */}
-      <div className="row card-group justify-content-center my-row">
+      <div className='row card-group justify-content-center my-row'>
         {creators.map((creator) => (
-          <CreatorCard key={creator.user_id} creator={creator} />
+          <CreatorCard key={creator.userId} creator={creator} />
         ))}
-        {creators.length > 0 && <div className="creator-card-last-bottom" />}
+        {creators.length > 0 && <div className='creator-card-last-bottom' />}
       </div>
     </>
   );

@@ -14,24 +14,24 @@
   page_props = {
     creators: @creator.map { |c|
       {
-        user_id:     c.user_id,
-        name:        c.name,
-        title:       c.title,
-        avatar_path: c.avatar_path.to_s,
-        created_at:  c.created_at
+        userId:     c.user_id,
+        name:       c.name,
+        title:      c.title,
+        avatarPath: c.avatar_path.to_s,
+        createdAt:  c.created_at
       }
     },
     recommend: @recommend&.map { |c|
       {
-        user_id:     c.user_id,
-        name:        c.name,
-        title:       c.title,
-        avatar_path: c.avatar_path.to_s,
-        created_at:  c.created_at
+        userId:     c.user_id,
+        name:       c.name,
+        title:      c.title,
+        avatarPath: c.avatar_path.to_s,
+        createdAt:  c.created_at
       }
     },
-    logged_in:  session[:id].present?,
-    is_creator: session[:creator].present?
+    loggedIn:  session[:id].present?,
+    isCreator: session[:creator].present?
   }
 %>
 <%= content_tag :div, '', data: { react_component: 'IndexPage', props: page_props.to_json } %>
