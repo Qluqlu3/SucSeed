@@ -1,13 +1,24 @@
 <%= stylesheet_link_tag "my_page" %>
 
-<h1>プロフィール変更</h1>
-  <!--通知・エラー-->
-  <div>
-    <% flash.each do |key, value| %>
-      <div class="alert alert-<%= key %>"><%= value %></div>
-    <% end %>
-  </div>
-  <div>
+<div class="alert-box">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+</div>
+
+<%
+  page_props = {
+    user: {
+      name:       @user.name,
+      email:      @user.email,
+      profile:    @user.profile,
+      avatarPath: @user.avatar_path.to_s
+    },
+    errors:    @user.errors.full_messages,
+    isCreator: session[:creator].present?
+  }
+%>
+<%= content_tag :div, '', data: { react_component: 'MyPageUpdatePage', props: page_props.to_json } %>
     <% if @user.errors.any? %>
       <div id="error_explanation" class="error-box">
         <p class="error-title">入力内容にエラーが<%= @user.errors.count %>件あります</p>
