@@ -1,12 +1,37 @@
 <%= stylesheet_link_tag "your_page" %>
 
-
-<!--通知・エラー-->
-<div>
+<div class="alert-box">
   <% flash.each do |key, value| %>
-    <div class="my-alert alert alert-<%= key %>"><%= value %></div>
+    <div class="alert alert-<%= key %>"><%= value %></div>
   <% end %>
 </div>
+
+<%
+  page_props = {
+    user: {
+      id:         @user.id,
+      name:       @user.name,
+      avatarPath: @user.avatar_path.to_s,
+      isMan:      @user.is_man,
+      birthday:   @user.birthday.to_s
+    },
+    creator: {
+      title:         @creator.title,
+      establishment: @creator.establishment,
+      employee:      @creator.employee,
+      profile:       @creator.profile,
+      isRecruitment: @creator.is_recruitment
+    },
+    artCategoryName: @art_category.name,
+    isFavorited:     @fv_check.present?,
+    loggedIn:        session[:id].present?,
+    isOwnPage:       session[:id] == @user.id,
+    isCreator:       session[:creator].present?,
+    isMatched:       @match.present?,
+    targetUserId:    @user.id
+  }
+%>
+<%= content_tag :div, '', data: { react_component: 'YourPage', props: page_props.to_json } %>
 
 <div>
   <% if @favorite.errors.any? %>

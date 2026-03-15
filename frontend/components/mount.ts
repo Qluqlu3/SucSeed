@@ -22,6 +22,7 @@ import { PasswordResetPage } from './PasswordResetPage';
 import { EmailCertifiedPage } from './EmailCertifiedPage';
 import { MyPage } from './MyPage';
 import { MyPageUpdatePage } from './MyPageUpdatePage';
+import { YourPage } from './YourPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -46,6 +47,7 @@ const COMPONENTS: Record<string, MountFn> = {
   EmailCertifiedPage: (node) => mount(EmailCertifiedPage, node),
   MyPage: (node) => mount(MyPage, node),
   MyPageUpdatePage: (node) => mount(MyPageUpdatePage, node),
+  YourPage: (node) => mount(YourPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
