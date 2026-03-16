@@ -1,9 +1,19 @@
 <%= stylesheet_link_tag "diary" %>
 
-<h1>日記投稿</h1>
-
-<div>
+<div class="alert-box">
   <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+</div>
+
+<%
+  page_props = {
+    errors:     @diary.errors.full_messages,
+    userName:   @user.name,
+    avatarPath: @user.avatar_path.to_s
+  }
+%>
+<%= content_tag :div, '', data: { react_component: 'DiaryPostPage', props: page_props.to_json } %>
     <div class="alert alert-<%= key %>"><%= value %></div>
   <% end %>
 </div>
