@@ -24,6 +24,7 @@ import { MyPage } from './MyPage';
 import { MyPageUpdatePage } from './MyPageUpdatePage';
 import { YourPage } from './YourPage';
 import { HeirPage } from './HeirPage';
+import { DiarySelectPage } from './DiarySelectPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -50,6 +51,7 @@ const COMPONENTS: Record<string, MountFn> = {
   MyPageUpdatePage: (node) => mount(MyPageUpdatePage, node),
   YourPage: (node) => mount(YourPage, node),
   HeirPage: (node) => mount(HeirPage, node),
+  DiarySelectPage: (node) => mount(DiarySelectPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
