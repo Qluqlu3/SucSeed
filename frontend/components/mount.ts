@@ -29,6 +29,8 @@ import { DiaryPostPage } from './DiaryPostPage';
 import { MyDiaryPage } from './MyDiaryPage';
 import { YourDiaryPage } from './YourDiaryPage';
 import { DiaryHeirFavoritePage } from './DiaryHeirFavoritePage';
+import { GalleryCard } from './GalleryCard';
+import { GalleryViewPage } from './GalleryViewPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -60,6 +62,7 @@ const COMPONENTS: Record<string, MountFn> = {
   MyDiaryPage: (node) => mount(MyDiaryPage, node),
   YourDiaryPage: (node) => mount(YourDiaryPage, node),
   DiaryHeirFavoritePage: (node) => mount(DiaryHeirFavoritePage, node),
+  GalleryViewPage: (node) => mount(GalleryViewPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {

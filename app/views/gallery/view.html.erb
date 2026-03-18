@@ -1,7 +1,13 @@
 <%= stylesheet_link_tag "gallery" %>
-<link rel="stylesheet" href="bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" />
 
-<h1>gallery#view</h1>
+<div class="alert-box">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+</div>
+
+<% page_props = { errors: @gallery.errors.full_messages } %>
+<%= content_tag :div, '', data: { react_component: 'GalleryViewPage', props: page_props.to_json } %>
 
 <div>
   <% flash.each do |key, value| %>
