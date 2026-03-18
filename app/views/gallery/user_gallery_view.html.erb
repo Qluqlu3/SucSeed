@@ -1,8 +1,27 @@
 <%= stylesheet_link_tag "gallery" %>
 
-<h1 class="main-title"><%= @user.name %>さんのギャラリー</h1>
+<div class="alert-box">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
+</div>
 
-<!--error-->
+<%
+  page_props = {
+    userName: @user.name,
+    userId:   @user.id,
+    galleries: @user_gallery.map { |g|
+      {
+        id:        g.id,
+        dataUrl:   g.data.to_s,
+        tags:      g.tag_list.to_a,
+        goodCount: @good_count[g.id] || 0,
+        myGood:    @my_good.any? { |mg| mg.id == g.id }
+      }
+    }
+  }
+%>
+<%= content_tag :div, '', data: { react_component: 'UserGalleryViewPage', props: page_props.to_json } %>
 <div>
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>
