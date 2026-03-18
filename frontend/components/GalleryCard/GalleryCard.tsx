@@ -12,22 +12,22 @@ export interface GalleryItem {
 }
 
 export const GalleryCard = ({ gallery }: { gallery: GalleryItem }) => (
-  <div className="col-lg-4 card-col">
+  <div className='col-lg-4 card-col'>
     <a href={`/gallery/selected/${gallery.id}`}>
-      <div className="card gallery-card">
-        <div className="card-header gallery-card-header">
-          <img src={gallery.dataUrl} width="100%" height="380px" alt="ギャラリー画像" />
+      <div className='card gallery-card'>
+        <div className='card-header gallery-card-header'>
+          <img src={gallery.dataUrl} width='100%' height='380px' alt='ギャラリー画像' />
         </div>
-        <div className="card-body gallery-card-body">
-          <p className="card-tag">
+        <div className='card-body gallery-card-body'>
+          <p className='card-tag'>
             {gallery.tags.slice(0, 3).map((tag, i) => (
-              <span key={i} className="label my-label">
+              <span key={i} className='label my-label'>
                 {tag}
               </span>
             ))}
           </p>
-          <div className="text-right gallery-icon-box">
-            <i className="fas fa-thumbs-up thumbs-up-icon sub-thumbs-up-icon" />
+          <div className='text-right gallery-icon-box'>
+            <i className='fas fa-thumbs-up thumbs-up-icon sub-thumbs-up-icon' />
             {gallery.goodCount}
           </div>
         </div>
