@@ -19,6 +19,7 @@ class GalleryController < ApplicationController
       @gallery = Gallery.new
       @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: session[:id]}).or(Gallery.joins(:gallery_goods).where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("galleries.id AS id").order("galleries.created_at DESC")
       @my_gallery = Gallery.where(user_id: session[:id]).order("created_at DESC")
+      @good_count = GalleryGood.group(:gallery_id).count
       render :my_gallery
     else
       redirect_to "/index"
