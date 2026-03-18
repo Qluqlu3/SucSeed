@@ -18,12 +18,12 @@ interface Props {
 export const DiarySelectPage = ({ diaries, currentUser }: Props) => {
   return (
     <>
-      <h1 className='main-title'>日記</h1>
-      <div className='wrapper'>
-        <div className='row my-row'>
-          <div className='col-md-9 left-col'>
+      <h1 className="main-title">日記</h1>
+      <div className="wrapper">
+        <div className="row my-row">
+          <div className="col-md-9 left-col">
             {diaries.length === 0 ? (
-              <p className='empty-text'>まだありません</p>
+              <p className="empty-text">まだありません</p>
             ) : (
               diaries.map((entry) => (
                 <DiaryCard
