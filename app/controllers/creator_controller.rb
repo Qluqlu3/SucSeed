@@ -27,6 +27,8 @@ class CreatorController < ApplicationController
   def edit
     if session[:creator] != nil
       @creator = ArtCategory.joins(:creators).select("creators.*, art_categories.name").find_by(creators: {user_id: session[:id]})
+      @art_categories = ArtCategory.all
+      @is_creator = session[:creator].present?
       if @creator.is_recruitment == 1
         @check = true
       else
