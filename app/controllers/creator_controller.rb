@@ -2,6 +2,7 @@ class CreatorController < ApplicationController
   def show
     if session[:creator] != nil && !Creator.find_by(user_id: session[:id])
       @creator = Creator.new
+      @art_categories = ArtCategory.all
       render :create
     else
       @creator = User.joins(:creator).select("users.*, creators.*").find_by(creators: {user_id: session[:id]})
@@ -11,6 +12,7 @@ class CreatorController < ApplicationController
   end
 
   def create
+    @art_categories = ArtCategory.all
     params[:creator][:user_id] = session[:id]
     @creator = Creator.new(creator_params)
     if @creator.save

@@ -41,6 +41,7 @@ import { GalleryUploadPage } from './GalleryUploadPage';
 import { SearchUserPage } from './SearchUserPage';
 import { InquiryInputPage } from './InquiryInputPage';
 import { CertifyPage } from './CertifyPage';
+import { CreatorCreatePage } from './CreatorCreatePage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -83,6 +84,7 @@ const COMPONENTS: Record<string, MountFn> = {
   SearchUserPage: (node) => mount(SearchUserPage, node),
   InquiryInputPage: (node) => mount(InquiryInputPage, node),
   CertifyPage: (node) => mount(CertifyPage, node),
+  CreatorCreatePage: (node) => mount(CreatorCreatePage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
