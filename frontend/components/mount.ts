@@ -40,6 +40,7 @@ import { HeirFavoriteGalleryPage } from './HeirFavoriteGalleryPage';
 import { GalleryUploadPage } from './GalleryUploadPage';
 import { SearchUserPage } from './SearchUserPage';
 import { InquiryInputPage } from './InquiryInputPage';
+import { CertifyPage } from './CertifyPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -81,6 +82,7 @@ const COMPONENTS: Record<string, MountFn> = {
   GalleryUploadPage: (node) => mount(GalleryUploadPage, node),
   SearchUserPage: (node) => mount(SearchUserPage, node),
   InquiryInputPage: (node) => mount(InquiryInputPage, node),
+  CertifyPage: (node) => mount(CertifyPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
