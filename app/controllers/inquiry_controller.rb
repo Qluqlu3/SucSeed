@@ -1,6 +1,7 @@
 class InquiryController < ApplicationController
   def input_page
     @inquiry = Inquiry.new
+    @categories = InquiryCategory.all
     render :'inquiry/input_page'
   end
 
@@ -15,6 +16,7 @@ class InquiryController < ApplicationController
       flash[:success] = "お問い合わせありがとうございます"
       redirect_to "/inquiry/input"
     else
+      @categories = InquiryCategory.all
       render action: :input_page
     end
   end
