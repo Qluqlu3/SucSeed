@@ -46,6 +46,7 @@ import { CreatorShowPage } from './CreatorShowPage';
 import { CreatorUpdatePage } from './CreatorUpdatePage';
 import { CreatorUploadImagePage } from './CreatorUploadImagePage';
 import { HeirCreatePage } from './HeirCreatePage';
+import { HeirShowPage } from './HeirShowPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -93,6 +94,7 @@ const COMPONENTS: Record<string, MountFn> = {
   CreatorUpdatePage: (node) => mount(CreatorUpdatePage, node),
   CreatorUploadImagePage: (node) => mount(CreatorUploadImagePage, node),
   HeirCreatePage: (node) => mount(HeirCreatePage, node),
+  HeirShowPage: (node) => mount(HeirShowPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
