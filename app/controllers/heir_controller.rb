@@ -37,6 +37,7 @@ class HeirController < ApplicationController
       if session[:id] != nil
         @heir = Heir.find_by(user_id: session[:id])
         @interest = ArtCategory.find(@heir.art_category_id)
+        @art_categories = ArtCategory.all
         render :update
       else
         redirect_to "/index"
