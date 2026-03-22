@@ -52,6 +52,7 @@ import { Error404Page } from './Error404Page';
 import { Error500Page } from './Error500Page';
 import { MatchingPage } from './MatchingPage';
 import { AppealShowPage } from './AppealShowPage';
+import { AppealedListPage } from './AppealedListPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -105,6 +106,7 @@ const COMPONENTS: Record<string, MountFn> = {
   Error500Page: (node) => mount(Error500Page, node),
   MatchingPage: (node) => mount(MatchingPage, node),
   AppealShowPage: (node) => mount(AppealShowPage, node),
+  AppealedListPage: (node) => mount(AppealedListPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {

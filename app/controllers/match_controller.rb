@@ -3,6 +3,15 @@ class MatchController < ApplicationController
   def appealed_list_view
     if session[:creator] != nil
       @match = User.joins(:matches).where(matches: {is_ok: nil}).where(users: {id: Match.where(target_user_id: session[:id]).select("matches.user_id")}).select("users.*", "users.id AS page_id", "users.id", "matches.created_at AS match_time").order("matches.created_at ASC")
+      @page_props = {
+        matches: @match.map { |m| {
+          pageId: m.page_id.to_s,
+          name: m.name,
+          birthday: m.birthday,
+          avatarPath: m.avatar_path,
+          matchTime: m.match_time
+        }}
+      }
       render :appealed_list
     else
       redirect_to "/index"
