@@ -1,0 +1,1 @@
+export { ScoutCheckPage } from './ScoutCheckPage';
