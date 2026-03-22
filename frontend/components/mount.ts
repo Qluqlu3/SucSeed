@@ -48,6 +48,7 @@ import { CreatorUploadImagePage } from './CreatorUploadImagePage';
 import { HeirCreatePage } from './HeirCreatePage';
 import { HeirShowPage } from './HeirShowPage';
 import { HeirUpdatePage } from './HeirUpdatePage';
+import { Error404Page } from './Error404Page';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -97,6 +98,7 @@ const COMPONENTS: Record<string, MountFn> = {
   HeirCreatePage: (node) => mount(HeirCreatePage, node),
   HeirShowPage: (node) => mount(HeirShowPage, node),
   HeirUpdatePage: (node) => mount(HeirUpdatePage, node),
+  Error404Page: (node) => mount(Error404Page, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
