@@ -50,6 +50,7 @@ import { HeirShowPage } from './HeirShowPage';
 import { HeirUpdatePage } from './HeirUpdatePage';
 import { Error404Page } from './Error404Page';
 import { Error500Page } from './Error500Page';
+import { MatchingPage } from './MatchingPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -101,6 +102,7 @@ const COMPONENTS: Record<string, MountFn> = {
   HeirUpdatePage: (node) => mount(HeirUpdatePage, node),
   Error404Page: (node) => mount(Error404Page, node),
   Error500Page: (node) => mount(Error500Page, node),
+  MatchingPage: (node) => mount(MatchingPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
