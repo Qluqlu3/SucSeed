@@ -45,6 +45,7 @@ class MessageController < ApplicationController
       @message_history = Message.where(send_user_id: session[:id]).where(receive_user_id: params[:id]).or(Message.where(send_user_id: params[:id]).where(receive_user_id: session[:id])).order("messages.created_at DESC")
       @from_user = User.find(session[:id])
       @to_user = User.find(params[:id])
+      @page_props = build_message_page_props(@message_list, @message_history, @from_user, @to_user)
       render :message
     elsif session[:id] != nil && session[:creator] != nil
       @message = Message.new
@@ -52,6 +53,7 @@ class MessageController < ApplicationController
       @message_history = Message.where(send_user_id: session[:id]).where(receive_user_id: params[:id]).or(Message.where(send_user_id: params[:id]).where(receive_user_id: session[:id])).order("messages.created_at DESC")
       @from_user = User.find(session[:id])
       @to_user = User.find(params[:id])
+      @page_props = build_message_page_props(@message_list, @message_history, @from_user, @to_user)
       render :message
     else
       redirect_to "/index"
@@ -90,6 +92,16 @@ class MessageController < ApplicationController
 end
 
 private
+
+def build_message_page_props(message_list, message_history, from_user, to_user)
+  {
+    messageLists: message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path } },
+    messageHistory: message_history.map { |m| { sendUserId: m.send_user_id.to_s, content: m.content, createdAt: m.created_at } },
+    fromUser: { id: from_user.id.to_s, avatarPath: from_user.avatar_path, name: from_user.name },
+    toUser: { id: to_user.id.to_s, name: to_user.name, avatarPath: to_user.avatar_path }
+  }
+end
+
 def message_params
   params.require(:message).permit(:send_user_id, :receive_user_id, :content)
 end
