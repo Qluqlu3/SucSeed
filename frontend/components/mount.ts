@@ -56,6 +56,7 @@ import { AppealedListPage } from './AppealedListPage';
 import { ScoutCheckPage } from './ScoutCheckPage';
 import { ScoutShowPage } from './ScoutShowPage';
 import { MessagePage } from './MessagePage';
+import { MessageListPage } from './MessageListPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -113,6 +114,7 @@ const COMPONENTS: Record<string, MountFn> = {
   ScoutCheckPage: (node) => mount(ScoutCheckPage, node),
   ScoutShowPage: (node) => mount(ScoutShowPage, node),
   MessagePage: (node) => mount(MessagePage, node),
+  MessageListPage: (node) => mount(MessageListPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {

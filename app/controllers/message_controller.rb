@@ -3,11 +3,11 @@ class MessageController < ApplicationController
   def view
     if session[:id] != nil && session[:creator] != nil
       @message_list = User.joins(:message_lists).select("users.name, users.avatar_path, users.id").where(message_lists: {creator_user_id: session[:id]}).order("message_lists.updated_at DESC")
-      # @message_list_1 = User.joins(:message_lists).select("users.*, message_lists.*").where(message_lists: {creator_user_id: session[:id]}).order("message_lists.updated_at DESC").limit(1)
-      # @message = User.joins(:messages).select("users.*, messages.*").where(messages: {send_user_id: session[:id]}).where(messages: {receive_user_id: @message_list_1}).order("messages.created_at ASC")
+      @page_props = { messageLists: @message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path } } }
       render :message_list
     elsif  session[:id] != nil && session[:creator] == nil
       @message_list = User.joins("inner join message_lists on users.id = message_lists.creator_user_id").select("users.name, users.avatar_path, users.id").where(message_lists: {heir_user_id: session[:id]}).order("message_lists.updated_at DESC")
+      @page_props = { messageLists: @message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path } } }
       render :message_list
     else
       redirect_to "/index"
