@@ -56,12 +56,17 @@ export const DiaryCard = ({
 
   const handleGood = async () => {
     if (myGood) return;
-    await fetch(`/diary/show/${entry.diaryId}/good`, {
+    const res = await fetch(`/diary/show/${entry.diaryId}/good`, {
       method: 'POST',
-      headers: { 'X-CSRF-Token': getCsrfToken() },
+      headers: {
+        Accept: 'application/json',
+        'X-CSRF-Token': getCsrfToken(),
+      },
     });
-    setMyGood(true);
-    setGoodCount((c) => c + 1);
+    if (res.ok) {
+      setMyGood(true);
+      setGoodCount((c) => c + 1);
+    }
   };
 
   const handleComment = async (e: React.FormEvent) => {
@@ -70,6 +75,7 @@ export const DiaryCard = ({
     const res = await fetch(`/diary/show/${entry.diaryId}/comment`, {
       method: 'POST',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
         'X-CSRF-Token': getCsrfToken(),
       },

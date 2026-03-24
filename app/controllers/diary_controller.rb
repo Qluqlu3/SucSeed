@@ -92,55 +92,51 @@ class DiaryController < ApplicationController
 
   #いいねボタン
   def good
-    if session[:id] != nil && session[:creator] != nil
-      @diary_good = DiaryGood.new(diary_id: params[:id], user_id: session[:id])
-      if @diary_good.save
-        flash.now[:success] = "success"
-        redirect_to "/diary/view"
-      else
-        flash.now[:danger] = "エラー"
-        redirect_to "/diary/view"
+    unless session[:id]
+      respond_to do |f|
+        f.html { redirect_to "/index" }
+        f.json { head :unauthorized }
       end
-    elsif session[:id] != nil && session[:creator] == nil
-      @diary_good = DiaryGood.new(diary_id: params[:id], user_id: session[:id])
-      if @diary_good.save
-        flash.now[:success] = "success"
-        redirect_to "/diary/heir/favorite"
-      else
-        flash.now[:danger] = "エラー"
-        redirect_to "/diary/heir/favorite"
+      return
+    end
+    @diary_good = DiaryGood.new(diary_id: params[:id], user_id: session[:id])
+    fallback = session[:creator] ? "/diary/view" : "/diary/heir/favorite"
+    if @diary_good.save
+      respond_to do |f|
+        f.html { flash[:success] = "success"; redirect_to fallback }
+        f.json { head :ok }
       end
     else
-      redirect_to "/index"
+      respond_to do |f|
+        f.html { flash[:danger] = "エラー"; redirect_to fallback }
+        f.json { head :unprocessable_entity }
+      end
     end
   end
 
   #コメント
   def comment
-    if session[:id] != nil && session[:creator] != nil
-      params[:diary_comment][:user_id] = session[:id]
-      params[:diary_comment][:diary_id] = params[:id]
-      @diary_comment = DiaryComment.new(diary_comment_params)
-      if @diary_comment.save
-        flash[:success] = "success"
-        redirect_to "/diary/view"
-      else
-        flash[:danger] = "エラー"
-        redirect_to "/diary/view"
+    unless session[:id]
+      respond_to do |f|
+        f.html { redirect_to "/index" }
+        f.json { head :unauthorized }
       end
-    elsif session[:id] != nil && session[:creator] == nil
-      params[:diary_comment][:user_id] = session[:id]
-      params[:diary_comment][:diary_id] = params[:id]
-      @diary_comment = DiaryComment.new(diary_comment_params)
-      if @diary_comment.save
-        flash[:success] = "success"
-        redirect_to "/diary/heir/favorite"
-      else
-        flash[:danger] = "エラー"
-        redirect_to "/diary/heir/favorite"
+      return
+    end
+    params[:diary_comment][:user_id] = session[:id]
+    params[:diary_comment][:diary_id] = params[:id]
+    @diary_comment = DiaryComment.new(diary_comment_params)
+    fallback = session[:creator] ? "/diary/view" : "/diary/heir/favorite"
+    if @diary_comment.save
+      respond_to do |f|
+        f.html { flash[:success] = "success"; redirect_to fallback }
+        f.json { head :ok }
       end
     else
-      redirect_to "/index"
+      respond_to do |f|
+        f.html { flash[:danger] = "エラー"; redirect_to fallback }
+        f.json { head :unprocessable_entity }
+      end
     end
   end
 
