@@ -19,6 +19,7 @@ class AdminController < ApplicationController
 
   def create
     @admin = Admin.new
+    @page_props = { errors: [] }
     render :admin_create
   end
 
@@ -28,6 +29,7 @@ class AdminController < ApplicationController
       flash[:success] = "success"
       redirect_to "/admin/login"
     else
+      @page_props = { errors: @admin.errors.full_messages }
       render action: :admin_create
     end
   end
