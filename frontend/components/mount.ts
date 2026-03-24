@@ -59,6 +59,7 @@ import { MessagePage } from './MessagePage';
 import { MessageListPage } from './MessageListPage';
 import { AdminLoginPage } from './AdminLoginPage';
 import { AdminCreatePage } from './AdminCreatePage';
+import { AdminIndexPage } from './AdminIndexPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -119,6 +120,7 @@ const COMPONENTS: Record<string, MountFn> = {
   MessageListPage: (node) => mount(MessageListPage, node),
   AdminLoginPage: (node) => mount(AdminLoginPage, node),
   AdminCreatePage: (node) => mount(AdminCreatePage, node),
+  AdminIndexPage: (node) => mount(AdminIndexPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
