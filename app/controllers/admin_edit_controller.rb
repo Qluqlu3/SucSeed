@@ -6,16 +6,46 @@ class AdminEditController < ApplicationController
 
   def user
     @user = User.all.order("created_at DESC")
+    @page_props = {
+      users: @user.map { |u| {
+        id: u.id,
+        name: u.name,
+        avatarPath: u.avatar_path.to_s,
+        profile: u.profile.to_s,
+        createdAt: u.created_at.to_s,
+        deletedAt: u.deleted_at&.to_s,
+        loginTime: u.login_time&.to_s
+      }}
+    }
     render :admin_user_edit
   end
 
   def diary
     @diary = Diary.all.order("created_at DESC")
+    @page_props = {
+      diaries: @diary.map { |d| {
+        id: d.id,
+        userId: d.user_id,
+        content: d.content.to_s,
+        createdAt: d.created_at.to_s,
+        deletedAt: d.deleted_at&.to_s
+      }}
+    }
     render :admin_diary_edit
   end
 
   def diary_comment
     @diary_comment = DiaryComment.all.order("created_at DESC")
+    @page_props = {
+      comments: @diary_comment.map { |c| {
+        id: c.id,
+        userId: c.user_id,
+        diaryId: c.diary_id,
+        comment: c.comment.to_s,
+        createdAt: c.created_at.to_s,
+        deletedAt: c.deleted_at&.to_s
+      }}
+    }
     render :admin_diary_comment_edit
   end
 
