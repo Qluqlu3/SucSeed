@@ -1,0 +1,1 @@
+export { AdminDiaryCommentEditPage } from './AdminDiaryCommentEditPage';
