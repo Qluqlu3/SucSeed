@@ -27,8 +27,8 @@ const NAV_ITEMS = [
 ];
 
 export const AdminSideMenu = ({ activeKey }: Props) => (
-  <div className="col-2 admin-col-2">
-    <ul className="nav flex-column admin-side-menu">
+  <div className='col-2 admin-col-2'>
+    <ul className='nav flex-column admin-side-menu'>
       {NAV_ITEMS.map((item, i) => {
         const isActive = item.key === activeKey;
         return (
