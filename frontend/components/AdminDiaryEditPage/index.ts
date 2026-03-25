@@ -1,0 +1,1 @@
+export { AdminDiaryEditPage } from './AdminDiaryEditPage';
