@@ -51,11 +51,34 @@ class AdminEditController < ApplicationController
 
   def gallery
     @gallery = Gallery.all.order("created_at DESC")
+    @page_props = {
+      galleries: @gallery.map { |g| {
+        id: g.id,
+        userId: g.user_id,
+        data: g.data.to_s,
+        comment: g.comment.to_s,
+        createdAt: g.created_at.to_s,
+        deletedAt: g.deleted_at&.to_s
+      }}
+    }
     render :'admin_edit/admin_gallery_edit'
   end
 
   def inquiry
     @inquiry = InquiryCategory.joins(:inquiry).select("inquiries.*, inquiry_categories.name").order("inquiries.created_at DESC")
+    @page_props = {
+      inquiries: @inquiry.map { |q| {
+        id: q.id,
+        userId: q.user_id,
+        name: q.name,
+        content: q.content.to_s,
+        isCheck: q.is_check == 1,
+        createdAt: q.created_at.to_s,
+        updatedAt: q.updated_at.to_s,
+        deletedAt: q.deleted_at&.to_s,
+        elapsedDays: ((Time.now - q.created_at) / 86400).to_i
+      }}
+    }
     render :admin_inquiry_edit
   end
 
@@ -124,6 +147,15 @@ class AdminEditController < ApplicationController
     @inquiry = Inquiry.new
     @inquiry_detail = Inquiry.find_by("id = ?", params[:id])
     @category = InquiryCategory.find(@inquiry_detail.inquiry_category_id)
+    @page_props = {
+      inquiryDetail: {
+        id: @inquiry_detail.id,
+        categoryName: @category.name,
+        content: @inquiry_detail.content.to_s,
+        createdAt: @inquiry_detail.created_at.to_s
+      },
+      isCheck: @inquiry_detail.is_check ? true : false
+    }
     if @inquiry_detail.is_check
       @check = true
     else
