@@ -1,0 +1,1 @@
+export { AdminInquiryDetailPage } from './AdminInquiryDetailPage';
