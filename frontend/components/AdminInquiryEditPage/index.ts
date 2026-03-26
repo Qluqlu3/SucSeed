@@ -1,0 +1,1 @@
+export { AdminInquiryEditPage } from './AdminInquiryEditPage';
