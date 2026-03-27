@@ -3,11 +3,3 @@
 <% page_props = { userName: @user.name, userId: session[:id] } %>
 <%= content_tag :div, '', data: { react_component: 'EmailCertifiedPage', props: page_props.to_json } %>
 
-
-<div class="certified-box text-center">
-  <%= form_for :certified, url: "/email/certified/#{session[:id]}" do |f| %>
-    <%= f.button type: "submit", method: "post", class: "btn btn-success certified-btn" do %>
-      メールアドレス認証
-    <% end %>
-  <% end %>
-</div>
