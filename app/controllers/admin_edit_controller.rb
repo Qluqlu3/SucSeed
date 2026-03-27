@@ -95,6 +95,13 @@ class AdminEditController < ApplicationController
   #ユーザー編集
   def user_edit_show
     @user = User.find_by("id = ?", params[:id])
+    @page_props = {
+      user: {
+        id: @user.id,
+        avatarPath: @user.avatar_path.to_s,
+        profile: @user.profile.to_s
+      }
+    }
     render :selected_user_edit
   end
 

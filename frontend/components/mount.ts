@@ -66,6 +66,7 @@ import { AdminDiaryCommentEditPage } from './AdminDiaryCommentEditPage';
 import { AdminGalleryEditPage } from './AdminGalleryEditPage';
 import { AdminInquiryEditPage } from './AdminInquiryEditPage';
 import { AdminInquiryDetailPage } from './AdminInquiryDetailPage';
+import { AdminSelectedUserEditPage } from './AdminSelectedUserEditPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -133,6 +134,7 @@ const COMPONENTS: Record<string, MountFn> = {
   AdminGalleryEditPage: (node) => mount(AdminGalleryEditPage, node),
   AdminInquiryEditPage: (node) => mount(AdminInquiryEditPage, node),
   AdminInquiryDetailPage: (node) => mount(AdminInquiryDetailPage, node),
+  AdminSelectedUserEditPage: (node) => mount(AdminSelectedUserEditPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
