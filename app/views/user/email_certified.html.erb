@@ -1,5 +1,4 @@
 <%= stylesheet_link_tag "user" %>
 
-<% page_props = { userName: @user.name, userId: session[:id] } %>
-<%= content_tag :div, '', data: { react_component: 'EmailCertifiedPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'EmailCertifiedPage', props: @page_props.to_json } %>
 

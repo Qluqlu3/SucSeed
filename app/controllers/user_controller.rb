@@ -83,6 +83,7 @@ class UserController < ApplicationController
   def email_certified_show
     if session[:id] != nil
       @user = User.find_by("id = ?", params[:id])
+      @page_props = { userName: @user.name, userId: session[:id] }
       render :email_certified
     else
       redirect_to "/index"
