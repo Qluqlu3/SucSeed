@@ -1,16 +1,3 @@
 <%= stylesheet_link_tag "creator" %>
 
-<%
-  page_props = {
-    creator: {
-      title:         @creator.title,
-      categoryName:  @category.name,
-      establishment: @creator.establishment,
-      employee:      @creator.employee,
-      postalCode:    @creator.postal_code,
-      isRecruitment: @creator.is_recruitment,
-    },
-    isCreator: @is_creator,
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'CreatorShowPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'CreatorShowPage', props: @page_props.to_json } %>

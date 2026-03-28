@@ -8,6 +8,17 @@ class CreatorController < ApplicationController
       @creator = User.joins(:creator).select("users.*, creators.*").find_by(creators: {user_id: session[:id]})
       @category = ArtCategory.find(@creator.art_category_id)
       @is_creator = session[:creator].present?
+      @page_props = {
+        creator: {
+          title:         @creator.title,
+          categoryName:  @category.name,
+          establishment: @creator.establishment,
+          employee:      @creator.employee,
+          postalCode:    @creator.postal_code,
+          isRecruitment: @creator.is_recruitment,
+        },
+        isCreator: @is_creator,
+      }
       render :show
     end
   end
