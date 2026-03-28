@@ -16,6 +16,21 @@ class YourPageController < ApplicationController
     @user = User.find_by("id = ?", params[:id])
     @art_name = ArtCategory.joins(:heirs).select("art_categories.name").find_by(heirs: {user_id: params[:id]})
     @scout = Match.where(user_id: session[:id]).where(target_user_id: params[:id])
+    @page_props = {
+      user: {
+        id:         @user.id,
+        name:       @user.name,
+        avatarPath: @user.avatar_path.to_s,
+        isMan:      @user.is_man,
+        birthday:   @user.birthday.to_s,
+        profile:    @user.profile
+      },
+      artName:      @art_name&.name,
+      isScouted:    @scout.present?,
+      loggedIn:     session[:id].present?,
+      isCreator:    session[:creator].present?,
+      targetUserId: params[:id].to_i
+    }
     render :heir_page
   end
 end

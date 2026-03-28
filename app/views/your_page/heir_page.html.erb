@@ -6,22 +6,5 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    user: {
-      id:         @user.id,
-      name:       @user.name,
-      avatarPath: @user.avatar_path.to_s,
-      isMan:      @user.is_man,
-      birthday:   @user.birthday.to_s,
-      profile:    @user.profile
-    },
-    artName:      @art_name&.name,
-    isScouted:    @scout.present?,
-    loggedIn:     session[:id].present?,
-    isCreator:    session[:creator].present?,
-    targetUserId: params[:id].to_i
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'HeirPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'HeirPage', props: @page_props.to_json } %>
 
