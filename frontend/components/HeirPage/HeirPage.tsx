@@ -51,40 +51,40 @@ export const HeirPage = ({
   };
 
   return (
-    <div className='all-cover-box'>
+    <div className="all-cover-box">
       {/* プロフィールヘッダー */}
-      <div className='background-img-box'>
-        <img src='/assets/main1.jpg' height='800px' width='100%' alt='背景画像' />
-        <div className='name-age-box'>
-          <h1 className='h1-box'>{user.name}</h1>
+      <div className="background-img-box">
+        <img src="/assets/main1.jpg" height="800px" width="100%" alt="背景画像" />
+        <div className="name-age-box">
+          <h1 className="h1-box">{user.name}</h1>
           <p className={`sex-box ${user.isMan ? 'is_man' : 'is_woman'}`}>
             {user.isMan ? '男性' : '女性'}
           </p>
-          <p className='age-box'>{calcAge(user.birthday)}歳</p>
+          <p className="age-box">{calcAge(user.birthday)}歳</p>
         </div>
         {artName && (
-          <div className='label-box'>
-            <span className='badge badge-primary'>{artName}</span>
+          <div className="label-box">
+            <span className="badge badge-primary">{artName}</span>
           </div>
         )}
-        <div className='profile-avatar'>
+        <div className="profile-avatar">
           <img
             src={user.avatarPath}
-            className='card-img-top rounded-circle'
-            width='100%'
-            height='100%'
-            alt='アバター画像'
+            className="card-img-top rounded-circle"
+            width="100%"
+            height="100%"
+            alt="アバター画像"
           />
         </div>
       </div>
 
-      <div className='bar-box' />
+      <div className="bar-box" />
 
       {/* 紹介文 */}
-      <div className='card my-card-pro heir-profile-box'>
-        <h3 className='card-header my-card-header-pro'>紹介文</h3>
-        <div className='card-body card-body-intro'>
-          <p className='card-text' style={{ whiteSpace: 'pre-wrap' }}>
+      <div className="card my-card-pro heir-profile-box">
+        <h3 className="card-header my-card-header-pro">紹介文</h3>
+        <div className="card-body card-body-intro">
+          <p className="card-text" style={{ whiteSpace: 'pre-wrap' }}>
             {user.profile}
           </p>
         </div>
@@ -92,10 +92,10 @@ export const HeirPage = ({
 
       {/* スカウトボタン（職人ログイン時のみ） */}
       {loggedIn && isCreator && (
-        <div className='appeal-box'>
+        <div className="appeal-box">
           <button
-            type='button'
-            className='btn btn-lg appeal-btn'
+            type="button"
+            className="btn btn-lg appeal-btn"
             onClick={handleScout}
             disabled={isScouted}
           >

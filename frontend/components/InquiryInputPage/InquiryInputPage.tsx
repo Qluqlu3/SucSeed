@@ -34,15 +34,15 @@ export const InquiryInputPage = ({ categories, errors, prevValues }: Props) => {
 
   return (
     <div>
-      <h1 className='main-title'>お問い合わせ</h1>
-      <div className='all-cover-box'>
-        <div className='wrapper'>
+      <h1 className="main-title">お問い合わせ</h1>
+      <div className="all-cover-box">
+        <div className="wrapper">
           {errors.length > 0 && (
-            <div id='error_explanation' className='error-box'>
-              <p className='error-title'>入力内容にエラーが{errors.length}件あります</p>
-              <ul className='error-index'>
+            <div id="error_explanation" className="error-box">
+              <p className="error-title">入力内容にエラーが{errors.length}件あります</p>
+              <ul className="error-index">
                 {errors.map((msg) => (
-                  <li key={msg} className='error-content'>
+                  <li key={msg} className="error-content">
                     {msg}
                   </li>
                 ))}
@@ -50,20 +50,20 @@ export const InquiryInputPage = ({ categories, errors, prevValues }: Props) => {
             </div>
           )}
 
-          <form action='/inquiry/input' method='post'>
-            <input type='hidden' name='_method' value='post' />
-            <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+          <form action="/inquiry/input" method="post">
+            <input type="hidden" name="_method" value="post" />
+            <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
 
-            <div className='form-group'>
+            <div className="form-group">
               {/* biome-ignore lint/a11y/noLabelWithoutControl: select は直後に配置 */}
-              <label className='col-xl-12 inquiry-input-label'>カテゴリー</label>
+              <label className="col-xl-12 inquiry-input-label">カテゴリー</label>
               <select
-                name='inquiry[inquiry_category_id]'
-                className='col-xl-12 form-control'
+                name="inquiry[inquiry_category_id]"
+                className="col-xl-12 form-control"
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value === '' ? '' : Number(e.target.value))}
               >
-                <option value=''>選択してください</option>
+                <option value="">選択してください</option>
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.name}
@@ -72,21 +72,21 @@ export const InquiryInputPage = ({ categories, errors, prevValues }: Props) => {
               </select>
             </div>
 
-            <div className='form-group my-form-inquiry'>
+            <div className="form-group my-form-inquiry">
               {/* biome-ignore lint/a11y/noLabelWithoutControl: textarea は直後に配置 */}
-              <label className='col-xl-12 inquiry-input-label'>お問い合わせ内容</label>
+              <label className="col-xl-12 inquiry-input-label">お問い合わせ内容</label>
               <textarea
-                name='inquiry[content]'
-                className='col-xl-12 form-control input-inquiry'
+                name="inquiry[content]"
+                className="col-xl-12 form-control input-inquiry"
                 rows={5}
-                placeholder='お問い合わせ内容'
+                placeholder="お問い合わせ内容"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
             </div>
 
-            <div className='text-right'>
-              <button type='submit' className='btn btn-lg inquiry-form-btn'>
+            <div className="text-right">
+              <button type="submit" className="btn btn-lg inquiry-form-btn">
                 送信
               </button>
             </div>
