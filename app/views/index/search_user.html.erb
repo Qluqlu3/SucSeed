@@ -7,17 +7,4 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    creators: @creator.map { |c|
-      {
-        userId:     c.user_id,
-        name:       c.name,
-        title:      c.title,
-        avatarPath: c.avatar_path.to_s,
-        createdAt:  c.created_at,
-      }
-    },
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'SearchUserPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'SearchUserPage', props: @page_props.to_json } %>

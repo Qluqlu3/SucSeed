@@ -22,6 +22,17 @@ class IndexController < ApplicationController
       else
         @creator = User.joins(:creator).select("users.*, creators.title, creators.user_id").where(creators: {is_recruitment: true}).where(creators: {art_category_id: params[:search][:art_category_id]})
       end
+      @page_props = {
+        creators: @creator.map { |c|
+          {
+            userId:     c.user_id,
+            name:       c.name,
+            title:      c.title,
+            avatarPath: c.avatar_path.to_s,
+            createdAt:  c.created_at,
+          }
+        },
+      }
       render :search_user
     else
       redirect_to "/index"
