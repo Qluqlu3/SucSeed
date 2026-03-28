@@ -5,10 +5,7 @@
 
 import { useState } from 'react';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
-
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
+import { getCsrfToken } from '../../utils/csrf';
 
 interface CurrentUser {
   id: number;

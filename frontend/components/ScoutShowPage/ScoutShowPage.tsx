@@ -6,6 +6,8 @@
 // 【data-props】
 //   scouts: [{ pageId, name, birthday, avatarPath, matchTime, title }]
 
+import { getCsrfToken } from '../../utils/csrf';
+
 interface ScoutUser {
   pageId: string;
   name: string;
@@ -17,10 +19,6 @@ interface ScoutUser {
 
 interface Props {
   scouts: ScoutUser[];
-}
-
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
 }
 
 function calcAge(birthday: string): number {
@@ -43,54 +41,54 @@ function timeAgo(dateStr: string): string {
 
 export const ScoutShowPage = ({ scouts }: Props) => (
   <div>
-    <h1 className='main-title'>スカウト一覧</h1>
-    <div className='all-cover-box'>
-      <div className='wrapper'>
+    <h1 className="main-title">スカウト一覧</h1>
+    <div className="all-cover-box">
+      <div className="wrapper">
         {scouts.length === 0 ? (
-          <p className='empty-text'>まだありません</p>
+          <p className="empty-text">まだありません</p>
         ) : (
           scouts.map((scout) => (
-            <div key={scout.pageId} className='card list-card'>
-              <div className='card-header list-card-header'>
+            <div key={scout.pageId} className="card list-card">
+              <div className="card-header list-card-header">
                 {scout.matchTime}&nbsp;{timeAgo(scout.matchTime)}前
               </div>
               <a href={`/page/creator/${scout.pageId}`}>
-                <div className='card-body list-card-body'>
-                  <div className='row'>
-                    <div className='col-md-5 left-col text-center'>
+                <div className="card-body list-card-body">
+                  <div className="row">
+                    <div className="col-md-5 left-col text-center">
                       <img
                         src={scout.avatarPath}
-                        className='img-circle'
+                        className="img-circle"
                         width={230}
                         height={230}
                         alt={scout.name}
                       />
                     </div>
-                    <div className='col-md-7 right-col'>
-                      <p className='name-text'>{scout.name}</p>
-                      <p className='age-text'>
+                    <div className="col-md-7 right-col">
+                      <p className="name-text">{scout.name}</p>
+                      <p className="age-text">
                         {calcAge(scout.birthday)}
                         <small>歳</small>
                       </p>
-                      <p className='title-text'>{scout.title}</p>
+                      <p className="title-text">{scout.title}</p>
                     </div>
                   </div>
                 </div>
               </a>
-              <div className='card-footer list-card-footer'>
-                <div className='row'>
-                  <div className='col-6 left-btn-col'>
-                    <form action={`/scout/ok/${scout.pageId}`} method='post'>
-                      <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                      <button type='submit' className='btn btn-primary yes-btn'>
+              <div className="card-footer list-card-footer">
+                <div className="row">
+                  <div className="col-6 left-btn-col">
+                    <form action={`/scout/ok/${scout.pageId}`} method="post">
+                      <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+                      <button type="submit" className="btn btn-primary yes-btn">
                         話してみる
                       </button>
                     </form>
                   </div>
-                  <div className='col-6 right-btn-col'>
-                    <form action={`/scout/sorry/${scout.pageId}`} method='post'>
-                      <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                      <button type='submit' className='btn btn-danger no-btn'>
+                  <div className="col-6 right-btn-col">
+                    <form action={`/scout/sorry/${scout.pageId}`} method="post">
+                      <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+                      <button type="submit" className="btn btn-danger no-btn">
                         ごめんなさい
                       </button>
                     </form>

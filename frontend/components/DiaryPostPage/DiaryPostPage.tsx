@@ -3,9 +3,7 @@
 // /diary/post ページ（日記投稿フォーム単体）の React コンポーネント。
 // POST /diary/post へ送信。
 
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
+import { getCsrfToken } from '../../utils/csrf';
 
 interface Props {
   errors: string[];

@@ -30,31 +30,31 @@ const isNew = (createdAt: string): boolean => {
 // ── コンポーネント ───────────────────────────────────────────────────
 
 export const SearchUserPage = ({ creators }: Props) => (
-  <div className='search-page-box'>
-    <div className='row card-group justify-content-center my-row'>
+  <div className="search-page-box">
+    <div className="row card-group justify-content-center my-row">
       {creators.map((creator) => (
-        <div key={creator.userId} className='col-lg-3 my-card-col new-box'>
-          <a href={`/page/creator/${creator.userId}`} className='nav-link'>
-            <div className='card profile-card new-tag-content'>
-              {isNew(creator.createdAt) && <span className='new-tag'>NEW</span>}
-              <div className='text-center'>
+        <div key={creator.userId} className="col-lg-3 my-card-col new-box">
+          <a href={`/page/creator/${creator.userId}`} className="nav-link">
+            <div className="card profile-card new-tag-content">
+              {isNew(creator.createdAt) && <span className="new-tag">NEW</span>}
+              <div className="text-center">
                 <img
                   src={creator.avatarPath}
-                  className='rounded-circle avatar'
+                  className="rounded-circle avatar"
                   width={300}
                   height={300}
                   alt={creator.name}
                 />
               </div>
-              <div className='card-body'>
-                <h4 className='card-box-name text-center'>{creator.name}</h4>
-                <p className='card-box-title text-center'>{creator.title}</p>
+              <div className="card-body">
+                <h4 className="card-box-name text-center">{creator.name}</h4>
+                <p className="card-box-title text-center">{creator.title}</p>
               </div>
             </div>
           </a>
         </div>
       ))}
-      <div className='creator-card-last-bottom' />
+      <div className="creator-card-last-bottom" />
     </div>
   </div>
 );

@@ -3,9 +3,7 @@
 // /user/password_forgot ページ（メールアドレス確認）の React コンポーネント。
 // フォームは POST /user/password_forgot へ送信する。
 
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
+import { getCsrfToken } from '../../utils/csrf';
 
 export const PasswordForgotPage = () => {
   return (

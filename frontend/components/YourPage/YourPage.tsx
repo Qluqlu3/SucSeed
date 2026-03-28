@@ -4,10 +4,7 @@
 // お気に入り追加/削除は fetch API で Rails に送信する。
 
 import { useState } from 'react';
-
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
+import { getCsrfToken } from '../../utils/csrf';
 
 function calcAge(birthday: string): number {
   const today = new Date();

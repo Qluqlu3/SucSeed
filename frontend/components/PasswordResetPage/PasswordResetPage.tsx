@@ -4,9 +4,7 @@
 // Rails の @user.errors.full_messages を errors プロップで受け取って表示する。
 // フォームは POST /user/password_reset へ送信する。
 
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
+import { getCsrfToken } from '../../utils/csrf';
 
 interface Props {
   errors: string[];

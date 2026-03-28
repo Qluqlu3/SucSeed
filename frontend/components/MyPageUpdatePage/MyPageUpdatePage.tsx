@@ -3,9 +3,7 @@
 // /my_page/update ページの React コンポーネント。
 // プロフィール更新フォーム。PATCH /my_page/update へ multipart/form-data で送信。
 
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
+import { getCsrfToken } from '../../utils/csrf';
 
 interface User {
   name: string;

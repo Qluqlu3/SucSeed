@@ -5,6 +5,7 @@
 // フォームは POST /user/create へ multipart/form-data で送信する。
 
 import { useState } from 'react';
+import { getCsrfToken } from '../../utils/csrf';
 
 interface Props {
   errors: string[];
@@ -16,10 +17,6 @@ const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 
 function daysInMonth(year: number, month: number): number {
   return new Date(year, month, 0).getDate();
-}
-
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
 }
 
 export const UserRegistPage = ({ errors }: Props) => {

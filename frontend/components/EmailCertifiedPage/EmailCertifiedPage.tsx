@@ -4,9 +4,7 @@
 // ユーザー名と session[:id] を props で受け取り、メールアドレス認証ボタンを表示する。
 // フォームは POST /email/certified/:user_id へ送信する。
 
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
+import { getCsrfToken } from '../../utils/csrf';
 
 interface Props {
   userName: string;

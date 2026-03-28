@@ -14,20 +14,20 @@ const NAV_ITEMS = [
 ];
 
 export const AdminIndexPage = () => (
-  <div className='row admin-row'>
-    <div className='col-2 admin-col-2'>
-      <ul className='nav flex-column admin-side-menu'>
+  <div className="row admin-row">
+    <div className="col-2 admin-col-2">
+      <ul className="nav flex-column admin-side-menu">
         {NAV_ITEMS.map((item, i) => (
           <li key={item.href} className={`nav-item${i === 0 ? ' admin-top-link' : ''}`}>
-            <a href={item.href} className='nav-link'>
+            <a href={item.href} className="nav-link">
               {item.label}
             </a>
           </li>
         ))}
       </ul>
     </div>
-    <div className='col-10 admin-col-9'>
-      <h1 className='admin-main-title'>管理者トップ</h1>
+    <div className="col-10 admin-col-9">
+      <h1 className="admin-main-title">管理者トップ</h1>
     </div>
   </div>
 );

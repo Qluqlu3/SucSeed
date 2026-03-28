@@ -5,10 +5,7 @@
 // いいね・コメント投稿・削除は fetch API で処理するためページ全体の再レンダリングが不要。
 
 import { useState } from 'react';
-
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
+import { getCsrfToken } from '../../utils/csrf';
 
 export interface DiaryComment {
   name: string;
@@ -106,12 +103,12 @@ export const DiaryCard = ({
   const isOwn = currentUserId === entry.userId;
 
   return (
-    <div className='card diary-card'>
+    <div className="card diary-card">
       {/* カードヘッダー */}
-      <div className='card-header diary-card-header'>
+      <div className="card-header diary-card-header">
         <img
           src={entry.avatarPath}
-          className='rounded-circle'
+          className="rounded-circle"
           width={60}
           height={60}
           alt={entry.name}
@@ -120,64 +117,64 @@ export const DiaryCard = ({
       </div>
 
       {/* カードボディ */}
-      <div className='card-body diary-card-body'>
-        <div className='diary-time'>{entry.postTime}</div>
-        <div className='diary-content'>
+      <div className="card-body diary-card-body">
+        <div className="diary-time">{entry.postTime}</div>
+        <div className="diary-content">
           <p style={{ whiteSpace: 'pre-wrap' }}>{entry.content}</p>
         </div>
       </div>
 
       {/* カードフッター */}
-      <div className='card-footer diary-card-footer'>
-        <div className='card-footer-btn'>
+      <div className="card-footer diary-card-footer">
+        <div className="card-footer-btn">
           {/* いいねアバター */}
-          <div className='good_user_box'>
+          <div className="good_user_box">
             {entry.goodAvatars.map((ga, i) => (
               <img
                 key={i}
                 src={ga.avatarPath}
-                className='rounded-circle'
+                className="rounded-circle"
                 width={30}
                 height={30}
-                alt='いいねしたユーザー'
+                alt="いいねしたユーザー"
               />
             ))}
           </div>
 
           {/* いいねボタン */}
-          <button type='button' className='btn icon-btn' onClick={handleGood} disabled={myGood}>
-            <i className='fas fa-thumbs-up thumbs-up-icon' />
+          <button type="button" className="btn icon-btn" onClick={handleGood} disabled={myGood}>
+            <i className="fas fa-thumbs-up thumbs-up-icon" />
             {goodCount}
           </button>
 
           {/* コメントトグルボタン */}
           <button
-            type='button'
-            className='btn icon-btn good-and-comment'
-            data-toggle='collapse'
+            type="button"
+            className="btn icon-btn good-and-comment"
+            data-toggle="collapse"
             data-target={`#diary-${entry.diaryId}`}
           >
-            <i className='fas fa-comment-alt comment-icon' />
+            <i className="fas fa-comment-alt comment-icon" />
             {comments.length}
           </button>
 
           {/* 削除ボタン（自分の投稿 or canDelete） */}
           {(isOwn || canDelete) && (
-            <button type='button' className='btn icon-btn' onClick={handleDelete}>
-              <i className='fas fa-trash-alt trash-icon' />
+            <button type="button" className="btn icon-btn" onClick={handleDelete}>
+              <i className="fas fa-trash-alt trash-icon" />
             </button>
           )}
         </div>
 
         {/* コメント一覧・投稿フォーム */}
-        <div className='collapse' id={`diary-${entry.diaryId}`}>
+        <div className="collapse" id={`diary-${entry.diaryId}`}>
           {comments.map((c, i) => (
-            <div key={i} className='card comment-card'>
-              <div className='card-header comment-header'>
+            <div key={i} className="card comment-card">
+              <div className="card-header comment-header">
                 <p>
                   <img
                     src={c.avatarPath}
-                    className='rounded-circle'
+                    className="rounded-circle"
                     width={45}
                     height={45}
                     alt={c.name}
@@ -185,21 +182,21 @@ export const DiaryCard = ({
                   {c.name}
                 </p>
               </div>
-              <div className='card-body comment-body'>
+              <div className="card-body comment-body">
                 <p>{c.comment}</p>
               </div>
-              <div className='card-footer comment-time text-right'>{c.postTime}</div>
+              <div className="card-footer comment-time text-right">{c.postTime}</div>
             </div>
           ))}
 
           {currentUserId ? (
             <form onSubmit={handleComment}>
-              <div className='card input-comment-box'>
-                <div className='card-header input-comment-header'>
-                  <div className='input-comment-header-in'>
+              <div className="card input-comment-box">
+                <div className="card-header input-comment-header">
+                  <div className="input-comment-header-in">
                     <img
                       src={currentUserAvatar ?? ''}
-                      className='rounded-circle'
+                      className="rounded-circle"
                       width={43}
                       height={43}
                       alt={currentUserName ?? ''}
@@ -207,19 +204,19 @@ export const DiaryCard = ({
                     {currentUserName}
                   </div>
                 </div>
-                <div className='card-body input-comment-body'>
+                <div className="card-body input-comment-body">
                   <textarea
-                    className='form-control'
-                    placeholder='100文字以内'
+                    className="form-control"
+                    placeholder="100文字以内"
                     rows={2}
                     maxLength={100}
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
                   />
                 </div>
-                <div className='card-footer input-comment-footer'>
-                  <div className='text-right'>
-                    <button type='submit' className='btn comment-btn'>
+                <div className="card-footer input-comment-footer">
+                  <div className="text-right">
+                    <button type="submit" className="btn comment-btn">
                       コメント
                     </button>
                   </div>
@@ -227,7 +224,7 @@ export const DiaryCard = ({
               </div>
             </form>
           ) : (
-            <p className='no-login-text'>ログインしてください</p>
+            <p className="no-login-text">ログインしてください</p>
           )}
         </div>
       </div>

@@ -7,6 +7,7 @@
 //   comments: [{ id, userId, diaryId, comment, createdAt, deletedAt }]
 
 import { AdminSideMenu } from '../AdminSideMenu';
+import { getCsrfToken } from '../../utils/csrf';
 
 interface AdminDiaryComment {
   id: number;
@@ -21,32 +22,28 @@ interface Props {
   comments: AdminDiaryComment[];
 }
 
-function getCsrfToken(): string {
-  return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
-}
-
 export const AdminDiaryCommentEditPage = ({ comments }: Props) => (
-  <div className='row admin-row'>
-    <AdminSideMenu activeKey='diary_comment' />
-    <div className='col-10 admin-col-9'>
-      <h1 className='admin-main-title'>日記コメント管理</h1>
-      <table className='table table-striped'>
+  <div className="row admin-row">
+    <AdminSideMenu activeKey="diary_comment" />
+    <div className="col-10 admin-col-9">
+      <h1 className="admin-main-title">日記コメント管理</h1>
+      <table className="table table-striped">
         <thead>
           <tr>
-            <th scope='col'>＃</th>
-            <th scope='col'>ID</th>
-            <th scope='col'>ユーザーID</th>
-            <th scope='col'>ダイアリーID</th>
-            <th scope='col'>コメント</th>
-            <th scope='col'>登録日時</th>
-            <th scope='col'>削除日時</th>
+            <th scope="col">＃</th>
+            <th scope="col">ID</th>
+            <th scope="col">ユーザーID</th>
+            <th scope="col">ダイアリーID</th>
+            <th scope="col">コメント</th>
+            <th scope="col">登録日時</th>
+            <th scope="col">削除日時</th>
             <th />
           </tr>
         </thead>
         <tbody>
           {comments.map((c, i) => (
             <tr key={c.id}>
-              <th scope='row'>{i + 1}</th>
+              <th scope="row">{i + 1}</th>
               <td>{c.id}</td>
               <td>{c.userId}</td>
               <td>{c.diaryId}</td>
@@ -54,9 +51,9 @@ export const AdminDiaryCommentEditPage = ({ comments }: Props) => (
               <td>{c.createdAt}</td>
               <td>{c.deletedAt ?? ''}</td>
               <td>
-                <form action={`/admin/diary_comment/delete/${c.id}`} method='post'>
-                  <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                  <button type='submit' className='btn btn-danger'>
+                <form action={`/admin/diary_comment/delete/${c.id}`} method="post">
+                  <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+                  <button type="submit" className="btn btn-danger">
                     削除
                   </button>
                 </form>
