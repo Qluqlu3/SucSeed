@@ -31,7 +31,8 @@
         "noConsole": "warn"
       },
       "style": {
-        "useConst": "error"
+        "useConst": "error",
+        "useTemplate": "error"
       }
     }
   },
