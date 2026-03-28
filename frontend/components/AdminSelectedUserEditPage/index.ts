@@ -1,1 +1,1 @@
-export { AdminSelectedUserEditPage } from './AdminSelectedUserEditPage';
+export * from './AdminSelectedUserEditPage';

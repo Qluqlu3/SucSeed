@@ -1,1 +1,1 @@
-export { ScoutShowPage } from './ScoutShowPage';
+export * from './ScoutShowPage';

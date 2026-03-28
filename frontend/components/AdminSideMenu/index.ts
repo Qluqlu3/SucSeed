@@ -1,1 +1,1 @@
-export { AdminSideMenu } from './AdminSideMenu';
+export * from './AdminSideMenu';

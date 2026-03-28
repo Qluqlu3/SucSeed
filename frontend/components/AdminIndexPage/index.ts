@@ -1,1 +1,1 @@
-export { AdminIndexPage } from './AdminIndexPage';
+export * from './AdminIndexPage';

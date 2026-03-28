@@ -1,1 +1,1 @@
-export { AdminDiaryEditPage } from './AdminDiaryEditPage';
+export * from './AdminDiaryEditPage';

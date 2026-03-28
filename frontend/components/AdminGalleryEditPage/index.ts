@@ -1,1 +1,1 @@
-export { AdminGalleryEditPage } from './AdminGalleryEditPage';
+export * from './AdminGalleryEditPage';

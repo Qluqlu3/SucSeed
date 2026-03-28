@@ -1,1 +1,1 @@
-export { AdminLoginPage } from './AdminLoginPage';
+export * from './AdminLoginPage';

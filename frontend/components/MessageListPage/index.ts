@@ -1,1 +1,1 @@
-export { MessageListPage } from './MessageListPage';
+export * from './MessageListPage';

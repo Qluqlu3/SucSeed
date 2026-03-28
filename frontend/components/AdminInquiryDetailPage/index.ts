@@ -1,1 +1,1 @@
-export { AdminInquiryDetailPage } from './AdminInquiryDetailPage';
+export * from './AdminInquiryDetailPage';
