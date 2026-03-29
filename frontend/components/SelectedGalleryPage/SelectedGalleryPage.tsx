@@ -4,6 +4,7 @@
 // いいね・コメントは fetch API で処理。関連画像・職人情報をサイドバーに表示。
 
 import { useState } from 'react';
+import { ThreeViewer } from '../../three/ThreeViewer';
 import { getCsrfToken } from '../../utils/csrf';
 
 interface GalleryCommentItem {
@@ -114,6 +115,12 @@ export const SelectedGalleryPage = ({
           <div className="selected-gallery-box-text">
             <p>{comment}</p>
           </div>
+        </div>
+
+        {/* 3D ビューワー */}
+        <div className="selected-gallery-3d-box">
+          <div className="selected-gallery-3d-label">3D プレビュー（ドラッグで回転）</div>
+          <ThreeViewer height={400} />
         </div>
 
         {/* タグ一覧 */}
