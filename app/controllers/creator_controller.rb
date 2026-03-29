@@ -3,6 +3,10 @@ class CreatorController < ApplicationController
     if session[:creator] != nil && !Creator.find_by(user_id: session[:id])
       @creator = Creator.new
       @art_categories = ArtCategory.all
+      @page_props = {
+        artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
+        errors: [],
+      }
       render :create
     else
       @creator = User.joins(:creator).select("users.*, creators.*").find_by(creators: {user_id: session[:id]})
@@ -31,6 +35,10 @@ class CreatorController < ApplicationController
       flash.now[:success] = "success"
       redirect_to "/creator/show"
     else
+      @page_props = {
+        artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
+        errors: @creator.errors.full_messages,
+      }
       render :create
     end
   end
