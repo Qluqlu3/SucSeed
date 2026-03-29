@@ -1,1 +1,1 @@
-export { ThreeViewer } from './ThreeViewer';
+export * from './ThreeViewer';
