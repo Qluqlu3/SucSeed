@@ -7,24 +7,7 @@
 
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-
-// ── 陶器プロファイル座標（壺の側面シルエット） ─────────────────────────────
-// x: 半径方向、y: 高さ方向（任意に変更可）
-const POTTERY_PROFILE: [number, number][] = [
-  [0.0, 0.0], // 底の中心
-  [0.15, 0.0], // 底の外縁
-  [0.18, 0.05], // 底面の丸み
-  [0.2, 0.15], // 胴の下部
-  [0.28, 0.4], // 胴の最大径
-  [0.26, 0.6], // 胴の上部
-  [0.18, 0.75], // 首へのくびれ
-  [0.12, 0.85], // 首
-  [0.16, 0.92], // 口縁の広がり
-  [0.17, 1.0], // 口縁の先端
-];
-
-// ── ダミー釉薬カラー ─────────────────────────────────────────────────────
-const GLAZE_COLOR = 0x8b7355; // 茶色系（信楽焼イメージ）
+import { BASE_COLOR, GLAZE_COLOR, POTTERY_PROFILE } from './dummyPotteryData';
 
 // ── マウス / タッチ回転のドラッグ感度 ───────────────────────────────────
 const DRAG_SENSITIVITY = 0.005;
@@ -84,7 +67,7 @@ export const ThreeViewer = ({ width = 400, height = 400 }: Props) => {
 
     // ── 台座 ─────────────────────────────────────────────────────────
     const baseGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.02, 32);
-    const baseMat = new THREE.MeshStandardMaterial({ color: 0x6b5744, roughness: 0.8 });
+    const baseMat = new THREE.MeshStandardMaterial({ color: BASE_COLOR, roughness: 0.8 });
     const base = new THREE.Mesh(baseGeo, baseMat);
     base.position.y = -0.5;
     base.receiveShadow = true;
