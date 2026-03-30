@@ -1,0 +1,43 @@
+version: 2
+updates:
+  # npm (package.json / yarn.lock)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    target-branch: "main"
+    groups:
+      biome:
+        patterns:
+          - "@biomejs/*"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      three:
+        patterns:
+          - "three"
+          - "@types/three"
+
+  # Bundler (Gemfile / Gemfile.lock)
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    target-branch: "main"
+    groups:
+      rails:
+        patterns:
+          - "rails"
+          - "railties"
+          - "activerecord"
+          - "actionpack"
+          - "activesupport"
