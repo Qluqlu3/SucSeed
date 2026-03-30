@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.3.0'
 
 # Rails 7.1: Ruby 3.3 に正式対応。6.1 では Ruby 3.3 の Logger 定数変更で起動不能になる
-gem 'rails', '~> 7.1'
+gem 'rails', '~> 8.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.4.4', '< 0.6.0'
 # Use Puma as the app server
@@ -63,7 +63,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'jquery-rails', '~> 4.3.3'
 
 # rails-i18n 7.x が Rails 7.1 対応版
-gem 'rails-i18n', '~> 7.0'
+gem 'rails-i18n', '~> 8.1'
 
 # 暗号化
 gem 'bcrypt', '>= 3.1.12'
