@@ -36,8 +36,15 @@ class HeirController < ApplicationController
     if !!Heir.find_by(user_id: session[:id])
       if session[:id] != nil
         @heir = Heir.find_by(user_id: session[:id])
-        @interest = ArtCategory.find(@heir.art_category_id)
         @art_categories = ArtCategory.all
+        @page_props = {
+          heir: {
+            artCategoryId: @heir.art_category_id,
+            introduction:  @heir.introduction.to_s,
+          },
+          artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
+          errors: [],
+        }
         render :update
       else
         redirect_to "/index"
