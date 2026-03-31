@@ -79,8 +79,20 @@ class MatchController < ApplicationController
   #アピールした一覧
   def appeal_check
     if session[:id] != nil && session[:creator] == nil
-      @match = Match.new
       @appeal = User.joins(:matches, :creator).select("users.name", "users.birthday", "users.id AS page_id", "matches.*", "matches.created_at AS match_time", "creators.*").where(matches: {user_id: session[:id]}).where(matches: {is_ok: nil}).order("matches.created_at ASC")
+      @page_props = {
+        appeals: @appeal.map { |a|
+          {
+            pageId:    a.page_id.to_s,
+            name:      a.name,
+            birthday:  a.birthday,
+            avatarPath: a.avatar_path.to_s,
+            title:     a.title,
+            matchTime: a.match_time,
+            isOk:      a.is_ok,
+          }
+        },
+      }
       render :appeal_show
     else
       redirect_to "/index"

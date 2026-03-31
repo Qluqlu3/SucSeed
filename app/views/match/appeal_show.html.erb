@@ -7,19 +7,4 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    appeals: @appeal.map { |a|
-      {
-        pageId:    a.page_id.to_s,
-        name:      a.name,
-        birthday:  a.birthday,
-        avatarPath: a.avatar_path.to_s,
-        title:     a.title,
-        matchTime: a.match_time,
-        isOk:      a.is_ok,
-      }
-    },
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'AppealShowPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'AppealShowPage', props: @page_props.to_json } %>
