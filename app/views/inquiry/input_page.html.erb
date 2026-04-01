@@ -7,14 +7,4 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    categories: @categories.map { |c| { id: c.id, name: c.name } },
-    errors: @inquiry.errors.full_messages,
-    prevValues: {
-      inquiryCategoryId: @inquiry.inquiry_category_id || '',
-      content:           @inquiry.content.to_s,
-    },
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'InquiryInputPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'InquiryInputPage', props: @page_props.to_json } %>

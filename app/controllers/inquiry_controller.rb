@@ -2,6 +2,11 @@ class InquiryController < ApplicationController
   def input_page
     @inquiry = Inquiry.new
     @categories = InquiryCategory.all
+    @page_props = {
+      categories: @categories.map { |c| { id: c.id, name: c.name } },
+      errors: [],
+      prevValues: { inquiryCategoryId: '', content: '' },
+    }
     render :'inquiry/input_page'
   end
 
@@ -17,6 +22,14 @@ class InquiryController < ApplicationController
       redirect_to "/inquiry/input"
     else
       @categories = InquiryCategory.all
+      @page_props = {
+        categories: @categories.map { |c| { id: c.id, name: c.name } },
+        errors: @inquiry.errors.full_messages,
+        prevValues: {
+          inquiryCategoryId: @inquiry.inquiry_category_id || '',
+          content:           @inquiry.content.to_s,
+        },
+      }
       render action: :input_page
     end
   end
