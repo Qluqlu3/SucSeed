@@ -6,31 +6,5 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    galleryId:  @selected_gallery.id,
-    dataUrl:    @selected_gallery.data.to_s,
-    tags:       @selected_gallery.tag_list.to_a,
-    comment:    @selected_gallery.comment,
-    createdAt:  @selected_gallery.created_at.strftime("%Y/%m/%d %H:%M"),
-    goodCount:  @good_count[@selected_gallery.id] || 0,
-    myGood:     @my_good.any? { |mg| mg.id == @selected_gallery.id },
-    comments:   @comment.select { |c| c.gallery_id == @selected_gallery.id }.map { |c|
-      { name: c.name, avatarPath: c.avatar_path.to_s, comment: c.comment, postTime: c.post_time.strftime("%Y/%m/%d %H:%M") }
-    },
-    matchTagGalleries: @match_tag.map { |g| { id: g.id, dataUrl: g.data.to_s } },
-    otherGalleries:    @other_gallery.map { |g| { id: g.id, dataUrl: g.data.to_s } },
-    creator: {
-      userId:       @selected_gallery_user.user_id,
-      name:         @selected_gallery_user.name,
-      avatarPath:   @user.avatar_path.to_s,
-      title:        @selected_gallery_user.title,
-      establishment: @selected_gallery_user.establishment,
-      employee:     @selected_gallery_user.employee
-    },
-    loggedIn:    session[:id].present?,
-    currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'SelectedGalleryPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'SelectedGalleryPage', props: @page_props.to_json } %>
 
