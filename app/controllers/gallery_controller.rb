@@ -86,6 +86,19 @@ class GalleryController < ApplicationController
       @gallery = Gallery.new
       @user = User.find_by("id = ?", params[:id])
       @user_gallery = Gallery.tagged_with([params[:search_tag]], :any => true).where("user_id = ?", params[:id])
+      @page_props = {
+        userName:  @user.name,
+        userId:    @user.id,
+        galleries: @user_gallery.map { |g|
+          {
+            id:        g.id,
+            dataUrl:   g.data.to_s,
+            tags:      g.tag_list.to_a,
+            goodCount: 0,
+            myGood:    false
+          }
+        }
+      }
       render :gallery_search_user_tag
     end
   end
