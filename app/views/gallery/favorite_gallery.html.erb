@@ -6,18 +6,4 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    galleries: @favorite_gallery.map { |g|
-      {
-        id:        g.page_id,
-        dataUrl:   g.data.to_s,
-        tags:      g.tag_list.to_a,
-        goodCount: @good_count[g.page_id] || 0,
-        myGood:    @my_good.any? { |mg| mg.id == g.page_id }
-      }
-    },
-    errors: @gallery.errors.full_messages
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'FavoriteGalleryPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'FavoriteGalleryPage', props: @page_props.to_json } %>

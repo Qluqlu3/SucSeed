@@ -7,6 +7,18 @@ class GalleryController < ApplicationController
       @favorite_gallery = Gallery.joins(:user).select("users.*, galleries.*, galleries.id AS page_id").where(galleries: {user_id: session[:id]}).or(Gallery.joins(:user).select("users.*, galleries.*, galleries.id AS page_id").where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).order("galleries.created_at DESC")
       @good_count = GalleryGood.group(:gallery_id).count
       @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: session[:id]}).or(Gallery.joins(:gallery_goods).where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("galleries.id AS id").order("galleries.created_at DESC")
+      @page_props = {
+        galleries: @favorite_gallery.map { |g|
+          {
+            id:        g.page_id,
+            dataUrl:   g.data.to_s,
+            tags:      g.tag_list.to_a,
+            goodCount: @good_count[g.page_id] || 0,
+            myGood:    @my_good.any? { |mg| mg.id == g.page_id }
+          }
+        },
+        errors: @gallery.errors.full_messages
+      }
       render :favorite_gallery
     else
       redirect_to "/index"
