@@ -6,20 +6,5 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    userName: @user.name,
-    userId:   @user.id,
-    galleries: @user_gallery.map { |g|
-      {
-        id:        g.id,
-        dataUrl:   g.data.to_s,
-        tags:      g.tag_list.to_a,
-        goodCount: @good_count[g.id] || 0,
-        myGood:    @my_good.any? { |mg| mg.id == g.id }
-      }
-    }
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'UserGalleryViewPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'UserGalleryViewPage', props: @page_props.to_json } %>
 

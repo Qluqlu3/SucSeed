@@ -45,6 +45,19 @@ class GalleryController < ApplicationController
     @user_gallery = Gallery.joins(:user).select("users.name", "galleries.*").where(galleries: {user_id: params[:id]}).order("galleries.created_at DESC")
     @my_good = Gallery.joins(:gallery_goods).select("galleries.*, gallery_goods.*").where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: params[:id]}).order("galleries.created_at DESC")
     @good_count = GalleryGood.group(:gallery_id).count
+    @page_props = {
+      userName: @user.name,
+      userId:   @user.id,
+      galleries: @user_gallery.map { |g|
+        {
+          id:        g.id,
+          dataUrl:   g.data.to_s,
+          tags:      g.tag_list.to_a,
+          goodCount: @good_count[g.id] || 0,
+          myGood:    @my_good.any? { |mg| mg.id == g.id }
+        }
+      }
+    }
     render :user_gallery_view
   end
 
