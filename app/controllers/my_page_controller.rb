@@ -17,6 +17,18 @@ class MyPageController < ApplicationController
       end
     end
     @user = User.find(session[:id])
+    @page_props = {
+      user: {
+        name:       @user.name,
+        avatarPath: @user.avatar_path.to_s,
+        isMan:      @user.is_man,
+        email:      @user.email,
+        birthday:   @user.birthday.to_s,
+        profile:    @user.profile
+      },
+      profileIncomplete: @created == 1,
+      isCreator:         session[:creator].present?
+    }
   end
 
   def show

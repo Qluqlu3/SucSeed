@@ -6,19 +6,5 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    user: {
-      name:       @user.name,
-      avatarPath: @user.avatar_path.to_s,
-      isMan:      @user.is_man,
-      email:      @user.email,
-      birthday:   @user.birthday.to_s,
-      profile:    @user.profile
-    },
-    profileIncomplete: @created == 1,
-    isCreator:         session[:creator].present?
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'MyPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'MyPage', props: @page_props.to_json } %>
 
