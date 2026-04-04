@@ -34,6 +34,16 @@ class MyPageController < ApplicationController
   def show
     if session[:id] != nil
       @user = User.find(session[:id])
+      @page_props = {
+        user: {
+          name:       @user.name,
+          email:      @user.email,
+          profile:    @user.profile,
+          avatarPath: @user.avatar_path.to_s
+        },
+        errors:    [],
+        isCreator: session[:creator].present?
+      }
       render :update
     else
       redirect_to "/index"
@@ -49,6 +59,16 @@ class MyPageController < ApplicationController
       redirect_to "/my_page/my_page"
     else
       flash.now[:danger] = "エラー"
+      @page_props = {
+        user: {
+          name:       @user.name,
+          email:      @user.email,
+          profile:    @user.profile,
+          avatarPath: @user.avatar_path.to_s
+        },
+        errors:    @user.errors.full_messages,
+        isCreator: session[:creator].present?
+      }
       render :show
     end
   end
