@@ -8,6 +8,29 @@ class YourPageController < ApplicationController
     @favorite = Favorite.new
     @fv_check = Favorite.where(user_id: session[:id]).where(favorite_user_id: params[:id]).first
     @match = Match.where(user_id: session[:id]).where(target_user_id: params[:id]).first
+    @page_props = {
+      user: {
+        id:         @user.id,
+        name:       @user.name,
+        avatarPath: @user.avatar_path.to_s,
+        isMan:      @user.is_man,
+        birthday:   @user.birthday.to_s
+      },
+      creator: {
+        title:         @creator.title,
+        establishment: @creator.establishment,
+        employee:      @creator.employee,
+        profile:       @creator.profile,
+        isRecruitment: @creator.is_recruitment
+      },
+      artCategoryName: @art_category.name,
+      isFavorited:     @fv_check.present?,
+      loggedIn:        session[:id].present?,
+      isOwnPage:       session[:id] == @user.id,
+      isCreator:       session[:creator].present?,
+      isMatched:       @match.present?,
+      targetUserId:    @user.id
+    }
     render :your_page
   end
 
