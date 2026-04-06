@@ -8,31 +8,5 @@
 </div>
 
 
-<%
-  # Rails のデータを IndexPage が受け取れる形に変換する。
-  # content_tag の data: ハッシュは Rails が自動で HTML エスケープするため XSS の心配がない。
-  page_props = {
-    creators: @creator.map { |c|
-      {
-        userId:     c.user_id,
-        name:       c.name,
-        title:      c.title,
-        avatarPath: c.avatar_path.to_s,
-        createdAt:  c.created_at
-      }
-    },
-    recommend: @recommend&.map { |c|
-      {
-        userId:     c.user_id,
-        name:       c.name,
-        title:      c.title,
-        avatarPath: c.avatar_path.to_s,
-        createdAt:  c.created_at
-      }
-    },
-    loggedIn:  session[:id].present?,
-    isCreator: session[:creator].present?
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'IndexPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'IndexPage', props: @page_props.to_json } %>
 

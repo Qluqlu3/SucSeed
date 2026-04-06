@@ -9,6 +9,28 @@ class IndexController < ApplicationController
     else
       @creator = User.joins(:creator).select("users.*, creators.title, creators.user_id").where(creators: {is_recruitment: true})
     end
+    @page_props = {
+      creators: @creator.map { |c|
+        {
+          userId:     c.user_id,
+          name:       c.name,
+          title:      c.title,
+          avatarPath: c.avatar_path.to_s,
+          createdAt:  c.created_at
+        }
+      },
+      recommend: @recommend&.map { |c|
+        {
+          userId:     c.user_id,
+          name:       c.name,
+          title:      c.title,
+          avatarPath: c.avatar_path.to_s,
+          createdAt:  c.created_at
+        }
+      },
+      loggedIn:  session[:id].present?,
+      isCreator: session[:creator].present?
+    }
   end
 
   def root
