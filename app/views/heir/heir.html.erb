@@ -7,10 +7,4 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
-    errors: @heir.errors.full_messages,
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'HeirCreatePage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'HeirCreatePage', props: @page_props.to_json } %>
