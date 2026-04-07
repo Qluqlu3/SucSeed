@@ -23,6 +23,18 @@ class MatchController < ApplicationController
     if session[:id] != nil
       @match = User.joins(:matches).select("users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time").where(matches: {target_user_id: session[:id]}).or(Match.joins(:matches).select("users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time").where(matches: {user_id: session[:id]})).where(matches: {is_ok: true}).where(users: {id: Match.where(target_user_id: session[:id]).select("matches.user_id")}).or(User.joins(:matches).select("users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time").where(users: {id: Match.where(user_id: session[:id]).select("matches.user_id")})).order("matches.created_at DESC")
       @message_list = MessageList.new
+      @page_props = {
+        matches: @match.map { |m|
+          {
+            id:        m.id.to_s,
+            name:      m.name,
+            birthday:  m.birthday,
+            avatarPath: m.avatar_path.to_s,
+            matchTime: m.match_time,
+            isAddList: m.is_add_list.to_i,
+          }
+        },
+      }
       render :matching
     else
       redirect_to "/index"

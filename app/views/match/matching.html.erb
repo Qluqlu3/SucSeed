@@ -7,18 +7,4 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    matches: @match.map { |m|
-      {
-        id:        m.id.to_s,
-        name:      m.name,
-        birthday:  m.birthday,
-        avatarPath: m.avatar_path.to_s,
-        matchTime: m.match_time,
-        isAddList: m.is_add_list.to_i,
-      }
-    },
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'MatchingPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'MatchingPage', props: @page_props.to_json } %>
