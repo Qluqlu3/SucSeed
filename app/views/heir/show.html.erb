@@ -7,12 +7,4 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    heir: {
-      artCategoryName: @interest.name,
-      introduction:    @heir.introduction.to_s,
-    },
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'HeirShowPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'HeirShowPage', props: @page_props.to_json } %>

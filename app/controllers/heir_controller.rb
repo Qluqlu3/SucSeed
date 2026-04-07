@@ -14,6 +14,12 @@ class HeirController < ApplicationController
     else
       @heir = Heir.find_by(user_id: session[:id])
       @interest = ArtCategory.find(@heir.art_category_id)
+      @page_props = {
+        heir: {
+          artCategoryName: @interest.name,
+          introduction:    @heir.introduction.to_s,
+        },
+      }
       render :show
     end
   end
