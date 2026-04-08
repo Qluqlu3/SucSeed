@@ -113,6 +113,27 @@ class DiaryController < ApplicationController
     @good_avatar = User.joins(:diary_goods).where(id: @good_user).select("diary_goods.*, diary_goods.diary_id, users.*").order("RAND()").limit(5)
     @my_good = Diary.joins(:diary_goods).where(diaries: {user_id: params[:id]}).where(diary_goods: {user_id: session[:id]}).select("diaries.id AS id").order("diaries.created_at DESC")
     @name = User.select("users.name").find(params[:id])
+    @page_props = {
+      diaries: @diary_user.map { |d|
+        {
+          diaryId:      d.diaries_id,
+          userId:       d.user_id,
+          name:         d.name,
+          avatarPath:   d.avatar_path.to_s,
+          content:      d.content,
+          postTime:     d.post_time.strftime("%Y/%m/%d %H:%M"),
+          goodCount:    @good[d.diaries_id] || 0,
+          goodAvatars:  @good_avatar.select { |ga| ga.diary_id == d.diaries_id }.map { |ga| { avatarPath: ga.avatar_path.to_s } },
+          myGood:       @my_good.any? { |mg| mg.id == d.diaries_id },
+          comments:     @comment.select { |c| c.diary_id == d.diaries_id }.map { |c|
+            { name: c.name, avatarPath: c.avatar_path.to_s, comment: c.comment, postTime: c.post_time.strftime("%Y/%m/%d %H:%M") }
+          },
+          commentCount: @comment_count[d.diaries_id] || 0
+        }
+      },
+      ownerName:   @name.name,
+      currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil
+    }
   end
 
   #投稿削除
