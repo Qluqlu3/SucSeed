@@ -1,4 +1,19 @@
 class DiaryController < ApplicationController
+  #投稿フォーム表示
+  def regist
+    if session[:creator] != nil
+      @diary = Diary.new
+      @user = User.find(session[:id])
+      @page_props = {
+        errors:     [],
+        userName:   @user.name,
+        avatarPath: @user.avatar_path.to_s
+      }
+    else
+      redirect_to "/index"
+    end
+  end
+
   #投稿+画像もあればアップロード
   def post
     if session[:creator] != nil

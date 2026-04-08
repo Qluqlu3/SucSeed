@@ -6,12 +6,5 @@
   <% end %>
 </div>
 
-<%
-  page_props = {
-    errors:     @diary.errors.full_messages,
-    userName:   @user.name,
-    avatarPath: @user.avatar_path.to_s
-  }
-%>
-<%= content_tag :div, '', data: { react_component: 'DiaryPostPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'DiaryPostPage', props: @page_props.to_json } %>
 
