@@ -67,6 +67,7 @@ class UserController < ApplicationController
 
   def password_edit
     @user = User.new
+    @page_props = { errors: [] }
     render :password_reset
   end
 
@@ -78,6 +79,7 @@ class UserController < ApplicationController
       render :login
     else
       flash.now[:danger] = "エラー"
+      @page_props = { errors: @user.errors.full_messages }
       render :password_edit
     end
   end
