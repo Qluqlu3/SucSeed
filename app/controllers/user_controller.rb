@@ -25,6 +25,7 @@ class UserController < ApplicationController
 
   def regist
     @user = User.new
+    @page_props = { errors: [] }
   end
 
   def create
@@ -36,6 +37,7 @@ class UserController < ApplicationController
       flash[:success] = "登録完了"
       redirect_to "/index"
     else
+      @page_props = { errors: @user.errors.full_messages }
       render :regist
     end
   end

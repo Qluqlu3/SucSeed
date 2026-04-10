@@ -6,6 +6,5 @@
   <% end %>
 </div>
 
-<% page_props = { errors: @user.errors.full_messages } %>
-<%= content_tag :div, '', data: { react_component: 'UserRegistPage', props: page_props.to_json } %>
+<%= content_tag :div, '', data: { react_component: 'UserRegistPage', props: @page_props.to_json } %>
 
