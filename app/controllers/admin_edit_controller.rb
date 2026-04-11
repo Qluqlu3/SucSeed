@@ -108,7 +108,7 @@ class AdminEditController < ApplicationController
   #patch
   def user_edit
     user = User.find_by("id = ?", params[:id])
-    if user.update_attributes(:avatar_path => params[:user][:avatar_path], :profile => params[:user][:profile])
+    if user.update(:avatar_path => params[:user][:avatar_path], :profile => params[:user][:profile])
       flash[:success] = "success"
       redirect_to "/admin/management/user"
     else

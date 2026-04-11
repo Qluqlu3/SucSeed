@@ -68,7 +68,7 @@ class HeirController < ApplicationController
   def heir_update
     if session[:id] != nil
       @heir = Heir.find_by(user_id: session[:id])
-      if @heir.update_attributes(art_category_id: params[:heir][:art_category_id], introduction: params[:heir][:introduction])
+      if @heir.update(art_category_id: params[:heir][:art_category_id], introduction: params[:heir][:introduction])
         flash[:success] = "success"
         redirect_to "/heir/show"
       else

@@ -73,7 +73,7 @@ class UserController < ApplicationController
 
   def password_reset
     @user = User.find(session[:reset_id])
-    if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
+    if @user.update(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
       flash[:success] = "success"
       session[:reset_id] = nil
       render :login
