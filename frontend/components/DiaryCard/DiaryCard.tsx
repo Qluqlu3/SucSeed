@@ -129,9 +129,9 @@ export const DiaryCard = ({
         <div className="card-footer-btn">
           {/* いいねアバター */}
           <div className="good_user_box">
-            {entry.goodAvatars.map((ga, i) => (
+            {entry.goodAvatars.map((ga) => (
               <img
-                key={i}
+                key={ga.avatarPath}
                 src={ga.avatarPath}
                 className="rounded-circle"
                 width={30}
@@ -168,8 +168,8 @@ export const DiaryCard = ({
 
         {/* コメント一覧・投稿フォーム */}
         <div className="collapse" id={`diary-${entry.diaryId}`}>
-          {comments.map((c, i) => (
-            <div key={i} className="card comment-card">
+          {comments.map((c) => (
+            <div key={`${c.postTime}-${c.name}`} className="card comment-card">
               <div className="card-header comment-header">
                 <p>
                   <img
