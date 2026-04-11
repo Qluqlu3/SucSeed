@@ -21,7 +21,7 @@
     "forceConsistentCasingInFileNames": true,
     // baseUrl は TypeScript 6.0 で非推奨になったが paths と組み合わせに必要なため残す
     // TypeScript 7.0 移行時に paths の記法を見直す
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
       "@components/*": ["frontend/components/*"],
