@@ -286,11 +286,11 @@ class DiaryController < ApplicationController
 end
 
 private
+
 def diary_params
   params.require(:diary).permit(:user_id, :content, diary_media_attributes: [:media_data])
 end
 
-private
 def diary_comment_params
   params.require(:diary_comment).permit(:diary_id, :user_id, :comment)
 end
