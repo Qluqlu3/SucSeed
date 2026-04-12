@@ -28,8 +28,8 @@ export const MyPageUpdatePage = ({ user, errors, isCreator }: Props) => {
         <div id="error_explanation" className="error-box">
           <p className="error-title">入力内容にエラーが{errors.length}件あります</p>
           <ul>
-            {errors.map((msg, i) => (
-              <li key={i} className="error-content">
+            {errors.map((msg) => (
+              <li key={msg} className="error-content">
                 {msg}
               </li>
             ))}
