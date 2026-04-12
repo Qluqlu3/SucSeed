@@ -125,8 +125,8 @@ export const SelectedGalleryPage = ({
 
         {/* タグ一覧 */}
         <div className='tag-list-box'>
-          {tags.map((tag, i) => (
-            <p key={i} className='selected-gallery-tag'>
+          {tags.map((tag) => (
+            <p key={tag} className='selected-gallery-tag'>
               <span className='label selected-gallery-tag-in'>{tag}</span>
             </p>
           ))}
@@ -158,8 +158,8 @@ export const SelectedGalleryPage = ({
 
           {/* コメント一覧・フォーム */}
           <div className='collapse' id={`gallery-${galleryId}`}>
-            {comments.map((c, i) => (
-              <div key={i} className='card comment-card text-left'>
+            {comments.map((c) => (
+              <div key={`${c.postTime}-${c.name}`} className='card comment-card text-left'>
                 <div className='card-header comment-header'>
                   <p>
                     <img
