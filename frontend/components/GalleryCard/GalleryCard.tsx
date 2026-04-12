@@ -20,8 +20,8 @@ export const GalleryCard = ({ gallery }: { gallery: GalleryItem }) => (
         </div>
         <div className="card-body gallery-card-body">
           <p className="card-tag">
-            {gallery.tags.slice(0, 3).map((tag, i) => (
-              <span key={i} className="label my-label">
+            {gallery.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="label my-label">
                 {tag}
               </span>
             ))}
