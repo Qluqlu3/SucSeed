@@ -60,7 +60,9 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* ユーザー名 */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-name'>ユーザー名</label>
+                <label className='form-input-label my-label-text' htmlFor='user-name'>
+                  ユーザー名
+                </label>
               </div>
               <div className='col-xl-10'>
                 <input
@@ -78,7 +80,9 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* アバター */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-avatar'>アバター</label>
+                <label className='form-input-label my-label-text' htmlFor='user-avatar'>
+                  アバター
+                </label>
               </div>
               <div className='col-xl-10'>
                 <input
@@ -131,7 +135,9 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* 生年月日 */}
             <div className='form-group birth_date_field row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-birthday-year'>生年月日</label>
+                <label className='form-input-label my-label-text' htmlFor='user-birthday-year'>
+                  生年月日
+                </label>
               </div>
               <div className='col-xl-10 date-text'>
                 <select
@@ -183,7 +189,9 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* メールアドレス */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-email'>メールアドレス</label>
+                <label className='form-input-label my-label-text' htmlFor='user-email'>
+                  メールアドレス
+                </label>
               </div>
               <div className='col-xl-10'>
                 <input
@@ -237,7 +245,9 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* パスワード */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-password'>パスワード</label>
+                <label className='form-input-label my-label-text' htmlFor='user-password'>
+                  パスワード
+                </label>
               </div>
               <div className='col-xl-10'>
                 <input
@@ -255,7 +265,12 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* パスワード確認 */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-password-confirmation'>パスワード確認</label>
+                <label
+                  className='form-input-label my-label-text'
+                  htmlFor='user-password-confirmation'
+                >
+                  パスワード確認
+                </label>
               </div>
               <div className='col-xl-10'>
                 <input
