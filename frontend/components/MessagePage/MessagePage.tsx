@@ -71,10 +71,10 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser }: 
           <div className="col-md-7 my-col-right">
             <div className="message-box">
               <h3 className="message-title">{toUser.name}さん</h3>
-              {messageHistory.map((msg, idx) =>
+              {messageHistory.map((msg) =>
                 msg.sendUserId === fromUser.id ? (
                   // 自分の発言
-                  <div key={`${msg.createdAt}-${idx}`} className="from-message-box text-right">
+                  <div key={`${msg.sendUserId}-${msg.createdAt}`} className="from-message-box text-right">
                     <div className="media text-right">
                       <div className="media-body from-message-content">
                         <p>{msg.content}</p>
@@ -91,7 +91,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser }: 
                   </div>
                 ) : (
                   // 相手の発言
-                  <div key={`${msg.createdAt}-${idx}`} className="to-message-box text-left">
+                  <div key={`${msg.sendUserId}-${msg.createdAt}`} className="to-message-box text-left">
                     <div className="media text-left">
                       <img
                         src={toUser.avatarPath}
