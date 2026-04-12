@@ -19,8 +19,8 @@ export const DiaryPostPage = ({ errors, userName, avatarPath }: Props) => {
       {errors.length > 0 && (
         <div id="error_explanation" className="alert alert-danger">
           <ul>
-            {errors.map((msg, i) => (
-              <li key={i}>{msg}</li>
+            {errors.map((msg) => (
+              <li key={msg}>{msg}</li>
             ))}
           </ul>
         </div>
