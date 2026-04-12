@@ -67,8 +67,8 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser }: Pr
         <div id="error_explanation" className="error-box">
           <p className="error-title">入力内容にエラーが{errors.length}件あります</p>
           <ul className="error-index">
-            {errors.map((msg, i) => (
-              <li key={i} className="error-content">
+            {errors.map((msg) => (
+              <li key={msg} className="error-content">
                 {msg}
               </li>
             ))}
