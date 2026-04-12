@@ -60,11 +60,12 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* ユーザー名 */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text'>ユーザー名</label>
+                <label className='form-input-label my-label-text' htmlFor='user-name'>ユーザー名</label>
               </div>
               <div className='col-xl-10'>
                 <input
                   type='text'
+                  id='user-name'
                   name='user[name]'
                   className='form-control form-control-lg'
                   maxLength={50}
@@ -77,11 +78,12 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* アバター */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text'>アバター</label>
+                <label className='form-input-label my-label-text' htmlFor='user-avatar'>アバター</label>
               </div>
               <div className='col-xl-10'>
                 <input
                   type='file'
+                  id='user-avatar'
                   name='user[avatar_path]'
                   className='form-control-file file-text form-control-lg'
                   accept='image/jpg,image/jpeg,image/png'
@@ -129,10 +131,11 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* 生年月日 */}
             <div className='form-group birth_date_field row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text'>生年月日</label>
+                <label className='form-input-label my-label-text' htmlFor='user-birthday-year'>生年月日</label>
               </div>
               <div className='col-xl-10 date-text'>
                 <select
+                  id='user-birthday-year'
                   name='user[birthday(1i)]'
                   className='form-control'
                   value={year}
@@ -180,11 +183,12 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* メールアドレス */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text'>メールアドレス</label>
+                <label className='form-input-label my-label-text' htmlFor='user-email'>メールアドレス</label>
               </div>
               <div className='col-xl-10'>
                 <input
                   type='email'
+                  id='user-email'
                   name='user[email]'
                   className='form-control form-control-lg'
                   placeholder='メールアドレス'
@@ -233,11 +237,12 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* パスワード */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text'>パスワード</label>
+                <label className='form-input-label my-label-text' htmlFor='user-password'>パスワード</label>
               </div>
               <div className='col-xl-10'>
                 <input
                   type='password'
+                  id='user-password'
                   name='user[password]'
                   className='form-control form-control-lg'
                   maxLength={16}
@@ -250,11 +255,12 @@ export const UserRegistPage = ({ errors }: Props) => {
             {/* パスワード確認 */}
             <div className='form-group row form-box'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text'>パスワード確認</label>
+                <label className='form-input-label my-label-text' htmlFor='user-password-confirmation'>パスワード確認</label>
               </div>
               <div className='col-xl-10'>
                 <input
                   type='password'
+                  id='user-password-confirmation'
                   name='user[password_confirmation]'
                   className='form-control form-control-lg'
                   maxLength={16}
