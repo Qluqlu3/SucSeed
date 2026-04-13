@@ -40,21 +40,23 @@ export const FavoriteGalleryPage = ({ galleries, errors }: Props) => (
               <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
               <div className='form-group'>
                 <div className='right-box-top'>
-                  <label className='right-box-title'>投稿</label>
+                  <label className='right-box-title' htmlFor='favorite-gallery-file'>投稿</label>
                 </div>
                 <input
                   type='file'
+                  id='favorite-gallery-file'
                   name='gallery[data]'
                   className='form-control-file my-file-post'
                   accept='image/jpg,image/jpeg,image/png'
                 />
-                <label className='tag-title'>タグ：</label>
+                <label className='tag-title' htmlFor='favorite-gallery-tags'>タグ：</label>
                 <div className='tag-field'>
-                  <input type='text' name='gallery[tag_list]' placeholder='タグを入力' />
+                  <input id='favorite-gallery-tags' type='text' name='gallery[tag_list]' placeholder='タグを入力' />
                 </div>
                 <div className='comment-box'>
-                  <label className='form-input-label'>コメント：</label>
+                  <label className='form-input-label' htmlFor='favorite-gallery-comment'>コメント：</label>
                   <textarea
+                    id='favorite-gallery-comment'
                     name='gallery[comment]'
                     className='form-control'
                     placeholder='100文字以内'
