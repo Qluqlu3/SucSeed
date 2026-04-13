@@ -24,9 +24,10 @@ export const GalleryUploadPage = ({ errors }: Props) => (
           <form action='/gallery/view' method='post' encType='multipart/form-data'>
             <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
             <div className='form-group'>
-              <label>ファイルを選択する</label>
+              <label htmlFor='gallery-upload-file'>ファイルを選択する</label>
               <input
                 type='file'
+                id='gallery-upload-file'
                 name='gallery[data]'
                 className='form-control-file'
                 accept='image/jpg,image/jpeg,image/png'
