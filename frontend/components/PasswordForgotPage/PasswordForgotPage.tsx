@@ -14,9 +14,10 @@ export const PasswordForgotPage = () => {
         <form action="/user/password_forgot" method="post">
           <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
           <div className="input-group">
-            <label className="input-group-addon">メールアドレス</label>
+            <label className="input-group-addon" htmlFor="password-forgot-email">メールアドレス</label>
             <input
               type="email"
+              id="password-forgot-email"
               name="user_email[email]"
               className="form-control"
               placeholder="メールアドレス"
