@@ -84,7 +84,7 @@ export const AppealShowPage = ({ appeals }: Props) => (
                 <div className="row">
                   {appeal.isOk ? (
                     <div className="col">
-                      <a href="#">
+                      <a href={`/message/add/${appeal.pageId}`}>
                         <p>メッセージ</p>
                       </a>
                     </div>
