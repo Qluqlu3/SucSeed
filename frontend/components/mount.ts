@@ -38,7 +38,6 @@ import { EmailCertifiedPage } from './EmailCertifiedPage';
 import { Error404Page } from './Error404Page';
 import { Error500Page } from './Error500Page';
 import { FavoriteGalleryPage } from './FavoriteGalleryPage';
-import { GalleryCard } from './GalleryCard';
 import { GallerySearchPage } from './GallerySearchPage';
 import { GalleryUploadPage } from './GalleryUploadPage';
 import { GalleryViewPage } from './GalleryViewPage';
