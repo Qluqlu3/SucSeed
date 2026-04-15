@@ -46,51 +46,51 @@ function timeAgo(dateStr: string): string {
 
 export const AppealShowPage = ({ appeals }: Props) => (
   <div>
-    <h1 className='main-title'>アピール確認</h1>
-    <div className='all-cover-box'>
-      <div className='wrapper'>
+    <h1 className="main-title">アピール確認</h1>
+    <div className="all-cover-box">
+      <div className="wrapper">
         {appeals.length === 0 ? (
-          <p className='empty-text'>まだありません</p>
+          <p className="empty-text">まだありません</p>
         ) : (
           appeals.map((appeal) => (
-            <div key={appeal.pageId} className='card list-card'>
-              <div className='card-header list-card-header'>
+            <div key={appeal.pageId} className="card list-card">
+              <div className="card-header list-card-header">
                 {appeal.matchTime}&nbsp;{timeAgo(appeal.matchTime)}前
               </div>
               <a href={`/page/creator/${appeal.pageId}`}>
-                <div className='card-body list-card-body'>
-                  <div className='row'>
-                    <div className='col-5 left-col text-center'>
+                <div className="card-body list-card-body">
+                  <div className="row">
+                    <div className="col-5 left-col text-center">
                       <img
                         src={appeal.avatarPath}
-                        className='img-circle'
+                        className="img-circle"
                         width={230}
                         height={230}
                         alt={appeal.name}
                       />
                     </div>
-                    <div className='col-7 right-col'>
-                      <p className='name-text'>{appeal.name}</p>
-                      <p className='age-text'>
+                    <div className="col-7 right-col">
+                      <p className="name-text">{appeal.name}</p>
+                      <p className="age-text">
                         {calcAge(appeal.birthday)}
                         <small>歳</small>
                       </p>
-                      <p className='title-text'>{appeal.title}</p>
+                      <p className="title-text">{appeal.title}</p>
                     </div>
                   </div>
                 </div>
               </a>
-              <div className='card-footer list-card-footer'>
-                <div className='row'>
+              <div className="card-footer list-card-footer">
+                <div className="row">
                   {appeal.isOk ? (
-                    <div className='col'>
+                    <div className="col">
                       <a href={`/message/add/${appeal.pageId}`}>
                         <p>メッセージ</p>
                       </a>
                     </div>
                   ) : (
-                    <div className='col'>
-                      <p className='btn btn-primary yes-btn'>アピール済</p>
+                    <div className="col">
+                      <p className="btn btn-primary yes-btn">アピール済</p>
                     </div>
                   )}
                 </div>
