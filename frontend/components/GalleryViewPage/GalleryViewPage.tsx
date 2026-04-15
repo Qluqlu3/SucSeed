@@ -12,7 +12,7 @@ interface Props {
 export const GalleryViewPage = ({ errors }: Props) => (
   <>
     {errors.length > 0 && (
-      <div className='alert alert-danger'>
+      <div className="alert alert-danger">
         <ul>
           {errors.map((msg) => (
             <li key={msg}>{msg}</li>
@@ -21,30 +21,30 @@ export const GalleryViewPage = ({ errors }: Props) => (
       </div>
     )}
 
-    <div className='row justify-content-center'>
-      <div className='col-md-4'>
-        <div className='right-box'>
-          <form action='/gallery/view' method='post' encType='multipart/form-data'>
-            <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-            <div className='form-group'>
-              <label htmlFor='gallery-view-file'>ファイルを選択する</label>
+    <div className="row justify-content-center">
+      <div className="col-md-4">
+        <div className="right-box">
+          <form action="/gallery/view" method="post" encType="multipart/form-data">
+            <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+            <div className="form-group">
+              <label htmlFor="gallery-view-file">ファイルを選択する</label>
               <input
-                type='file'
-                id='gallery-view-file'
-                name='gallery[data]'
-                className='form-control-file'
-                accept='image/jpg,image/jpeg,image/png'
+                type="file"
+                id="gallery-view-file"
+                name="gallery[data]"
+                className="form-control-file"
+                accept="image/jpg,image/jpeg,image/png"
               />
-              <div className='tag-field'>
+              <div className="tag-field">
                 <input
-                  type='text'
-                  name='gallery[tag_list]'
-                  id='tagme'
-                  placeholder='タグをカンマ区切りで入力'
+                  type="text"
+                  name="gallery[tag_list]"
+                  id="tagme"
+                  placeholder="タグをカンマ区切りで入力"
                 />
               </div>
-              <div className='right_side'>
-                <button type='submit' className='btn btn-primary btn-lg'>
+              <div className="right_side">
+                <button type="submit" className="btn btn-primary btn-lg">
                   登録
                 </button>
               </div>
