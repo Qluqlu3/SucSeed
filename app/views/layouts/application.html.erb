@@ -136,10 +136,7 @@
     <% if session[:id] != nil %>
       <div class="none-margin-box"></div>
     <% end %>
-    <!-- Footer -->
-    <footer class="container-fluid original-footer">
-      <%= link_to "お問い合わせ", "/inquiry/input", class: "navbar-brand inquiry-link" %>
-      <p class="copy-right">&copy;SucSeed</p>
-    </footer>
+    <!-- Footer (React island: frontend/spa/Footer.tsx) -->
+    <div id="spa-footer"></div>
   </body>
 </html>
