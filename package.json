@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "esbuild frontend/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
+    "build:spa": "esbuild frontend/spa/main.tsx --bundle --sourcemap --format=esm --outfile=app/assets/builds/spa.js --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
     "build:watch": "yarn build --watch=forever",
     "build:css": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --minify",
     "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always",
