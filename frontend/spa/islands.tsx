@@ -8,6 +8,7 @@
 import { createRoot } from 'react-dom/client';
 import { Footer } from './Footer';
 import { LoginModal } from './LoginModal';
+import { Navbar } from './Navbar';
 
 const footerEl = document.getElementById('spa-footer');
 if (footerEl) {
@@ -17,4 +18,18 @@ if (footerEl) {
 const loginModalEl = document.getElementById('spa-login-modal');
 if (loginModalEl) {
   createRoot(loginModalEl).render(<LoginModal />);
+}
+
+const navbarEl = document.getElementById('spa-navbar');
+if (navbarEl) {
+  const role = (navbarEl.dataset.role ?? 'guest') as 'creator' | 'heir' | 'user' | 'guest';
+  const artCategories = JSON.parse(navbarEl.dataset.artCategories ?? '[]') as {
+    id: number;
+    name: string;
+  }[];
+  const logoSrc = navbarEl.dataset.logoSrc ?? '';
+  const titleSrc = navbarEl.dataset.titleSrc ?? '';
+  createRoot(navbarEl).render(
+    <Navbar role={role} artCategories={artCategories} logoSrc={logoSrc} titleSrc={titleSrc} />,
+  );
 }
