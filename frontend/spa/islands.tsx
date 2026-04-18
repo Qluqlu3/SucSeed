@@ -32,4 +32,10 @@ if (navbarEl) {
   createRoot(navbarEl).render(
     <Navbar role={role} artCategories={artCategories} logoSrc={logoSrc} titleSrc={titleSrc} />,
   );
+
+  // ログイン中のみ none-margin-box を表示（ERB 条件分岐の代替）
+  const marginBoxEl = document.getElementById('spa-margin-box');
+  if (marginBoxEl && role !== 'guest') {
+    marginBoxEl.className = 'none-margin-box';
+  }
 }

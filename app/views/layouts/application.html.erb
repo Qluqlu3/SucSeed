@@ -43,9 +43,8 @@
       <%= yield %>
     </div>
 
-    <% if session[:id] != nil %>
-      <div class="none-margin-box"></div>
-    <% end %>
+    <!-- ログイン時のスペーサー (React island: islands.tsx が role に応じて class を付与) -->
+    <div id="spa-margin-box"></div>
     <!-- Footer (React island: frontend/spa/Footer.tsx) -->
     <div id="spa-footer"></div>
   </body>
