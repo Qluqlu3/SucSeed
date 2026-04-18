@@ -7,8 +7,14 @@
 
 import { createRoot } from 'react-dom/client';
 import { Footer } from './Footer';
+import { LoginModal } from './LoginModal';
 
 const footerEl = document.getElementById('spa-footer');
 if (footerEl) {
   createRoot(footerEl).render(<Footer />);
+}
+
+const loginModalEl = document.getElementById('spa-login-modal');
+if (loginModalEl) {
+  createRoot(loginModalEl).render(<LoginModal />);
 }
