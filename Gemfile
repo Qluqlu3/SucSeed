@@ -3,8 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.3.0'
 
-# Rails 7.1: Ruby 3.3 に正式対応。6.1 では Ruby 3.3 の Logger 定数変更で起動不能になる
-gem 'rails', '~> 7.1'
+# Rails 7.2.3.1 以上: Active Storage の DoS 脆弱性修正版を含む
+gem 'rails', '~> 7.2', '>= 7.2.3.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.4.4', '< 0.6.0'
 # Use Puma as the app server
@@ -59,14 +59,14 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # bootstrap
-gem 'bootstrap', '~> 4.3.1'
-gem 'jquery-rails', '~> 4.3.3'
+gem 'bootstrap', '~> 4.6.2'
+gem 'jquery-rails', '>= 4.4.0'
 
 # rails-i18n 7.x が Rails 7.1 対応版
 gem 'rails-i18n', '~> 7.0'
 
 # 暗号化
-gem 'bcrypt', '>= 3.1.12'
+gem 'bcrypt', '>= 3.1.22'
 
 # 画像アップロード
 gem 'carrierwave', '>= 1.2.3'
