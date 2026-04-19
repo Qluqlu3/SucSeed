@@ -10,6 +10,28 @@ import { Footer } from './Footer';
 import { LoginModal } from './LoginModal';
 import { Navbar } from './Navbar';
 
+type Role = 'creator' | 'heir' | 'user' | 'guest';
+
+const isRole = (value: unknown): value is Role =>
+  value === 'creator' || value === 'heir' || value === 'user' || value === 'guest';
+
+const fetchSessionRole = async (): Promise<Role> => {
+  try {
+    const response = await fetch('/api/session', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json' },
+    });
+    if (!response.ok) {
+      return 'guest';
+    }
+    const json = (await response.json()) as { role?: unknown };
+    return isRole(json.role) ? json.role : 'guest';
+  } catch {
+    return 'guest';
+  }
+};
+
 const footerEl = document.getElementById('spa-footer');
 if (footerEl) {
   createRoot(footerEl).render(<Footer />);
@@ -22,20 +44,25 @@ if (loginModalEl) {
 
 const navbarEl = document.getElementById('spa-navbar');
 if (navbarEl) {
-  const role = (navbarEl.dataset.role ?? 'guest') as 'creator' | 'heir' | 'user' | 'guest';
   const artCategories = JSON.parse(navbarEl.dataset.artCategories ?? '[]') as {
     id: number;
     name: string;
   }[];
   const logoSrc = navbarEl.dataset.logoSrc ?? '';
   const titleSrc = navbarEl.dataset.titleSrc ?? '';
-  createRoot(navbarEl).render(
-    <Navbar role={role} artCategories={artCategories} logoSrc={logoSrc} titleSrc={titleSrc} />,
-  );
 
-  // ログイン中のみ none-margin-box を表示（ERB 条件分岐の代替）
-  const marginBoxEl = document.getElementById('spa-margin-box');
-  if (marginBoxEl && role !== 'guest') {
-    marginBoxEl.className = 'none-margin-box';
-  }
+  const mountNavbar = async () => {
+    const role = await fetchSessionRole();
+    createRoot(navbarEl).render(
+      <Navbar role={role} artCategories={artCategories} logoSrc={logoSrc} titleSrc={titleSrc} />,
+    );
+
+    // ログイン中のみ none-margin-box を表示（ERB 条件分岐の代替）
+    const marginBoxEl = document.getElementById('spa-margin-box');
+    if (marginBoxEl) {
+      marginBoxEl.className = role !== 'guest' ? 'none-margin-box' : '';
+    }
+  };
+
+  void mountNavbar();
 }

@@ -17,23 +17,11 @@
   <body>
   <!-- Login Modal (React island: frontend/spa/LoginModal.tsx) -->
   <div id="spa-login-modal"></div>
-    <%
-      _spa_role = if session[:creator]
-        'creator'
-      elsif session[:id] && Heir.find_by(user_id: session[:id])
-        'heir'
-      elsif session[:id]
-        'user'
-      else
-        'guest'
-      end
-      _spa_categories = ArtCategory.all.map { |c| { id: c.id, name: c.name } }.to_json
-    %>
+    <% _spa_categories = ArtCategory.all.map { |c| { id: c.id, name: c.name } }.to_json %>
     <header>
       <%# Navbar (React island: frontend/spa/Navbar.tsx) %>
       <div
         id="spa-navbar"
-        data-role="<%= _spa_role %>"
         data-art-categories="<%= h(_spa_categories) %>"
         data-logo-src="<%= image_path('logo.png') %>"
         data-title-src="<%= image_path('title.png') %>"
