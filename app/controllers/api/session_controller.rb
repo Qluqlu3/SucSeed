@@ -15,7 +15,10 @@ module Api
         loggedIn: session[:id].present?,
         userId: session[:id],
         role: role,
-        csrfToken: form_authenticity_token
+        csrfToken: form_authenticity_token,
+        artCategories: ArtCategory.order(:id).pluck(:id, :name).map do |id, name|
+          { id: id, name: name }
+        end
       }
     end
   end

@@ -11,11 +11,25 @@ import { LoginModal } from './LoginModal';
 import { Navbar } from './Navbar';
 
 type Role = 'creator' | 'heir' | 'user' | 'guest';
+type ArtCategory = { id: number; name: string };
+type SessionPayload = {
+  role?: unknown;
+  artCategories?: unknown;
+};
 
 const isRole = (value: unknown): value is Role =>
   value === 'creator' || value === 'heir' || value === 'user' || value === 'guest';
 
-const fetchSessionRole = async (): Promise<Role> => {
+const isArtCategory = (value: unknown): value is ArtCategory => {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+
+  const category = value as { id?: unknown; name?: unknown };
+  return typeof category.id === 'number' && typeof category.name === 'string';
+};
+
+const fetchSessionPayload = async (): Promise<{ role: Role; artCategories: ArtCategory[] }> => {
   try {
     const response = await fetch('/api/session', {
       method: 'GET',
@@ -23,12 +37,17 @@ const fetchSessionRole = async (): Promise<Role> => {
       headers: { Accept: 'application/json' },
     });
     if (!response.ok) {
-      return 'guest';
+      return { role: 'guest', artCategories: [] };
     }
-    const json = (await response.json()) as { role?: unknown };
-    return isRole(json.role) ? json.role : 'guest';
+    const json = (await response.json()) as SessionPayload;
+    return {
+      role: isRole(json.role) ? json.role : 'guest',
+      artCategories: Array.isArray(json.artCategories)
+        ? json.artCategories.filter(isArtCategory)
+        : [],
+    };
   } catch {
-    return 'guest';
+    return { role: 'guest', artCategories: [] };
   }
 };
 
@@ -44,15 +63,11 @@ if (loginModalEl) {
 
 const navbarEl = document.getElementById('spa-navbar');
 if (navbarEl) {
-  const artCategories = JSON.parse(navbarEl.dataset.artCategories ?? '[]') as {
-    id: number;
-    name: string;
-  }[];
   const logoSrc = navbarEl.dataset.logoSrc ?? '';
   const titleSrc = navbarEl.dataset.titleSrc ?? '';
 
   const mountNavbar = async () => {
-    const role = await fetchSessionRole();
+    const { role, artCategories } = await fetchSessionPayload();
     createRoot(navbarEl).render(
       <Navbar role={role} artCategories={artCategories} logoSrc={logoSrc} titleSrc={titleSrc} />,
     );

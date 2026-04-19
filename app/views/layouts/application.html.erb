@@ -17,12 +17,10 @@
   <body>
   <!-- Login Modal (React island: frontend/spa/LoginModal.tsx) -->
   <div id="spa-login-modal"></div>
-    <% _spa_categories = ArtCategory.all.map { |c| { id: c.id, name: c.name } }.to_json %>
     <header>
       <%# Navbar (React island: frontend/spa/Navbar.tsx) %>
       <div
         id="spa-navbar"
-        data-art-categories="<%= h(_spa_categories) %>"
         data-logo-src="<%= image_path('logo.png') %>"
         data-title-src="<%= image_path('title.png') %>"
       ></div>
