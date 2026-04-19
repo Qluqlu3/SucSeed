@@ -1,8 +1,6 @@
 import type { FC } from 'react';
+import type { ArtCategory, Role } from './session';
 import { getCsrfToken } from './session';
-
-type Role = 'creator' | 'heir' | 'user' | 'guest';
-type ArtCategory = { id: number; name: string };
 
 type NavbarProps = {
   role: Role;
