@@ -10,6 +10,7 @@ import { LoginModal } from './LoginModal';
 import { mountIsland } from './mountIsland';
 import { Navbar } from './Navbar';
 import { fetchSessionPayload } from './session';
+import { updateMarginBox } from './updateMarginBox';
 
 mountIsland('spa-footer', <Footer />);
 mountIsland('spa-login-modal', <LoginModal />);
@@ -27,12 +28,7 @@ if (navbarEl) {
         titleSrc={layoutAssets.titleSrc}
       />,
     );
-
-    // ログイン中のみ none-margin-box を表示（ERB 条件分岐の代替）
-    const marginBoxEl = document.getElementById('spa-margin-box');
-    if (marginBoxEl) {
-      marginBoxEl.className = role !== 'guest' ? 'none-margin-box' : '';
-    }
+    updateMarginBox(role);
   };
 
   void mountNavbar();
