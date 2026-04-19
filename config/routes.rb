@@ -136,5 +136,9 @@ Rails.application.routes.draw do
   post 'admin/inquiry/detail/:id' => 'admin_edit#inquiry_detail'
   post 'admin/inquiry/detail/check/:id' => 'admin_edit#inquiry_detail_check'
 
+  namespace :api do
+    get 'session' => 'session#show'
+  end
+
   get '*path', controller: 'application', action: 'render_404'
 end
