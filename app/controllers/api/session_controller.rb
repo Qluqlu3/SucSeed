@@ -16,6 +16,10 @@ module Api
         userId: session[:id],
         role: role,
         csrfToken: form_authenticity_token,
+        layoutAssets: {
+          logoSrc: helpers.image_path('logo.png'),
+          titleSrc: helpers.image_path('title.png')
+        },
         artCategories: ArtCategory.order(:id).pluck(:id, :name).map do |id, name|
           { id: id, name: name }
         end

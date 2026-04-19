@@ -12,9 +12,11 @@ import { Navbar } from './Navbar';
 
 type Role = 'creator' | 'heir' | 'user' | 'guest';
 type ArtCategory = { id: number; name: string };
+type LayoutAssets = { logoSrc: string; titleSrc: string };
 type SessionPayload = {
   role?: unknown;
   artCategories?: unknown;
+  layoutAssets?: unknown;
 };
 
 const isRole = (value: unknown): value is Role =>
@@ -29,7 +31,20 @@ const isArtCategory = (value: unknown): value is ArtCategory => {
   return typeof category.id === 'number' && typeof category.name === 'string';
 };
 
-const fetchSessionPayload = async (): Promise<{ role: Role; artCategories: ArtCategory[] }> => {
+const isLayoutAssets = (value: unknown): value is LayoutAssets => {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+
+  const assets = value as { logoSrc?: unknown; titleSrc?: unknown };
+  return typeof assets.logoSrc === 'string' && typeof assets.titleSrc === 'string';
+};
+
+const fetchSessionPayload = async (): Promise<{
+  role: Role;
+  artCategories: ArtCategory[];
+  layoutAssets: LayoutAssets;
+}> => {
   try {
     const response = await fetch('/api/session', {
       method: 'GET',
@@ -37,7 +52,7 @@ const fetchSessionPayload = async (): Promise<{ role: Role; artCategories: ArtCa
       headers: { Accept: 'application/json' },
     });
     if (!response.ok) {
-      return { role: 'guest', artCategories: [] };
+      return { role: 'guest', artCategories: [], layoutAssets: { logoSrc: '', titleSrc: '' } };
     }
     const json = (await response.json()) as SessionPayload;
     return {
@@ -45,9 +60,12 @@ const fetchSessionPayload = async (): Promise<{ role: Role; artCategories: ArtCa
       artCategories: Array.isArray(json.artCategories)
         ? json.artCategories.filter(isArtCategory)
         : [],
+      layoutAssets: isLayoutAssets(json.layoutAssets)
+        ? json.layoutAssets
+        : { logoSrc: '', titleSrc: '' },
     };
   } catch {
-    return { role: 'guest', artCategories: [] };
+    return { role: 'guest', artCategories: [], layoutAssets: { logoSrc: '', titleSrc: '' } };
   }
 };
 
@@ -63,13 +81,15 @@ if (loginModalEl) {
 
 const navbarEl = document.getElementById('spa-navbar');
 if (navbarEl) {
-  const logoSrc = navbarEl.dataset.logoSrc ?? '';
-  const titleSrc = navbarEl.dataset.titleSrc ?? '';
-
   const mountNavbar = async () => {
-    const { role, artCategories } = await fetchSessionPayload();
+    const { role, artCategories, layoutAssets } = await fetchSessionPayload();
     createRoot(navbarEl).render(
-      <Navbar role={role} artCategories={artCategories} logoSrc={logoSrc} titleSrc={titleSrc} />,
+      <Navbar
+        role={role}
+        artCategories={artCategories}
+        logoSrc={layoutAssets.logoSrc}
+        titleSrc={layoutAssets.titleSrc}
+      />,
     );
 
     // ログイン中のみ none-margin-box を表示（ERB 条件分岐の代替）
