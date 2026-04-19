@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { getCsrfToken } from './session';
+import { AuthenticityTokenInput } from './AuthenticityTokenInput';
 
 export const LoginModal: FC = () => (
   <div
@@ -23,7 +23,7 @@ export const LoginModal: FC = () => (
         </div>
         <div className="modal-body">
           <form action="/user/login" method="post" className="form-group">
-            <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+            <AuthenticityTokenInput />
             <div>
               <label htmlFor="login-email">メールアドレス</label>
               <input
