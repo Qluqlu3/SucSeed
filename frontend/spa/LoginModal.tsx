@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { AuthenticityTokenInput } from './AuthenticityTokenInput';
+import { PostForm } from './PostForm';
 
 export const LoginModal: FC = () => (
   <div
@@ -22,8 +22,7 @@ export const LoginModal: FC = () => (
           </button>
         </div>
         <div className="modal-body">
-          <form action="/user/login" method="post" className="form-group">
-            <AuthenticityTokenInput />
+          <PostForm action="/user/login" className="form-group">
             <div>
               <label htmlFor="login-email">メールアドレス</label>
               <input
@@ -56,7 +55,7 @@ export const LoginModal: FC = () => (
                 ログイン
               </button>
             </div>
-          </form>
+          </PostForm>
         </div>
         <div className="modal-footer">
           <div>

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { AuthenticityTokenInput } from './AuthenticityTokenInput';
+import { PostForm } from './PostForm';
 import type { ArtCategory, Role } from './session';
 
 type NavbarProps = {
@@ -86,8 +86,7 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
             </li>
           )}
           <div className="form-inline">
-            <form action="/search/user" method="post">
-              <AuthenticityTokenInput />
+            <PostForm action="/search/user">
               <select name="search[art_category_id]" className="form-control">
                 <option value="">select category ...</option>
                 {artCategories.map((cat) => (
@@ -99,7 +98,7 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
               <button type="submit" className="btn search_btn">
                 <i className="fas fa-search search_icon" aria-hidden="true" />
               </button>
-            </form>
+            </PostForm>
           </div>
         </ul>
         <ul className="nav navbar-nav navbar-right">
@@ -114,12 +113,11 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
                 ログイン
               </button>
             ) : (
-              <form action="/user/logout" method="post">
-                <AuthenticityTokenInput />
+              <PostForm action="/user/logout">
                 <button type="submit" className="btn my-login-btn">
                   ログアウト
                 </button>
-              </form>
+              </PostForm>
             )}
           </li>
         </ul>
