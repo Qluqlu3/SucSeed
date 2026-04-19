@@ -33,6 +33,9 @@ const isLayoutAssets = (value: unknown): value is LayoutAssets => {
 
 export type { ArtCategory, LayoutAssets, Role };
 
+export const getCsrfToken = (): string =>
+  document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+
 export const fetchSessionPayload = async (): Promise<{
   role: Role;
   artCategories: ArtCategory[];

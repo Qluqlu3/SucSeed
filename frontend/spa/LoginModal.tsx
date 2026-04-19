@@ -1,7 +1,5 @@
 import type { FC } from 'react';
-
-const csrfToken = (): string =>
-  document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+import { getCsrfToken } from './session';
 
 export const LoginModal: FC = () => (
   <div
@@ -25,7 +23,7 @@ export const LoginModal: FC = () => (
         </div>
         <div className="modal-body">
           <form action="/user/login" method="post" className="form-group">
-            <input type="hidden" name="authenticity_token" value={csrfToken()} />
+            <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
             <div>
               <label htmlFor="login-email">メールアドレス</label>
               <input

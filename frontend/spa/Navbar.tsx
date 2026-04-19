@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { getCsrfToken } from './session';
 
 type Role = 'creator' | 'heir' | 'user' | 'guest';
 type ArtCategory = { id: number; name: string };
@@ -9,9 +10,6 @@ type NavbarProps = {
   logoSrc: string;
   titleSrc: string;
 };
-
-const csrfToken = (): string =>
-  document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
 
 const CREATOR_MENU = [
   { href: '/my_page/my_page', label: 'マイページ' },
@@ -91,7 +89,7 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
           )}
           <div className="form-inline">
             <form action="/search/user" method="post">
-              <input type="hidden" name="authenticity_token" value={csrfToken()} />
+              <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
               <select name="search[art_category_id]" className="form-control">
                 <option value="">select category ...</option>
                 {artCategories.map((cat) => (
@@ -119,7 +117,7 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
               </button>
             ) : (
               <form action="/user/logout" method="post">
-                <input type="hidden" name="authenticity_token" value={csrfToken()} />
+                <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
                 <button type="submit" className="btn my-login-btn">
                   ログアウト
                 </button>
