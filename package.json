@@ -7,7 +7,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.183.1",
     "esbuild": "^0.27.4",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "scripts": {
     "build": "esbuild frontend/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
