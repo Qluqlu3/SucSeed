@@ -9,15 +9,19 @@ export const mountNavbarIsland = async (): Promise<void> => {
     return;
   }
 
-  const { role, artCategories, layoutAssets } = await fetchSessionPayload();
-  mountIsland(
-    'spa-navbar',
-    <Navbar
-      role={role}
-      artCategories={artCategories}
-      logoSrc={layoutAssets.logoSrc}
-      titleSrc={layoutAssets.titleSrc}
-    />,
-  );
-  updateMarginBox(role);
+  try {
+    const { role, artCategories, layoutAssets } = await fetchSessionPayload();
+    mountIsland(
+      'spa-navbar',
+      <Navbar
+        role={role}
+        artCategories={artCategories}
+        logoSrc={layoutAssets.logoSrc}
+        titleSrc={layoutAssets.titleSrc}
+      />,
+    );
+    updateMarginBox(role);
+  } catch {
+    updateMarginBox('guest');
+  }
 };
