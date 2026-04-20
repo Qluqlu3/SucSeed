@@ -8,28 +8,9 @@
 import { Footer } from './Footer';
 import { LoginModal } from './LoginModal';
 import { mountIsland } from './mountIsland';
-import { Navbar } from './Navbar';
-import { fetchSessionPayload } from './session';
-import { updateMarginBox } from './updateMarginBox';
+import { mountNavbarIsland } from './mountNavbarIsland';
 
 mountIsland('spa-footer', <Footer />);
 mountIsland('spa-login-modal', <LoginModal />);
 
-const navbarEl = document.getElementById('spa-navbar');
-if (navbarEl) {
-  const mountNavbar = async () => {
-    const { role, artCategories, layoutAssets } = await fetchSessionPayload();
-    mountIsland(
-      'spa-navbar',
-      <Navbar
-        role={role}
-        artCategories={artCategories}
-        logoSrc={layoutAssets.logoSrc}
-        titleSrc={layoutAssets.titleSrc}
-      />,
-    );
-    updateMarginBox(role);
-  };
-
-  void mountNavbar();
-}
+void mountNavbarIsland();
