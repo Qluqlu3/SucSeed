@@ -59,7 +59,7 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # bootstrap
-gem 'bootstrap', '~> 4.6.2'
+gem 'bootstrap', '~> 5.3.8'
 gem 'jquery-rails', '>= 4.4.0'
 
 # rails-i18n 7.x が Rails 7.1 対応版
