@@ -15,41 +15,41 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
   const menuItems = getNavbarMenuItems(role);
 
   return (
-    <nav className="navbar navbar-expand-lg my_nav index-nav">
-      <img src={logoSrc} className="logo" width="50" height="50" alt="ロゴ" />
-      <a href="/index" className="navbar-brand my-brand">
-        <img src={titleSrc} width="150" alt="SucSeed" />
+    <nav className='navbar navbar-expand-lg my_nav index-nav'>
+      <img src={logoSrc} className='logo' width='50' height='50' alt='ロゴ' />
+      <a href='/index' className='navbar-brand my-brand'>
+        <img src={titleSrc} width='150' alt='SucSeed' />
       </a>
       <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        className='navbar-toggler'
+        type='button'
+        data-toggle='collapse'
+        data-target='#navbarSupportedContent'
+        aria-controls='navbarSupportedContent'
+        aria-expanded='false'
+        aria-label='Toggle navigation'
       >
-        <span className="navbar-toggler-icon">
-          <i className="fas fa-list mini-list" aria-hidden="true" />
+        <span className='navbar-toggler-icon'>
+          <i className='fas fa-list mini-list' aria-hidden='true' />
         </span>
       </button>
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav mr-auto">
+      <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+        <ul className='navbar-nav mr-auto'>
           {menuItems && (
-            <li className="nav-item dropdown">
+            <li className='nav-item dropdown'>
               <button
-                type="button"
-                className="nav-link dropdown-toggle"
-                id="navbarDropdown"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+                type='button'
+                className='nav-link dropdown-toggle'
+                id='navbarDropdown'
+                data-toggle='dropdown'
+                aria-haspopup='true'
+                aria-expanded='false'
               >
                 メニュー
               </button>
-              <div className="dropdown-menu">
+              <div className='dropdown-menu'>
                 {menuItems.map((item) => (
-                  <a key={item.href} href={item.href} className="dropdown-item">
+                  <a key={item.href} href={item.href} className='dropdown-item'>
                     {item.label}
                   </a>
                 ))}
@@ -58,20 +58,20 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
           )}
           <NavbarSearchForm artCategories={artCategories} />
         </ul>
-        <ul className="nav navbar-nav navbar-right">
-          <li className="login-ul">
+        <ul className='nav navbar-nav navbar-right'>
+          <li className='login-ul'>
             {role === 'guest' ? (
               <button
-                type="button"
-                className="btn my-login-btn"
-                data-toggle="modal"
-                data-target="#exampleModalCenter"
+                type='button'
+                className='btn my-login-btn'
+                data-toggle='modal'
+                data-target='#exampleModalCenter'
               >
                 ログイン
               </button>
             ) : (
-              <PostForm action="/user/logout">
-                <button type="submit" className="btn my-login-btn">
+              <PostForm action='/user/logout'>
+                <button type='submit' className='btn my-login-btn'>
                   ログアウト
                 </button>
               </PostForm>
