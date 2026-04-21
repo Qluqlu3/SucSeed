@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { LoginFormField } from './LoginFormField';
 import { PostForm } from './PostForm';
 
 export const LoginModal: FC = () => (
@@ -23,33 +24,27 @@ export const LoginModal: FC = () => (
         </div>
         <div className="modal-body">
           <PostForm action="/user/login" className="form-group">
-            <div>
-              <label htmlFor="login-email">メールアドレス</label>
-              <input
-                id="login-email"
-                type="email"
-                name="session[email]"
-                className="form-control"
-                placeholder="メールアドレス"
-                required
-              />
-            </div>
-            <small className="modal-small">半角英数</small>
-            <div className="modal-password-box">
-              <label htmlFor="login-password" className="input-group-addon">
-                パスワード
-              </label>
-              <input
-                id="login-password"
-                type="password"
-                name="session[password]"
-                className="form-control"
-                maxLength={16}
-                placeholder="パスワード"
-                required
-              />
-            </div>
-            <small className="modal-small">半角英数、８文字以上１６文字以内</small>
+            <LoginFormField
+              id="login-email"
+              type="email"
+              name="session[email]"
+              label="メールアドレス"
+              placeholder="メールアドレス"
+              helperText="半角英数"
+              required
+            />
+            <LoginFormField
+              id="login-password"
+              type="password"
+              name="session[password]"
+              label="パスワード"
+              placeholder="パスワード"
+              helperText="半角英数、８文字以上１６文字以内"
+              containerClassName="modal-password-box"
+              labelClassName="input-group-addon"
+              maxLength={16}
+              required
+            />
             <div className="modal-login-btn-box">
               <button type="submit" className="btn modal-login-btn">
                 ログイン
