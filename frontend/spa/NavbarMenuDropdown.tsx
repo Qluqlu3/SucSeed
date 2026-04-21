@@ -6,20 +6,20 @@ type NavbarMenuDropdownProps = {
 };
 
 export const NavbarMenuDropdown: FC<NavbarMenuDropdownProps> = ({ menuItems }) => (
-  <li className="nav-item dropdown">
+  <li className='nav-item dropdown'>
     <button
-      type="button"
-      className="nav-link dropdown-toggle"
-      id="navbarDropdown"
-      data-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="false"
+      type='button'
+      className='nav-link dropdown-toggle'
+      id='navbarDropdown'
+      data-toggle='dropdown'
+      aria-haspopup='true'
+      aria-expanded='false'
     >
       メニュー
     </button>
-    <div className="dropdown-menu">
+    <div className='dropdown-menu'>
       {menuItems.map((item) => (
-        <a key={item.href} href={item.href} className="dropdown-item">
+        <a key={item.href} href={item.href} className='dropdown-item'>
           {item.label}
         </a>
       ))}
