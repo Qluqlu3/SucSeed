@@ -3,6 +3,7 @@ import { NavbarAuthAction } from './NavbarAuthAction';
 import { NavbarBrand } from './NavbarBrand';
 import { NavbarMenuDropdown } from './NavbarMenuDropdown';
 import { NavbarSearchForm } from './NavbarSearchForm';
+import { NavbarToggleButton } from './NavbarToggleButton';
 import { getNavbarMenuItems } from './navbarMenu';
 import type { ArtCategory, Role } from './session';
 
@@ -17,28 +18,16 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
   const menuItems = getNavbarMenuItems(role);
 
   return (
-    <nav className='navbar navbar-expand-lg my_nav index-nav'>
+    <nav className="navbar navbar-expand-lg my_nav index-nav">
       <NavbarBrand logoSrc={logoSrc} titleSrc={titleSrc} />
-      <button
-        className='navbar-toggler'
-        type='button'
-        data-toggle='collapse'
-        data-target='#navbarSupportedContent'
-        aria-controls='navbarSupportedContent'
-        aria-expanded='false'
-        aria-label='Toggle navigation'
-      >
-        <span className='navbar-toggler-icon'>
-          <i className='fas fa-list mini-list' aria-hidden='true' />
-        </span>
-      </button>
-      <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-        <ul className='navbar-nav mr-auto'>
+      <NavbarToggleButton />
+      <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul className="navbar-nav mr-auto">
           {menuItems && <NavbarMenuDropdown menuItems={menuItems} />}
           <NavbarSearchForm artCategories={artCategories} />
         </ul>
-        <ul className='nav navbar-nav navbar-right'>
-          <li className='login-ul'>
+        <ul className="nav navbar-nav navbar-right">
+          <li className="login-ul">
             <NavbarAuthAction role={role} />
           </li>
         </ul>
