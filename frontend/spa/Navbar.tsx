@@ -17,28 +17,28 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
   const menuItems = getNavbarMenuItems(role);
 
   return (
-    <nav className="navbar navbar-expand-lg my_nav index-nav">
+    <nav className='navbar navbar-expand-lg my_nav index-nav'>
       <NavbarBrand logoSrc={logoSrc} titleSrc={titleSrc} />
       <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        className='navbar-toggler'
+        type='button'
+        data-toggle='collapse'
+        data-target='#navbarSupportedContent'
+        aria-controls='navbarSupportedContent'
+        aria-expanded='false'
+        aria-label='Toggle navigation'
       >
-        <span className="navbar-toggler-icon">
-          <i className="fas fa-list mini-list" aria-hidden="true" />
+        <span className='navbar-toggler-icon'>
+          <i className='fas fa-list mini-list' aria-hidden='true' />
         </span>
       </button>
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav mr-auto">
+      <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+        <ul className='navbar-nav mr-auto'>
           {menuItems && <NavbarMenuDropdown menuItems={menuItems} />}
           <NavbarSearchForm artCategories={artCategories} />
         </ul>
-        <ul className="nav navbar-nav navbar-right">
-          <li className="login-ul">
+        <ul className='nav navbar-nav navbar-right'>
+          <li className='login-ul'>
             <NavbarAuthAction role={role} />
           </li>
         </ul>
