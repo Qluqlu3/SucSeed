@@ -9,7 +9,7 @@ gem 'rails', '~> 7.2', '>= 7.2.3.1'
 gem 'mysql2', '>= 0.4.4', '< 0.6.0'
 # Use Puma as the app server
 # 3.x は Ruby 3.x 系で動作しないため 6.x に上げる
-gem 'puma', '~> 6.0'
+gem 'puma', '~> 8.0'
 # sass-rails 5.x は sprockets 4 / Rails 7 と非互換。sassc-rails は drop-in 代替
 gem 'sassc-rails'
 # uglifier は ExecJS(Node.js)が必要で環境依存が強い。Rails 7 では不要
