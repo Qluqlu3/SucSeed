@@ -26,7 +26,6 @@ import { AdminSelectedUserEditPage } from './AdminSelectedUserEditPage';
 import { AdminUserEditPage } from './AdminUserEditPage';
 import { AppealedListPage } from './AppealedListPage';
 import { AppealShowPage } from './AppealShowPage';
-import { CertifyPage } from './CertifyPage';
 import { CreatorCreatePage } from './CreatorCreatePage';
 import { CreatorShowPage } from './CreatorShowPage';
 import { CreatorUpdatePage } from './CreatorUpdatePage';
@@ -103,7 +102,6 @@ const COMPONENTS: Record<string, MountFn> = {
   FavoriteGalleryPage: (node) => mount(FavoriteGalleryPage, node),
   HeirFavoriteGalleryPage: (node) => mount(HeirFavoriteGalleryPage, node),
   GalleryUploadPage: (node) => mount(GalleryUploadPage, node),
-  CertifyPage: (node) => mount(CertifyPage, node),
   CreatorCreatePage: (node) => mount(CreatorCreatePage, node),
   CreatorShowPage: (node) => mount(CreatorShowPage, node),
   CreatorUpdatePage: (node) => mount(CreatorUpdatePage, node),

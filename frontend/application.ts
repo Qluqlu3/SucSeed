@@ -9,6 +9,7 @@
 //   Rails 側は API レスポンスのみ返すように変更する。
 
 import './components/mount';
+import './components/CertifyPage/mountCertifyPage';
 import './components/InquiryInputPage/mountInquiryInputPage';
 import './components/SearchUserPage/mountSearchUserPage';
 import './spa/islands';
