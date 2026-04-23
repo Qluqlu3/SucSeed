@@ -60,7 +60,6 @@ import { PasswordForgotPage } from './PasswordForgotPage';
 import { PasswordResetPage } from './PasswordResetPage';
 import { ScoutCheckPage } from './ScoutCheckPage';
 import { ScoutShowPage } from './ScoutShowPage';
-import { SearchUserPage } from './SearchUserPage';
 import { SelectedGalleryPage } from './SelectedGalleryPage';
 import { UserGalleryViewPage } from './UserGalleryViewPage';
 import { UserRegistPage } from './UserRegistPage';
@@ -105,7 +104,6 @@ const COMPONENTS: Record<string, MountFn> = {
   FavoriteGalleryPage: (node) => mount(FavoriteGalleryPage, node),
   HeirFavoriteGalleryPage: (node) => mount(HeirFavoriteGalleryPage, node),
   GalleryUploadPage: (node) => mount(GalleryUploadPage, node),
-  SearchUserPage: (node) => mount(SearchUserPage, node),
   InquiryInputPage: (node) => mount(InquiryInputPage, node),
   CertifyPage: (node) => mount(CertifyPage, node),
   CreatorCreatePage: (node) => mount(CreatorCreatePage, node),

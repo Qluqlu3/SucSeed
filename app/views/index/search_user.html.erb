@@ -7,4 +7,4 @@
   <% end %>
 </div>
 
-<%= content_tag :div, '', data: { react_component: 'SearchUserPage', props: @page_props.to_json } %>
+<%= content_tag :div, '', id: 'search-user-page', data: { props: @page_props.to_json } %>

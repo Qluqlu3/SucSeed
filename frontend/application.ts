@@ -9,4 +9,5 @@
 //   Rails 側は API レスポンスのみ返すように変更する。
 
 import './components/mount';
+import './components/SearchUserPage/mountSearchUserPage';
 import './spa/islands';
