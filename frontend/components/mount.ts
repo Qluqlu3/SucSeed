@@ -48,7 +48,6 @@ import { HeirShowPage } from './HeirShowPage';
 import { HeirUpdatePage } from './HeirUpdatePage';
 import { HelloReact } from './HelloReact';
 import { IndexPage } from './IndexPage';
-import { InquiryInputPage } from './InquiryInputPage';
 import { MatchingPage } from './MatchingPage';
 import { MessageListPage } from './MessageListPage';
 import { MessagePage } from './MessagePage';
@@ -104,7 +103,6 @@ const COMPONENTS: Record<string, MountFn> = {
   FavoriteGalleryPage: (node) => mount(FavoriteGalleryPage, node),
   HeirFavoriteGalleryPage: (node) => mount(HeirFavoriteGalleryPage, node),
   GalleryUploadPage: (node) => mount(GalleryUploadPage, node),
-  InquiryInputPage: (node) => mount(InquiryInputPage, node),
   CertifyPage: (node) => mount(CertifyPage, node),
   CreatorCreatePage: (node) => mount(CreatorCreatePage, node),
   CreatorShowPage: (node) => mount(CreatorShowPage, node),
