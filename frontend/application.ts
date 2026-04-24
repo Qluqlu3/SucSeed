@@ -11,6 +11,7 @@
 import './components/mount';
 import './components/CertifyPage/mountCertifyPage';
 import './components/Error404Page/mountError404Page';
+import './components/Error500Page/mountError500Page';
 import './components/InquiryInputPage/mountInquiryInputPage';
 import './components/SearchUserPage/mountSearchUserPage';
 import './spa/islands';
