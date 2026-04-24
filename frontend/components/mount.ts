@@ -32,7 +32,6 @@ import { CreatorUpdatePage } from './CreatorUpdatePage';
 import { DiaryHeirFavoritePage } from './DiaryHeirFavoritePage';
 import { DiaryPostPage } from './DiaryPostPage';
 import { DiarySelectPage } from './DiarySelectPage';
-import { EmailCertifiedPage } from './EmailCertifiedPage';
 import { FavoriteGalleryPage } from './FavoriteGalleryPage';
 import { GallerySearchPage } from './GallerySearchPage';
 import { GalleryUploadPage } from './GalleryUploadPage';
@@ -79,7 +78,6 @@ const COMPONENTS: Record<string, MountFn> = {
   IndexPage: (node) => mount(IndexPage, node),
   UserRegistPage: (node) => mount(UserRegistPage, node),
   PasswordResetPage: (node) => mount(PasswordResetPage, node),
-  EmailCertifiedPage: (node) => mount(EmailCertifiedPage, node),
   MyPage: (node) => mount(MyPage, node),
   MyPageUpdatePage: (node) => mount(MyPageUpdatePage, node),
   YourPage: (node) => mount(YourPage, node),
