@@ -47,14 +47,11 @@ import { MessageListPage } from './MessageListPage';
 import { MessagePage } from './MessagePage';
 import { MyDiaryPage } from './MyDiaryPage';
 import { MyGalleryPage } from './MyGalleryPage';
-import { MyPage } from './MyPage';
-import { MyPageUpdatePage } from './MyPageUpdatePage';
-import { PasswordResetPage } from './PasswordResetPage';
+
 import { ScoutCheckPage } from './ScoutCheckPage';
 import { ScoutShowPage } from './ScoutShowPage';
 import { SelectedGalleryPage } from './SelectedGalleryPage';
 import { UserGalleryViewPage } from './UserGalleryViewPage';
-import { UserRegistPage } from './UserRegistPage';
 import { YourDiaryPage } from './YourDiaryPage';
 import { YourPage } from './YourPage';
 
@@ -74,10 +71,6 @@ type MountFn = (node: HTMLElement) => void;
 
 const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
-  UserRegistPage: (node) => mount(UserRegistPage, node),
-  PasswordResetPage: (node) => mount(PasswordResetPage, node),
-  MyPage: (node) => mount(MyPage, node),
-  MyPageUpdatePage: (node) => mount(MyPageUpdatePage, node),
   YourPage: (node) => mount(YourPage, node),
   HeirPage: (node) => mount(HeirPage, node),
   DiarySelectPage: (node) => mount(DiarySelectPage, node),
