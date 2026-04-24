@@ -42,7 +42,6 @@ import { HeirPage } from './HeirPage';
 import { HeirShowPage } from './HeirShowPage';
 import { HeirUpdatePage } from './HeirUpdatePage';
 import { HelloReact } from './HelloReact';
-import { IndexPage } from './IndexPage';
 import { MatchingPage } from './MatchingPage';
 import { MessageListPage } from './MessageListPage';
 import { MessagePage } from './MessagePage';
@@ -75,7 +74,6 @@ type MountFn = (node: HTMLElement) => void;
 
 const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
-  IndexPage: (node) => mount(IndexPage, node),
   UserRegistPage: (node) => mount(UserRegistPage, node),
   PasswordResetPage: (node) => mount(PasswordResetPage, node),
   MyPage: (node) => mount(MyPage, node),

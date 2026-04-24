@@ -8,5 +8,5 @@
 </div>
 
 
-<%= content_tag :div, '', data: { react_component: 'IndexPage', props: @page_props.to_json } %>
+<div id="index-page" data-props="<%= @page_props.to_json %>"></div>
 
