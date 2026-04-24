@@ -10,6 +10,7 @@
 
 import './components/mount';
 import './components/CertifyPage/mountCertifyPage';
+import './components/CreatorUploadImagePage/mountCreatorUploadImagePage';
 import './components/Error404Page/mountError404Page';
 import './components/Error500Page/mountError500Page';
 import './components/InquiryInputPage/mountInquiryInputPage';

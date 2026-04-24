@@ -29,7 +29,6 @@ import { AppealShowPage } from './AppealShowPage';
 import { CreatorCreatePage } from './CreatorCreatePage';
 import { CreatorShowPage } from './CreatorShowPage';
 import { CreatorUpdatePage } from './CreatorUpdatePage';
-import { CreatorUploadImagePage } from './CreatorUploadImagePage';
 import { DiaryHeirFavoritePage } from './DiaryHeirFavoritePage';
 import { DiaryPostPage } from './DiaryPostPage';
 import { DiarySelectPage } from './DiarySelectPage';
@@ -101,7 +100,6 @@ const COMPONENTS: Record<string, MountFn> = {
   CreatorCreatePage: (node) => mount(CreatorCreatePage, node),
   CreatorShowPage: (node) => mount(CreatorShowPage, node),
   CreatorUpdatePage: (node) => mount(CreatorUpdatePage, node),
-  CreatorUploadImagePage: (node) => mount(CreatorUploadImagePage, node),
   HeirCreatePage: (node) => mount(HeirCreatePage, node),
   HeirShowPage: (node) => mount(HeirShowPage, node),
   HeirUpdatePage: (node) => mount(HeirUpdatePage, node),
