@@ -52,7 +52,6 @@ import { MyDiaryPage } from './MyDiaryPage';
 import { MyGalleryPage } from './MyGalleryPage';
 import { MyPage } from './MyPage';
 import { MyPageUpdatePage } from './MyPageUpdatePage';
-import { PasswordForgotPage } from './PasswordForgotPage';
 import { PasswordResetPage } from './PasswordResetPage';
 import { ScoutCheckPage } from './ScoutCheckPage';
 import { ScoutShowPage } from './ScoutShowPage';
@@ -80,7 +79,6 @@ const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
   IndexPage: (node) => mount(IndexPage, node),
   UserRegistPage: (node) => mount(UserRegistPage, node),
-  PasswordForgotPage: (node) => mount(PasswordForgotPage, node),
   PasswordResetPage: (node) => mount(PasswordResetPage, node),
   EmailCertifiedPage: (node) => mount(EmailCertifiedPage, node),
   MyPage: (node) => mount(MyPage, node),
