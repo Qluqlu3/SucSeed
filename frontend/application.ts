@@ -10,6 +10,7 @@
 
 import './components/mount';
 import './components/CertifyPage/mountCertifyPage';
+import './components/Error404Page/mountError404Page';
 import './components/InquiryInputPage/mountInquiryInputPage';
 import './components/SearchUserPage/mountSearchUserPage';
 import './spa/islands';

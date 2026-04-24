@@ -34,7 +34,6 @@ import { DiaryHeirFavoritePage } from './DiaryHeirFavoritePage';
 import { DiaryPostPage } from './DiaryPostPage';
 import { DiarySelectPage } from './DiarySelectPage';
 import { EmailCertifiedPage } from './EmailCertifiedPage';
-import { Error404Page } from './Error404Page';
 import { Error500Page } from './Error500Page';
 import { FavoriteGalleryPage } from './FavoriteGalleryPage';
 import { GallerySearchPage } from './GallerySearchPage';
@@ -109,7 +108,6 @@ const COMPONENTS: Record<string, MountFn> = {
   HeirCreatePage: (node) => mount(HeirCreatePage, node),
   HeirShowPage: (node) => mount(HeirShowPage, node),
   HeirUpdatePage: (node) => mount(HeirUpdatePage, node),
-  Error404Page: (node) => mount(Error404Page, node),
   Error500Page: (node) => mount(Error500Page, node),
   MatchingPage: (node) => mount(MatchingPage, node),
   AppealShowPage: (node) => mount(AppealShowPage, node),
