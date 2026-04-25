@@ -8,7 +8,6 @@
 //   このファイルを frontend/src/main.tsx に移動し、
 //   Rails 側は API レスポンスのみ返すように変更する。
 
-import './components/mount';
 import './components/CertifyPage/mountCertifyPage';
 import './components/CreatorUploadImagePage/mountCreatorUploadImagePage';
 import './components/EmailCertifiedPage/mountEmailCertifiedPage';
