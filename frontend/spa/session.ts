@@ -1,36 +1,20 @@
-type Role = 'creator' | 'heir' | 'user' | 'guest';
-type ArtCategory = { id: number; name: string };
-type LayoutAssets = { logoSrc: string; titleSrc: string };
+// frontend/spa/session.ts
+//
+// DOM / fetch アクセスを伴う副作用関数。
+// 型定義・型ガード（純粋関数）は sessionTypes.ts に分離している。
 
-type SessionPayload = {
-  role?: unknown;
-  artCategories?: unknown;
-  layoutAssets?: unknown;
-};
+import {
+  type ArtCategory,
+  EMPTY_LAYOUT_ASSETS,
+  isArtCategory,
+  isLayoutAssets,
+  isRole,
+  type LayoutAssets,
+  type Role,
+  type SessionPayload,
+} from './sessionTypes';
 
-const EMPTY_LAYOUT_ASSETS: LayoutAssets = { logoSrc: '', titleSrc: '' };
-
-const isRole = (value: unknown): value is Role =>
-  value === 'creator' || value === 'heir' || value === 'user' || value === 'guest';
-
-const isArtCategory = (value: unknown): value is ArtCategory => {
-  if (typeof value !== 'object' || value === null) {
-    return false;
-  }
-
-  const category = value as { id?: unknown; name?: unknown };
-  return typeof category.id === 'number' && typeof category.name === 'string';
-};
-
-const isLayoutAssets = (value: unknown): value is LayoutAssets => {
-  if (typeof value !== 'object' || value === null) {
-    return false;
-  }
-
-  const assets = value as { logoSrc?: unknown; titleSrc?: unknown };
-  return typeof assets.logoSrc === 'string' && typeof assets.titleSrc === 'string';
-};
-
+// 型は利用側が ./session から import できるよう re-export する
 export type { ArtCategory, LayoutAssets, Role };
 
 export const getCsrfToken = (): string =>
