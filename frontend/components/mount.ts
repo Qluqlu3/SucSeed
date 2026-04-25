@@ -14,15 +14,6 @@
 
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
-import { AdminDiaryCommentEditPage } from './AdminDiaryCommentEditPage';
-import { AdminDiaryEditPage } from './AdminDiaryEditPage';
-import { AdminGalleryEditPage } from './AdminGalleryEditPage';
-import { AdminIndexPage } from './AdminIndexPage';
-import { AdminInquiryDetailPage } from './AdminInquiryDetailPage';
-import { AdminInquiryEditPage } from './AdminInquiryEditPage';
-import { AdminLoginPage } from './AdminLoginPage';
-import { AdminSelectedUserEditPage } from './AdminSelectedUserEditPage';
-import { AdminUserEditPage } from './AdminUserEditPage';
 import { HelloReact } from './HelloReact';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
@@ -41,16 +32,6 @@ type MountFn = (node: HTMLElement) => void;
 
 const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
-  AdminLoginPage: (node) => mount(AdminLoginPage, node),
-  AdminCreatePage: (node) => mount(AdminCreatePage, node),
-  AdminIndexPage: (node) => mount(AdminIndexPage, node),
-  AdminUserEditPage: (node) => mount(AdminUserEditPage, node),
-  AdminDiaryEditPage: (node) => mount(AdminDiaryEditPage, node),
-  AdminDiaryCommentEditPage: (node) => mount(AdminDiaryCommentEditPage, node),
-  AdminGalleryEditPage: (node) => mount(AdminGalleryEditPage, node),
-  AdminInquiryEditPage: (node) => mount(AdminInquiryEditPage, node),
-  AdminInquiryDetailPage: (node) => mount(AdminInquiryDetailPage, node),
-  AdminSelectedUserEditPage: (node) => mount(AdminSelectedUserEditPage, node),
 };
 
 document.addEventListener('DOMContentLoaded', () => {
