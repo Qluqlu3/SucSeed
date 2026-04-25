@@ -11,4 +11,4 @@
     errors: defined?(@gallery) ? @gallery.errors.full_messages : []
   }
 %>
-<%= content_tag :div, '', data: { react_component: 'GalleryUploadPage', props: page_props.to_json } %>
+<div id="gallery-upload-page" data-props="<%= page_props.to_json %>"></div>

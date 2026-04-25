@@ -26,24 +26,16 @@ import { AdminSelectedUserEditPage } from './AdminSelectedUserEditPage';
 import { AdminUserEditPage } from './AdminUserEditPage';
 import { AppealedListPage } from './AppealedListPage';
 import { AppealShowPage } from './AppealShowPage';
-import { CreatorCreatePage } from './CreatorCreatePage';
-import { CreatorShowPage } from './CreatorShowPage';
-import { CreatorUpdatePage } from './CreatorUpdatePage';
-import { FavoriteGalleryPage } from './FavoriteGalleryPage';
-import { GallerySearchPage } from './GallerySearchPage';
-import { GalleryUploadPage } from './GalleryUploadPage';
-import { GalleryViewPage } from './GalleryViewPage';
 import { HeirCreatePage } from './HeirCreatePage';
 import { HelloReact } from './HelloReact';
 import { MatchingPage } from './MatchingPage';
 import { MessageListPage } from './MessageListPage';
 import { MessagePage } from './MessagePage';
-import { MyGalleryPage } from './MyGalleryPage';
-
 import { ScoutCheckPage } from './ScoutCheckPage';
 import { ScoutShowPage } from './ScoutShowPage';
-import { SelectedGalleryPage } from './SelectedGalleryPage';
-import { UserGalleryViewPage } from './UserGalleryViewPage';
+import { CreatorShowPage } from './CreatorShowPage';
+import { CreatorUpdatePage } from './CreatorUpdatePage';
+import { CreatorCreatePage } from './CreatorCreatePage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -61,14 +53,6 @@ type MountFn = (node: HTMLElement) => void;
 
 const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
-  GalleryViewPage: (node) => mount(GalleryViewPage, node),
-  UserGalleryViewPage: (node) => mount(UserGalleryViewPage, node),
-  MyGalleryPage: (node) => mount(MyGalleryPage, node),
-  SelectedGalleryPage: (node) => mount(SelectedGalleryPage, node),
-  GallerySearchPage: (node) => mount(GallerySearchPage, node),
-  FavoriteGalleryPage: (node) => mount(FavoriteGalleryPage, node),
-  HeirFavoriteGalleryPage: (node) => mount(HeirFavoriteGalleryPage, node),
-  GalleryUploadPage: (node) => mount(GalleryUploadPage, node),
   CreatorCreatePage: (node) => mount(CreatorCreatePage, node),
   CreatorShowPage: (node) => mount(CreatorShowPage, node),
   CreatorUpdatePage: (node) => mount(CreatorUpdatePage, node),

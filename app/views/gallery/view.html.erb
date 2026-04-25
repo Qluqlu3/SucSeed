@@ -7,5 +7,5 @@
 </div>
 
 <% page_props = { errors: @gallery.errors.full_messages } %>
-<%= content_tag :div, '', data: { react_component: 'GalleryViewPage', props: page_props.to_json } %>
+<div id="gallery-view-page" data-props="<%= page_props.to_json %>"></div>
 
