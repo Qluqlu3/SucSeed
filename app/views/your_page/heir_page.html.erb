@@ -6,5 +6,5 @@
   <% end %>
 </div>
 
-<%= content_tag :div, '', data: { react_component: 'HeirPage', props: @page_props.to_json } %>
+<div id="heir-page" data-props="<%= @page_props.to_json %>"></div>
 

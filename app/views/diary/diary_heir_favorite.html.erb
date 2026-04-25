@@ -6,4 +6,4 @@
   <% end %>
 </div>
 
-<%= content_tag :div, '', data: { react_component: 'DiaryHeirFavoritePage', props: @page_props.to_json } %>
+<div id="diary-heir-favorite-page" data-props="<%= @page_props.to_json %>"></div>

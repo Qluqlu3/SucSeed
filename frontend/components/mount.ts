@@ -29,31 +29,21 @@ import { AppealShowPage } from './AppealShowPage';
 import { CreatorCreatePage } from './CreatorCreatePage';
 import { CreatorShowPage } from './CreatorShowPage';
 import { CreatorUpdatePage } from './CreatorUpdatePage';
-import { DiaryHeirFavoritePage } from './DiaryHeirFavoritePage';
-import { DiaryPostPage } from './DiaryPostPage';
-import { DiarySelectPage } from './DiarySelectPage';
 import { FavoriteGalleryPage } from './FavoriteGalleryPage';
 import { GallerySearchPage } from './GallerySearchPage';
 import { GalleryUploadPage } from './GalleryUploadPage';
 import { GalleryViewPage } from './GalleryViewPage';
 import { HeirCreatePage } from './HeirCreatePage';
-import { HeirFavoriteGalleryPage } from './HeirFavoriteGalleryPage';
-import { HeirPage } from './HeirPage';
-import { HeirShowPage } from './HeirShowPage';
-import { HeirUpdatePage } from './HeirUpdatePage';
 import { HelloReact } from './HelloReact';
 import { MatchingPage } from './MatchingPage';
 import { MessageListPage } from './MessageListPage';
 import { MessagePage } from './MessagePage';
-import { MyDiaryPage } from './MyDiaryPage';
 import { MyGalleryPage } from './MyGalleryPage';
 
 import { ScoutCheckPage } from './ScoutCheckPage';
 import { ScoutShowPage } from './ScoutShowPage';
 import { SelectedGalleryPage } from './SelectedGalleryPage';
 import { UserGalleryViewPage } from './UserGalleryViewPage';
-import { YourDiaryPage } from './YourDiaryPage';
-import { YourPage } from './YourPage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -71,13 +61,6 @@ type MountFn = (node: HTMLElement) => void;
 
 const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
-  YourPage: (node) => mount(YourPage, node),
-  HeirPage: (node) => mount(HeirPage, node),
-  DiarySelectPage: (node) => mount(DiarySelectPage, node),
-  DiaryPostPage: (node) => mount(DiaryPostPage, node),
-  MyDiaryPage: (node) => mount(MyDiaryPage, node),
-  YourDiaryPage: (node) => mount(YourDiaryPage, node),
-  DiaryHeirFavoritePage: (node) => mount(DiaryHeirFavoritePage, node),
   GalleryViewPage: (node) => mount(GalleryViewPage, node),
   UserGalleryViewPage: (node) => mount(UserGalleryViewPage, node),
   MyGalleryPage: (node) => mount(MyGalleryPage, node),
