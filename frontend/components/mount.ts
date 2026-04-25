@@ -14,7 +14,6 @@
 
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
-import { AdminCreatePage } from './AdminCreatePage';
 import { AdminDiaryCommentEditPage } from './AdminDiaryCommentEditPage';
 import { AdminDiaryEditPage } from './AdminDiaryEditPage';
 import { AdminGalleryEditPage } from './AdminGalleryEditPage';
@@ -24,18 +23,7 @@ import { AdminInquiryEditPage } from './AdminInquiryEditPage';
 import { AdminLoginPage } from './AdminLoginPage';
 import { AdminSelectedUserEditPage } from './AdminSelectedUserEditPage';
 import { AdminUserEditPage } from './AdminUserEditPage';
-import { AppealedListPage } from './AppealedListPage';
-import { AppealShowPage } from './AppealShowPage';
-import { HeirCreatePage } from './HeirCreatePage';
 import { HelloReact } from './HelloReact';
-import { MatchingPage } from './MatchingPage';
-import { MessageListPage } from './MessageListPage';
-import { MessagePage } from './MessagePage';
-import { ScoutCheckPage } from './ScoutCheckPage';
-import { ScoutShowPage } from './ScoutShowPage';
-import { CreatorShowPage } from './CreatorShowPage';
-import { CreatorUpdatePage } from './CreatorUpdatePage';
-import { CreatorCreatePage } from './CreatorCreatePage';
 
 // JSON.parse の戻り値は any なので、ジェネリクス関数を経由すると
 // ComponentType<P> に as なしで渡せる。
@@ -53,19 +41,6 @@ type MountFn = (node: HTMLElement) => void;
 
 const COMPONENTS: Record<string, MountFn> = {
   HelloReact: (node) => mount(HelloReact, node),
-  CreatorCreatePage: (node) => mount(CreatorCreatePage, node),
-  CreatorShowPage: (node) => mount(CreatorShowPage, node),
-  CreatorUpdatePage: (node) => mount(CreatorUpdatePage, node),
-  HeirCreatePage: (node) => mount(HeirCreatePage, node),
-  HeirShowPage: (node) => mount(HeirShowPage, node),
-  HeirUpdatePage: (node) => mount(HeirUpdatePage, node),
-  MatchingPage: (node) => mount(MatchingPage, node),
-  AppealShowPage: (node) => mount(AppealShowPage, node),
-  AppealedListPage: (node) => mount(AppealedListPage, node),
-  ScoutCheckPage: (node) => mount(ScoutCheckPage, node),
-  ScoutShowPage: (node) => mount(ScoutShowPage, node),
-  MessagePage: (node) => mount(MessagePage, node),
-  MessageListPage: (node) => mount(MessageListPage, node),
   AdminLoginPage: (node) => mount(AdminLoginPage, node),
   AdminCreatePage: (node) => mount(AdminCreatePage, node),
   AdminIndexPage: (node) => mount(AdminIndexPage, node),

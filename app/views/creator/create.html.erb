@@ -7,4 +7,4 @@
   <% end %>
 </div>
 
-<%= content_tag :div, '', data: { react_component: 'CreatorCreatePage', props: @page_props.to_json } %>
+<div id="creator-create-page" data-props="<%= @page_props.to_json %>"></div>
