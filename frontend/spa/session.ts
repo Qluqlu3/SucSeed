@@ -14,11 +14,10 @@ import {
   type SessionPayload,
 } from './sessionTypes';
 
+// utils/csrf.ts に実装があるため、重複を避けて re-export する
+export { getCsrfToken } from '../utils/csrf';
 // 型は利用側が ./session から import できるよう re-export する
 export type { ArtCategory, LayoutAssets, Role };
-
-export const getCsrfToken = (): string =>
-  document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
 
 export const fetchSessionPayload = async (): Promise<{
   role: Role;
