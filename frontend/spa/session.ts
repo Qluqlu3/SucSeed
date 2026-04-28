@@ -14,9 +14,6 @@ import {
   type SessionPayload,
 } from './sessionTypes';
 
-// 型は利用側が ./session から import できるよう re-export する
-export type { ArtCategory, LayoutAssets, Role };
-
 export const fetchSessionPayload = async (): Promise<{
   role: Role;
   artCategories: ArtCategory[];

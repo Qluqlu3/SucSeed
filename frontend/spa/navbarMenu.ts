@@ -1,4 +1,4 @@
-import type { Role } from './session';
+import type { Role } from './sessionTypes';
 
 export type NavbarMenuItem = {
   href: string;

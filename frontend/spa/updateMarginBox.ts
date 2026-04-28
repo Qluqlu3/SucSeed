@@ -1,4 +1,4 @@
-import type { Role } from './session';
+import type { Role } from './sessionTypes';
 
 export const updateMarginBox = (role: Role): void => {
   const marginBoxEl = document.getElementById('spa-margin-box');
