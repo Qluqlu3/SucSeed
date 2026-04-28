@@ -6,8 +6,8 @@ type PostFormProps = Omit<FormHTMLAttributes<HTMLFormElement>, 'children' | 'met
 };
 
 export const PostForm: FC<PostFormProps> = ({ children, ...props }) => (
-  <form {...props} method="post">
-    <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+  <form {...props} method='post'>
+    <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
     {children}
   </form>
 );
