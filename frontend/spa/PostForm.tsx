@@ -1,5 +1,5 @@
 import type { FC, FormHTMLAttributes, ReactNode } from 'react';
-import { AuthenticityTokenInput } from './AuthenticityTokenInput';
+import { getCsrfToken } from '../utils/csrf';
 
 type PostFormProps = Omit<FormHTMLAttributes<HTMLFormElement>, 'children' | 'method'> & {
   children: ReactNode;
@@ -7,7 +7,7 @@ type PostFormProps = Omit<FormHTMLAttributes<HTMLFormElement>, 'children' | 'met
 
 export const PostForm: FC<PostFormProps> = ({ children, ...props }) => (
   <form {...props} method="post">
-    <AuthenticityTokenInput />
+    <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
     {children}
   </form>
 );
