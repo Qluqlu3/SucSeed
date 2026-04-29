@@ -29,7 +29,7 @@ const HEIR_MENU: NavbarMenuItem[] = [
 
 const USER_MENU: NavbarMenuItem[] = [{ href: '/my_page/my_page', label: 'マイページ' }];
 
-export const getNavbarMenuItems = (role: Role): NavbarMenuItem[] | null => {
+export const getNavbarMenuItems = (role: Role): NavbarMenuItem[] => {
   switch (role) {
     case 'creator':
       return CREATOR_MENU;
@@ -38,6 +38,6 @@ export const getNavbarMenuItems = (role: Role): NavbarMenuItem[] | null => {
     case 'user':
       return USER_MENU;
     default:
-      return null;
+      return [];
   }
 };
