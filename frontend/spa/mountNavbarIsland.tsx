@@ -4,11 +4,6 @@ import { fetchSessionPayload } from './session';
 import { updateMarginBox } from './updateMarginBox';
 
 export const mountNavbarIsland = async (): Promise<void> => {
-  const navbarMountPoint = document.getElementById('spa-navbar');
-  if (!navbarMountPoint) {
-    return;
-  }
-
   try {
     const { role, artCategories, layoutAssets } = await fetchSessionPayload();
     mountIsland(
