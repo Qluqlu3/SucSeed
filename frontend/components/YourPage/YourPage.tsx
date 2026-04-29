@@ -4,7 +4,7 @@
 // お気に入り追加/削除は fetch API で Rails に送信する。
 
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
+import { postJson } from '../../utils/postJson';
 
 function calcAge(birthday: string): number {
   const today = new Date();
@@ -58,18 +58,12 @@ export const YourPage = ({
 
   const handleFavorite = async () => {
     const url = isFavorited ? `/favorite/${targetUserId}/delete` : `/favorite/${targetUserId}/add`;
-    await fetch(url, {
-      method: 'POST',
-      headers: { 'X-CSRF-Token': getCsrfToken() },
-    });
+    await postJson(url);
     setIsFavorited(!isFavorited);
   };
 
   const handleAppeal = async () => {
-    await fetch(`/match/send/${targetUserId}`, {
-      method: 'POST',
-      headers: { 'X-CSRF-Token': getCsrfToken() },
-    });
+    await postJson(`/match/send/${targetUserId}`);
     setIsMatched(true);
   };
 

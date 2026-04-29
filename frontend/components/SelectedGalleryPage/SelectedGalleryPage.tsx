@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { ThreeViewer } from '../../three/ThreeViewer';
-import { getCsrfToken } from '../../utils/csrf';
+import { postJson } from '../../utils/postJson';
 
 interface GalleryCommentItem {
   name: string;
@@ -72,10 +72,7 @@ export const SelectedGalleryPage = ({
 
   const handleGood = async () => {
     if (myGood) return;
-    await fetch(`/gallery/selected/good/${galleryId}`, {
-      method: 'POST',
-      headers: { 'X-CSRF-Token': getCsrfToken() },
-    });
+    await postJson(`/gallery/selected/good/${galleryId}`);
     setMyGood(true);
     setGoodCount((c) => c + 1);
   };
@@ -83,13 +80,8 @@ export const SelectedGalleryPage = ({
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!commentText.trim() || !currentUser) return;
-    const res = await fetch(`/gallery/selected/comment/${galleryId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': getCsrfToken(),
-      },
-      body: JSON.stringify({ gallery_comment: { comment: commentText } }),
+    const res = await postJson(`/gallery/selected/comment/${galleryId}`, {
+      gallery_comment: { comment: commentText },
     });
     if (res.ok || res.redirected) {
       setComments((prev) => [

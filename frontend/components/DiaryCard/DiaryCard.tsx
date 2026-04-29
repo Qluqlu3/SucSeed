@@ -5,7 +5,7 @@
 // いいね・コメント投稿・削除は fetch API で処理するためページ全体の再レンダリングが不要。
 
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
+import { postJson } from '../../utils/postJson';
 
 export interface DiaryComment {
   name: string;
@@ -53,13 +53,7 @@ export const DiaryCard = ({
 
   const handleGood = async () => {
     if (myGood) return;
-    const res = await fetch(`/diary/show/${entry.diaryId}/good`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'X-CSRF-Token': getCsrfToken(),
-      },
-    });
+    const res = await postJson(`/diary/show/${entry.diaryId}/good`);
     if (res.ok) {
       setMyGood(true);
       setGoodCount((c) => c + 1);
@@ -69,14 +63,8 @@ export const DiaryCard = ({
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!commentText.trim()) return;
-    const res = await fetch(`/diary/show/${entry.diaryId}/comment`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': getCsrfToken(),
-      },
-      body: JSON.stringify({ diary_comment: { comment: commentText } }),
+    const res = await postJson(`/diary/show/${entry.diaryId}/comment`, {
+      diary_comment: { comment: commentText },
     });
     if (res.ok) {
       setComments((prev) => [
@@ -93,10 +81,7 @@ export const DiaryCard = ({
   };
 
   const handleDelete = async () => {
-    await fetch(`/diary/post/${entry.diaryId}/delete`, {
-      method: 'POST',
-      headers: { 'X-CSRF-Token': getCsrfToken() },
-    });
+    await postJson(`/diary/post/${entry.diaryId}/delete`);
     setDeleted(true);
   };
 

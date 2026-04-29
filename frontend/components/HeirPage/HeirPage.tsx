@@ -4,7 +4,7 @@
 // スカウト送信は fetch API で Rails に送信する。
 
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
+import { postJson } from '../../utils/postJson';
 
 function calcAge(birthday: string): number {
   const today = new Date();
@@ -43,10 +43,7 @@ export const HeirPage = ({
   const [isScouted, setIsScouted] = useState(initialScouted);
 
   const handleScout = async () => {
-    await fetch(`/scout/send/${targetUserId}`, {
-      method: 'POST',
-      headers: { 'X-CSRF-Token': getCsrfToken() },
-    });
+    await postJson(`/scout/send/${targetUserId}`);
     setIsScouted(true);
   };
 
