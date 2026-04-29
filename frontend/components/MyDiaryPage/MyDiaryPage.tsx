@@ -4,7 +4,7 @@
 // 右コラムに投稿フォームを持ち、投稿後に fetch で日記を追加する。
 
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
+import { postForm } from '../../utils/postForm';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
 
 interface CurrentUser {
@@ -31,11 +31,7 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser }: Pr
     const body = new FormData();
     body.append('diary[content]', content);
     body.append('diary[user_id]', String(currentUser.id));
-    const res = await fetch('/diary/post', {
-      method: 'POST',
-      headers: { 'X-CSRF-Token': getCsrfToken() },
-      body,
-    });
+    const res = await postForm('/diary/post', body);
     if (res.redirected || res.ok) {
       const tempId = Date.now();
       setDiaries((prev) => [
