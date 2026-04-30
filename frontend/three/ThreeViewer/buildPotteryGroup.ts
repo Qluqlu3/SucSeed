@@ -4,7 +4,7 @@
 // React ライフサイクルに依存しないため、このファイル単独でテスト・差し替えが可能。
 
 import * as THREE from 'three';
-import { BASE_COLOR, GLAZE_COLOR, POTTERY_PROFILE } from './dummyPotteryData';
+import type { PotteryData } from './potteryTypes';
 
 interface PotteryGroupResult {
   group: THREE.Group;
@@ -12,12 +12,12 @@ interface PotteryGroupResult {
   dispose: () => void;
 }
 
-export function buildPotteryGroup(): PotteryGroupResult {
+export function buildPotteryGroup(data: PotteryData): PotteryGroupResult {
   // 陶器本体
-  const profilePoints = POTTERY_PROFILE.map(([x, y]) => new THREE.Vector2(x, y));
+  const profilePoints = data.profile.map(([x, y]) => new THREE.Vector2(x, y));
   const geometry = new THREE.LatheGeometry(profilePoints, 64);
   const material = new THREE.MeshStandardMaterial({
-    color: GLAZE_COLOR,
+    color: data.glazeColor,
     roughness: 0.55,
     metalness: 0.05,
   });
@@ -27,7 +27,7 @@ export function buildPotteryGroup(): PotteryGroupResult {
 
   // 台座
   const baseGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.02, 32);
-  const baseMat = new THREE.MeshStandardMaterial({ color: BASE_COLOR, roughness: 0.8 });
+  const baseMat = new THREE.MeshStandardMaterial({ color: data.baseColor, roughness: 0.8 });
   const base = new THREE.Mesh(baseGeo, baseMat);
   base.position.y = -0.5;
   base.receiveShadow = true;

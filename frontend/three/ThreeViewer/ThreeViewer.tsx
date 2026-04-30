@@ -8,6 +8,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { buildPotteryGroup } from './buildPotteryGroup';
+import { DUMMY_POTTERY } from './dummyPotteryData';
 import { setupDragRotation } from './setupDragRotation';
 
 interface Props {
@@ -47,7 +48,7 @@ export const ThreeViewer = ({ width = 400, height = 400 }: Props) => {
     scene.add(fillLight);
 
     // ── 陶器グループをシーンへ追加 ────────────────────────────────────
-    const { group, dispose: disposePottery } = buildPotteryGroup();
+    const { group, dispose: disposePottery } = buildPotteryGroup(DUMMY_POTTERY);
     scene.add(group);
 
     // ── ドラッグ / タッチ回転をセットアップ ───────────────────────────
