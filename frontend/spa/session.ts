@@ -3,6 +3,7 @@
 // DOM / fetch アクセスを伴う副作用関数。
 // 型定義・型ガード（純粋関数）は sessionTypes.ts に分離している。
 
+import { getJson } from '../utils/getJson';
 import {
   type ArtCategory,
   EMPTY_LAYOUT_ASSETS,
@@ -20,11 +21,7 @@ export const fetchSessionPayload = async (): Promise<{
   layoutAssets: LayoutAssets;
 }> => {
   try {
-    const response = await fetch('/api/session', {
-      method: 'GET',
-      credentials: 'same-origin',
-      headers: { Accept: 'application/json' },
-    });
+    const response = await getJson('/api/session');
 
     if (!response.ok) {
       return { role: 'guest', artCategories: [], layoutAssets: EMPTY_LAYOUT_ASSETS };
