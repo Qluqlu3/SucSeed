@@ -98,65 +98,65 @@ export const SelectedGalleryPage = ({
   };
 
   return (
-    <div className='row my-selected-row'>
+    <div className="row my-selected-row">
       {/* メインカラム */}
-      <div className='col-lg-9 selected-gallery-box'>
-        <div className='selected-gallery-box-in-box'>
-          <img src={dataUrl} width='100%' height='850px' alt='ギャラリー画像' />
-          <div className='post-time-text'>{createdAt}</div>
-          <div className='selected-gallery-box-text'>
+      <div className="col-lg-9 selected-gallery-box">
+        <div className="selected-gallery-box-in-box">
+          <img src={dataUrl} width="100%" height="850px" alt="ギャラリー画像" />
+          <div className="post-time-text">{createdAt}</div>
+          <div className="selected-gallery-box-text">
             <p>{comment}</p>
           </div>
         </div>
 
         {/* 3D ビューワー */}
-        <div className='selected-gallery-3d-box'>
-          <div className='selected-gallery-3d-label'>3D プレビュー（ドラッグで回転）</div>
+        <div className="selected-gallery-3d-box">
+          <div className="selected-gallery-3d-label">3D プレビュー（ドラッグで回転）</div>
           <ThreeViewer height={400} />
         </div>
 
         {/* タグ一覧 */}
-        <div className='tag-list-box'>
+        <div className="tag-list-box">
           {tags.map((tag) => (
-            <p key={tag} className='selected-gallery-tag'>
-              <span className='label selected-gallery-tag-in'>{tag}</span>
+            <p key={tag} className="selected-gallery-tag">
+              <span className="label selected-gallery-tag-in">{tag}</span>
             </p>
           ))}
         </div>
 
         {/* アクションボタン */}
-        <div className='icon-btn-box text-right'>
+        <div className="icon-btn-box text-right">
           {/* いいねボタン */}
           <button
-            type='button'
-            className='btn icon-btn'
+            type="button"
+            className="btn icon-btn"
             onClick={handleGood}
             disabled={myGood || !loggedIn}
           >
-            <i className='fas fa-thumbs-up thumbs-up-icon' />
+            <i className="fas fa-thumbs-up thumbs-up-icon" />
             {goodCount}
           </button>
 
           {/* コメントトグル */}
           <button
-            type='button'
-            className='btn icon-btn good-and-comment'
-            data-toggle='collapse'
+            type="button"
+            className="btn icon-btn good-and-comment"
+            data-toggle="collapse"
             data-target={`#gallery-${galleryId}`}
           >
-            <i className='fas fa-comment-alt comment-icon' />
+            <i className="fas fa-comment-alt comment-icon" />
             {comments.length}
           </button>
 
           {/* コメント一覧・フォーム */}
-          <div className='collapse' id={`gallery-${galleryId}`}>
+          <div className="collapse" id={`gallery-${galleryId}`}>
             {comments.map((c) => (
-              <div key={`${c.postTime}-${c.name}`} className='card comment-card text-left'>
-                <div className='card-header comment-header'>
+              <div key={`${c.postTime}-${c.name}`} className="card comment-card text-left">
+                <div className="card-header comment-header">
                   <p>
                     <img
                       src={c.avatarPath}
-                      className='rounded-circle'
+                      className="rounded-circle"
                       width={45}
                       height={45}
                       alt={c.name}
@@ -164,21 +164,21 @@ export const SelectedGalleryPage = ({
                     {c.name}
                   </p>
                 </div>
-                <div className='card-body comment-body'>
+                <div className="card-body comment-body">
                   <p>{c.comment}</p>
                 </div>
-                <div className='card-footer comment-time text-right'>{c.postTime}</div>
+                <div className="card-footer comment-time text-right">{c.postTime}</div>
               </div>
             ))}
 
             {loggedIn && currentUser ? (
               <form onSubmit={handleComment}>
-                <div className='card input-comment-box text-left'>
-                  <div className='card-header input-comment-header'>
-                    <div className='input-comment-header-in'>
+                <div className="card input-comment-box text-left">
+                  <div className="card-header input-comment-header">
+                    <div className="input-comment-header-in">
                       <img
                         src={currentUser.avatarPath}
-                        className='rounded-circle'
+                        className="rounded-circle"
                         width={43}
                         height={43}
                         alt={currentUser.name}
@@ -186,19 +186,19 @@ export const SelectedGalleryPage = ({
                       {currentUser.name}
                     </div>
                   </div>
-                  <div className='card-body input-comment-body'>
+                  <div className="card-body input-comment-body">
                     <textarea
-                      className='form-control'
-                      placeholder='100文字以内'
+                      className="form-control"
+                      placeholder="100文字以内"
                       rows={3}
                       maxLength={100}
                       value={commentText}
                       onChange={(e) => setCommentText(e.target.value)}
                     />
                   </div>
-                  <div className='card-footer input-comment-footer'>
-                    <div className='text-right'>
-                      <button type='submit' className='btn comment-btn'>
+                  <div className="card-footer input-comment-footer">
+                    <div className="text-right">
+                      <button type="submit" className="btn comment-btn">
                         コメント
                       </button>
                     </div>
@@ -206,20 +206,20 @@ export const SelectedGalleryPage = ({
                 </div>
               </form>
             ) : (
-              <p className='no-login-text'>ログインしてください</p>
+              <p className="no-login-text">ログインしてください</p>
             )}
           </div>
         </div>
 
         {/* 関連画像 */}
         {matchTagGalleries.length > 0 && (
-          <div className='match-tag-box'>
-            <div className='match-tag-box-header'>関連画像</div>
-            <div className='row justify-content-center my-match-row'>
+          <div className="match-tag-box">
+            <div className="match-tag-box-header">関連画像</div>
+            <div className="row justify-content-center my-match-row">
               {matchTagGalleries.map((g) => (
-                <div key={g.id} className='col-lg-4 match-tag-content'>
+                <div key={g.id} className="col-lg-4 match-tag-content">
                   <a href={`/gallery/selected/${g.id}`}>
-                    <img src={g.dataUrl} width='100%' height='100%' alt='関連画像' />
+                    <img src={g.dataUrl} width="100%" height="100%" alt="関連画像" />
                   </a>
                 </div>
               ))}
@@ -229,53 +229,53 @@ export const SelectedGalleryPage = ({
       </div>
 
       {/* サイドバー */}
-      <div className='col-lg-3 selected-gallery-side'>
+      <div className="col-lg-3 selected-gallery-side">
         {/* 職人情報 */}
-        <div className='user-info-box'>
-          <div className='user-img-box'>
+        <div className="user-info-box">
+          <div className="user-img-box">
             <a href={`/page/creator/${creator.userId}`}>
-              <div className='user-img'>
+              <div className="user-img">
                 <img
                   src={creator.avatarPath}
-                  className='rounded-circle'
+                  className="rounded-circle"
                   width={180}
                   height={180}
-                  alt='アバター'
+                  alt="アバター"
                 />
               </div>
-              <div className='user-name'>
+              <div className="user-name">
                 <h3>{creator.name}</h3>
               </div>
             </a>
           </div>
-          <div className='card my-card'>
-            <div className='card-header my-card-header'>創作作品名</div>
-            <div className='card-body my-card-body'>
-              <p className='card-text user-info-text'>{creator.title}</p>
+          <div className="card my-card">
+            <div className="card-header my-card-header">創作作品名</div>
+            <div className="card-body my-card-body">
+              <p className="card-text user-info-text">{creator.title}</p>
             </div>
           </div>
-          <div className='card my-card'>
-            <div className='card-header my-card-header'>創業年数</div>
-            <div className='card-body my-card-body'>
-              <p className='card-text user-info-text'>{creator.establishment}年</p>
+          <div className="card my-card">
+            <div className="card-header my-card-header">創業年数</div>
+            <div className="card-body my-card-body">
+              <p className="card-text user-info-text">{creator.establishment}年</p>
             </div>
           </div>
-          <div className='card my-card'>
-            <div className='card-header my-card-header'>従業員数</div>
-            <div className='card-body my-card-body'>
-              <p className='card-text user-info-text'>{creator.employee}人</p>
+          <div className="card my-card">
+            <div className="card-header my-card-header">従業員数</div>
+            <div className="card-body my-card-body">
+              <p className="card-text user-info-text">{creator.employee}人</p>
             </div>
           </div>
         </div>
 
         {/* その他の投稿 */}
         {otherGalleries.length > 0 && (
-          <div className='other-box'>
-            <div className='other-box-header'>その他の投稿</div>
+          <div className="other-box">
+            <div className="other-box-header">その他の投稿</div>
             {otherGalleries.map((g) => (
-              <div key={g.id} className='other-content'>
+              <div key={g.id} className="other-content">
                 <a href={`/gallery/selected/${g.id}`}>
-                  <img src={g.dataUrl} width='100%' height='100%' alt='その他の投稿' />
+                  <img src={g.dataUrl} width="100%" height="100%" alt="その他の投稿" />
                 </a>
               </div>
             ))}

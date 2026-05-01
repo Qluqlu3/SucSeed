@@ -21,8 +21,8 @@ export const LoginFormField: FC<LoginFormFieldProps> = ({
       <label htmlFor={id} className={labelClassName}>
         {label}
       </label>
-      <input id={id} className='form-control' {...inputProps} />
+      <input id={id} className="form-control" {...inputProps} />
     </div>
-    <small className='modal-small'>{helperText}</small>
+    <small className="modal-small">{helperText}</small>
   </>
 );
