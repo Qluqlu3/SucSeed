@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { PostForm } from './PostForm';
+import { PostForm } from '../components/PostForm';
 import type { Role } from './sessionTypes';
 
 type NavbarAuthActionProps = {
@@ -10,10 +10,10 @@ export const NavbarAuthAction: FC<NavbarAuthActionProps> = ({ role }) => {
   if (role === 'guest') {
     return (
       <button
-        type="button"
-        className="btn my-login-btn"
-        data-toggle="modal"
-        data-target="#exampleModalCenter"
+        type='button'
+        className='btn my-login-btn'
+        data-toggle='modal'
+        data-target='#exampleModalCenter'
       >
         ログイン
       </button>
@@ -21,8 +21,8 @@ export const NavbarAuthAction: FC<NavbarAuthActionProps> = ({ role }) => {
   }
 
   return (
-    <PostForm action="/user/logout">
-      <button type="submit" className="btn my-login-btn">
+    <PostForm action='/user/logout'>
+      <button type='submit' className='btn my-login-btn'>
         ログアウト
       </button>
     </PostForm>
