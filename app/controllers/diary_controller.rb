@@ -111,6 +111,7 @@ class DiaryController < ApplicationController
           }
         },
         errors:  @diary.errors.full_messages,
+        flash:   flash.to_h,
         currentUser: {
           id:         @user.id,
           name:       @user.name,

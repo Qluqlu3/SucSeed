@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { postForm } from '../../utils/postForm';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
+import { FlashMessages } from '../FlashMessages';
 
 interface CurrentUser {
   id: number;
@@ -17,9 +18,10 @@ interface Props {
   diaries: DiaryEntry[];
   errors: string[];
   currentUser: CurrentUser;
+  flash: Record<string, string>;
 }
 
-export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser }: Props) => {
+export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flash }: Props) => {
   const [diaries, setDiaries] = useState<DiaryEntry[]>(initialDiaries);
   const [content, setContent] = useState('');
   const [posting, setPosting] = useState(false);
@@ -57,14 +59,16 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser }: Pr
 
   return (
     <>
-      <h1 className="main-title">マイ日記</h1>
+      <h1 className='main-title'>マイ日記</h1>
+
+      <FlashMessages flash={flash} />
 
       {errors.length > 0 && (
-        <div id="error_explanation" className="error-box">
-          <p className="error-title">入力内容にエラーが{errors.length}件あります</p>
-          <ul className="error-index">
+        <div id='error_explanation' className='error-box'>
+          <p className='error-title'>入力内容にエラーが{errors.length}件あります</p>
+          <ul className='error-index'>
             {errors.map((msg) => (
-              <li key={msg} className="error-content">
+              <li key={msg} className='error-content'>
                 {msg}
               </li>
             ))}
@@ -72,12 +76,12 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser }: Pr
         </div>
       )}
 
-      <div className="wrapper">
-        <div className="row my-row">
+      <div className='wrapper'>
+        <div className='row my-row'>
           {/* 左カラム：日記一覧 */}
-          <div className="col-md-9 left-col">
+          <div className='col-md-9 left-col'>
             {diaries.length === 0 ? (
-              <p className="empty-text">まだありません</p>
+              <p className='empty-text'>まだありません</p>
             ) : (
               diaries.map((entry) => (
                 <DiaryCard
@@ -93,13 +97,13 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser }: Pr
           </div>
 
           {/* 右カラム：投稿フォーム */}
-          <div className="col-md-3 right-col">
-            <div className="in-box">
-              <div className="card diary-post-card">
-                <div className="diary-post-card-header">
+          <div className='col-md-3 right-col'>
+            <div className='in-box'>
+              <div className='card diary-post-card'>
+                <div className='diary-post-card-header'>
                   <img
                     src={currentUser.avatarPath}
-                    className="rounded-circle"
+                    className='rounded-circle'
                     width={60}
                     height={60}
                     alt={currentUser.name}
@@ -107,19 +111,19 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser }: Pr
                   {currentUser.name}
                 </div>
                 <form onSubmit={handlePost}>
-                  <div className="diary-post-card-body">
+                  <div className='diary-post-card-body'>
                     <textarea
-                      className="form-control"
-                      placeholder="文章など"
+                      className='form-control'
+                      placeholder='文章など'
                       rows={10}
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                     />
                   </div>
-                  <div className="diary-post-card-footer post-btn">
+                  <div className='diary-post-card-footer post-btn'>
                     <button
-                      type="submit"
-                      className="btn btn-default btn-lg my-btn"
+                      type='submit'
+                      className='btn btn-default btn-lg my-btn'
                       disabled={posting}
                     >
                       投稿
