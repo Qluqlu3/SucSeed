@@ -11,13 +11,9 @@ export const mountPage = <P extends object>(
     return;
   }
 
-  const props: P | undefined = rootElement.dataset.props
+  const props: P = rootElement.dataset.props
     ? (JSON.parse(rootElement.dataset.props) as P)
-    : fallbackProps;
-
-  if (props === undefined) {
-    return;
-  }
+    : (fallbackProps ?? ({} as P));
 
   createRoot(rootElement).render(createElement(Component, props));
 };
