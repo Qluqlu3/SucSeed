@@ -6,6 +6,7 @@ class InquiryController < ApplicationController
       categories: @categories.map { |c| { id: c.id, name: c.name } },
       errors: [],
       prevValues: { inquiryCategoryId: '', content: '' },
+      flash:   flash.to_h,
     }
     render :'inquiry/input_page'
   end
@@ -29,6 +30,7 @@ class InquiryController < ApplicationController
           inquiryCategoryId: @inquiry.inquiry_category_id || '',
           content:           @inquiry.content.to_s,
         },
+        flash:   flash.to_h,
       }
       render action: :input_page
     end

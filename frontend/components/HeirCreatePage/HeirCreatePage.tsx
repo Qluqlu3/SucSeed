@@ -9,6 +9,7 @@
 
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface ArtCategory {
@@ -19,17 +20,21 @@ interface ArtCategory {
 interface Props {
   artCategories: ArtCategory[];
   errors: string[];
+  flash: Record<string, string>;
 }
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const HeirCreatePage = ({ artCategories, errors }: Props) => {
+export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
   const [artCategoryId, setArtCategoryId] = useState<number | ''>('');
   const [introduction, setIntroduction] = useState('');
 
   return (
     <div>
       <h1 className="main-title">後継者情報</h1>
+
+      <FlashMessages flash={flash} />
+
       <div className="wrapper">
         {errors.length > 0 && (
           <div id="error_explanation" className="alert alert-danger">

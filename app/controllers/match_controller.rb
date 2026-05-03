@@ -34,6 +34,7 @@ class MatchController < ApplicationController
             isAddList: m.is_add_list.to_i,
           }
         },
+        flash: flash.to_h,
       }
       render :matching
     else
@@ -104,6 +105,7 @@ class MatchController < ApplicationController
             isOk:      a.is_ok,
           }
         },
+        flash: flash.to_h,
       }
       render :appeal_show
     else

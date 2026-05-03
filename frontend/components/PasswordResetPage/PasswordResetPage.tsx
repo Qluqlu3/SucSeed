@@ -6,14 +6,19 @@
 
 import { getCsrfToken } from '../../utils/csrf';
 
+import { FlashMessages } from '../FlashMessages';
+
 interface Props {
   errors: string[];
+  flash: Record<string, string>;
 }
 
-export const PasswordResetPage = ({ errors }: Props) => {
+export const PasswordResetPage = ({ errors, flash }: Props) => {
   return (
     <>
       <h1 className="text-2xl font-bold mb-4">パスワード変更</h1>
+
+      <FlashMessages flash={flash} />
 
       {errors.length > 0 && (
         <div id="error_explanation" className="alert alert-danger">

@@ -13,6 +13,8 @@
 //   既存の index.scss / application.scss / Bootstrap を引き続き使う。
 //   Tailwind は今後新規コンポーネントから段階的に導入する。
 
+import { FlashMessages } from './FlashMessages';
+
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Creator {
   userId: string;
@@ -30,6 +32,7 @@ interface Props {
   recommend: Creator[] | null;
   loggedIn: boolean;
   isCreator: boolean;
+  flash: Record<string, string>;
 }
 
 // ── ユーティリティ ───────────────────────────────────────────────────
@@ -125,9 +128,11 @@ const ServiceDescription = () => (
 );
 
 // ── メインコンポーネント ──────────────────────────────────────────────
-export const IndexPage = ({ creators, recommend, loggedIn }: Props) => {
+export const IndexPage = ({ creators, recommend, loggedIn, flash }: Props) => {
   return (
     <>
+      <FlashMessages flash={flash} />
+
       {/* メインビジュアル */}
       <div className="text-center main-visual-box">
         <img

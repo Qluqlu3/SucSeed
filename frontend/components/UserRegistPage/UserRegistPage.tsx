@@ -6,9 +6,11 @@
 
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   errors: string[];
+  flash: Record<string, string>;
 }
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -19,7 +21,7 @@ function daysInMonth(year: number, month: number): number {
   return new Date(year, month, 0).getDate();
 }
 
-export const UserRegistPage = ({ errors }: Props) => {
+export const UserRegistPage = ({ errors, flash }: Props) => {
   const [year, setYear] = useState(1989);
   const [month, setMonth] = useState(1);
   const [day, setDay] = useState(1);
@@ -39,6 +41,9 @@ export const UserRegistPage = ({ errors }: Props) => {
   return (
     <>
       <h1 className="main-title">ユーザ登録</h1>
+
+      <FlashMessages flash={flash} />
+
       <div className="all-cover-box">
         <div className="wrapper wrapper1">
           {errors.length > 0 && (

@@ -6,6 +6,8 @@
 // 【data-props に含まれるデータ】
 //   creators : 検索結果の職人一覧
 
+import { FlashMessages } from '../FlashMessages';
+
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Creator {
   userId: string;
@@ -17,6 +19,7 @@ interface Creator {
 
 interface Props {
   creators: Creator[];
+  flash: Record<string, string>;
 }
 
 // ── ユーティリティ ───────────────────────────────────────────────────
@@ -29,8 +32,10 @@ const isNew = (createdAt: string): boolean => {
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const SearchUserPage = ({ creators }: Props) => (
-  <div className="search-page-box">
+export const SearchUserPage = ({ creators, flash }: Props) => (
+  <>
+    <FlashMessages flash={flash} />
+    <div className="search-page-box">
     <div className="row card-group justify-content-center my-row">
       {creators.map((creator) => (
         <div key={creator.userId} className="col-lg-3 my-card-col new-box">
@@ -56,5 +61,6 @@ export const SearchUserPage = ({ creators }: Props) => (
       ))}
       <div className="creator-card-last-bottom" />
     </div>
-  </div>
+    </div>
+  </>
 );

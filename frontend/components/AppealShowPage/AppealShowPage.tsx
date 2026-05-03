@@ -6,6 +6,8 @@
 // 【data-props に含まれるデータ】
 //   appeals : [{ pageId, name, birthday, avatarPath, title, matchTime, isOk }]
 
+import { FlashMessages } from '../FlashMessages';
+
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface AppealUser {
   pageId: string;
@@ -20,6 +22,7 @@ interface AppealUser {
 
 interface Props {
   appeals: AppealUser[];
+  flash: Record<string, string>;
 }
 
 // ── ユーティリティ ───────────────────────────────────────────────────
@@ -44,9 +47,12 @@ function timeAgo(dateStr: string): string {
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const AppealShowPage = ({ appeals }: Props) => (
+export const AppealShowPage = ({ appeals, flash }: Props) => (
   <div>
     <h1 className="main-title">アピール確認</h1>
+
+    <FlashMessages flash={flash} />
+
     <div className="all-cover-box">
       <div className="wrapper">
         {appeals.length === 0 ? (

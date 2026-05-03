@@ -10,6 +10,7 @@
 
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Category {
@@ -24,17 +25,21 @@ interface Props {
     inquiryCategoryId: number | '';
     content: string;
   };
+  flash: Record<string, string>;
 }
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const InquiryInputPage = ({ categories, errors, prevValues }: Props) => {
+export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Props) => {
   const [categoryId, setCategoryId] = useState<number | ''>(prevValues.inquiryCategoryId);
   const [content, setContent] = useState(prevValues.content);
 
   return (
     <div>
       <h1 className="main-title">お問い合わせ</h1>
+
+      <FlashMessages flash={flash} />
+
       <div className="all-cover-box">
         <div className="wrapper">
           {errors.length > 0 && (

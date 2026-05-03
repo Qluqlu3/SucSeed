@@ -5,6 +5,8 @@
 
 import { getCsrfToken } from '../../utils/csrf';
 
+import { FlashMessages } from '../FlashMessages';
+
 interface User {
   name: string;
   email: string;
@@ -16,14 +18,17 @@ interface Props {
   user: User;
   errors: string[];
   isCreator: boolean;
+  flash: Record<string, string>;
 }
 
-export const MyPageUpdatePage = ({ user, errors, isCreator }: Props) => {
+export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
   return (
     <>
       <h1>プロフィール変更</h1>
 
-      {/* フラッシュ・エラー表示は ERB 側で出力済みのため、バリデーションエラーのみ表示 */}
+      <FlashMessages flash={flash} />
+
+      {/* フラッシュ・エラー表示は ERB 側で出力済みのため、バリデーションエラー のみ表示 */}
       {errors.length > 0 && (
         <div id="error_explanation" className="error-box">
           <p className="error-title">入力内容にエラーが{errors.length}件あります</p>

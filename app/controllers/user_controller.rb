@@ -25,7 +25,7 @@ class UserController < ApplicationController
 
   def regist
     @user = User.new
-    @page_props = { errors: [] }
+    @page_props = { errors: [], flash: flash.to_h }
   end
 
   def create
@@ -37,12 +37,13 @@ class UserController < ApplicationController
       flash[:success] = "登録完了"
       redirect_to "/index"
     else
-      @page_props = { errors: @user.errors.full_messages }
+      @page_props = { errors: @user.errors.full_messages, flash: flash.to_h }
       render :regist
     end
   end
 
   def password_forgot
+    @page_props = { flash: flash.to_h }
     render :password_forgot
   end
 
@@ -54,20 +55,23 @@ class UserController < ApplicationController
           redirect_to "/user/password_reset"
         else
           flash.now[:danger] = "入力されたメールアドレスは存在しません"
+          @page_props = { flash: flash.to_h }
           render :password_forgot
         end
       else
         flash.now[:danger] = "メールアドレスを入力してください"
+        @page_props = { flash: flash.to_h }
         render :password_forgot
       end
     rescue => e
+      @page_props = { flash: flash.to_h }
       render :password_forgot
     end
   end
 
   def password_edit
     @user = User.new
-    @page_props = { errors: [] }
+    @page_props = { errors: [], flash: flash.to_h }
     render :password_reset
   end
 
@@ -79,7 +83,7 @@ class UserController < ApplicationController
       render :login
     else
       flash.now[:danger] = "エラー"
-      @page_props = { errors: @user.errors.full_messages }
+      @page_props = { errors: @user.errors.full_messages, flash: flash.to_h }
       render :password_edit
     end
   end

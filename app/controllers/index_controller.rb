@@ -29,7 +29,8 @@ class IndexController < ApplicationController
         }
       },
       loggedIn:  session[:id].present?,
-      isCreator: session[:creator].present?
+      isCreator: session[:creator].present?,
+      flash:     flash.to_h
     }
   end
 

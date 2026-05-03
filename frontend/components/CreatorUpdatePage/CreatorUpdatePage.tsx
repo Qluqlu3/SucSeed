@@ -11,6 +11,7 @@
 
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface ArtCategory {
@@ -33,11 +34,12 @@ interface Props {
   artCategories: ArtCategory[];
   isCreator: boolean;
   errors: string[];
+  flash: Record<string, string>;
 }
 
-// ── コンポーネント ───────────────────────────────────────────────────
+// ── コンポーネント ──────────────────────────────────────────────────────────
 
-export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors }: Props) => {
+export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, flash }: Props) => {
   const [title, setTitle] = useState(creator.title);
   const [artCategoryId, setArtCategoryId] = useState(creator.artCategoryId);
   const [establishment, setEstablishment] = useState(creator.establishment);

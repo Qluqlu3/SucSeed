@@ -9,6 +9,7 @@
 
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface ArtCategory {
@@ -19,11 +20,12 @@ interface ArtCategory {
 interface Props {
   artCategories: ArtCategory[];
   errors: string[];
+  flash: Record<string, string>;
 }
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const CreatorCreatePage = ({ artCategories, errors }: Props) => {
+export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
   const [title, setTitle] = useState('');
   const [artCategoryId, setArtCategoryId] = useState<number | ''>('');
   const [establishment, setEstablishment] = useState<number | ''>('');
@@ -34,6 +36,9 @@ export const CreatorCreatePage = ({ artCategories, errors }: Props) => {
   return (
     <div>
       <h1 className="main-title">制作者情報</h1>
+
+      <FlashMessages flash={flash} />
+
       <div className="all-cover-box">
         <div className="wrapper">
           {errors.length > 0 && (

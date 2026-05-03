@@ -27,7 +27,8 @@ class MyPageController < ApplicationController
         profile:    @user.profile
       },
       profileIncomplete: @created == 1,
-      isCreator:         session[:creator].present?
+      isCreator:         session[:creator].present?,
+      flash:             flash.to_h
     }
   end
 
@@ -42,7 +43,8 @@ class MyPageController < ApplicationController
           avatarPath: @user.avatar_path.to_s
         },
         errors:    [],
-        isCreator: session[:creator].present?
+        isCreator: session[:creator].present?,
+        flash:     flash.to_h
       }
       render :update
     else
@@ -67,7 +69,8 @@ class MyPageController < ApplicationController
           avatarPath: @user.avatar_path.to_s
         },
         errors:    @user.errors.full_messages,
-        isCreator: session[:creator].present?
+        isCreator: session[:creator].present?,
+        flash:     flash.to_h
       }
       render :show
     end

@@ -6,19 +6,25 @@
 // 【data-props に含まれるデータ】
 //   heir : { artCategoryName, introduction }
 
+import { FlashMessages } from '../FlashMessages';
+
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Props {
   heir: {
     artCategoryName: string;
     introduction: string;
   };
+  flash: Record<string, string>;
 }
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const HeirShowPage = ({ heir }: Props) => (
+export const HeirShowPage = ({ heir, flash }: Props) => (
   <div>
     <h1 className="main-title">後継者情報参照</h1>
+
+    <FlashMessages flash={flash} />
+
     <div className="wrapper">
       {/* 編集メニュー */}
       <div className="dropdown dropdown-right">

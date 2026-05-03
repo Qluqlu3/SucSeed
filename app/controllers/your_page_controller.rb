@@ -29,7 +29,8 @@ class YourPageController < ApplicationController
       isOwnPage:       session[:id] == @user.id,
       isCreator:       session[:creator].present?,
       isMatched:       @match.present?,
-      targetUserId:    @user.id
+      targetUserId:    @user.id,
+      flash:           flash.to_h
     }
     render :your_page
   end
@@ -52,7 +53,8 @@ class YourPageController < ApplicationController
       isScouted:    @scout.present?,
       loggedIn:     session[:id].present?,
       isCreator:    session[:creator].present?,
-      targetUserId: params[:id].to_i
+      targetUserId: params[:id].to_i,
+      flash:        flash.to_h
     }
     render :heir_page
   end

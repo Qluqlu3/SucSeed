@@ -6,6 +6,7 @@ class CreatorController < ApplicationController
       @page_props = {
         artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
         errors: [],
+        flash:  flash.to_h,
       }
       render :create
     else
@@ -38,6 +39,7 @@ class CreatorController < ApplicationController
       @page_props = {
         artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
         errors: @creator.errors.full_messages,
+        flash:  flash.to_h,
       }
       render :create
     end
@@ -62,6 +64,7 @@ class CreatorController < ApplicationController
         artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
         isCreator: @is_creator,
         errors: [],
+        flash:  flash.to_h,
       }
       render :update
     end

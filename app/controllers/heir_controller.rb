@@ -7,6 +7,7 @@ class HeirController < ApplicationController
       @page_props = {
         artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
         errors: @heir.errors.full_messages,
+        flash:  flash.to_h,
       }
       render :heir
     elsif session[:id] == nil
@@ -54,6 +55,7 @@ class HeirController < ApplicationController
           },
           artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
           errors: [],
+          flash:  flash.to_h,
         }
         render :update
       else

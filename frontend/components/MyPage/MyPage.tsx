@@ -3,6 +3,8 @@
 // /my_page/my_page ページの React コンポーネント。
 // ログインユーザー自身のプロフィール表示。
 
+import { FlashMessages } from '../FlashMessages';
+
 interface User {
   name: string;
   avatarPath: string;
@@ -16,14 +18,18 @@ interface Props {
   user: User;
   profileIncomplete: boolean; // true = 詳細情報未登録
   isCreator: boolean;
+  flash: Record<string, string>;
 }
 
-export const MyPage = ({ user, profileIncomplete, isCreator }: Props) => {
+export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => {
   const birthday = new Date(user.birthday);
 
   return (
     <>
       <h1>プロフィール</h1>
+
+      <FlashMessages flash={flash} />
+
       <div className="all-cover-box">
         <div className="wrapper">
           {/* 設定ドロップダウン */}

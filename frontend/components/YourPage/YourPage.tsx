@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { postJson } from '../../utils/postJson';
+import { FlashMessages } from '../FlashMessages';
 
 function calcAge(birthday: string): number {
   const today = new Date();
@@ -40,6 +41,7 @@ interface Props {
   isCreator: boolean; // 閲覧者が職人か
   isMatched: boolean; // アピール済みか
   targetUserId: number;
+  flash: Record<string, string>;
 }
 
 export const YourPage = ({
@@ -52,6 +54,7 @@ export const YourPage = ({
   isCreator,
   isMatched: initialMatched,
   targetUserId,
+  flash,
 }: Props) => {
   const [isFavorited, setIsFavorited] = useState(initialFavorited);
   const [isMatched, setIsMatched] = useState(initialMatched);
@@ -69,6 +72,8 @@ export const YourPage = ({
 
   return (
     <div className="wrapper">
+      <FlashMessages flash={flash} />
+
       {/* プロフィールヘッダー */}
       <div>
         <div className="background-img-box">

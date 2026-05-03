@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { postJson } from '../../utils/postJson';
+import { FlashMessages } from '../FlashMessages';
 
 function calcAge(birthday: string): number {
   const today = new Date();
@@ -30,6 +31,7 @@ interface Props {
   loggedIn: boolean;
   isCreator: boolean;
   targetUserId: number;
+  flash: Record<string, string>;
 }
 
 export const HeirPage = ({
@@ -39,6 +41,7 @@ export const HeirPage = ({
   loggedIn,
   isCreator,
   targetUserId,
+  flash,
 }: Props) => {
   const [isScouted, setIsScouted] = useState(initialScouted);
 
@@ -49,6 +52,8 @@ export const HeirPage = ({
 
   return (
     <div className="all-cover-box">
+      <FlashMessages flash={flash} />
+
       {/* プロフィールヘッダー */}
       <div className="background-img-box">
         <img src="/assets/main1.jpg" height="800px" width="100%" alt="背景画像" />

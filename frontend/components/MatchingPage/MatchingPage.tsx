@@ -10,6 +10,8 @@
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
 
+import { FlashMessages } from '../FlashMessages';
+
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface MatchUser {
   id: string;
@@ -23,6 +25,7 @@ interface MatchUser {
 
 interface Props {
   matches: MatchUser[];
+  flash: Record<string, string>;
 }
 
 // ── ユーティリティ ───────────────────────────────────────────────────
@@ -59,9 +62,12 @@ const MessageForm = ({ userId }: { userId: string }) => {
   );
 };
 
-export const MatchingPage = ({ matches }: Props) => (
+export const MatchingPage = ({ matches, flash }: Props) => (
   <div>
     <h1 className="main-title">マッチングリスト</h1>
+
+    <FlashMessages flash={flash} />
+
     <div className="all-cover-box">
       <div className="wrapper">
         {matches.length === 0 ? (
