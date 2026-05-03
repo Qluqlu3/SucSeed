@@ -6,6 +6,7 @@ class DiaryController < ApplicationController
       @user = User.find(session[:id])
       @page_props = {
         errors:     [],
+        flash:      flash.to_h,
         userName:   @user.name,
         avatarPath: @user.avatar_path.to_s
       }
@@ -70,7 +71,8 @@ class DiaryController < ApplicationController
         id:         @user.id,
         name:       @user.name,
         avatarPath: @user.avatar_path.to_s
-      }
+      },
+      flash: flash.to_h
     }
     render :select_diary
   end
@@ -157,7 +159,8 @@ class DiaryController < ApplicationController
         }
       },
       ownerName:   @name.name,
-      currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil
+      currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil,
+      flash: flash.to_h
     }
   end
 
@@ -272,7 +275,8 @@ class DiaryController < ApplicationController
           id:         @user.id,
           name:       @user.name,
           avatarPath: @user.avatar_path.to_s
-        }
+        },
+        flash: flash.to_h
       }
       render :diary_heir_favorite
     else

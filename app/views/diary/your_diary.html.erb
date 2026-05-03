@@ -1,9 +1,3 @@
 <%= stylesheet_link_tag "diary" %>
 
-<div class="alert-box">
-  <% flash.each do |key, value| %>
-    <div class="alert alert-<%= key %>"><%= value %></div>
-  <% end %>
-</div>
-
 <div id="your-diary-page" data-props="<%= @page_props.to_json %>"></div>

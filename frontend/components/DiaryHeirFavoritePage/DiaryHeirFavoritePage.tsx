@@ -4,6 +4,7 @@
 // DiarySelectPage と構造は同じ。後継者ログイン時のみアクセス可能。
 
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
+import { FlashMessages } from '../FlashMessages';
 
 interface CurrentUser {
   id: number;
@@ -14,17 +15,21 @@ interface CurrentUser {
 interface Props {
   diaries: DiaryEntry[];
   currentUser: CurrentUser;
+  flash: Record<string, string>;
 }
 
-export const DiaryHeirFavoritePage = ({ diaries, currentUser }: Props) => {
+export const DiaryHeirFavoritePage = ({ diaries, currentUser, flash }: Props) => {
   return (
     <>
-      <h1 className="main-title">日記</h1>
-      <div className="wrapper">
-        <div className="row my-row heir-row">
-          <div className="col-md-12 left-col heir-favorite-box">
+      <h1 className='main-title'>日記</h1>
+
+      <FlashMessages flash={flash} />
+
+      <div className='wrapper'>
+        <div className='row my-row heir-row'>
+          <div className='col-md-12 left-col heir-favorite-box'>
             {diaries.length === 0 ? (
-              <p className="empty-text">まだありません</p>
+              <p className='empty-text'>まだありません</p>
             ) : (
               diaries.map((entry) => (
                 <DiaryCard

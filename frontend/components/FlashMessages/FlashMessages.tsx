@@ -11,7 +11,7 @@ export const FlashMessages: FC<Props> = ({ flash }) => {
   if (entries.length === 0) return null;
 
   return (
-    <div className='alert-box'>
+    <div className="alert-box">
       {entries.map(([key, message]) => (
         <div key={key} className={`alert alert-${key}`}>
           {message}
