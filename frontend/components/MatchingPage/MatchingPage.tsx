@@ -53,9 +53,9 @@ function timeAgo(dateStr: string): string {
 const MessageForm = ({ userId }: { userId: string }) => {
   const [submitted, setSubmitted] = useState(false);
   return (
-    <form action={`/message/add/${userId}`} method="post" onSubmit={() => setSubmitted(true)}>
-      <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-      <button type="submit" className="btn btn-success yes-btn" disabled={submitted}>
+    <form action={`/message/add/${userId}`} method='post' onSubmit={() => setSubmitted(true)}>
+      <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+      <button type='submit' className='btn btn-success yes-btn' disabled={submitted}>
         メッセージ
       </button>
     </form>
@@ -64,35 +64,35 @@ const MessageForm = ({ userId }: { userId: string }) => {
 
 export const MatchingPage = ({ matches, flash }: Props) => (
   <div>
-    <h1 className="main-title">マッチングリスト</h1>
+    <h1 className='main-title'>マッチングリスト</h1>
 
     <FlashMessages flash={flash} />
 
-    <div className="all-cover-box">
-      <div className="wrapper">
+    <div className='all-cover-box'>
+      <div className='wrapper'>
         {matches.length === 0 ? (
-          <p className="empty-text">まだありません</p>
+          <p className='empty-text'>まだありません</p>
         ) : (
           matches.map((match) => (
-            <div key={match.id} className="card list-card">
-              <div className="card-header list-card-header">
+            <div key={match.id} className='card list-card'>
+              <div className='card-header list-card-header'>
                 {match.matchTime}&nbsp;{timeAgo(match.matchTime)}前
               </div>
               <a href={`/page/heir/${match.id}`}>
-                <div className="card-body list-card-body">
-                  <div className="row">
-                    <div className="col-md-5 left-col text-center">
+                <div className='card-body list-card-body'>
+                  <div className='row'>
+                    <div className='col-md-5 left-col text-center'>
                       <img
                         src={match.avatarPath}
-                        className="rounded-circle"
+                        className='rounded-circle'
                         width={230}
                         height={230}
                         alt={match.name}
                       />
                     </div>
-                    <div className="col-md-7 right-col">
-                      <p className="name-text">{match.name}</p>
-                      <p className="age-text">
+                    <div className='col-md-7 right-col'>
+                      <p className='name-text'>{match.name}</p>
+                      <p className='age-text'>
                         {calcAge(match.birthday)}
                         <small>歳</small>
                       </p>
@@ -100,7 +100,7 @@ export const MatchingPage = ({ matches, flash }: Props) => (
                   </div>
                 </div>
               </a>
-              <div className="card-footer list-card-footer">
+              <div className='card-footer list-card-footer'>
                 {match.isAddList === 0 && <MessageForm userId={match.id} />}
               </div>
             </div>
