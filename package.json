@@ -2,7 +2,7 @@
   "name": "SucSeed",
   "private": true,
   "devDependencies": {
-    "@biomejs/biome": "^2.4.7",
+    "@biomejs/biome": "^2.4.14",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.183.1",
