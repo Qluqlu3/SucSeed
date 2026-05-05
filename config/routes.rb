@@ -58,7 +58,8 @@ Rails.application.routes.draw do
 
   #管理者
   get 'admin/login' => 'admin#login'
-  get 'admin/create/07392' => 'admin#create'
+  # HTTP Basic 認証で保護済み（admin_controller#require_basic_auth）
+  get 'admin/create' => 'admin#create'
   get 'admin/index' => 'admin_edit#index'
   get 'admin/management/user' => 'admin_edit#user'
   get 'admin/user/edit/:id' => 'admin_edit#user_edit_show'

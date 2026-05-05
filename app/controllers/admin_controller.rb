@@ -1,4 +1,6 @@
 class AdminController < ApplicationController
+  before_action :require_basic_auth, only: [:create, :create_user]
+
   def login
     @admin = Admin.new
     render :admin_login
@@ -33,9 +35,16 @@ class AdminController < ApplicationController
       render action: :admin_create
     end
   end
-end
 
-private
-def admin_create_params
-  params.require(:admin).permit(:name, :user_id, :password, :password_confirmation)
+  private
+
+  def require_basic_auth
+    authenticate_or_request_with_http_basic('Admin Setup') do |_user, password|
+      password == ENV.fetch('ADMIN_CREATE_PASSWORD', nil)
+    end
+  end
+
+  def admin_create_params
+    params.require(:admin).permit(:name, :user_id, :password, :password_confirmation)
+  end
 end

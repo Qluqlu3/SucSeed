@@ -13,8 +13,6 @@ gem 'puma', '~> 6.0'
 # sass-rails 5.x は sprockets 4 / Rails 7 と非互換。sassc-rails は drop-in 代替
 gem 'sassc-rails'
 # uglifier は ExecJS(Node.js)が必要で環境依存が強い。Rails 7 では不要
-# CoffeeScript ファイル (.coffee) がまだ残っているため coffee-rails は維持
-gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -84,8 +82,6 @@ gem 'acts-as-taggable-on', '>= 6.0.0'
 gem 'guard-livereload', '>= 2.5.2'
 
 gem 'better_errors', '>= 2.5.0'
-
-gem 'activeadmin', '>= 1.3.1'
 
 # font-awesome-sass 5.x は旧 Ruby Sass gem に依存→廃止済み。6.x で sassc 対応
 gem 'font-awesome-sass', '~> 6.0'
