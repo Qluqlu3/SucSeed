@@ -2,33 +2,21 @@
 @import "font-awesome";
 @import "bootstrap";
 
-// Extra small devices (portrait phones, less than 576px)
-@media (max-width: 575.98px) {}
+// ページ別スタイル（ERB 削除に伴い application.scss に統合）
+@import "admin";
+@import "admin_edit";
+@import "creator";
+@import "diary";
+@import "gallery";
+@import "heir";
+@import "index";
+@import "inquiry";
+@import "match";
+@import "message";
+@import "my_page";
+@import "user";
+@import "your_page";
 
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) and (max-width: 767.98px) {  }
-
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) and (max-width: 991.98px) { }
-
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) and (max-width: 1199.98px) { }
-
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {  }
-@include media-breakpoint-down(xs) {
-}
-@include media-breakpoint-down(sm) {  }
-@include media-breakpoint-down(md) {  }
-@include media-breakpoint-down(lg) {  }
-// No media query necessary for xl breakpoint as it has no upper bound on its width
-
-// Example: Style from medium breakpoint and down
-@include media-breakpoint-down(md) {
-  .custom-class {
-    display: block;
-  }
-}
 
 div, h3, h4, p, small {
   margin: 0;
