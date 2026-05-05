@@ -216,11 +216,11 @@ class GalleryController < ApplicationController
 end
 
 private
+
 def gallery_params
   params.require(:gallery).permit(:user_id, :data, :comment, :tag_list)
 end
 
-private
 def gallery_comment_params
   params.require(:gallery_comment).permit(:gallery_id, :user_id, :comment)
 end
