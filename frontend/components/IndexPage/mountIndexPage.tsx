@@ -6,4 +6,5 @@ mountPage('index-page', IndexPage, {
   recommend: null,
   loggedIn: false,
   isCreator: false,
+  flash: {},
 });

@@ -13,7 +13,7 @@
 //   既存の index.scss / application.scss / Bootstrap を引き続き使う。
 //   Tailwind は今後新規コンポーネントから段階的に導入する。
 
-import { FlashMessages } from './FlashMessages';
+import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Creator {

@@ -15,4 +15,5 @@ mountPage('selected-gallery-page', SelectedGalleryPage, {
   creator: { userId: 0, name: '', avatarPath: '', title: '', establishment: 0, employee: 0 },
   loggedIn: false,
   currentUser: null,
+  flash: {},
 });

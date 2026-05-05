@@ -6,4 +6,5 @@ mountPage<ComponentProps<typeof InquiryInputPage>>('inquiry-input-page', Inquiry
   categories: [],
   errors: [],
   prevValues: { inquiryCategoryId: '', content: '' },
+  flash: {},
 });

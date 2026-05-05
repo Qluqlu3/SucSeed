@@ -4,4 +4,5 @@ import { SearchUserPage } from './SearchUserPage';
 
 mountPage<ComponentProps<typeof SearchUserPage>>('search-user-page', SearchUserPage, {
   creators: [],
+  flash: {},
 });

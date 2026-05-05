@@ -7,4 +7,9 @@ mountPage('your-page', YourPage, {
   artCategoryName: '',
   isFavorited: false,
   loggedIn: false,
+  isOwnPage: false,
+  isCreator: false,
+  isMatched: false,
+  targetUserId: 0,
+  flash: {},
 });

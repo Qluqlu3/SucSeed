@@ -4,6 +4,7 @@ import { CreatorUpdatePage } from './CreatorUpdatePage';
 mountPage('creator-update-page', CreatorUpdatePage, {
   creator: {
     title: '',
+    artCategoryId: 0,
     categoryName: '',
     establishment: 0,
     employee: 0,
@@ -13,4 +14,5 @@ mountPage('creator-update-page', CreatorUpdatePage, {
   artCategories: [],
   isCreator: false,
   errors: [],
+  flash: {},
 });

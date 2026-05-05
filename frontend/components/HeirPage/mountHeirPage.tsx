@@ -8,4 +8,5 @@ mountPage('heir-page', HeirPage, {
   loggedIn: false,
   isCreator: false,
   targetUserId: 0,
+  flash: {},
 });

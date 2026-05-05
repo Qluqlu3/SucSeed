@@ -5,4 +5,5 @@ mountPage('my-diary-page', MyDiaryPage, {
   diaries: [],
   errors: [],
   currentUser: { id: 0, name: '', avatarPath: '' },
+  flash: {},
 });
