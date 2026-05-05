@@ -4,13 +4,17 @@
 // POST /gallery/view → gallery#upload へ送信。
 
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   errors: string[];
+  flash: Record<string, string>;
 }
 
-export const GalleryViewPage = ({ errors }: Props) => (
+export const GalleryViewPage = ({ errors, flash }: Props) => (
   <>
+    <FlashMessages flash={flash} />
+
     {errors.length > 0 && (
       <div className="alert alert-danger">
         <ul>

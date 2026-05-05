@@ -5,15 +5,19 @@
 
 import { getCsrfToken } from '../../utils/csrf';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
+import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   galleries: GalleryItem[];
   errors: string[];
+  flash: Record<string, string>;
 }
 
-export const MyGalleryPage = ({ galleries, errors }: Props) => (
+export const MyGalleryPage = ({ galleries, errors, flash }: Props) => (
   <>
     <h1 className="main-title">マイギャラリー</h1>
+
+    <FlashMessages flash={flash} />
 
     {errors.length > 0 && (
       <div className="alert alert-danger">

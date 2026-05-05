@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { ThreeViewer } from '../../three/ThreeViewer';
 import { postJson } from '../../utils/postJson';
+import { FlashMessages } from '../FlashMessages';
 
 interface GalleryCommentItem {
   name: string;
@@ -48,6 +49,7 @@ interface Props {
   creator: Creator;
   loggedIn: boolean;
   currentUser: CurrentUser | null;
+  flash: Record<string, string>;
 }
 
 export const SelectedGalleryPage = ({
@@ -64,6 +66,7 @@ export const SelectedGalleryPage = ({
   creator,
   loggedIn,
   currentUser,
+  flash,
 }: Props) => {
   const [goodCount, setGoodCount] = useState(initialGoodCount);
   const [myGood, setMyGood] = useState(initialMyGood);
@@ -98,7 +101,10 @@ export const SelectedGalleryPage = ({
   };
 
   return (
-    <div className="row my-selected-row">
+    <>
+      <FlashMessages flash={flash} />
+
+      <div className="row my-selected-row">
       {/* メインカラム */}
       <div className="col-lg-9 selected-gallery-box">
         <div className="selected-gallery-box-in-box">
@@ -282,6 +288,7 @@ export const SelectedGalleryPage = ({
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };

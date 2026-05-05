@@ -1,12 +1,16 @@
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   errors: string[];
+  flash: Record<string, string>;
 }
 
-export const GalleryUploadPage = ({ errors }: Props) => (
+export const GalleryUploadPage = ({ errors, flash }: Props) => (
   <>
     <h1 className="main-title">ギャラリー アップロード</h1>
+
+    <FlashMessages flash={flash} />
 
     {errors.length > 0 && (
       <div className="alert alert-danger">

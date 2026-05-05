@@ -1,15 +1,19 @@
 import { getCsrfToken } from '../../utils/csrf';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
+import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   userName: string;
   userId: number;
   galleries: GalleryItem[];
+  flash: Record<string, string>;
 }
 
-export const GallerySearchPage = ({ userName, userId, galleries }: Props) => (
+export const GallerySearchPage = ({ userName, userId, galleries, flash }: Props) => (
   <>
     <h1 className="main-title">{userName}さんのギャラリー</h1>
+
+    <FlashMessages flash={flash} />
 
     <div className="gallery-search-box">
       <form

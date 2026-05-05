@@ -17,7 +17,8 @@ class GalleryController < ApplicationController
             myGood:    @my_good.any? { |mg| mg.id == g.page_id }
           }
         },
-        errors: @gallery.errors.full_messages
+        errors: @gallery.errors.full_messages,
+        flash:  flash.to_h
       }
       render :favorite_gallery
     else
@@ -42,7 +43,8 @@ class GalleryController < ApplicationController
             myGood:    @my_good.any? { |mg| mg.id == g.id }
           }
         },
-        errors: @gallery.errors.full_messages
+        errors: @gallery.errors.full_messages,
+        flash:  flash.to_h
       }
       render :my_gallery
     else
@@ -68,7 +70,8 @@ class GalleryController < ApplicationController
           goodCount: @good_count[g.id] || 0,
           myGood:    @my_good.any? { |mg| mg.id == g.id }
         }
-      }
+      },
+      flash: flash.to_h
     }
     render :user_gallery_view
   end
@@ -125,7 +128,8 @@ class GalleryController < ApplicationController
         employee:      @selected_gallery_user.employee
       },
       loggedIn:    session[:id].present?,
-      currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil
+      currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil,
+      flash:        flash.to_h
     }
   end
 
@@ -146,7 +150,8 @@ class GalleryController < ApplicationController
             goodCount: 0,
             myGood:    false
           }
-        }
+        },
+        flash: flash.to_h
       }
       render :gallery_search_user_tag
     end
@@ -165,7 +170,8 @@ class GalleryController < ApplicationController
             goodCount: 0,
             myGood:    false
           }
-        }
+        },
+        flash: flash.to_h
       }
       render :heir_favorite_gallery
     else
