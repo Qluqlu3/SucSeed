@@ -1,9 +1,9 @@
 class MyPageController < ApplicationController
   def my_page
-    if session[:id] == nil
+    if session[:id].nil?
       flash.now[:danger] = "ログインしてください"
       redirect_to "/index"
-    elsif session[:creator] != nil
+    elsif session[:creator].present?
       if !Creator.find_by(user_id: session[:id])
         @created = 1
       else
@@ -33,7 +33,7 @@ class MyPageController < ApplicationController
   end
 
   def show
-    if session[:id] != nil
+    if session[:id].present?
       @user = User.find(session[:id])
       @page_props = {
         user: {

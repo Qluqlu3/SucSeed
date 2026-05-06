@@ -1,7 +1,7 @@
 class DiaryController < ApplicationController
   #投稿フォーム表示
   def regist
-    if session[:creator] != nil
+    if session[:creator].present?
       @diary = Diary.new
       @user = User.find(session[:id])
       @page_props = {
@@ -17,7 +17,7 @@ class DiaryController < ApplicationController
 
   #投稿+画像もあればアップロード
   def post
-    if session[:creator] != nil
+    if session[:creator].present?
       params[:diary][:user_id] = session[:id]
       @diary = Diary.new(diary_params)
       if @diary.save
@@ -79,7 +79,7 @@ class DiaryController < ApplicationController
 
   #マイ日記
   def my_diary
-    if session[:id] != nil
+    if session[:id].present?
       @diary_user = User.joins(:diaries).where(diaries: {user_id: session[:id]}).select("diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.*").order("diaries.created_at DESC")
       @user = User.find_by(id: session[:id])
       @comment = User.joins(:diary_comments).select("diary_comments.*, diary_comments.created_at AS post_time, users.*")
@@ -128,7 +128,7 @@ class DiaryController < ApplicationController
   #相手ページからの日記
   def your_diary
     @diary_user = User.joins(:diaries).where(diaries: {user_id: params[:id]}).select("diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.*").order("diaries.created_at DESC")
-    if session[:id] != nil
+    if session[:id].present?
       @user = User.find(session[:id])
     end
     @comment = User.joins(:diary_comments).select("diary_comments.*, diary_comments.created_at AS post_time, users.*")
@@ -166,7 +166,7 @@ class DiaryController < ApplicationController
 
   #投稿削除
   def post_delete
-    if session[:id] != nil
+    if session[:id].present?
       if Diary.where(id: params[:id]).where(user_id: session[:id]).destroy_all
         flash[:success] = "success"
         redirect_to "/diary/my_diary"
@@ -230,7 +230,7 @@ class DiaryController < ApplicationController
   end
 
   def comment_delete
-    if session[:id] != nil
+    if session[:id].present?
     else
 
     end
@@ -238,7 +238,7 @@ class DiaryController < ApplicationController
 
   #後継者側お気に入り
   def heir_favorite_diary
-    if session[:id] != nil
+    if session[:id].present?
       @diary_user = User.joins(:diaries).where(diaries: {user_id: session[:id]}).or(User.joins(:diaries).where(diaries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.*").order("diaries.created_at DESC")
       #@diary_user = User.find_by_sql('SELECT diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.* FROM users INNER JOIN diaries ON diaries.user_id = users.id INNER JOIN favorites ON favorites.user_id = users.id WHERE(diaries.user_id = ?) OR (diaries.user_id IN (SELECT favorites.favorite_user_id FROM favorites WHERE favorites.user_id = ?)) ORDER BY(diaries.created_at DESC)',session[:id], session[:id])
       @user = User.find(session[:id])

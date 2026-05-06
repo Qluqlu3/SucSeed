@@ -1,6 +1,6 @@
 class UserController < ApplicationController
   def login
-    if session[:id] == nil
+    if session[:id].nil?
       user = User.find_by(email: params[:session][:email].downcase)
       if user && user.authenticate(params[:session][:password])
         session[:id] = user[:id]
@@ -89,7 +89,7 @@ class UserController < ApplicationController
   end
 
   def email_certified_show
-    if session[:id] != nil
+    if session[:id].present?
       @user = User.find_by("id = ?", params[:id])
       @page_props = { userName: @user.name, userId: session[:id] }
       render :email_certified

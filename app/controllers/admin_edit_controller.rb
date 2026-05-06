@@ -184,7 +184,7 @@ class AdminEditController < ApplicationController
 
   private
   def session_check
-    if session[:admin] == nil
+    if session[:admin].nil?
       redirect_to "/admin/index"
     end
   end

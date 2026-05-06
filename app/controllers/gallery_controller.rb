@@ -2,7 +2,7 @@ class GalleryController < ApplicationController
 
   #お気に入りユーザのギャラリー
   def favorite_gallery
-    if session[:id] != nil
+    if session[:id].present?
       @gallery = Gallery.new
       @favorite_gallery = Gallery.joins(:user).select("users.*, galleries.*, galleries.id AS page_id").where(galleries: {user_id: session[:id]}).or(Gallery.joins(:user).select("users.*, galleries.*, galleries.id AS page_id").where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).order("galleries.created_at DESC")
       @good_count = GalleryGood.group(:gallery_id).count
@@ -28,7 +28,7 @@ class GalleryController < ApplicationController
 
   #マイギャラリー
   def my_gallery
-    if session[:id] != nil
+    if session[:id].present?
       @gallery = Gallery.new
       @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: session[:id]}).or(Gallery.joins(:gallery_goods).where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("galleries.id AS id").order("galleries.created_at DESC")
       @my_gallery = Gallery.where(user_id: session[:id]).order("created_at DESC")
@@ -78,7 +78,7 @@ class GalleryController < ApplicationController
 
   #投稿 post
   def upload
-    if session[:creator] != nil
+    if session[:creator].present?
       params[:gallery][:user_id] = session[:creator]
       @gallery = Gallery.new(gallery_params)
       if @gallery.save
@@ -159,7 +159,7 @@ class GalleryController < ApplicationController
 
   #後継者側のお気に入り
   def heir_favorite_gallery
-    if session[:id] != nil
+    if session[:id].present?
       @favorite_gallery = Gallery.joins(:user).select("users.*, galleries.*, galleries.id AS page_id").where(galleries: {user_id: session[:id]}).or(Gallery.joins(:user).select("users.*, galleries.*, galleries.id AS page_id").where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).order("galleries.created_at DESC")
       @page_props = {
         galleries: @favorite_gallery.map { |g|
@@ -180,7 +180,7 @@ class GalleryController < ApplicationController
   end
 
   def gallery_good
-    if session[:id] != nil
+    if session[:id].present?
       @selected_gallery = GalleryGood.new(gallery_id: params[:id], user_id: session[:id])
       if @selected_gallery.save
         flash[:success] = "success"
@@ -196,7 +196,7 @@ class GalleryController < ApplicationController
   end
 
   def gallery_comment
-    if session[:id] != nil
+    if session[:id].present?
       params[:gallery_comment][:gallery_id] = params[:id]
       params[:gallery_comment][:user_id] = session[:id]
       @selected_gallery = GalleryComment.new(gallery_comment_params)

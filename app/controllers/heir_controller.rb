@@ -1,7 +1,7 @@
 class HeirController < ApplicationController
   #詳細情報入力振り分け
   def heir_show
-    if session[:id] != nil && !Heir.find_by(user_id: session[:id])
+    if session[:id].present? && !Heir.find_by(user_id: session[:id])
       @heir = Heir.new
       @art_categories = ArtCategory.all
       @page_props = {
@@ -10,7 +10,7 @@ class HeirController < ApplicationController
         flash:  flash.to_h,
       }
       render :heir
-    elsif session[:id] == nil
+    elsif session[:id].nil?
       redirect_to "/index"
     else
       @heir = Heir.find_by(user_id: session[:id])
@@ -27,7 +27,7 @@ class HeirController < ApplicationController
 
   #詳細情報入力
   def heir_create
-    if session[:id] != nil
+    if session[:id].present?
       params[:heir][:user_id] = session[:id]
       @heir = Heir.new(heir_params)
       if @heir.save
@@ -45,7 +45,7 @@ class HeirController < ApplicationController
   #更新ページ
   def heir_edit
     if !!Heir.find_by(user_id: session[:id])
-      if session[:id] != nil
+      if session[:id].present?
         @heir = Heir.find_by(user_id: session[:id])
         @art_categories = ArtCategory.all
         @page_props = {
@@ -68,7 +68,7 @@ class HeirController < ApplicationController
 
   #更新
   def heir_update
-    if session[:id] != nil
+    if session[:id].present?
       @heir = Heir.find_by(user_id: session[:id])
       if @heir.update(art_category_id: params[:heir][:art_category_id], introduction: params[:heir][:introduction])
         flash[:success] = "success"

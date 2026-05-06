@@ -12,7 +12,7 @@ class InquiryController < ApplicationController
   end
 
   def send_inquiry
-    if session[:id] != nil
+    if session[:id].present?
       params[:inquiry][:user_id] = session[:id]
     else
       params[:inquiry][:user_id] = nil

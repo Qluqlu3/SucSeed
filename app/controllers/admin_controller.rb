@@ -7,7 +7,7 @@ class AdminController < ApplicationController
   end
 
   def login_challenge
-    if session[:admin] == nil
+    if session[:admin].nil?
       admin = Admin.find_by(user_id: params[:admin][:user_id].downcase)
       if admin && admin.authenticate(params[:admin][:password])
         session[:admin] = admin[:id]

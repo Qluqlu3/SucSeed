@@ -1,6 +1,6 @@
 class CreatorController < ApplicationController
   def show
-    if session[:creator] != nil && !Creator.find_by(user_id: session[:id])
+    if session[:creator].present? && !Creator.find_by(user_id: session[:id])
       @creator = Creator.new
       @art_categories = ArtCategory.all
       @page_props = {
@@ -46,7 +46,7 @@ class CreatorController < ApplicationController
   end
 
   def edit
-    if session[:creator] != nil
+    if session[:creator].present?
       @creator = ArtCategory.joins(:creators).select("creators.*, art_categories.name").find_by(creators: {user_id: session[:id]})
       @art_categories = ArtCategory.all
       @is_creator = session[:creator].present?
@@ -81,7 +81,7 @@ class CreatorController < ApplicationController
   end
 
   # def data
-  #   if session[:creator] != nil
+  #   if session[:creator].present?
   #     @count = CreatorImage.where(user_id: session[:id]).count
   #     if @count > 0
   #       @get_image = CreatorImage.where(user_id: session[:id])
@@ -94,7 +94,7 @@ class CreatorController < ApplicationController
   # end
 
   # def upload
-  #   if session[:creator] != nil
+  #   if session[:creator].present?
   #     params[:creator_image][:user_id] = session[:id]
   #     @creator_image = CreatorImage.new(image_params)
   #     if @creator_image.save

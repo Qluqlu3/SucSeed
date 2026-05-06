@@ -1,11 +1,11 @@
 class MessageController < ApplicationController
   #表示
   def view
-    if session[:id] != nil && session[:creator] != nil
+    if session[:id].present? && session[:creator].present?
       @message_list = User.joins(:message_lists).select("users.name, users.avatar_path, users.id").where(message_lists: {creator_user_id: session[:id]}).order("message_lists.updated_at DESC")
       @page_props = { messageLists: @message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path } } }
       render :message_list
-    elsif  session[:id] != nil && session[:creator] == nil
+    elsif  session[:id].present? && session[:creator].nil?
       @message_list = User.joins("inner join message_lists on users.id = message_lists.creator_user_id").select("users.name, users.avatar_path, users.id").where(message_lists: {heir_user_id: session[:id]}).order("message_lists.updated_at DESC")
       @page_props = { messageLists: @message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path } } }
       render :message_list
@@ -16,14 +16,14 @@ class MessageController < ApplicationController
 
   #新規追加
   def message_list_add
-    if session[:creator] != nil
+    if session[:creator].present?
       message_list = MessageList.new(creator_user_id: session[:id], heir_user_id: params[:id]);
        if message_list.save
          redirect_to "/message/list"
        else
         flash.now[:information] = "追加済み"
        end
-    elsif session[:id] != nil && session[:creator] == nil
+    elsif session[:id].present? && session[:creator].nil?
       message_list = MessageList.new(heir_user_id: params[:id], creator_user_id: session[:id])
       if message_list.save
         redirect_to "/message/list"
@@ -39,7 +39,7 @@ class MessageController < ApplicationController
 
   #履歴取得
   def get_history
-    if session[:id] != nil && session[:creator] == nil
+    if session[:id].present? && session[:creator].nil?
       @message = Message.new
       @message_list = User.joins("inner join message_lists on users.id = message_lists.creator_user_id").select("users.name, users.avatar_path, users.id").where(message_lists: {heir_user_id: session[:id]}).order("message_lists.updated_at DESC")
       @message_history = Message.where(send_user_id: session[:id]).where(receive_user_id: params[:id]).or(Message.where(send_user_id: params[:id]).where(receive_user_id: session[:id])).order("messages.created_at DESC")
@@ -47,7 +47,7 @@ class MessageController < ApplicationController
       @to_user = User.find(params[:id])
       @page_props = build_message_page_props(@message_list, @message_history, @from_user, @to_user)
       render :message
-    elsif session[:id] != nil && session[:creator] != nil
+    elsif session[:id].present? && session[:creator].present?
       @message = Message.new
       @message_list = User.joins(:message_lists).select("users.name, users.avatar_path, users.id").where(message_lists: {creator_user_id: session[:id]}).order("message_lists.updated_at DESC")
       @message_history = Message.where(send_user_id: session[:id]).where(receive_user_id: params[:id]).or(Message.where(send_user_id: params[:id]).where(receive_user_id: session[:id])).order("messages.created_at DESC")
@@ -63,7 +63,7 @@ class MessageController < ApplicationController
 
   #送信
   def send_message
-    if session[:id] != nil
+    if session[:id].present?
       params[:message][:send_user_id] = session[:id]
       params[:message][:receive_user_id] = params[:id]
       @message = Message.new(message_params)
@@ -76,10 +76,10 @@ class MessageController < ApplicationController
       else
         flash[:danger] = "エラー"
       end
-      if session[:id] != nil && session[:creator] != nil
+      if session[:id].present? && session[:creator].present?
         @message_history = Message.where(send_user_id: session[:id]).where(receive_user_id: params[:id]).or(Message.where(send_user_id: params[:id]).where(receive_user_id: session[:id])).order("messages.created_at ASC")
         @message_list = User.joins(:message_lists).select("users.*, users.id AS user, message_lists.*").where(message_lists: {creator_user_id: session[:id]}).order("message_lists.updated_at DESC")
-      elsif session[:id] != nil && session[:creator] == nil
+      elsif session[:id].present? && session[:creator].nil?
         @message_list = User.joins("inner join message_lists on users.id = message_lists.creator_user_id").select("users.*, users.id AS user, message_lists.*").where(message_lists: {heir_user_id: session[:id]}).order("message_lists.updated_at DESC")
         @message_history = Message.where(send_user_id: session[:id]).where(receive_user_id: params[:id]).or(Message.where(send_user_id: params[:id]).where(receive_user_id: session[:id])).order("messages.created_at ASC")
       end
