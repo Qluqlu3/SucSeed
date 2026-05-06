@@ -83,7 +83,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* 詳細情報未登録アラート */}
           {profileIncomplete && (
-            <div className='alert alert-warning creator-alert-box'>
+            <div className='px-4 py-3 rounded mb-2 text-xl bg-yellow-100 border border-yellow-400 text-yellow-800'>
               ユーザーの詳細情報登録お願いします。
             </div>
           )}
