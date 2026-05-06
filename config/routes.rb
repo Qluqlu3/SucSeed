@@ -93,7 +93,6 @@ Rails.application.routes.draw do
   post 'diary/show/:id/good' => 'diary#good'
   post 'diary/show/:id/comment' => 'diary#comment'
   post 'diary/post/:id/delete' => 'diary#post_delete'
-  post 'diary/good-js' => 'diary#good'
 
   #お気に入り
   post 'favorite/:id/add' => 'favorite#add'

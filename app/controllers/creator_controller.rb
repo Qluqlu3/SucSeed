@@ -112,11 +112,11 @@ class CreatorController < ApplicationController
   #   @creator_image.destroy
   #   redirect_to "/creator/upload"
   # end
-end
+  private
 
-private
-def creator_params
-  params.require(:creator).permit(:user_id, :title, :art_category_id, :establishment, :employee, :postal_code, :is_recruitment)
+  def creator_params
+    params.require(:creator).permit(:user_id, :title, :art_category_id, :establishment, :employee, :postal_code, :is_recruitment)
+  end
 end
 
 # def image_params

@@ -89,24 +89,23 @@ class MessageController < ApplicationController
     end
 
   end
-end
 
-private
+  private
 
-def build_message_page_props(message_list, message_history, from_user, to_user)
-  {
-    messageLists: message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path } },
-    messageHistory: message_history.map { |m| { sendUserId: m.send_user_id.to_s, content: m.content, createdAt: m.created_at } },
-    fromUser: { id: from_user.id.to_s, avatarPath: from_user.avatar_path, name: from_user.name },
-    toUser: { id: to_user.id.to_s, name: to_user.name, avatarPath: to_user.avatar_path }
-  }
-end
+  def build_message_page_props(message_list, message_history, from_user, to_user)
+    {
+      messageLists: message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path } },
+      messageHistory: message_history.map { |m| { sendUserId: m.send_user_id.to_s, content: m.content, createdAt: m.created_at } },
+      fromUser: { id: from_user.id.to_s, avatarPath: from_user.avatar_path, name: from_user.name },
+      toUser: { id: to_user.id.to_s, name: to_user.name, avatarPath: to_user.avatar_path }
+    }
+  end
 
-def message_params
-  params.require(:message).permit(:send_user_id, :receive_user_id, :content)
-end
+  def message_params
+    params.require(:message).permit(:send_user_id, :receive_user_id, :content)
+  end
 
-private
-def message_list_params
-  params.require(:message_list).permit(:creator_user_id, :heir_user_id)
+  def message_list_params
+    params.require(:message_list).permit(:creator_user_id, :heir_user_id)
+  end
 end

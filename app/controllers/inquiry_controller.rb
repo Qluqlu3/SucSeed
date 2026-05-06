@@ -35,9 +35,9 @@ class InquiryController < ApplicationController
       render action: :input_page
     end
   end
-end
+  private
 
-private
-def inquiry_params
-  params.require(:inquiry).permit(:user_id, :inquiry_category_id, :content)
+  def inquiry_params
+    params.require(:inquiry).permit(:user_id, :inquiry_category_id, :content)
+  end
 end

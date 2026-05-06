@@ -80,9 +80,9 @@ class HeirController < ApplicationController
     else
     end
   end
-end
+  private
 
-private
-def heir_params
-  params.require(:heir).permit(:user_id, :art_category_id, :introduction)
+  def heir_params
+    params.require(:heir).permit(:user_id, :art_category_id, :introduction)
+  end
 end
