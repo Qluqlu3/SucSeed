@@ -10,7 +10,8 @@ class MatchController < ApplicationController
           birthday: m.birthday,
           avatarPath: m.avatar_path,
           matchTime: m.match_time
-        }}
+        }},
+        flash: flash.to_h,
       }
       render :appealed_list
     else
@@ -174,7 +175,8 @@ class MatchController < ApplicationController
           avatarPath: s.avatar_path,
           matchTime: s.match_time,
           title: s.title
-        }}
+        }},
+        flash: flash.to_h,
       }
       render :scout_check
     else

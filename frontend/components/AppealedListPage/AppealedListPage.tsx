@@ -6,6 +6,7 @@
 // 【data-props に含まれるデータ】
 //   matches : [{ pageId, name, birthday, avatarPath, matchTime }]
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface MatchUser {
@@ -18,6 +19,7 @@ interface MatchUser {
 
 interface Props {
   matches: MatchUser[];
+  flash: Record<string, string>;
 }
 
 // ── ユーティリティ ───────────────────────────────────────────────────
@@ -42,34 +44,36 @@ function timeAgo(dateStr: string): string {
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const AppealedListPage = ({ matches }: Props) => (
+export const AppealedListPage = ({ matches, flash }: Props) => (
   <div>
-    <h1 className="main-title">アピールリスト</h1>
-    <div className="all-cover-box">
-      <div className="wrapper">
+    <h1 className='main-title'>アピールリスト</h1>
+
+    <FlashMessages flash={flash} />
+    <div className='all-cover-box'>
+      <div className='wrapper'>
         {matches.length === 0 ? (
-          <p className="empty-text">まだありません</p>
+          <p className='empty-text'>まだありません</p>
         ) : (
           matches.map((match) => (
-            <div key={match.pageId} className="card list-card">
-              <div className="card-header list-card-header">
+            <div key={match.pageId} className='card list-card'>
+              <div className='card-header list-card-header'>
                 {match.matchTime}&nbsp;{timeAgo(match.matchTime)}前
               </div>
               <a href={`/page/heir/${match.pageId}`}>
-                <div className="card-body list-card-body">
-                  <div className="row">
-                    <div className="col-5 left-col text-center">
+                <div className='card-body list-card-body'>
+                  <div className='row'>
+                    <div className='col-5 left-col text-center'>
                       <img
                         src={match.avatarPath}
-                        className="rounded-circle"
+                        className='rounded-circle'
                         width={230}
                         height={230}
                         alt={match.name}
                       />
                     </div>
-                    <div className="col-7 right-col">
-                      <p className="name-text">{match.name}</p>
-                      <p className="age-text">
+                    <div className='col-7 right-col'>
+                      <p className='name-text'>{match.name}</p>
+                      <p className='age-text'>
                         {calcAge(match.birthday)}
                         <small>歳</small>
                       </p>
@@ -77,20 +81,20 @@ export const AppealedListPage = ({ matches }: Props) => (
                   </div>
                 </div>
               </a>
-              <div className="card-footer list-card-footer">
-                <div className="row">
-                  <div className="col-6 left-btn-col">
-                    <form action={`/match/ok/${match.pageId}`} method="post">
-                      <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-                      <button type="submit" className="btn btn-primary yes-btn">
+              <div className='card-footer list-card-footer'>
+                <div className='row'>
+                  <div className='col-6 left-btn-col'>
+                    <form action={`/match/ok/${match.pageId}`} method='post'>
+                      <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+                      <button type='submit' className='btn btn-primary yes-btn'>
                         話してみる
                       </button>
                     </form>
                   </div>
-                  <div className="col-6 right-btn-col">
-                    <form action={`/match/sorry/${match.pageId}`} method="post">
-                      <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-                      <button type="submit" className="btn btn-danger no-btn">
+                  <div className='col-6 right-btn-col'>
+                    <form action={`/match/sorry/${match.pageId}`} method='post'>
+                      <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+                      <button type='submit' className='btn btn-danger no-btn'>
                         ごめんなさい
                       </button>
                     </form>

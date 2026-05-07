@@ -6,4 +6,5 @@ mountPage('message-page', MessagePage, {
   messageHistory: [],
   fromUser: { id: '', avatarPath: '', name: '' },
   toUser: { id: '', avatarPath: '', name: '' },
+  flash: {},
 });
