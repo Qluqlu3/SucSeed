@@ -23,6 +23,7 @@ class CreatorController < ApplicationController
           isRecruitment: @creator.is_recruitment,
         },
         isCreator: @is_creator,
+        flash: flash.to_h,
       }
       render :show
     end

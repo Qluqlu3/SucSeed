@@ -11,4 +11,5 @@ mountPage('creator-show-page', CreatorShowPage, {
     isRecruitment: false,
   },
   isCreator: false,
+  flash: {},
 });
