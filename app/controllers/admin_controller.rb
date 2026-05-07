@@ -3,6 +3,7 @@ class AdminController < ApplicationController
 
   def login
     @admin = Admin.new
+    @page_props = { flash: flash.to_h }
     render :admin_login
   end
 
@@ -14,6 +15,7 @@ class AdminController < ApplicationController
         redirect_to "/admin/index"
       else
         flash[:danger] = "ユーザーIDまたはパスワードが間違っています"
+        @page_props = { flash: flash.to_h }
         render action: :admin_login
       end
     end

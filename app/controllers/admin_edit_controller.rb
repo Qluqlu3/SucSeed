@@ -15,7 +15,8 @@ class AdminEditController < ApplicationController
         createdAt: u.created_at.to_s,
         deletedAt: u.deleted_at&.to_s,
         loginTime: u.login_time&.to_s
-      }}
+      }},
+      flash: flash.to_h,
     }
     render :admin_user_edit
   end

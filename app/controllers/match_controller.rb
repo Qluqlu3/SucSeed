@@ -187,7 +187,19 @@ class MatchController < ApplicationController
   #スカウトした一覧
   def scout_check
     if session[:creator].present?
-      @scout = User.joins(:matches).select("users.name", "users.birthday", "users.id AS page_id" "matches.*", "matches.created_at AS match_time").where(matches: {target_user_id: session[:id]}).where(matches: {user_id: params[:id]}).where(matches: {is_scout: true}).order("matches.created_at ASC")
+      @scout = User.joins(:matches).select("users.name", "users.birthday", "users.id AS page_id", "matches.created_at AS match_time").where(matches: {target_user_id: session[:id]}).where(matches: {is_scout: true}).order("matches.created_at ASC")
+      @page_props = {
+        scouts: @scout.map { |s| {
+          pageId:    s.page_id.to_s,
+          name:      s.name,
+          birthday:  s.birthday,
+          avatarPath: s.avatar_path.to_s,
+          matchTime: s.match_time,
+          title:     ''
+        }},
+        flash: flash.to_h,
+      }
+      render :scout_show
     else
       redirect_to "/index"
     end
