@@ -30,7 +30,8 @@ class AdminEditController < ApplicationController
         content: d.content.to_s,
         createdAt: d.created_at.to_s,
         deletedAt: d.deleted_at&.to_s
-      }}
+      }},
+      flash: flash.to_h,
     }
     render :admin_diary_edit
   end
@@ -45,7 +46,8 @@ class AdminEditController < ApplicationController
         comment: c.comment.to_s,
         createdAt: c.created_at.to_s,
         deletedAt: c.deleted_at&.to_s
-      }}
+      }},
+      flash: flash.to_h,
     }
     render :admin_diary_comment_edit
   end
@@ -60,7 +62,8 @@ class AdminEditController < ApplicationController
         comment: g.comment.to_s,
         createdAt: g.created_at.to_s,
         deletedAt: g.deleted_at&.to_s
-      }}
+      }},
+      flash: flash.to_h,
     }
     render :'admin_edit/admin_gallery_edit'
   end
@@ -78,7 +81,8 @@ class AdminEditController < ApplicationController
         updatedAt: q.updated_at.to_s,
         deletedAt: q.deleted_at&.to_s,
         elapsedDays: ((Time.now - q.created_at) / 86400).to_i
-      }}
+      }},
+      flash: flash.to_h,
     }
     render :admin_inquiry_edit
   end
@@ -101,7 +105,8 @@ class AdminEditController < ApplicationController
         id: @user.id,
         avatarPath: @user.avatar_path.to_s,
         profile: @user.profile.to_s
-      }
+      },
+      flash: flash.to_h,
     }
     render :selected_user_edit
   end
@@ -162,7 +167,8 @@ class AdminEditController < ApplicationController
         content: @inquiry_detail.content.to_s,
         createdAt: @inquiry_detail.created_at.to_s
       },
-      isCheck: @inquiry_detail.is_check ? true : false
+      isCheck: @inquiry_detail.is_check ? true : false,
+      flash: flash.to_h,
     }
     if @inquiry_detail.is_check
       @check = true

@@ -8,6 +8,7 @@
 
 import { getCsrfToken } from '../../utils/csrf';
 import { AdminSideMenu } from '../AdminSideMenu';
+import { FlashMessages } from '../FlashMessages';
 
 interface AdminDiary {
   id: number;
@@ -19,38 +20,41 @@ interface AdminDiary {
 
 interface Props {
   diaries: AdminDiary[];
+  flash: Record<string, string>;
 }
 
-export const AdminDiaryEditPage = ({ diaries }: Props) => (
-  <div className="row admin-row">
-    <AdminSideMenu activeKey="diary" />
-    <div className="col-10 admin-col-9">
-      <h1 className="admin-main-title">日記管理</h1>
-      <table className="table table-striped">
+export const AdminDiaryEditPage = ({ diaries, flash }: Props) => (
+  <div className='row admin-row'>
+    <AdminSideMenu activeKey='diary' />
+    <div className='col-10 admin-col-9'>
+      <h1 className='admin-main-title'>日記管理</h1>
+
+      <FlashMessages flash={flash} />
+      <table className='table table-striped'>
         <thead>
           <tr>
-            <th scope="col">＃</th>
-            <th scope="col">ID</th>
-            <th scope="col">ユーザーID</th>
-            <th scope="col">内容</th>
-            <th scope="col">登録日時</th>
-            <th scope="col">削除日時</th>
+            <th scope='col'>＃</th>
+            <th scope='col'>ID</th>
+            <th scope='col'>ユーザーID</th>
+            <th scope='col'>内容</th>
+            <th scope='col'>登録日時</th>
+            <th scope='col'>削除日時</th>
             <th />
           </tr>
         </thead>
         <tbody>
           {diaries.map((diary, i) => (
             <tr key={diary.id}>
-              <th scope="row">{i + 1}</th>
+              <th scope='row'>{i + 1}</th>
               <td>{diary.id}</td>
               <td>{diary.userId}</td>
               <td>{diary.content}</td>
               <td>{diary.createdAt}</td>
               <td>{diary.deletedAt ?? ''}</td>
               <td>
-                <form action={`/admin/diary/delete/${diary.id}`} method="post">
-                  <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-                  <button type="submit" className="btn btn-danger">
+                <form action={`/admin/diary/delete/${diary.id}`} method='post'>
+                  <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+                  <button type='submit' className='btn btn-danger'>
                     削除
                   </button>
                 </form>
