@@ -81,45 +81,9 @@ class CreatorController < ApplicationController
     end
   end
 
-  # def data
-  #   if session[:creator].present?
-  #     @count = CreatorImage.where(user_id: session[:id]).count
-  #     if @count > 0
-  #       @get_image = CreatorImage.where(user_id: session[:id])
-  #     end
-  #     @creator_image = CreatorImage.new
-  #     render :upload_image
-  #   else
-  #     redirect_to "/index"
-  #   end
-  # end
-
-  # def upload
-  #   if session[:creator].present?
-  #     params[:creator_image][:user_id] = session[:id]
-  #     @creator_image = CreatorImage.new(image_params)
-  #     if @creator_image.save
-  #       flash[:success] = "success"
-  #       redirect_to "/creator/upload"
-  #     else
-  #       flash[:danger] = "エラー"
-  #       redirect_to "/creator/upload"
-  #     end
-  #   end
-  # end
-
-  # def delete
-  #   @creator_image = CreatorImage.find_by(id: params[:id])
-  #   @creator_image.destroy
-  #   redirect_to "/creator/upload"
-  # end
   private
 
   def creator_params
     params.require(:creator).permit(:user_id, :title, :art_category_id, :establishment, :employee, :postal_code, :is_recruitment)
   end
 end
-
-# def image_params
-#   params.require(:creator_image).permit(:user_id, :media_data, :created_at, :updated_at)
-# end
