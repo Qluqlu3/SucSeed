@@ -55,6 +55,7 @@ class IndexController < ApplicationController
             createdAt:  c.created_at,
           }
         },
+        flash: flash.to_h,
       }
       render :search_user
     else

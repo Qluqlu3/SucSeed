@@ -20,6 +20,7 @@ class HeirController < ApplicationController
           artCategoryName: @interest.name,
           introduction:    @heir.introduction.to_s,
         },
+        flash: flash.to_h,
       }
       render :show
     end
