@@ -80,11 +80,11 @@ class UserController < ApplicationController
     if @user.update(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
       flash[:success] = "success"
       session[:reset_id] = nil
-      render :login
+      redirect_to "/index"
     else
       flash.now[:danger] = "エラー"
       @page_props = { errors: @user.errors.full_messages, flash: flash.to_h }
-      render :password_edit
+      render :password_reset
     end
   end
 

@@ -72,7 +72,7 @@ class MyPageController < ApplicationController
         isCreator: session[:creator].present?,
         flash:     flash.to_h
       }
-      render :show
+      render :update
     end
   end
 end

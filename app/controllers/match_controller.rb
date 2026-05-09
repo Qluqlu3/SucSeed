@@ -52,7 +52,7 @@ class MatchController < ApplicationController
         redirect_to "/match/appealed/list"
       else
         flash[:danger] = "エラー"
-        render action: :appealed_list_view
+        redirect_to "/match/appealed/list"
       end
     else
       redirect_to "/index"

@@ -129,7 +129,7 @@ class AdminEditController < ApplicationController
       redirect_to "/admin/management/diary"
     else
       flash[:danger] = "error"
-      render :diary
+      redirect_to "/admin/management/diary"
     end
   end
 
@@ -140,7 +140,7 @@ class AdminEditController < ApplicationController
       redirect_to "/admin/management/diary_comment"
     else
       flash[:danger] = "error"
-      render :diary_comment
+      redirect_to "/admin/management/diary_comment"
     end
   end
 
@@ -151,7 +151,7 @@ class AdminEditController < ApplicationController
       redirect_to "/admin/management/gallery"
     else
       flash[:danger] = "error"
-      render :gallery
+      redirect_to "/admin/management/gallery"
     end
   end
 
