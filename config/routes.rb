@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   get '' => 'index#root'
   get 'index' => 'index#index'
-  get 'diary/show'
   get 'your_page/your_page'
 
   get 'user/password_forgot' => 'user#password_forgot'
@@ -86,7 +85,6 @@ Rails.application.routes.draw do
 
   post 'creator/create' => 'creator#create'
   patch 'creator/edit' => 'creator#update'
-  post 'creator/upload' => 'creator#upload'
   post 'creator/:id/delete' => 'creator#delete'
 
   post 'diary/post' => 'diary#post'
@@ -133,7 +131,6 @@ Rails.application.routes.draw do
   post 'admin/diary/delete/:id' => 'admin_edit#diary_delete'
   post 'admin/diary_comment/delete/:id' => 'admin_edit#diary_comment_delete'
   post 'admin/gallery/delete/:id' => 'admin_edit#gallery_delete'
-  post 'admin/inquiry/detail/:id' => 'admin_edit#inquiry_detail'
   post 'admin/inquiry/detail/check/:id' => 'admin_edit#inquiry_detail_check'
 
   namespace :api do
