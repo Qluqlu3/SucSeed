@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   get '' => 'index#root'
   get 'index' => 'index#index'
-  get 'your_page/your_page'
 
   get 'user/password_forgot' => 'user#password_forgot'
   get 'user/password_reset' => 'user#password_edit'

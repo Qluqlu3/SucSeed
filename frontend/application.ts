@@ -24,7 +24,6 @@ import './components/AdminUserEditPage/mountAdminUserEditPage';
 import './components/CreatorCreatePage/mountCreatorCreatePage';
 import './components/CreatorShowPage/mountCreatorShowPage';
 import './components/CreatorUpdatePage/mountCreatorUpdatePage';
-import './components/CreatorUploadImagePage/mountCreatorUploadImagePage';
 // Diary
 import './components/DiaryHeirFavoritePage/mountDiaryHeirFavoritePage';
 import './components/DiaryPostPage/mountDiaryPostPage';
@@ -55,7 +54,6 @@ import './components/ScoutShowPage/mountScoutShowPage';
 import './components/MessageListPage/mountMessageListPage';
 import './components/MessagePage/mountMessagePage';
 // User
-import './components/CertifyPage/mountCertifyPage';
 import './components/EmailCertifiedPage/mountEmailCertifiedPage';
 import './components/Error404Page/mountError404Page';
 import './components/Error500Page/mountError500Page';
