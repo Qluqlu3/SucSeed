@@ -89,12 +89,12 @@ class AdminEditController < ApplicationController
 
   #ユーザー削除
   def user_delete
-    if User.delete(params[:id])
+    if User.find(params[:id]).destroy
       flash[:success] = "success"
-      render action: :user
     else
       flash[:danger] = "error"
     end
+    redirect_to "/admin/management/user"
   end
 
   #ユーザー編集
@@ -124,35 +124,32 @@ class AdminEditController < ApplicationController
 
   #ダイアリー削除
   def diary_delete
-    if Diary.delete(params[:id])
+    if Diary.find(params[:id]).destroy
       flash[:success] = "success"
-      redirect_to "/admin/management/diary"
     else
       flash[:danger] = "error"
-      redirect_to "/admin/management/diary"
     end
+    redirect_to "/admin/management/diary"
   end
 
   #ダイアリーコメント削除
   def diary_comment_delete
-    if DiaryComment.delete(params[:id])
+    if DiaryComment.find(params[:id]).destroy
       flash[:success] = "success"
-      redirect_to "/admin/management/diary_comment"
     else
       flash[:danger] = "error"
-      redirect_to "/admin/management/diary_comment"
     end
+    redirect_to "/admin/management/diary_comment"
   end
 
   #ギャラリー削除
   def gallery_delete
-    if Gallery.delete(params[:id])
+    if Gallery.find(params[:id]).destroy
       flash[:success] = "success"
-      redirect_to "/admin/management/gallery"
     else
       flash[:danger] = "error"
-      redirect_to "/admin/management/gallery"
     end
+    redirect_to "/admin/management/gallery"
   end
 
   #お問い合わせ詳細表示
