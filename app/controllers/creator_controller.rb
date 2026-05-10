@@ -34,7 +34,7 @@ class CreatorController < ApplicationController
     params[:creator][:user_id] = session[:id]
     @creator = Creator.new(creator_params)
     if @creator.save
-      flash.now[:success] = "success"
+      flash[:success] = "success"
       redirect_to "/creator/show"
     else
       @page_props = {

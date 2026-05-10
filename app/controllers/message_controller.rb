@@ -21,14 +21,14 @@ class MessageController < ApplicationController
        if message_list.save
          redirect_to "/message/list"
        else
-        flash.now[:information] = "追加済み"
+        flash[:information] = "追加済み"
        end
     elsif session[:id].present? && session[:creator].nil?
       message_list = MessageList.new(heir_user_id: params[:id], creator_user_id: session[:id])
       if message_list.save
         redirect_to "/message/list"
       else
-        flash.now[:information] = "追加済み"
+        flash[:information] = "追加済み"
       end
     else
       redirect_to "/index"
