@@ -3,10 +3,9 @@ class UserController < ApplicationController
     if session[:id].nil?
       user = User.find_by(email: params[:session][:email].downcase)
       if user && user.authenticate(params[:session][:password])
+        reset_session
         session[:id] = user[:id]
-        if user[:is_creator]
-          session[:creator] = user[:id]
-        end
+        session[:creator] = user[:id] if user[:is_creator]
         flash[:success] = "ログイン成功"
         redirect_to "/index"
       else
