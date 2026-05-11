@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   #相手ページ
   get 'page/creator/:id' => 'your_page#creator_show'
-  get 'page/heir/:id/' => 'your_page#heir_show'
+  get 'page/heir/:id' => 'your_page#heir_show'
 
   #日記
   get 'diary/view' => 'diary#select_diary'
@@ -28,7 +28,6 @@ Rails.application.routes.draw do
   #メッセージ
   get 'message/list' => 'message#view'
   get 'message/add/:id' => 'message#message_list_add'
-  get 'message/history/:id' => 'message#get_history'
 
   #ギャラリー
   get 'gallery/view/:id' => 'gallery#user_view'
