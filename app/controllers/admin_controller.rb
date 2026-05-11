@@ -16,7 +16,7 @@ class AdminController < ApplicationController
       else
         flash[:danger] = "ユーザーIDまたはパスワードが間違っています"
         @page_props = { flash: flash.to_h }
-        render action: :admin_login
+        render :admin_login
       end
     end
   end
@@ -34,7 +34,7 @@ class AdminController < ApplicationController
       redirect_to "/admin/login"
     else
       @page_props = { errors: @admin.errors.full_messages, flash: flash.to_h }
-      render action: :admin_create
+      render :admin_create
     end
   end
 

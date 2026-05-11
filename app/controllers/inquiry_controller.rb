@@ -8,7 +8,7 @@ class InquiryController < ApplicationController
       prevValues: { inquiryCategoryId: '', content: '' },
       flash:   flash.to_h,
     }
-    render :'inquiry/input_page'
+    render :input_page
   end
 
   def send_inquiry
@@ -32,7 +32,7 @@ class InquiryController < ApplicationController
         },
         flash:   flash.to_h,
       }
-      render action: :input_page
+      render :input_page
     end
   end
   private

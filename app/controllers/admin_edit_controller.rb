@@ -65,7 +65,7 @@ class AdminEditController < ApplicationController
       }},
       flash: flash.to_h,
     }
-    render :'admin_edit/admin_gallery_edit'
+    render :admin_gallery_edit
   end
 
   def inquiry
