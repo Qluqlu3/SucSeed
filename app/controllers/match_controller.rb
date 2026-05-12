@@ -2,7 +2,7 @@ class MatchController < ApplicationController
   #アピールされたリスト表示
   def appealed_list_view
     if session[:creator].present?
-      @match = User.joins(:matches).where(matches: {is_ok: nil}).where(users: {id: Match.where(target_user_id: session[:id]).select("matches.user_id")}).select("users.*", "users.id AS page_id", "users.id", "matches.created_at AS match_time").order("matches.created_at ASC")
+      @match = User.joins(:sent_matches).where(matches: {is_ok: nil}).where(users: {id: Match.where(target_user_id: session[:id]).select("matches.user_id")}).select("users.*", "users.id AS page_id", "users.id", "matches.created_at AS match_time").order("matches.created_at ASC")
       @page_props = {
         matches: @match.map { |m| {
           pageId: m.page_id.to_s,
@@ -22,7 +22,17 @@ class MatchController < ApplicationController
   #マッチングリスト
   def matching_list_view
     if session[:id].present?
-      @match = User.joins(:matches).select("users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time").where(matches: {target_user_id: session[:id]}).or(Match.joins(:matches).select("users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time").where(matches: {user_id: session[:id]})).where(matches: {is_ok: true}).where(users: {id: Match.where(target_user_id: session[:id]).select("matches.user_id")}).or(User.joins(:matches).select("users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time").where(users: {id: Match.where(user_id: session[:id]).select("matches.user_id")})).order("matches.created_at DESC")
+      @match = User
+        .joins(:sent_matches)
+        .select("users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time")
+        .where(matches: { target_user_id: session[:id], is_ok: true })
+        .or(
+          User
+            .joins(:target_matches)
+            .select("users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time")
+            .where(matches: { user_id: session[:id], is_ok: true })
+        )
+        .order("matches.created_at DESC")
       @message_list = MessageList.new
       @page_props = {
         matches: @match.map { |m|
@@ -93,7 +103,7 @@ class MatchController < ApplicationController
   #アピールした一覧
   def appeal_check
     if session[:id].present? && session[:creator].nil?
-      @appeal = User.joins(:matches, :creator).select("users.name", "users.birthday", "users.id AS page_id", "matches.*", "matches.created_at AS match_time", "creators.*").where(matches: {user_id: session[:id]}).where(matches: {is_ok: nil}).order("matches.created_at ASC")
+      @appeal = User.joins(:target_matches, :creator).select("users.name", "users.birthday", "users.id AS page_id", "matches.*", "matches.created_at AS match_time", "creators.*").where(matches: {user_id: session[:id]}).where(matches: {is_ok: nil}).order("matches.created_at ASC")
       @page_props = {
         appeals: @appeal.map { |a|
           {
@@ -166,7 +176,7 @@ class MatchController < ApplicationController
   def scouted_show
     if session[:id].present? && session[:creator].nil?
       @match = Match.new
-      @scout = User.joins(:matches, :creator).select("users.name", "users.birthday", "users.id AS page_id", "users.avatar_path", "matches.*", "matches.created_at AS match_time", "creators.*").where(users: {id: Match.where(user_id: session[:id]).select("matches.target_user_id")}).where(matches: {is_scout: true}).where(matches: {is_ok: nil}).order("matches.created_at ASC")
+      @scout = User.joins(:target_matches, :creator).select("users.name", "users.birthday", "users.id AS page_id", "users.avatar_path", "matches.*", "matches.created_at AS match_time", "creators.*").where(users: {id: Match.where(user_id: session[:id]).select("matches.target_user_id")}).where(matches: {is_scout: true}).where(matches: {is_ok: nil}).order("matches.created_at ASC")
       @page_props = {
         scouts: @scout.map { |s| {
           pageId: s.page_id.to_s,
@@ -187,7 +197,7 @@ class MatchController < ApplicationController
   #スカウトした一覧
   def scout_check
     if session[:creator].present?
-      @scout = User.joins(:matches).select("users.name", "users.birthday", "users.id AS page_id", "matches.created_at AS match_time").where(matches: {target_user_id: session[:id]}).where(matches: {is_scout: true}).order("matches.created_at ASC")
+      @scout = User.joins(:sent_matches).select("users.name", "users.birthday", "users.id AS page_id", "matches.created_at AS match_time").where(matches: {target_user_id: session[:id]}).where(matches: {is_scout: true}).order("matches.created_at ASC")
       @page_props = {
         scouts: @scout.map { |s| {
           pageId:    s.page_id.to_s,
