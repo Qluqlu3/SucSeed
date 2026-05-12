@@ -17,24 +17,28 @@ class MessageController < ApplicationController
   #新規追加
   def message_list_add
     if session[:creator].present?
-      message_list = MessageList.new(creator_user_id: session[:id], heir_user_id: params[:id]);
-       if message_list.save
-         redirect_to "/message/list"
-       else
-        flash[:information] = "追加済み"
-       end
-    elsif session[:id].present? && session[:creator].nil?
-      message_list = MessageList.new(heir_user_id: params[:id], creator_user_id: session[:id])
+      message_list = MessageList.new(creator_user_id: session[:id], heir_user_id: params[:id])
       if message_list.save
+        Match.where(target_user_id: session[:id]).where(user_id: params[:id]).update_all(is_add_list: true)
+        Match.where(user_id: session[:id]).where(target_user_id: params[:id]).update_all(is_add_list: true)
         redirect_to "/message/list"
       else
         flash[:information] = "追加済み"
+        redirect_to "/message/list"
+      end
+    elsif session[:id].present? && session[:creator].nil?
+      message_list = MessageList.new(heir_user_id: params[:id], creator_user_id: session[:id])
+      if message_list.save
+        Match.where(target_user_id: session[:id]).where(user_id: params[:id]).update_all(is_add_list: true)
+        Match.where(user_id: session[:id]).where(target_user_id: params[:id]).update_all(is_add_list: true)
+        redirect_to "/message/list"
+      else
+        flash[:information] = "追加済み"
+        redirect_to "/message/list"
       end
     else
       redirect_to "/index"
     end
-    Match.where(target_user_id: session[:id]).where(user_id: params[:id]).update_all(:is_add_list => true)
-    Match.where(user_id: session[:id]).where(target_user_id: params[:id]).update_all(:is_add_list => true)
   end
 
   #履歴取得
