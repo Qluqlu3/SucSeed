@@ -7,6 +7,7 @@
 //   appeals : [{ pageId, name, birthday, avatarPath, title, matchTime, isOk }]
 
 import { FlashMessages } from '../FlashMessages';
+import { getCsrfToken } from '../../utils/csrf';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface AppealUser {
@@ -90,9 +91,12 @@ export const AppealShowPage = ({ appeals, flash }: Props) => (
                 <div className='row'>
                   {appeal.isOk ? (
                     <div className='col'>
-                      <a href={`/message/add/${appeal.pageId}`}>
-                        <p>メッセージ</p>
-                      </a>
+                      <form action={`/message/add/${appeal.pageId}`} method='post'>
+                        <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+                        <button type='submit' className='btn btn-link p-0'>
+                          <p>メッセージ</p>
+                        </button>
+                      </form>
                     </div>
                   ) : (
                     <div className='col'>

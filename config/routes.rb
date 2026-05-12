@@ -27,7 +27,6 @@ Rails.application.routes.draw do
 
   #メッセージ
   get 'message/list' => 'message#view'
-  get 'message/add/:id' => 'message#message_list_add'
 
   #ギャラリー
   get 'gallery/view/:id' => 'gallery#user_view'
