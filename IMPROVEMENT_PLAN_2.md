@@ -31,7 +31,7 @@ def logout
 end
 ```
 
-- [ ] `user_controller.rb` — `logout` を `reset_session` に変更
+- [x] `user_controller.rb` — `logout` を `reset_session` に変更
 
 ---
 
@@ -52,7 +52,7 @@ params.require(:user).permit(:name, :avatar_path, :email, :birthday,
                               :password, :password_confirmation, :is_man, :is_creator)
 ```
 
-- [ ] `user_controller.rb` — `user_params` から `:id` を削除
+- [x] `user_controller.rb` — `user_params` から `:id` を削除
 
 ---
 

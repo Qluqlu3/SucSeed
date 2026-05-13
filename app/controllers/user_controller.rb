@@ -16,8 +16,7 @@ class UserController < ApplicationController
   end
 
   def logout
-    session[:id] = nil
-    session[:creator] = nil
+    reset_session
     flash[:success] = "ログアウト"
     redirect_to "/index"
   end
@@ -114,6 +113,6 @@ class UserController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:id, :name, :avatar_path, :email, :birthday, :password, :password_confirmation, :is_man, :is_creator)
+    params.require(:user).permit(:name, :avatar_path, :email, :birthday, :password, :password_confirmation, :is_man, :is_creator)
   end
 end
