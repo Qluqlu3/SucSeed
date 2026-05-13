@@ -19,7 +19,7 @@ Rails 6/7 + React (TSX) 移行後の残課題。セキュリティ → モデル
 | `diary_comment_delete` | `DiaryComment.delete(params[:id])` | `DiaryComment.find(params[:id]).destroy` |
 | `gallery_delete` | `Gallery.delete(params[:id])` | `Gallery.find(params[:id]).destroy` |
 
-- [ ] `admin_edit_controller.rb` — 4箇所を `find.destroy` に変更
+- [x] `admin_edit_controller.rb` — 4箇所を `find.destroy` に変更
 
 ---
 
@@ -40,7 +40,7 @@ old_session_data.each { |k, v| session[k] = v }
 session[:id] = user[:id]
 ```
 
-- [ ] `user_controller.rb` — `login` アクションにセッション再生成を追加
+- [x] `user_controller.rb` — `login` アクションにセッション再生成を追加
 
 ---
 
@@ -54,8 +54,8 @@ session[:id] = user[:id]
 | `message_controller.rb` | L24 | `render` なし `flash.now[:information]` | `flash[:information]` に変更 |
 | `message_controller.rb` | L31 | 同上 | `flash[:information]` に変更 |
 
-- [ ] `creator_controller.rb` — L37 を `flash[:success]` に修正
-- [ ] `message_controller.rb` — L24, L31 を `flash[:information]` に修正
+- [x] `creator_controller.rb` — L37 を `flash[:success]` に修正
+- [x] `message_controller.rb` — L24, L31 を `flash[:information]` に修正
 
 ---
 
@@ -88,8 +88,8 @@ has_many :received_messages, class_name: 'Message', foreign_key: 'receive_user_i
 
 ⚠️ コントローラ側で `user.messages` 等を使っている箇所があれば同時修正が必要。
 
-- [ ] `user.rb` — 重複する `has_many` を別名に分割
-- [ ] 影響を受けるコントローラを確認・修正
+- [x] `user.rb` — 重複する `has_many` を別名に分割
+- [x] 影響を受けるコントローラを確認・修正（`message_controller.rb`, `match_controller.rb`）
 
 ---
 
@@ -121,9 +121,9 @@ has_many :received_messages, class_name: 'Message', foreign_key: 'receive_user_i
 - `has_many :gallery_goods`
 - `has_many :gallery_comments`
 
-- [ ] `user.rb` — 全 has_many / has_one に `dependent: :destroy` 追加
-- [ ] `diary.rb` — `has_many` に `dependent: :destroy` 追加
-- [ ] `gallery.rb` — `has_many` に `dependent: :destroy` 追加
+- [x] `user.rb` — 全 has_many / has_one に `dependent: :destroy` 追加
+- [x] `diary.rb` — `has_many` に `dependent: :destroy` 追加
+- [x] `gallery.rb` — `has_many` に `dependent: :destroy` 追加
 
 ---
 
@@ -142,9 +142,9 @@ Rails 5.2+ では `render :template_name` が標準。`render action:` や `rend
 | `admin_edit_controller.rb` L68 | `render :'admin_edit/admin_gallery_edit'` | `render :admin_gallery_edit` |
 | `admin_edit_controller.rb` L94 | `render action: :user` | `render :admin_user_edit` |
 
-- [ ] `inquiry_controller.rb` — 2箇所修正
-- [ ] `admin_controller.rb` — 2箇所修正
-- [ ] `admin_edit_controller.rb` — 2箇所修正
+- [x] `inquiry_controller.rb` — 2箇所修正
+- [x] `admin_controller.rb` — 2箇所修正
+- [x] `admin_edit_controller.rb` — 2箇所修正
 
 ---
 
@@ -158,8 +158,8 @@ Rails 5.2+ では `render :template_name` が標準。`render action:` や `rend
 | `message/history/:id` が GET + POST の両方 | L31 + L107 | 同上 |
 | `/page/heir/:id/` のトレーリングスラッシュ | L19 | `/page/heir/:id` に修正 |
 
-- [ ] `routes.rb` — フロントエンドの `fetch`/`href` を確認後、重複ルートを削除
-- [ ] `routes.rb` — トレーリングスラッシュ削除
+- [x] `routes.rb` — フロントエンドの `fetch`/`href` を確認後、重複ルートを削除
+- [x] `routes.rb` — トレーリングスラッシュ削除
 
 ---
 
