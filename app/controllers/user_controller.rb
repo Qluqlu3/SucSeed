@@ -98,15 +98,16 @@ class UserController < ApplicationController
 
   #メールアドレス認証
   def email_certified
-    if User.find_by("id = ?", params[:id]).select("users.is_certified")
+    user = User.find_by(id: params[:id])
+    if user.nil? || user.is_certified?
       redirect_to "/index"
     else
-      user = User.find_by("id = ?", params[:id])
-      if user.update_all(:is_certified => 1)
+      if user.update(is_certified: true)
         flash[:success] = "メールアドレス認証完了"
       else
         flash[:danger] = "メールアドレス認証エラー"
       end
+      redirect_to "/index"
     end
   end
 

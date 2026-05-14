@@ -75,10 +75,10 @@ class MatchController < ApplicationController
       match = Match.where(user_id: params[:id]).where(target_user_id: session[:id])
       if match.update_all(:is_ok => 0)
         flash[:success] = "success"
-        redirect_to "/match/appeal/list"
+        redirect_to "/match/appealed/list"
       else
         flash[:danger] = "エラー"
-        redirect_to "/match/appeal/list"
+        redirect_to "/match/appealed/list"
       end
     else
       redirect_to "/index"
@@ -146,10 +146,10 @@ class MatchController < ApplicationController
       scout = Match.where(is_scout: true).where(user_id: session[:id]).where(target_user_id: params[:id])
       if scout.update_all(:is_ok => true)
         flash[:success] = "スカウトアンサー"
-        redirect_to "/scouted/list"
+        redirect_to "/match/scouted/list"
       else
         flash[:danger] = "スカウトアンサー"
-        redirect_to "/scouted/list"
+        redirect_to "/match/scouted/list"
       end
     else
       redirect_to "/index"
@@ -162,10 +162,10 @@ class MatchController < ApplicationController
       scout = Match.where(is_scout: true).where(user_id: session[:id]).where(target_user_id: params[:id])
       if scout.update_all(:is_ok => false)
         flash[:success] = "success"
-        redirect_to "/scouted/list"
+        redirect_to "/match/scouted/list"
       else
         flash[:danger] = "エラー"
-        redirect_to "/scouted/list"
+        redirect_to "/match/scouted/list"
       end
     else
       redirect_to "/index"

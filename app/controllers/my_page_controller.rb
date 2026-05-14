@@ -1,7 +1,7 @@
 class MyPageController < ApplicationController
   def my_page
     if session[:id].nil?
-      flash.now[:danger] = "ログインしてください"
+      flash[:danger] = "ログインしてください"
       redirect_to "/index"
     elsif session[:creator].present?
       if !Creator.find_by(user_id: session[:id])
@@ -60,7 +60,7 @@ class MyPageController < ApplicationController
       flash[:success] = "success"
       redirect_to "/my_page/my_page"
     else
-      flash.now[:danger] = "エラー"
+      flash[:danger] = "エラー"
       @page_props = {
         user: {
           name:       @user.name,
