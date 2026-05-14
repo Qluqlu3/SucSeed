@@ -3,6 +3,7 @@ class YourPageController < ApplicationController
   def creator_show
     @user = User.find(params[:id])
     @creator = User.joins(:creator).select("users.*, creators.*").find_by(creators: {user_id: params[:id]})
+    return redirect_to "/index" unless @creator
     @art_category = ArtCategory.find_by(id: @creator.art_category_id)
     # @creator_image = CreatorImage.where(user_id: params[:id]).first
     @favorite = Favorite.new
@@ -37,7 +38,8 @@ class YourPageController < ApplicationController
 
   #後継者ページ
   def heir_show
-    @user = User.find_by("id = ?", params[:id])
+    @user = User.find_by(id: params[:id])
+    return redirect_to "/index" unless @user
     @art_name = ArtCategory.joins(:heirs).select("art_categories.name").find_by(heirs: {user_id: params[:id]})
     @scout = Match.where(user_id: session[:id]).where(target_user_id: params[:id])
     @page_props = {

@@ -99,7 +99,7 @@ class AdminEditController < ApplicationController
 
   #ユーザー編集
   def user_edit_show
-    @user = User.find_by("id = ?", params[:id])
+    @user = User.find_by(id: params[:id])
     @page_props = {
       user: {
         id: @user.id,
@@ -113,7 +113,7 @@ class AdminEditController < ApplicationController
 
   #patch
   def user_edit
-    user = User.find_by("id = ?", params[:id])
+    user = User.find_by(id: params[:id])
     if user.update(:avatar_path => params[:user][:avatar_path], :profile => params[:user][:profile])
       flash[:success] = "success"
       redirect_to "/admin/management/user"

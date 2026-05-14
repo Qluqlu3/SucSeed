@@ -55,7 +55,7 @@ class GalleryController < ApplicationController
   #ユーザ別ギャラリー
   def user_view
     @gallery = Gallery.new
-    @user = User.find_by("id = ?", params[:id])
+    @user = User.find_by(id: params[:id])
     @user_gallery = Gallery.joins(:user).select("users.name", "galleries.*").where(galleries: {user_id: params[:id]}).order("galleries.created_at DESC")
     @my_good = Gallery.joins(:gallery_goods).select("galleries.*, gallery_goods.*").where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: params[:id]}).order("galleries.created_at DESC")
     @good_count = GalleryGood.group(:gallery_id).count
@@ -94,8 +94,8 @@ class GalleryController < ApplicationController
 
   #個別画像
   def selected_gallery
-    @selected_gallery = Gallery.find_by("id = ?", params[:id])
-    @user = User.find_by("id = ?", @selected_gallery.user_id)
+    @selected_gallery = Gallery.find_by(id: params[:id])
+    @user = User.find_by(id: @selected_gallery.user_id)
     @selected_gallery_user = User.joins(:creator).select("users.name, users.avatar_path, creators.user_id, creators.title, creators.establishment, creators.employee").find_by(users: {id: @selected_gallery.user_id})
     @good_count = GalleryGood.group(:gallery_id).count
     @comment = User.joins(:gallery_comments).select("gallery_comments.*, gallery_comments.created_at AS post_time, users.*").order("gallery_comments.created_at DESC")
@@ -137,7 +137,7 @@ class GalleryController < ApplicationController
   def search_user_tag
     if params[:search_tag] != ""
       @gallery = Gallery.new
-      @user = User.find_by("id = ?", params[:id])
+      @user = User.find_by(id: params[:id])
       @user_gallery = Gallery.tagged_with([params[:search_tag]], :any => true).where("user_id = ?", params[:id])
       @page_props = {
         userName:  @user.name,
