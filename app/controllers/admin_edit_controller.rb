@@ -155,7 +155,7 @@ class AdminEditController < ApplicationController
   #お問い合わせ詳細表示
   def inquiry_detail_show
     @inquiry = Inquiry.new
-    @inquiry_detail = Inquiry.find_by("id = ?", params[:id])
+    @inquiry_detail = Inquiry.find_by(id: params[:id])
     @category = InquiryCategory.find(@inquiry_detail.inquiry_category_id)
     @page_props = {
       inquiryDetail: {
@@ -177,7 +177,7 @@ class AdminEditController < ApplicationController
 
   #お問い合わせ対応
   def inquiry_detail_check
-    if Inquiry.where("id = ?", params[:id]).update_all(:is_check => params[:inquiry][:is_check], :admin_id => session[:admin])
+    if Inquiry.where(id: params[:id]).update_all(:is_check => params[:inquiry][:is_check], :admin_id => session[:admin])
       flash[:success] = "success"
       redirect_to "/admin/management/inquiry"
     else
