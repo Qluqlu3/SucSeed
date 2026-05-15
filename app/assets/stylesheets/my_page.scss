@@ -11,8 +11,8 @@ h1 {
 .wrapper {
   width: 93%;
   margin: 0 auto;
-  background-color: #275D39;
-  border: solid 1px #1F4B2E;
+  background-color: #EDE8F5;
+  border: solid 1px #C8BCDF;
   border-radius: 7px;
   margin-bottom: 5%;
 }
@@ -24,7 +24,7 @@ h1 {
   min-height: 9vh;
   width: 93%;
   margin: 3%  auto 0 auto;
-  border: solid 1px #21442D;
+  border: solid 1px #C8BCDF;
   border-radius: 8px;
 }
 .card-img {
@@ -39,7 +39,7 @@ h1 {
 .my-card-body {
   font-size: 2.3em;
   padding: 2% 0 2% 0;
-  background-color: #FCF2D3;
+  background-color: #FFFFFF;
   p {
     padding-left: 1%;
   }
@@ -55,7 +55,8 @@ h1 {
   padding-bottom: 2%;
 }
 .profile-update-btn {
-  background-color: #FFA30D;
+  background-color: #6846A5;
+  color: #fff;
 }
 .profile-update-btn:hover {
   opacity: 0.8;

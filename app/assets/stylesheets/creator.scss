@@ -1,8 +1,8 @@
 .wrapper {
   width: 85%;
   margin:  0 auto 5% auto;
-  background-color: #275D39;
-  border: solid 1px #1F4B2E;
+  background-color: #EDE8F5;
+  border: solid 1px #C8BCDF;
   border-radius: 7px;
 }
 .all-cover-box {
@@ -18,10 +18,10 @@
 .left-col {
   padding-top: 0.7%;
   font-size: 19px;
-  color: #fff;
+  color: #3B2A5B;
 }
 .small-text {
-  color: #ffff00;
+  color: #9B87C8;
   font-size: 13px;
   margin: 0;
   padding: 0;
@@ -33,7 +33,7 @@
 .my-check-label {
   margin-left: 2%;
   font-size: 20px;
-  color: #fff;
+  color: #3B2A5B;
 }
 .my-check-box {
   margin-left: 0.1%;
@@ -41,7 +41,8 @@
 .my-regist-btn {
   width: 160px;
   font-size: 23px;
-  background-color: #FFA30D;
+  background-color: #6846A5;
+  color: #fff;
 }
 .my-regist-btn:hover {
   opacity: 0.8;
@@ -69,7 +70,7 @@
 .my-card-body {
   font-size: 27px;
   padding: 2% 0 2% 0;
-  background-color: #FCF2D3;
+  background-color: #FFFFFF;
 }
 .profile-text {
   padding-left: 11%;
@@ -108,5 +109,6 @@
 .my-update-btn {
   width: 160px;
   font-size: 23px;
-  background-color: #FFA30D;
+  background-color: #6846A5;
+  color: #fff;
 }
