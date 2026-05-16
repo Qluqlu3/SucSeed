@@ -133,8 +133,8 @@ Phase 6: 最終クリーンアップ
 | `.login-form-btn`, `.modal`, `.close` 等 | LoginModal.tsx に直接 |
 | `.field_with_errors { background-color: #ff0022; }` | `@layer base` に残す（Rails 自動付与） |
 
-- [ ] `tailwind.css` に `@layer base` スタイル追加
-- [ ] `application.scss` から移行済みスタイルを削除
+- [x] `tailwind.css` に `@layer components` 追加（navbar / login modal 関連クラスを移動）
+- [x] `application.scss` から全 CSS ルールを削除 → `@import` 行のみに整理
 
 ---
 
