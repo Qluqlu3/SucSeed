@@ -26,3 +26,68 @@
 
 /* React コンポーネント（TypeScript / TSX）をスキャン対象に追加 */
 @source "../**/*.{ts,tsx}";
+
+/* ─────────────────────────────────────────────────────────────
+ * @theme — プロジェクト固有のデザイントークン
+ *
+ * Tailwind v4 では @theme に定義した CSS 変数が
+ * bg-p-brand / text-p-dark / font-mincho 等のユーティリティクラスとして
+ * 自動的に使えるようになる。
+ * ───────────────────────────────────────────────────────────── */
+@theme {
+  /* ── ブランドカラー ───────────────────────────────────────── */
+  --color-p-brand: #6846a5; /* メインパープル（タイトル帯・カードヘッダー・ボタン） */
+  --color-p-dark: #503780; /* ダークパープル（Navbar 背景） */
+  --color-p-light: #ede8f5; /* 薄ラベンダー（ラッパー背景） */
+  --color-p-pale: #f7f5fb; /* 極薄パープル（ページ本文背景） */
+  --color-p-muted: #9b87c8; /* ミュートパープル（補助テキスト・ヒント） */
+  --color-p-mid: #c8bcdf; /* ミドルラベンダー（ボーダー） */
+  --color-p-text: #3b2a5b; /* ダークパープル（フォームラベル等） */
+  --color-p-nav: #cbb5ff; /* Navbar リンク hover 色 */
+  --color-p-list: #baa9da; /* リストカードヘッダー背景 */
+  --color-p-msg: #d3c9e7; /* メッセージリストボタン背景 */
+
+  /* ── フォント ──────────────────────────────────────────────── */
+  --font-mincho:
+    'ヒラギノ明朝 ProN W6', 'HiraMinProN-W6', 'HG明朝E', 'ＭＳ Ｐ明朝', 'MS PMincho', 'MS 明朝',
+    serif;
+  --font-gothic:
+    'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', Meiryo, メイリオ, Osaka, 'MS PGothic',
+    sans-serif;
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * @layer base — グローバルリセット
+ *
+ * Tailwind の Preflight（base リセット）に追加するプロジェクト固有のリセット。
+ * application.scss の移行が完了したらそちらの同等スタイルを削除する。
+ * ───────────────────────────────────────────────────────────── */
+@layer base {
+  body {
+    background-color: var(--color-p-pale);
+    color: #000;
+    font-family: var(--font-mincho);
+    line-height: 1.8;
+  }
+
+  a:link,
+  a:visited {
+    color: #000;
+  }
+
+  a:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+
+  button:hover {
+    opacity: 0.8;
+  }
+
+  /* Rails が自動付与するバリデーションエラーラッパー */
+  .field_with_errors {
+    background-color: #ff0022;
+    padding: 2px;
+    display: inline;
+  }
+}

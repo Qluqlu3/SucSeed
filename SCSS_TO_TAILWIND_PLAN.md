@@ -114,8 +114,8 @@ Phase 6: 最終クリーンアップ
 
 ## Phase 1: テーマ定義
 
-- [ ] `frontend/styles/tailwind.css` に `@theme` ブロック追加（カラー・フォント変数）
-- [ ] `@layer base` でグローバルリセット（`body`, `a`, `button` のデフォルト上書き）を Tailwind で定義
+- [x] `frontend/styles/tailwind.css` に `@theme` ブロック追加（カラー・フォント変数）
+- [x] `@layer base` でグローバルリセット（`body`, `a`, `button` のデフォルト上書き）を Tailwind で定義
 
 ---
 
