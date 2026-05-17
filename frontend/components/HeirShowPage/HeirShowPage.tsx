@@ -21,11 +21,11 @@ interface Props {
 
 export const HeirShowPage = ({ heir, flash }: Props) => (
   <div>
-    <h1 className='main-title'>後継者情報参照</h1>
+    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>後継者情報参照</h1>
 
     <FlashMessages flash={flash} />
 
-    <div className='wrapper'>
+    <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
       {/* 編集メニュー */}
       <div className='dropdown dropdown-right'>
         <button
@@ -36,7 +36,7 @@ export const HeirShowPage = ({ heir, flash }: Props) => (
           aria-haspopup='true'
           aria-expanded='true'
         >
-          <i className='fas fa-cog setting-icon' />
+          <i className='fas fa-cog text-[50px]' />
         </button>
         <ul className='dropdown-menu dropdown-menu-right' aria-labelledby='dropdownMenu1'>
           <li>
@@ -62,18 +62,18 @@ export const HeirShowPage = ({ heir, flash }: Props) => (
         </ul>
       </div>
 
-      <div className='my-card-box'>
-        <div className='card my-card'>
-          <div className='card-header my-card-header'>興味のある分野</div>
-          <div className='card-body my-card-body'>
-            <p className='my-card-text'>{heir.artCategoryName}</p>
+      <div className='w-[80%] h-screen mt-[7%] mx-auto'>
+        <div className='mb-[3%] border border-p-mid rounded overflow-hidden'>
+          <div className='px-3 py-2 text-[17px] text-white bg-p-brand'>兴味のある分野</div>
+          <div className='bg-white p-3'>
+            <p className='text-[19px]'>{heir.artCategoryName}</p>
           </div>
         </div>
 
-        <div className='card my-card'>
-          <div className='card-header my-card-header'>自己紹介</div>
-          <div className='card-body my-card-body'>
-            <p className='my-card-text'>{heir.introduction}</p>
+        <div className='mb-[3%] border border-p-mid rounded overflow-hidden'>
+          <div className='px-3 py-2 text-[17px] text-white bg-p-brand'>自己紹介</div>
+          <div className='bg-white p-3'>
+            <p className='text-[19px]'>{heir.introduction}</p>
           </div>
         </div>
       </div>

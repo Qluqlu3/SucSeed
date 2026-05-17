@@ -36,12 +36,12 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
 
   return (
     <div>
-      <h1 className='main-title'>お問い合わせ</h1>
+      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>お問い合わせ</h1>
 
       <FlashMessages flash={flash} />
 
-      <div className='all-cover-box'>
-        <div className='wrapper'>
+      <div className='min-h-screen'>
+        <div className='min-h-[55vh] w-[71%] mx-auto p-[1%] bg-p-light border border-p-mid rounded-[7px] mb-[5%]'>
           {errors.length > 0 && (
             <div id='error_explanation' className='error-box'>
               <p className='error-title'>入力内容にエラーが{errors.length}件あります</p>
@@ -61,7 +61,7 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
 
             <div className='form-group'>
               {/* biome-ignore lint/a11y/noLabelWithoutControl: select は直後に配置 */}
-              <label className='col-xl-12 inquiry-input-label'>カテゴリー</label>
+              <label className='col-xl-12 text-p-text text-[1.5em]'>カテゴリー</label>
               <select
                 name='inquiry[inquiry_category_id]'
                 className='col-xl-12 form-control'
@@ -77,12 +77,12 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
               </select>
             </div>
 
-            <div className='form-group my-form-inquiry'>
+            <div className='form-group mt-[3%]'>
               {/* biome-ignore lint/a11y/noLabelWithoutControl: textarea は直後に配置 */}
-              <label className='col-xl-12 inquiry-input-label'>お問い合わせ内容</label>
+              <label className='col-xl-12 text-p-text text-[1.5em]'>お問い合わせ内容</label>
               <textarea
                 name='inquiry[content]'
-                className='col-xl-12 form-control input-inquiry'
+                className='col-xl-12 form-control min-h-[30vh]'
                 rows={5}
                 placeholder='お問い合わせ内容'
                 value={content}
@@ -91,7 +91,10 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
             </div>
 
             <div className='text-right'>
-              <button type='submit' className='btn btn-lg inquiry-form-btn'>
+              <button
+                type='submit'
+                className='btn btn-lg w-[15%] text-[1.5em]! bg-p-brand! text-white!'
+              >
                 送信
               </button>
             </div>

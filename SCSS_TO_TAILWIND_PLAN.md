@@ -195,12 +195,12 @@ const [isOpen, setIsOpen] = useState(false);
 ### 優先順（簡単→複雑）
 
 #### inquiry.scss（クラス 6 個・最小）
-- [ ] `InquiryInputPage.tsx` — `.wrapper`, `.main-title`, `.inquiry-input-label`, `.inquiry-form-btn`, `.all-cover-box`
-- [ ] `inquiry.scss` 削除
+- [x] `InquiryInputPage.tsx` — `.wrapper`, `.main-title`, `.inquiry-input-label`, `.inquiry-form-btn`, `.all-cover-box`
+- [x] `inquiry.scss` 削除
 
 #### heir.scss
-- [ ] `HeirCreatePage.tsx`, `HeirUpdatePage.tsx`, `HeirShowPage.tsx` — `.wrapper`, `.main-title`, `.my-card-header/body`, `.my-submit`
-- [ ] `heir.scss` 削除
+- [x] `HeirCreatePage.tsx`, `HeirUpdatePage.tsx`, `HeirShowPage.tsx` — `.wrapper`, `.main-title`, `.my-card-header/body`, `.my-submit`
+- [x] `heir.scss` 削除
 
 #### my_page.scss
 - [ ] `MyPage.tsx`, `MyPageUpdatePage.tsx` — `.wrapper`, `.out-line`, `.my-card-header/body`, `.profile-update-btn`

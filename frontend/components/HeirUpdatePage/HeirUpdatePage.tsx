@@ -36,11 +36,11 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
 
   return (
     <div>
-      <h1 className='main-title'>後継者情報更新</h1>
+      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>後継者情報更新</h1>
 
       <FlashMessages flash={flash} />
 
-      <div className='wrapper'>
+      <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
         {errors.length > 0 && (
           <div id='error_explanation' className='alert alert-danger'>
             <ul>
@@ -61,7 +61,7 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
             aria-haspopup='true'
             aria-expanded='true'
           >
-            <i className='fas fa-cog setting-icon' />
+            <i className='fas fa-cog text-[50px]' />
           </button>
           <ul className='dropdown-menu dropdown-menu-right' aria-labelledby='dropdownMenu1'>
             <li>
@@ -91,10 +91,10 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
           <input type='hidden' name='_method' value='patch' />
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
 
-          <div className='my-card-box'>
-            <div className='card my-card'>
-              <div className='card-header my-card-header'>興味のある分野</div>
-              <div className='card-body my-card-body'>
+          <div className='w-[80%] h-screen mt-[7%] mx-auto'>
+            <div className='mb-[3%] border border-p-mid rounded overflow-hidden'>
+              <div className='px-3 py-2 text-[17px] text-white bg-p-brand'>兴味のある分野</div>
+              <div className='bg-white p-3'>
                 <div className='form-group'>
                   <select
                     name='heir[art_category_id]'
@@ -109,16 +109,16 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
                       </option>
                     ))}
                   </select>
-                  <small className='form-text'>必須</small>
+                  <small className='text-red-500'>必須</small>
                 </div>
               </div>
             </div>
 
-            <div className='card my-card'>
-              <div className='card-header my-card-header'>
+            <div className='mb-[3%] border border-p-mid rounded overflow-hidden'>
+              <div className='px-3 py-2 text-[17px] text-white bg-p-brand'>
                 <label htmlFor='heir_introduction'>自己紹介</label>
               </div>
-              <div className='card-body my-card-body'>
+              <div className='bg-white p-3'>
                 <div className='form-group'>
                   <textarea
                     id='heir_introduction'
@@ -132,8 +132,11 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
               </div>
             </div>
 
-            <div className='right-btn'>
-              <button type='submit' className='btn btn-lg my-submit'>
+            <div className='mt-[1%] mb-[3%] text-right'>
+              <button
+                type='submit'
+                className='btn btn-lg w-[11%] text-[23px]! bg-p-brand! text-white!'
+              >
                 登録
               </button>
             </div>
