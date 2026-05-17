@@ -1,13 +1,17 @@
 import type { FC } from 'react';
 
-export const NavbarToggleButton: FC = () => (
+type NavbarToggleButtonProps = {
+  isOpen: boolean;
+  onClick: () => void;
+};
+
+export const NavbarToggleButton: FC<NavbarToggleButtonProps> = ({ isOpen, onClick }) => (
   <button
     className="navbar-toggler"
     type="button"
-    data-toggle="collapse"
-    data-target="#navbarSupportedContent"
+    onClick={onClick}
     aria-controls="navbarSupportedContent"
-    aria-expanded="false"
+    aria-expanded={isOpen}
     aria-label="Toggle navigation"
   >
     <span className="navbar-toggler-icon">

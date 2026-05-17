@@ -158,12 +158,12 @@ Bootstrap クラス → Tailwind 代替：
 | `navbar-toggler` | `md:hidden` ボタン |
 | `navbar-nav mr-auto` | `flex gap-4` |
 
-- [ ] `spa/Navbar.tsx` — `isOpen` state 追加、Bootstrap クラス → Tailwind
-- [ ] `spa/NavbarToggleButton.tsx` — `onClick` で `isOpen` toggle
-- [ ] `spa/NavbarMenuDropdown.tsx` — Bootstrap dropdown → React state
-- [ ] `spa/NavbarBrand.tsx` — Bootstrap クラス → Tailwind
-- [ ] `spa/NavbarSearchForm.tsx` — Bootstrap クラス → Tailwind
-- [ ] `spa/NavbarAuthAction.tsx` — Bootstrap クラス → Tailwind
+- [x] `spa/Navbar.tsx` — `isOpen` state 追加、Bootstrap クラス → Tailwind
+- [x] `spa/NavbarToggleButton.tsx` — `onClick` で `isOpen` toggle
+- [x] `spa/NavbarMenuDropdown.tsx` — Bootstrap dropdown → React state
+- [x] `spa/NavbarBrand.tsx` — Bootstrap クラス → Tailwind
+- [x] `spa/NavbarSearchForm.tsx` — Bootstrap クラス → Tailwind
+- [x] `spa/NavbarAuthAction.tsx` — Bootstrap クラス → Tailwind
 
 ### 3-2. Login Modal
 
@@ -175,9 +175,9 @@ const [isOpen, setIsOpen] = useState(false);
 // ReactDOM.createPortal(…, document.body) で描画
 ```
 
-- [ ] `spa/LoginModal.tsx` — Bootstrap modal → React Portal
-- [ ] `spa/LoginModalHeader/Body/Footer.tsx` — Bootstrap クラス → Tailwind
-- [ ] `spa/LoginFormField.tsx` — `form-control` → `input w-full border ...`
+- [x] `spa/LoginModal.tsx` — Bootstrap modal → React Portal
+- [x] `spa/LoginModalHeader/Body/Footer.tsx` — Bootstrap クラス → Tailwind
+- [x] `spa/LoginFormField.tsx` — `form-control` → `input w-full border ...`
 
 ---
 

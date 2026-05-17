@@ -12,8 +12,7 @@ export const NavbarAuthAction: FC<NavbarAuthActionProps> = ({ role }) => {
       <button
         type="button"
         className="btn my-login-btn"
-        data-toggle="modal"
-        data-target="#exampleModalCenter"
+        onClick={() => window.dispatchEvent(new CustomEvent('sucseed:login-modal-open'))}
       >
         ログイン
       </button>

@@ -222,6 +222,188 @@
   .cont {
     padding: 16px;
   }
+
+  /* ── Navbar ブランド・ボタン ─────────────────────────────── */
+  .my-brand {
+    padding-left: 1%;
+  }
+
+  .my-dropdown {
+    background-color: #452f6e;
+    border-radius: 10px;
+  }
+
+  /* Bootstrap の nav ホバー背景を除去 */
+  .nav > li > a:hover,
+  .nav .open > a:hover,
+  .nav .open > a:focus {
+    background-color: transparent;
+  }
+
+  /* モバイル展開時に他要素より前面に出す */
+  .navbar-collapse {
+    z-index: 1600;
+  }
+
+  /* ── 認証ボタン ──────────────────────────────────────────── */
+  .my-login-btn {
+    margin-bottom: 12%;
+    background-color: var(--color-p-brand);
+    color: #fff;
+    border: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .create-user-btn {
+    font-size: 19px;
+    background-color: var(--color-p-brand);
+    color: #fff;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  /* ── ログインモーダル（追加分） ──────────────────────────── */
+  .modal-login-btn-box {
+    margin-top: 5%;
+    margin-bottom: 3%;
+    text-align: right;
+  }
+
+  .modal-login-btn {
+    font-size: 19px;
+    background-color: var(--color-p-brand);
+    color: #fff;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .modal-small {
+    color: #ff0000;
+    padding: 0 0 0 2px;
+    margin: 0;
+  }
+
+  .modal-password-box {
+    margin-top: 3%;
+  }
+
+  .modal-footer {
+    background-color: var(--color-p-light);
+    border-radius: 0 0 5px 5px;
+  }
+
+  /* ── 検索 ────────────────────────────────────────────────── */
+  .search-form-box {
+    width: 300px;
+    display: inline-block;
+  }
+
+  .search_btn {
+    background-color: var(--color-p-brand);
+    color: #fff;
+  }
+
+  .search_icon {
+    padding: 0;
+    font-size: 20px;
+    color: #1f8a70;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .original-footer {
+    width: 100%;
+    height: 70px;
+    color: #fff;
+    background-color: var(--color-p-brand);
+    text-align: right;
+
+    p {
+      line-height: 70px;
+      display: inline-block;
+    }
+  }
+
+  .inquiry-link {
+    &:link   { color: #fff; }
+    &:visited { color: #fff; }
+    &:hover  { color: var(--color-p-nav); }
+  }
+
+  .copy-right {
+    padding-left: 1%;
+    padding-right: 1%;
+  }
+
+  /* ── ロゴ・アイコン ──────────────────────────────────────── */
+  .logo {
+    margin-left: 0.6%;
+  }
+
+  .mini-list {
+    padding: 0;
+    color: #333;
+    font-size: 26px;
+  }
+
+  /* ── エラー表示 ──────────────────────────────────────────── */
+  .error-page-box {
+    min-height: 100vh;
+    height: 67vh;
+  }
+
+  .error-box {
+    font-size: 19px;
+    background-color: #fff;
+    color: #e50000;
+  }
+
+  .error-title {
+    padding: 1%;
+    font-size: 25px;
+    color: #fff;
+    background-color: #ff4c4c;
+  }
+
+  .error-index {
+    padding: 0.8% 0 0.8% 3.9%;
+  }
+
+  .error-content {
+    padding: 0.2% 0;
+  }
+
+  .error-page-title {
+    width: 80%;
+    margin: 3% auto 0;
+    border-radius: 5px;
+  }
+
+  .error-btn-box {
+    width: 20%;
+    margin: 3% auto 0;
+
+    button {
+      background-color: var(--color-p-brand);
+      color: #fff;
+    }
+  }
+
+  /* ── その他ユーティリティ ────────────────────────────────── */
+  .none-margin-box {
+    width: 100%;
+    height: 5%;
+  }
+
+  .my-alert {
+    margin: 0;
+  }
 }
 
 /* @keyframes は @layer 外に置く（layer 内だと一部ブラウザで動作しない） */
@@ -231,5 +413,17 @@
   }
   to {
     transform: scale(1);
+  }
+}
+
+/* ── レスポンシブ（@media は @layer 外のほうが確実） ─────────── */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+
+  .cancelbtn {
+    width: 100%;
   }
 }

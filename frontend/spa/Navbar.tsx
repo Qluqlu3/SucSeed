@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { FC } from 'react';
 import { NavbarAuthAction } from './NavbarAuthAction';
 import { NavbarBrand } from './NavbarBrand';
@@ -16,12 +17,16 @@ type NavbarProps = {
 
 export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc }) => {
   const menuItems = getNavbarMenuItems(role);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className="navbar navbar-expand-lg my_nav index-nav">
       <NavbarBrand logoSrc={logoSrc} titleSrc={titleSrc} />
-      <NavbarToggleButton />
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <NavbarToggleButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+      <div
+        className={`collapse navbar-collapse${isOpen ? ' show' : ''}`}
+        id="navbarSupportedContent"
+      >
         <ul className="navbar-nav mr-auto">
           {menuItems.length > 0 && <NavbarMenuDropdown menuItems={menuItems} />}
           <NavbarSearchForm artCategories={artCategories} />
