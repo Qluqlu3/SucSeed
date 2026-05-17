@@ -21,11 +21,11 @@ export const NavbarMenuDropdown: FC<NavbarMenuDropdownProps> = ({ menuItems }) =
   }, []);
 
   return (
-    <li ref={ref} className="nav-item dropdown">
+    <li ref={ref} className='nav-item dropdown'>
       <button
-        type="button"
-        className="nav-link dropdown-toggle"
-        aria-haspopup="true"
+        type='button'
+        className='nav-link dropdown-toggle'
+        aria-haspopup='true'
         aria-expanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -33,7 +33,7 @@ export const NavbarMenuDropdown: FC<NavbarMenuDropdownProps> = ({ menuItems }) =
       </button>
       <div className={`dropdown-menu my-dropdown${isOpen ? ' show' : ''}`}>
         {menuItems.map((item) => (
-          <a key={item.href} href={item.href} className="dropdown-item">
+          <a key={item.href} href={item.href} className='dropdown-item'>
             {item.label}
           </a>
         ))}

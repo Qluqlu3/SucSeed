@@ -331,9 +331,15 @@
   }
 
   .inquiry-link {
-    &:link   { color: #fff; }
-    &:visited { color: #fff; }
-    &:hover  { color: var(--color-p-nav); }
+    &:link {
+      color: #fff;
+    }
+    &:visited {
+      color: #fff;
+    }
+    &:hover {
+      color: var(--color-p-nav);
+    }
   }
 
   .copy-right {

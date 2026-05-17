@@ -20,19 +20,19 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="navbar navbar-expand-lg my_nav index-nav">
+    <nav className='navbar navbar-expand-lg my_nav index-nav'>
       <NavbarBrand logoSrc={logoSrc} titleSrc={titleSrc} />
       <NavbarToggleButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
       <div
         className={`collapse navbar-collapse${isOpen ? ' show' : ''}`}
-        id="navbarSupportedContent"
+        id='navbarSupportedContent'
       >
-        <ul className="navbar-nav mr-auto">
+        <ul className='navbar-nav mr-auto'>
           {menuItems.length > 0 && <NavbarMenuDropdown menuItems={menuItems} />}
           <NavbarSearchForm artCategories={artCategories} />
         </ul>
-        <ul className="nav navbar-nav navbar-right">
-          <li className="login-ul">
+        <ul className='nav navbar-nav navbar-right'>
+          <li className='login-ul'>
             <NavbarAuthAction role={role} />
           </li>
         </ul>
