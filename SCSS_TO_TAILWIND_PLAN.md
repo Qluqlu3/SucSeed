@@ -203,8 +203,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `heir.scss` 削除
 
 #### my_page.scss
-- [ ] `MyPage.tsx`, `MyPageUpdatePage.tsx` — `.wrapper`, `.out-line`, `.my-card-header/body`, `.profile-update-btn`
-- [ ] `my_page.scss` 削除
+- [x] `MyPage.tsx`, `MyPageUpdatePage.tsx` — `.wrapper`, `.out-line`, `.my-card-header/body`, `.profile-update-btn`
+- [x] `my_page.scss` 削除
 
 #### user.scss
 - [ ] `UserRegistPage.tsx`, `PasswordForgotPage.tsx`, `PasswordResetPage.tsx` — `.wrapper`, `.my-label-text`, `.radio-text`, `.regist-btn`, `.small-text` 等

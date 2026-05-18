@@ -26,14 +26,14 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
   return (
     <>
-      <h1>プロフィール</h1>
+      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>プロフィール</h1>
 
       <FlashMessages flash={flash} />
 
-      <div className='all-cover-box'>
-        <div className='wrapper'>
+      <div className='min-h-screen'>
+        <div className='w-[93%] mx-auto bg-p-light border border-p-mid rounded-[7px] mb-[5%]'>
           {/* 設定ドロップダウン */}
-          <div className='dropdown setting-dropdown'>
+          <div className='dropdown text-right mb-5'>
             <button
               className='btn btn-default dropdown-toggle'
               type='button'
@@ -42,7 +42,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
               aria-haspopup='true'
               aria-expanded='true'
             >
-              <i className='fas fa-cog setting-icon' />
+              <i className='fas fa-cog text-[50px]' />
             </button>
             <ul
               className='dropdown-menu dropdown-menu-right dropdown-box'
@@ -90,9 +90,11 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* アバター */}
           <div className='col-xl-12'>
-            <div className='card out-line'>
-              <div className='card-header my-card-header'>アバター</div>
-              <div className='card-body my-card-body card-img'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+              <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+                アバター
+              </div>
+              <div className='text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]'>
                 <img
                   src={user.avatarPath || '/assets/default.png'}
                   className='rounded-circle'
@@ -106,9 +108,11 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* ユーザー名 */}
           <div className='col-xl-12'>
-            <div className='card out-line'>
-              <div className='card-header my-card-header'>ユーザー名</div>
-              <div className='card-body my-card-body text-center'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+              <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+                ユーザー名
+              </div>
+              <div className='text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]'>
                 <p>{user.name}</p>
               </div>
             </div>
@@ -116,9 +120,11 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* 性別 */}
           <div className='col-xl-12'>
-            <div className='card out-line'>
-              <div className='card-header my-card-header'>性別</div>
-              <div className='card-body my-card-body text-center'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+              <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+                性別
+              </div>
+              <div className='text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]'>
                 <p>{user.isMan ? '男性' : '女性'}</p>
               </div>
             </div>
@@ -126,9 +132,11 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* メールアドレス */}
           <div className='col-xl-12'>
-            <div className='card out-line'>
-              <div className='card-header my-card-header'>メールアドレス</div>
-              <div className='card-body my-card-body text-center'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+              <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+                メールアドレス
+              </div>
+              <div className='text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]'>
                 <p>{user.email}</p>
               </div>
             </div>
@@ -136,9 +144,11 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* 生年月日 */}
           <div className='col-xl-12'>
-            <div className='card out-line'>
-              <div className='card-header my-card-header'>生年月日</div>
-              <div className='card-body my-card-body text-center'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+              <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+                生年月日
+              </div>
+              <div className='text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]'>
                 <p>
                   {birthday.getFullYear()}年{birthday.getMonth() + 1}月{birthday.getDate()}日
                 </p>
@@ -148,15 +158,17 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* 紹介文 */}
           <div className='col-xl-12'>
-            <div className='card out-line'>
-              <div className='card-header my-card-header'>紹介文</div>
-              <div className='card-body my-card-body'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+              <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+                紹介文
+              </div>
+              <div className='text-[2.3em] py-[2%] bg-white [&_p]:pl-[1%]'>
                 <p style={{ whiteSpace: 'pre-wrap' }}>{user.profile}</p>
               </div>
             </div>
           </div>
 
-          <div className='bottom-box' />
+          <div className='mb-[3%]' />
         </div>
       </div>
     </>

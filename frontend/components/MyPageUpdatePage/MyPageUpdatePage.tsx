@@ -24,7 +24,9 @@ interface Props {
 export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
   return (
     <>
-      <h1>プロフィール変更</h1>
+      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>
+        プロフィール変更
+      </h1>
 
       <FlashMessages flash={flash} />
 
@@ -42,7 +44,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
         </div>
       )}
 
-      <div className='wrapper'>
+      <div className='w-[93%] mx-auto bg-p-light border border-p-mid rounded-[7px] mb-[5%]'>
         {/* 設定ドロップダウン */}
         <div className='dropdown dropdown-right'>
           <button
@@ -53,7 +55,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
             aria-haspopup='true'
             aria-expanded='true'
           >
-            <i className='fas fa-cog setting-icon' />
+            <i className='fas fa-cog text-[50px]' />
           </button>
           <ul
             className='dropdown-menu dropdown-menu-right dropdown-box'
@@ -98,9 +100,11 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           <input type='hidden' name='_method' value='PATCH' />
 
           {/* アバター */}
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>アバター</div>
-            <div className='card-body my-card-body card-img'>
+          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+              アバター
+            </div>
+            <div className='text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]'>
               {user.avatarPath && (
                 <img src={user.avatarPath} className='img-circle' alt='アバター画像' />
               )}
@@ -114,14 +118,16 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           </div>
 
           {/* ユーザー名 */}
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>ユーザー名</div>
-            <div className='card-body my-card-body'>
+          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+              ユーザー名
+            </div>
+            <div className='text-[2.3em] py-[2%] bg-white [&_p]:pl-[1%]'>
               <p>{user.name}</p>
               <input
                 type='text'
                 name='user[name]'
-                className='form-control update-form-input'
+                className='form-control w-[85%]! mx-auto'
                 maxLength={50}
                 placeholder='ユーザ名'
                 defaultValue={user.name}
@@ -130,14 +136,16 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           </div>
 
           {/* メールアドレス */}
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>メールアドレス</div>
-            <div className='card-body my-card-body'>
+          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+              メールアドレス
+            </div>
+            <div className='text-[2.3em] py-[2%] bg-white [&_p]:pl-[1%]'>
               <p>{user.email}</p>
               <input
                 type='email'
                 name='user[email]'
-                className='form-control update-form-input'
+                className='form-control w-[85%]! mx-auto'
                 maxLength={50}
                 placeholder='メールアドレス'
                 defaultValue={user.email}
@@ -146,12 +154,14 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           </div>
 
           {/* 紹介文 */}
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>紹介文</div>
-            <div className='card-body my-card-body'>
+          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+              紹介文
+            </div>
+            <div className='text-[2.3em] py-[2%] bg-white [&_p]:pl-[1%]'>
               <textarea
                 name='user[profile]'
-                className='form-control update-form-input'
+                className='form-control w-[85%]! mx-auto'
                 placeholder='紹介文'
                 rows={15}
                 defaultValue={user.profile ?? ''}
@@ -159,10 +169,13 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
             </div>
           </div>
 
-          <div className='bottom-box' />
+          <div className='mb-[3%]' />
 
-          <div className='text-right profile-update-btn-box'>
-            <button type='submit' className='btn btn-lg profile-update-btn'>
+          <div className='pr-[1%] pb-[2%] text-right'>
+            <button
+              type='submit'
+              className='btn btn-lg w-[170px] bg-p-brand! text-white! hover:opacity-80'
+            >
               変更
             </button>
           </div>
