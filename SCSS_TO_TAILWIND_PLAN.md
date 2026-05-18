@@ -207,8 +207,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `my_page.scss` 削除
 
 #### user.scss
-- [ ] `UserRegistPage.tsx`, `PasswordForgotPage.tsx`, `PasswordResetPage.tsx` — `.wrapper`, `.my-label-text`, `.radio-text`, `.regist-btn`, `.small-text` 等
-- [ ] `user.scss` 削除
+- [x] `UserRegistPage.tsx`, `EmailCertifiedPage.tsx` — `.wrapper`, `.main-title`, `.my-label-text`, `.radio-text`, `.regist-btn`, `.small-text` 等
+- [x] `user.scss` 削除
 
 #### creator.scss
 - [ ] `CreatorCreatePage.tsx`, `CreatorUpdatePage.tsx`, `CreatorShowPage.tsx` — `.wrapper`, `.main-title`, `.my-card-header/body`, `.left-col`, `.small-text`, `.my-regist-btn`, `.my-update-btn` 等

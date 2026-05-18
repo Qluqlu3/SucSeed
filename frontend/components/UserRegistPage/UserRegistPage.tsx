@@ -40,12 +40,12 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
 
   return (
     <>
-      <h1 className='main-title'>ユーザ登録</h1>
+      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>ユーザ登録</h1>
 
       <FlashMessages flash={flash} />
 
-      <div className='all-cover-box'>
-        <div className='wrapper wrapper1'>
+      <div className='min-h-screen'>
+        <div className='min-h-[65vh] w-[90%] mx-auto mb-[5%] p-[3%] bg-p-light border border-p-mid rounded-[7px]'>
           {errors.length > 0 && (
             <div id='error_explanation' className='error-box'>
               <p className='error-title'>入力内容にエラーが{errors.length}件あります</p>
@@ -63,9 +63,12 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
             <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
 
             {/* ユーザー名 */}
-            <div className='form-group row form-box'>
+            <div className='form-group row my-[2.7%]'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-name'>
+                <label
+                  className='form-input-label text-p-text text-[17px] pt-[2.9%]'
+                  htmlFor='user-name'
+                >
                   ユーザー名
                 </label>
               </div>
@@ -78,14 +81,17 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                   maxLength={50}
                   placeholder='ユーザー名'
                 />
-                <small className='small-text'>必須 50文字以内</small>
+                <small className='text-p-muted text-[13px] m-0 p-0'>必須 50文字以内</small>
               </div>
             </div>
 
             {/* アバター */}
-            <div className='form-group row form-box'>
+            <div className='form-group row my-[2.7%]'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-avatar'>
+                <label
+                  className='form-input-label text-p-text text-[17px] pt-[2.9%]'
+                  htmlFor='user-avatar'
+                >
                   アバター
                 </label>
               </div>
@@ -94,16 +100,16 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                   type='file'
                   id='user-avatar'
                   name='user[avatar_path]'
-                  className='form-control-file file-text form-control-lg'
+                  className='form-control-file text-p-text form-control-lg'
                   accept='image/jpg,image/jpeg,image/png'
                 />
               </div>
             </div>
 
             {/* 性別 */}
-            <div className='form-group row form-box'>
+            <div className='form-group row my-[2.7%]'>
               <div className='col-lg-2'>
-                <p className='my-label-text'>性別</p>
+                <p className='text-p-text text-[17px] pt-[2.9%]'>性別</p>
               </div>
               <div className='form-group col-xl-10'>
                 <div className='form-check form-check-inline'>
@@ -115,7 +121,7 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                     className='form-check-input form-control-lg'
                     id='radio-man'
                   />
-                  <label className='form-check-label radio-text' htmlFor='radio-man'>
+                  <label className='form-check-label text-p-text text-[17px]' htmlFor='radio-man'>
                     男性
                   </label>
                 </div>
@@ -127,24 +133,27 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                     className='form-check-input'
                     id='radio-woman'
                   />
-                  <label className='form-check-label radio-text' htmlFor='radio-woman'>
+                  <label className='form-check-label text-p-text text-[17px]' htmlFor='radio-woman'>
                     女性
                   </label>
                 </div>
                 <div>
-                  <small className='small-text'>必須</small>
+                  <small className='text-p-muted text-[13px] m-0 p-0'>必須</small>
                 </div>
               </div>
             </div>
 
             {/* 生年月日 */}
-            <div className='form-group birth_date_field row form-box'>
+            <div className='form-group birth_date_field row my-[2.7%]'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-birthday-year'>
+                <label
+                  className='form-input-label text-p-text text-[17px] pt-[2.9%]'
+                  htmlFor='user-birthday-year'
+                >
                   生年月日
                 </label>
               </div>
-              <div className='col-xl-10 date-text'>
+              <div className='col-xl-10 text-p-text'>
                 <select
                   id='user-birthday-year'
                   name='user[birthday(1i)]'
@@ -186,15 +195,18 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                 </select>{' '}
                 日
                 <div>
-                  <small className='small-text'>必須</small>
+                  <small className='text-p-muted text-[13px] m-0 p-0'>必須</small>
                 </div>
               </div>
             </div>
 
             {/* メールアドレス */}
-            <div className='form-group row form-box'>
+            <div className='form-group row my-[2.7%]'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-email'>
+                <label
+                  className='form-input-label text-p-text text-[17px] pt-[2.9%]'
+                  htmlFor='user-email'
+                >
                   メールアドレス
                 </label>
               </div>
@@ -206,14 +218,14 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                   className='form-control form-control-lg'
                   placeholder='メールアドレス'
                 />
-                <small className='small-text'>必須 半角英数</small>
+                <small className='text-p-muted text-[13px] m-0 p-0'>必須 半角英数</small>
               </div>
             </div>
 
             {/* ユーザー種別 */}
-            <div className='form-group row form-box'>
+            <div className='form-group row my-[2.7%]'>
               <div className='col-lg-2'>
-                <p className='my-label-text'>ユーザー種別</p>
+                <p className='text-p-text text-[17px] pt-[2.9%]'>ユーザー種別</p>
               </div>
               <div className='col-xl-10'>
                 <div className='form-check form-check-inline'>
@@ -225,7 +237,10 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                     className='form-check-input'
                     id='radio-creator'
                   />
-                  <label className='form-check-label radio-text' htmlFor='radio-creator'>
+                  <label
+                    className='form-check-label text-p-text text-[17px]'
+                    htmlFor='radio-creator'
+                  >
                     職人
                   </label>
                 </div>
@@ -237,20 +252,23 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                     className='form-check-input'
                     id='radio-heir'
                   />
-                  <label className='form-check-label radio-text' htmlFor='radio-heir'>
+                  <label className='form-check-label text-p-text text-[17px]' htmlFor='radio-heir'>
                     後継検討
                   </label>
                 </div>
                 <div>
-                  <small className='small-text'>必須</small>
+                  <small className='text-p-muted text-[13px] m-0 p-0'>必須</small>
                 </div>
               </div>
             </div>
 
             {/* パスワード */}
-            <div className='form-group row form-box'>
+            <div className='form-group row my-[2.7%]'>
               <div className='col-lg-2'>
-                <label className='form-input-label my-label-text' htmlFor='user-password'>
+                <label
+                  className='form-input-label text-p-text text-[17px] pt-[2.9%]'
+                  htmlFor='user-password'
+                >
                   パスワード
                 </label>
               </div>
@@ -263,15 +281,17 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                   maxLength={16}
                   placeholder='パスワード'
                 />
-                <small className='small-text'>必須　半角英数 8文字以上 16文字以内</small>
+                <small className='text-p-muted text-[13px] m-0 p-0'>
+                  必須　半角英数 8文字以上 16文字以内
+                </small>
               </div>
             </div>
 
             {/* パスワード確認 */}
-            <div className='form-group row form-box'>
+            <div className='form-group row my-[2.7%]'>
               <div className='col-lg-2'>
                 <label
-                  className='form-input-label my-label-text'
+                  className='form-input-label text-p-text text-[17px] pt-[2.9%]'
                   htmlFor='user-password-confirmation'
                 >
                   パスワード確認
@@ -286,12 +306,15 @@ export const UserRegistPage = ({ errors, flash }: Props) => {
                   maxLength={16}
                   placeholder='パスワード確認'
                 />
-                <small className='small-text'>必須　確認入力</small>
+                <small className='text-p-muted text-[13px] m-0 p-0'>必須　確認入力</small>
               </div>
             </div>
 
-            <div className='text-right regist-btn-box'>
-              <button type='submit' className='btn btn-default regist-btn'>
+            <div className='text-right mt-[3.9%]'>
+              <button
+                type='submit'
+                className='btn mr-[1%] w-[17%] text-[1.3em]! bg-p-brand! text-white! hover:opacity-80'
+              >
                 新規登録
               </button>
             </div>

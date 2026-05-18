@@ -17,11 +17,13 @@ export const EmailCertifiedPage = ({ userName, userId, flash }: Props) => {
   return (
     <>
       <FlashMessages flash={flash} />
-      <p className='certified_text'>{userName}さんメールアドレスの認証をお願いいたします。</p>
-      <div className='certified-box text-center'>
+      <p className='mt-[10%] ml-[31%] text-p-text text-[23px]'>
+        {userName}さんメールアドレスの認証をお願いいたします。
+      </p>
+      <div className='h-[68vh] text-center'>
         <form action={`/email/certified/${userId}`} method='post'>
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-          <button type='submit' className='btn btn-success certified-btn'>
+          <button type='submit' className='btn btn-success mt-[3%] text-[26px]! h-[60px]'>
             メールアドレス認証
           </button>
         </form>
