@@ -30,11 +30,11 @@ interface Props {
 
 export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
   <div>
-    <h1 className='main-title'>制作者情報</h1>
+    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>制作者情報</h1>
 
     <FlashMessages flash={flash} />
-    <div className='all-cover-box'>
-      <div className='wrapper'>
+    <div className='min-h-screen'>
+      <div className='w-[85%] mx-auto mb-[5%] bg-p-light border border-p-mid rounded-[7px]'>
         {/* 編集メニュー */}
         <div className='dropdown dropdown-right'>
           <button
@@ -45,7 +45,7 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
             aria-haspopup='true'
             aria-expanded='true'
           >
-            <i className='fas fa-cog setting-icon' />
+            <i className='fas fa-cog text-[50px]' />
           </button>
           <ul
             className='dropdown-menu dropdown-menu-right dropdown-box'
@@ -91,39 +91,51 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
           </ul>
         </div>
 
-        <div className='card out-line'>
-          <div className='card-header my-card-header'>工芸名</div>
-          <div className='card-body my-card-body text-center'>{creator.title}</div>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+            工芸名
+          </div>
+          <div className='text-[27px] py-[2%] bg-white text-center'>{creator.title}</div>
         </div>
 
-        <div className='card out-line'>
-          <div className='card-header my-card-header'>工芸カテゴリー</div>
-          <div className='card-body my-card-body text-center'>{creator.categoryName}</div>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+            工芸カテゴリー
+          </div>
+          <div className='text-[27px] py-[2%] bg-white text-center'>{creator.categoryName}</div>
         </div>
 
-        <div className='card out-line'>
-          <div className='card-header my-card-header'>創業年数</div>
-          <div className='card-body my-card-body text-center'>{creator.establishment}年</div>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+            創業年数
+          </div>
+          <div className='text-[27px] py-[2%] bg-white text-center'>{creator.establishment}年</div>
         </div>
 
-        <div className='card out-line'>
-          <div className='card-header my-card-header'>従業員数</div>
-          <div className='card-body my-card-body text-center'>{creator.employee}人</div>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+            従業員数
+          </div>
+          <div className='text-[27px] py-[2%] bg-white text-center'>{creator.employee}人</div>
         </div>
 
-        <div className='card out-line'>
-          <div className='card-header my-card-header'>作業所郵便番号</div>
-          <div className='card-body my-card-body text-center'>{creator.postalCode}</div>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+            作業所郵便番号
+          </div>
+          <div className='text-[27px] py-[2%] bg-white text-center'>{creator.postalCode}</div>
         </div>
 
-        <div className='card out-line'>
-          <div className='card-header my-card-header'>募集チェック</div>
-          <div className='card-body my-card-body text-center'>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
+            募集チェック
+          </div>
+          <div className='text-[27px] py-[2%] bg-white text-center'>
             <p>{creator.isRecruitment ? '募集中' : '募集停止中'}</p>
           </div>
         </div>
 
-        <div className='bottom-box' />
+        <div className='pb-[5%] mb-[7%]' />
       </div>
     </div>
   </div>

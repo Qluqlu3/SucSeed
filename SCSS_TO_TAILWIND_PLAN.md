@@ -211,8 +211,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `user.scss` 削除
 
 #### creator.scss
-- [ ] `CreatorCreatePage.tsx`, `CreatorUpdatePage.tsx`, `CreatorShowPage.tsx` — `.wrapper`, `.main-title`, `.my-card-header/body`, `.left-col`, `.small-text`, `.my-regist-btn`, `.my-update-btn` 等
-- [ ] `creator.scss` 削除
+- [x] `CreatorCreatePage.tsx`, `CreatorUpdatePage.tsx`, `CreatorShowPage.tsx` — `.wrapper`, `.main-title`, `.my-card-header/body`, `.left-col`, `.small-text`, `.my-regist-btn`, `.my-update-btn` 等
+- [x] `creator.scss` 削除
 
 #### match.scss
 - [ ] `AppealedListPage.tsx`, `AppealShowPage.tsx`, `MatchingPage.tsx`, `ScoutCheckPage.tsx`, `ScoutShowPage.tsx` — `.wrapper`, `.list-card-header/body`, `.name-text`, `.yes-btn`, `.no-btn`, `.empty-text` 等

@@ -62,9 +62,9 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
         </div>
       )}
 
-      <h1 className='main-title'>制作者情報</h1>
+      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>制作者情報</h1>
 
-      <div className='wrapper'>
+      <div className='w-[85%] mx-auto mb-[5%] bg-p-light border border-p-mid rounded-[7px]'>
         {/* 編集メニュー */}
         <div className='dropdown dropdown-right'>
           <button
@@ -75,7 +75,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             aria-haspopup='true'
             aria-expanded='true'
           >
-            <i className='fas fa-cog setting-icon' />
+            <i className='fas fa-cog text-[50px]' />
           </button>
           <ul
             className='dropdown-menu dropdown-menu-right dropdown-box'
@@ -125,35 +125,35 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
           <input type='hidden' name='_method' value='patch' />
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
 
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_title'>制作工芸名</label>
             </div>
-            <div className='card-body my-card-body text-left'>
-              <div className='update-form-text'>{creator.title}</div>
+            <div className='text-[27px] py-[2%] bg-white'>
+              <div className='pl-[2%]'>{creator.title}</div>
               <input
                 id='art_category_title'
                 type='text'
                 name='art_category[title]'
-                className='form-control update-form-input'
+                className='form-control w-[85%]! mx-auto'
                 placeholder='制作工芸名'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-              <small className='update-form-sub-text'>必須</small>
+              <small className='pt-0 mt-0 ml-[8%] text-[16px] text-red-600'>必須</small>
             </div>
           </div>
 
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_art_category_id'>工芸カテゴリ</label>
             </div>
-            <div className='card-body my-card-body text-left'>
-              <div className='update-form-text'>{creator.categoryName}</div>
+            <div className='text-[27px] py-[2%] bg-white'>
+              <div className='pl-[2%]'>{creator.categoryName}</div>
               <select
                 id='art_category_art_category_id'
                 name='art_category[art_category_id]'
-                className='form-control update-form-input'
+                className='form-control w-[85%]! mx-auto'
                 value={artCategoryId}
                 onChange={(e) => setArtCategoryId(Number(e.target.value))}
               >
@@ -164,77 +164,77 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
                   </option>
                 ))}
               </select>
-              <small className='update-form-sub-text'>必須</small>
+              <small className='pt-0 mt-0 ml-[8%] text-[16px] text-red-600'>必須</small>
             </div>
           </div>
 
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_establishment'>創業年数</label>
             </div>
-            <div className='card-body my-card-body text-left'>
-              <div className='update-form-text'>{creator.establishment}年</div>
+            <div className='text-[27px] py-[2%] bg-white'>
+              <div className='pl-[2%]'>{creator.establishment}年</div>
               <input
                 id='art_category_establishment'
                 type='number'
                 name='art_category[establishment]'
-                className='form-control update-form-input'
+                className='form-control w-[85%]! mx-auto'
                 placeholder='創業年数'
                 value={establishment}
                 onChange={(e) => setEstablishment(Number(e.target.value))}
               />
-              <small className='update-form-sub-text'>必須</small>
+              <small className='pt-0 mt-0 ml-[8%] text-[16px] text-red-600'>必須</small>
             </div>
           </div>
 
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_employee'>従業員数</label>
             </div>
-            <div className='card-body my-card-body text-left'>
-              <div className='update-form-text'>{creator.employee}人</div>
+            <div className='text-[27px] py-[2%] bg-white'>
+              <div className='pl-[2%]'>{creator.employee}人</div>
               <input
                 id='art_category_employee'
                 type='number'
                 name='art_category[employee]'
-                className='form-control update-form-input'
+                className='form-control w-[85%]! mx-auto'
                 placeholder='従業員数'
                 value={employee}
                 onChange={(e) => setEmployee(Number(e.target.value))}
               />
-              <small className='update-form-sub-text'>必須</small>
+              <small className='pt-0 mt-0 ml-[8%] text-[16px] text-red-600'>必須</small>
             </div>
           </div>
 
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_postal_code'>作業所郵便番号</label>
             </div>
-            <div className='card-body my-card-body text-left'>
-              <div className='update-form-text'>{creator.postalCode}</div>
+            <div className='text-[27px] py-[2%] bg-white'>
+              <div className='pl-[2%]'>{creator.postalCode}</div>
               <input
                 id='art_category_postal_code'
                 type='text'
                 name='art_category[postal_code]'
-                className='form-control update-form-input'
+                className='form-control w-[85%]! mx-auto'
                 placeholder='郵便番号'
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
               />
-              <small className='update-form-sub-text'>必須</small>
+              <small className='pt-0 mt-0 ml-[8%] text-[16px] text-red-600'>必須</small>
             </div>
           </div>
 
-          <div className='card out-line'>
-            <div className='card-header my-card-header'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+            <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_is_recruitment'>募集チェック</label>
             </div>
-            <div className='card-body my-card-body text-left update-form-check'>
+            <div className='text-[27px] py-[2%] bg-white pl-[5%]'>
               <input
                 id='art_category_is_recruitment'
                 type='checkbox'
                 name='art_category[is_recruitment]'
-                className='form-check-input update-check-box'
+                className='form-check-input [transform:scale(1.7,1.7)]'
                 value='1'
                 checked={isRecruitment}
                 onChange={(e) => setIsRecruitment(e.target.checked)}
@@ -247,13 +247,13 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             </div>
           </div>
 
-          <div className='text-right update-btn-box'>
-            <button type='submit' className='btn btn-lg my-update-btn'>
+          <div className='text-right mt-[3%] mr-[4%]'>
+            <button type='submit' className='btn w-[160px] text-[23px]! bg-p-brand! text-white!'>
               変更
             </button>
           </div>
 
-          <div className='bottom-box' />
+          <div className='pb-[5%] mb-[7%]' />
         </form>
       </div>
     </div>
