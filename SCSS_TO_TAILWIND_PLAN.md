@@ -215,8 +215,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `creator.scss` 削除
 
 #### match.scss
-- [ ] `AppealedListPage.tsx`, `AppealShowPage.tsx`, `MatchingPage.tsx`, `ScoutCheckPage.tsx`, `ScoutShowPage.tsx` — `.wrapper`, `.list-card-header/body`, `.name-text`, `.yes-btn`, `.no-btn`, `.empty-text` 等
-- [ ] `match.scss` 削除
+- [x] `AppealedListPage.tsx`, `AppealShowPage.tsx`, `MatchingPage.tsx`, `ScoutCheckPage.tsx`, `ScoutShowPage.tsx` — `.wrapper`, `.list-card-header/body`, `.name-text`, `.yes-btn`, `.no-btn`, `.empty-text` 等
+- [x] `match.scss` 削除
 
 #### diary.scss
 - [ ] `MyDiaryPage.tsx`, `DiaryPostPage.tsx`, `YourDiaryPage.tsx` 等 — `.icon-color`, `.main-title`, `.post-btn`, `.comment-btn`, `.file-box` 等
