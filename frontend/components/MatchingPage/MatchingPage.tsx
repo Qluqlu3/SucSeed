@@ -55,7 +55,11 @@ const MessageForm = ({ userId }: { userId: string }) => {
   return (
     <form action={`/message/add/${userId}`} method='post' onSubmit={() => setSubmitted(true)}>
       <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-      <button type='submit' className='btn btn-success w-full m-0 py-[1%] text-[30px]' disabled={submitted}>
+      <button
+        type='submit'
+        className='btn btn-success w-full m-0 py-[1%] text-[30px]'
+        disabled={submitted}
+      >
         メッセージ
       </button>
     </form>

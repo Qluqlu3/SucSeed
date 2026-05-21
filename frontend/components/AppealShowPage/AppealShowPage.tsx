@@ -100,7 +100,7 @@ export const AppealShowPage = ({ appeals, flash }: Props) => (
                     </div>
                   ) : (
                     <div className='col'>
-                        <p className='btn btn-primary w-full m-0 py-[1%] text-[30px]'>アピール済</p>
+                      <p className='btn btn-primary w-full m-0 py-[1%] text-[30px]'>アピール済</p>
                     </div>
                   )}
                 </div>

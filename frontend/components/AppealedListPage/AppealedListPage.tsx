@@ -86,7 +86,10 @@ export const AppealedListPage = ({ matches, flash }: Props) => (
                   <div className='col-6 pr-[0.1%]'>
                     <form action={`/match/ok/${match.pageId}`} method='post'>
                       <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                      <button type='submit' className='btn btn-primary w-full m-0 py-[1%] text-[30px]'>
+                      <button
+                        type='submit'
+                        className='btn btn-primary w-full m-0 py-[1%] text-[30px]'
+                      >
                         話してみる
                       </button>
                     </form>
@@ -94,7 +97,10 @@ export const AppealedListPage = ({ matches, flash }: Props) => (
                   <div className='col-6 pl-[0.1%]'>
                     <form action={`/match/sorry/${match.pageId}`} method='post'>
                       <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                      <button type='submit' className='btn btn-danger w-full m-0 py-[1%] text-[30px]'>
+                      <button
+                        type='submit'
+                        className='btn btn-danger w-full m-0 py-[1%] text-[30px]'
+                      >
                         ごめんなさい
                       </button>
                     </form>
