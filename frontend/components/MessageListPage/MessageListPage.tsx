@@ -23,21 +23,21 @@ interface Props {
 
 export const MessageListPage = ({ messageLists, flash }: Props) => (
   <div>
-    <h1 className='main-title'>メッセージ</h1>
+    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>メッセージ</h1>
 
     <FlashMessages flash={flash} />
-    <div className='all-cover-box'>
-      <div className='wrapper'>
-        <div className='row my-row justify-content-center'>
+    <div className='min-h-screen'>
+      <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
+        <div className='row w-[90%] h-[67vh] mt-[1%] mb-[3%] mx-auto p-0 rounded-[5px] justify-content-center'>
           {/* 左パネル: メッセージリスト */}
-          <div className='col-md-5 my-col-left'>
-            <div className='list-box'>
+          <div className='col-md-5 h-[80vh] p-0 m-0 rounded-[5px]'>
+            <div className='h-[65vh] bg-[#1F4B2E] rounded-[5px] overflow-scroll'>
               {messageLists.map((item) => (
                 <form key={item.id} action={`/message/history/${item.id}`} method='post'>
                   <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                  <button type='submit' className='btn message-list-btn'>
-                    <div className='message-list-box row my-list-row'>
-                      <div className='col-md-3 col-avatar-box'>
+                  <button type='submit' className='btn w-full h-[90px] bg-[#D3C9E7]'>
+                    <div className='row w-full h-[100px] m-0'>
+                      <div className='col-md-3 p-0 m-0'>
                         <img
                           src={item.avatarPath}
                           width={80}
@@ -46,7 +46,9 @@ export const MessageListPage = ({ messageLists, flash }: Props) => (
                           alt={item.name}
                         />
                       </div>
-                      <div className='col-md-9 col-name-box'>{item.name}</div>
+                      <div className='col-md-9 p-0 m-0 text-[25px] text-left leading-[80px]'>
+                        {item.name}
+                      </div>
                     </div>
                   </button>
                 </form>
@@ -55,8 +57,8 @@ export const MessageListPage = ({ messageLists, flash }: Props) => (
           </div>
 
           {/* 右パネル: 空（メッセージ未選択状態） */}
-          <div className='col-md-7 my-col-right'>
-            <div className='message-box' />
+          <div className='col-md-7 h-[65vh] p-0 m-0 rounded-[5px]'>
+            <div className='h-[65vh] mx-auto bg-[#eee] rounded-[5px] overflow-scroll' />
           </div>
         </div>
       </div>

@@ -223,8 +223,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `diary.scss` 削除
 
 #### message.scss
-- [ ] `MessageListPage.tsx`, `MessagePage.tsx` — `.wrapper`, `.my-row`, `.my-col-left/right`, `.message-box`, `.message-list-btn`, `.col-name-box`
-- [ ] `message.scss` 削除
+- [x] `MessageListPage.tsx`, `MessagePage.tsx` — `.wrapper`, `.my-row`, `.my-col-left/right`, `.message-box`, `.message-list-btn`, `.col-name-box`
+- [x] `message.scss` 削除
 
 #### gallery.scss（複雑）
 - [ ] `MyGalleryPage.tsx`, `GalleryViewPage.tsx`, `GalleryUploadPage.tsx` 等 — `.gallery-col`, `.gallery-card`, `.gallery-card-body`, `.right-box`, `.in-box`, `.my-submit-btn`, `.right-box-top` 等

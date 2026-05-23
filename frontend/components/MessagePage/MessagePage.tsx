@@ -40,21 +40,21 @@ interface Props {
 
 export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, flash }: Props) => (
   <div>
-    <h1 className='main-title'>メッセージ</h1>
+    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>メッセージ</h1>
 
     <FlashMessages flash={flash} />
-    <div className='all-cover-box'>
-      <div className='wrapper'>
-        <div className='row my-row justify-content-center'>
+    <div className='min-h-screen'>
+      <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
+        <div className='row w-[90%] h-[67vh] mt-[1%] mb-[3%] mx-auto p-0 rounded-[5px] justify-content-center'>
           {/* 左パネル: メッセージリスト */}
-          <div className='col-md-5 my-col-left'>
-            <div className='list-box'>
+          <div className='col-md-5 h-[80vh] p-0 m-0 rounded-[5px]'>
+            <div className='h-[65vh] bg-[#1F4B2E] rounded-[5px] overflow-scroll'>
               {messageLists.map((item) => (
                 <form key={item.id} action={`/message/history/${item.id}`} method='post'>
                   <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                  <button type='submit' className='btn message-list-btn'>
-                    <div className='message-list-box row my-list-row'>
-                      <div className='col-md-3 col-avatar-box'>
+                  <button type='submit' className='btn w-full h-[90px] bg-[#D3C9E7]'>
+                    <div className='row w-full h-[100px] m-0'>
+                      <div className='col-md-3 p-0 m-0'>
                         <img
                           src={item.avatarPath}
                           width={80}
@@ -63,7 +63,9 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                           alt={item.name}
                         />
                       </div>
-                      <div className='col-md-9 col-name-box'>{item.name}</div>
+                      <div className='col-md-9 p-0 m-0 text-[25px] text-left leading-[80px]'>
+                        {item.name}
+                      </div>
                     </div>
                   </button>
                 </form>
@@ -72,19 +74,18 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
           </div>
 
           {/* 右パネル: 履歴 + 送信フォーム */}
-          <div className='col-md-7 my-col-right'>
-            <div className='message-box'>
-              <h3 className='message-title'>{toUser.name}さん</h3>
+          <div className='col-md-7 h-[65vh] p-0 m-0 rounded-[5px]'>
+            <div className='h-[65vh] mx-auto bg-[#eee] rounded-[5px] overflow-scroll'>
+              <h3 className='py-[3px] px-2 bg-[#5cb85c]'>{toUser.name}さん</h3>
               {messageHistory.map((msg) =>
                 msg.sendUserId === fromUser.id ? (
                   // 自分の発言
-                  <div
-                    key={`${msg.sendUserId}-${msg.createdAt}`}
-                    className='from-message-box text-right'
-                  >
+                  <div key={`${msg.sendUserId}-${msg.createdAt}`} className='mt-2 text-right'>
                     <div className='media text-right'>
-                      <div className='media-body from-message-content'>
-                        <p>{msg.content}</p>
+                      <div className='media-body'>
+                        <p className='p-[7px] text-[17px] [border-radius:17px_17px_0_17px] bg-[#A3CAFF] inline-block'>
+                          {msg.content}
+                        </p>
                       </div>
                       <img
                         src={fromUser.avatarPath}
@@ -94,14 +95,11 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                         alt=''
                       />
                     </div>
-                    <p className='message-time-text'>{msg.createdAt}</p>
+                    <p className='px-[5px] text-[13px] text-[#aaa]'>{msg.createdAt}</p>
                   </div>
                 ) : (
                   // 相手の発言
-                  <div
-                    key={`${msg.sendUserId}-${msg.createdAt}`}
-                    className='to-message-box text-left'
-                  >
+                  <div key={`${msg.sendUserId}-${msg.createdAt}`} className='mt-2 text-left'>
                     <div className='media text-left'>
                       <img
                         src={toUser.avatarPath}
@@ -110,18 +108,20 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                         className='rounded-circle'
                         alt={toUser.name}
                       />
-                      <div className='media-body to-message-content'>
-                        <p>{msg.content}</p>
+                      <div className='media-body'>
+                        <p className='p-[7px] text-[17px] [border-radius:17px_17px_17px_0] bg-[#3D91FF] inline-block'>
+                          {msg.content}
+                        </p>
                       </div>
                     </div>
-                    <p className='message-time-text'>{msg.createdAt}</p>
+                    <p className='px-[5px] text-[13px] text-[#aaa]'>{msg.createdAt}</p>
                   </div>
                 ),
               )}
             </div>
 
             {/* 送信フォーム */}
-            <div className='send-message-box'>
+            <div>
               <form action={`/message/send/${toUser.id}`} method='post' className='form-control'>
                 <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
                 <div className='input-group'>
@@ -132,7 +132,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                     placeholder='メッセージ'
                   />
                   <span className='input-group-btn'>
-                    <button type='submit' className='btn send-btn'>
+                    <button type='submit' className='btn p-0 w-[5vw] text-[23px] bg-[#FFA30D]'>
                       <i className='far fa-paper-plane message-icon' />
                     </button>
                   </span>
