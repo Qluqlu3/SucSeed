@@ -219,8 +219,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `match.scss` 削除
 
 #### diary.scss
-- [ ] `MyDiaryPage.tsx`, `DiaryPostPage.tsx`, `YourDiaryPage.tsx` 等 — `.icon-color`, `.main-title`, `.post-btn`, `.comment-btn`, `.file-box` 等
-- [ ] `diary.scss` 削除
+- [x] `MyDiaryPage.tsx`, `DiaryPostPage.tsx`, `YourDiaryPage.tsx` 等 — `.icon-color`, `.main-title`, `.post-btn`, `.comment-btn`, `.file-box` 等
+- [x] `diary.scss` 削除
 
 #### message.scss
 - [ ] `MessageListPage.tsx`, `MessagePage.tsx` — `.wrapper`, `.my-row`, `.my-col-left/right`, `.message-box`, `.message-list-btn`, `.col-name-box`

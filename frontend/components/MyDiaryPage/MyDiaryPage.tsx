@@ -59,16 +59,16 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
 
   return (
     <>
-      <h1 className="main-title">マイ日記</h1>
+      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>マイ日記</h1>
 
       <FlashMessages flash={flash} />
 
       {errors.length > 0 && (
-        <div id="error_explanation" className="error-box">
-          <p className="error-title">入力内容にエラーが{errors.length}件あります</p>
-          <ul className="error-index">
+        <div id='error_explanation' className='error-box'>
+          <p className='error-title'>入力内容にエラーが{errors.length}件あります</p>
+          <ul className='error-index'>
             {errors.map((msg) => (
-              <li key={msg} className="error-content">
+              <li key={msg} className='error-content'>
                 {msg}
               </li>
             ))}
@@ -76,12 +76,12 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
         </div>
       )}
 
-      <div className="wrapper">
-        <div className="row my-row">
+      <div className='pt-[23px] w-full min-h-[110vh] mx-auto'>
+        <div className='row w-full !mx-0 pl-[1%]'>
           {/* 左カラム：日記一覧 */}
-          <div className="col-md-9 left-col">
+          <div className='col-md-9 bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]'>
             {diaries.length === 0 ? (
-              <p className="empty-text">まだありません</p>
+              <p className='text-[39px] text-white'>まだありません</p>
             ) : (
               diaries.map((entry) => (
                 <DiaryCard
@@ -97,13 +97,13 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
           </div>
 
           {/* 右カラム：投稿フォーム */}
-          <div className="col-md-3 right-col">
-            <div className="in-box">
-              <div className="card diary-post-card">
-                <div className="diary-post-card-header">
+          <div className='col-md-3 h-[60vh] bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]'>
+            <div>
+              <div className='mt-[8%] border-2 border-[#D3C9E7] rounded-[5px]'>
+                <div className='pt-[1.3%] pb-[0.8%] pl-[1.5%] bg-[#FCF2D3] rounded-t-[5px] text-[23px]'>
                   <img
                     src={currentUser.avatarPath}
-                    className="rounded-circle"
+                    className='rounded-circle'
                     width={60}
                     height={60}
                     alt={currentUser.name}
@@ -111,19 +111,19 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
                   {currentUser.name}
                 </div>
                 <form onSubmit={handlePost}>
-                  <div className="diary-post-card-body">
+                  <div>
                     <textarea
-                      className="form-control"
-                      placeholder="文章など"
+                      className='form-control'
+                      placeholder='文章など'
                       rows={10}
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                     />
                   </div>
-                  <div className="diary-post-card-footer post-btn">
+                  <div className='bg-p-brand text-right'>
                     <button
-                      type="submit"
-                      className="btn btn-default btn-lg my-btn"
+                      type='submit'
+                      className='btn btn-default btn-lg bg-[#FFA30D] text-black'
                       disabled={posting}
                     >
                       投稿

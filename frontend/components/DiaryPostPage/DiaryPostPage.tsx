@@ -50,7 +50,7 @@ export const DiaryPostPage = ({ errors, userName, avatarPath, flash }: Props) =>
               />
             </div>
           </div>
-          <div className='panel-footer post-btn'>
+          <div className='panel-footer text-right'>
             <button type='submit' className='btn btn-lg btn-primary'>
               投稿
             </button>
