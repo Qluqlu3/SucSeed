@@ -44,7 +44,10 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
               <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
               <div className='form-group'>
                 <div className='bg-p-brand rounded-t-[7px]'>
-                  <label className='block text-white text-[31px] mt-[1.5%] mb-[1%] ml-[5%]' htmlFor='favorite-gallery-file'>
+                  <label
+                    className='block text-white text-[31px] mt-[1.5%] mb-[1%] ml-[5%]'
+                    htmlFor='favorite-gallery-file'
+                  >
                     投稿
                   </label>
                 </div>
@@ -79,7 +82,10 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
                   />
                 </div>
                 <div className='text-right mt-[7%] mr-[5%]'>
-                  <button type='submit' className='btn btn-lg bg-p-brand text-white w-[33%] hover:opacity-80'>
+                  <button
+                    type='submit'
+                    className='btn btn-lg bg-p-brand text-white w-[33%] hover:opacity-80'
+                  >
                     投稿
                   </button>
                 </div>

@@ -8,7 +8,9 @@ interface Props {
 
 export const GalleryUploadPage = ({ errors, flash }: Props) => (
   <>
-<h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>ギャラリー アップロード</h1>
+    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>
+      ギャラリー アップロード
+    </h1>
 
     <FlashMessages flash={flash} />
 

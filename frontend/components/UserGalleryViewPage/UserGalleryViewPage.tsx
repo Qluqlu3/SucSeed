@@ -16,17 +16,15 @@ interface Props {
 
 export const UserGalleryViewPage = ({ userName, userId, galleries, flash }: Props) => (
   <>
-    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>{userName}さんのギャラリー</h1>
+    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>
+      {userName}さんのギャラリー
+    </h1>
 
     <FlashMessages flash={flash} />
 
     {galleries.length > 0 && (
       <div className='w-full pr-[2%] pb-[1%] text-right'>
-        <form
-          action={`/gallery/user/search/tag/${userId}`}
-          method='post'
-          className='inline-flex'
-        >
+        <form action={`/gallery/user/search/tag/${userId}`} method='post' className='inline-flex'>
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
           <input
             type='text'
