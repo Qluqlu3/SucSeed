@@ -58,11 +58,17 @@ export const HeirPage = ({
       <div className='w-full relative mx-auto'>
         <img src='/assets/main1.jpg' height='800px' width='100%' alt='背景画像' />
         <div className='absolute top-[2%] left-[1%]'>
-          <h1 className='bg-[#FCF2D3] rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]'>{user.name}</h1>
-          <p className={`py-[3px] px-[12px] inline-block text-[27px] rounded-[17px] ${user.isMan ? 'bg-[#0A84FF] text-white' : 'bg-[#e83e8c] text-white'}`}>
+          <h1 className='bg-[#FCF2D3] rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]'>
+            {user.name}
+          </h1>
+          <p
+            className={`py-[3px] px-[12px] inline-block text-[27px] rounded-[17px] ${user.isMan ? 'bg-[#0A84FF] text-white' : 'bg-[#e83e8c] text-white'}`}
+          >
             {user.isMan ? '男性' : '女性'}
           </p>
-          <p className='py-[5px] px-[15px] inline-block text-[31px] rounded-[17px] bg-p-light'>{calcAge(user.birthday)}歳</p>
+          <p className='py-[5px] px-[15px] inline-block text-[31px] rounded-[17px] bg-p-light'>
+            {calcAge(user.birthday)}歳
+          </p>
         </div>
         {artName && (
           <div className='absolute top-0 right-[0.7%] text-[51px]'>
@@ -84,7 +90,9 @@ export const HeirPage = ({
 
       {/* 紹介文 */}
       <div className='card mx-auto w-[93%] bg-[#FCF2D3] rounded-[11px] mb-[5%] text-[27px] border-none mt-[5%]'>
-        <h3 className='card-header text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[25px] pr-0 pb-[11px] pl-[21px]'>紹介文</h3>
+        <h3 className='card-header text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[25px] pr-0 pb-[11px] pl-[21px]'>
+          紹介文
+        </h3>
         <div className='card-body pt-[1%] pr-0 pb-[1%] pl-[1%]'>
           <p className='card-text text-[39px] leading-[9vh]' style={{ whiteSpace: 'pre-wrap' }}>
             {user.profile}
