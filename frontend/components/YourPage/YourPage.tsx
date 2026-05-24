@@ -71,22 +71,22 @@ export const YourPage = ({
   };
 
   return (
-    <div className='wrapper'>
+    <div className='w-full'>
       <FlashMessages flash={flash} />
 
       {/* プロフィールヘッダー */}
       <div>
-        <div className='background-img-box'>
+          <div className='w-full relative mx-auto'>
           <img src='/assets/main1.jpg' height='850px' width='100%' alt='背景画像' />
           <div>
-            <div className='name-age-box'>
-              <h1 className='h1-box'>{user.name}</h1>
-              <p className={`sex-box ${user.isMan ? 'is_man' : 'is_woman'}`}>
+              <div className='absolute top-[2%] left-[1%]'>
+                <h1 className='bg-[#FCF2D3] rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]'>{user.name}</h1>
+                <p className={`py-[3px] px-[12px] inline-block text-[27px] rounded-[17px] ${user.isMan ? 'bg-[#0A84FF] text-white' : 'bg-[#e83e8c] text-white'}`}>
                 {user.isMan ? '男性' : '女性'}
               </p>
-              <p className='age-box'>{calcAge(user.birthday)}歳</p>
+                <p className='py-[5px] px-[15px] inline-block text-[31px] rounded-[17px] bg-p-light'>{calcAge(user.birthday)}歳</p>
             </div>
-            <div className='label-box'>
+              <div className='absolute top-0 right-[0.7%] text-[51px]'>
               {creator.isRecruitment ? (
                 <span className='badge badge-primary'>募集中</span>
               ) : (
@@ -94,7 +94,7 @@ export const YourPage = ({
               )}
             </div>
           </div>
-          <div className='profile-avatar'>
+          <div className='absolute top-[27%] left-[39%]'>
             <img
               src={user.avatarPath}
               className='card-img-top rounded-circle'
@@ -106,55 +106,55 @@ export const YourPage = ({
         </div>
       </div>
 
-      <div className='bar-box' />
+      <div className='w-full h-[50px] bg-p-brand' />
 
       {/* お気に入りボタン */}
-      <div className='favorite_btn_box'>
+      <div className='text-right mt-[1%] mr-[2%] mb-[1%]'>
         {loggedIn && !isOwnPage && (
           <button
             type='button'
-            className='btn btn-default btn-lg favorite_btn'
+            className='btn btn-default btn-lg bg-p-brand text-white'
             onClick={handleFavorite}
           >
             {isFavorited ? (
-              <i className='fas fa-star favorite_star_set' />
+              <i className='fas fa-star pt-[7%] text-p-brand text-[33px]' />
             ) : (
-              <i className='far fa-star favorite_star_none' />
+              <i className='far fa-star pt-[7%] text-white text-[33px]' />
             )}
           </button>
         )}
       </div>
 
       {/* タブナビゲーション */}
-      <ul className='nav justify-content-center original-nav'>
+      <ul className='nav justify-content-center border-t border-b border-[#aaa] text-[33px] text-white bg-[#666]'>
         <li className='nav-item'>
-          <a href={`/diary/show/${user.id}`} className='nav-link'>
+          <a href={`/diary/show/${user.id}`} className='nav-link !text-white hover:!text-[#FFA30D]'>
             日記
           </a>
         </li>
-        <li className='nav-item my-nav-item'>
-          <a href={`/gallery/view/${user.id}`} className='nav-link'>
+        <li className='nav-item ml-[5%]'>
+          <a href={`/gallery/view/${user.id}`} className='nav-link !text-white hover:!text-[#FFA30D]'>
             ギャラリー
           </a>
         </li>
       </ul>
 
       {/* 制作工芸名・ジャンル */}
-      <div className='content-box top-box'>
+      <div className='w-[93%] mx-auto mt-[2%]'>
         <div className='row'>
           <div className='col-md-6'>
-            <div className='card my-card'>
-              <h3 className='my-card-header'>制作工芸名</h3>
-              <div className='card-body my-card-body'>
-                <p className='card-text'>{creator.title}</p>
+            <div className='card mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
+              <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[3%] pr-0 pb-[1%] pl-[2%]'>制作工芸名</h3>
+              <div className='card-body p-[9px] text-center text-[27px]'>
+                <p className='card-text text-[39px] leading-[9vh]'>{creator.title}</p>
               </div>
             </div>
           </div>
           <div className='col-md-6'>
-            <div className='card my-card'>
-              <h3 className='my-card-header'>工芸品ジャンル</h3>
-              <div className='card-body my-card-body'>
-                <p className='card-text'>{artCategoryName}</p>
+            <div className='card mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
+              <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[3%] pr-0 pb-[1%] pl-[2%]'>工芸品ジャンル</h3>
+              <div className='card-body p-[9px] text-center text-[27px]'>
+                <p className='card-text text-[39px] leading-[9vh]'>{artCategoryName}</p>
               </div>
             </div>
           </div>
@@ -162,21 +162,21 @@ export const YourPage = ({
       </div>
 
       {/* 創業年数・従業員数 */}
-      <div className='content-box'>
+      <div className='w-[93%] mx-auto'>
         <div className='row'>
           <div className='col-md-6'>
-            <div className='card my-card'>
-              <h3 className='my-card-header'>創業年数</h3>
-              <div className='card-body my-card-body'>
-                <p className='card-text'>{creator.establishment}年</p>
+            <div className='card mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
+              <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[3%] pr-0 pb-[1%] pl-[2%]'>創業年数</h3>
+              <div className='card-body p-[9px] text-center text-[27px]'>
+                <p className='card-text text-[39px] leading-[9vh]'>{creator.establishment}年</p>
               </div>
             </div>
           </div>
           <div className='col-md-6'>
-            <div className='card my-card'>
-              <h3 className='my-card-header'>従業員数</h3>
-              <div className='card-body my-card-body'>
-                <p className='card-text'>{creator.employee}人</p>
+            <div className='card mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
+              <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[3%] pr-0 pb-[1%] pl-[2%]'>従業員数</h3>
+              <div className='card-body p-[9px] text-center text-[27px]'>
+                <p className='card-text text-[39px] leading-[9vh]'>{creator.employee}人</p>
               </div>
             </div>
           </div>
@@ -184,9 +184,9 @@ export const YourPage = ({
       </div>
 
       {/* 紹介文 */}
-      <div className='card my-card-pro'>
-        <h3 className='my-card-header-pro'>紹介文</h3>
-        <div className='card-body card-body-intro'>
+      <div className='card mx-auto w-[93%] bg-[#FCF2D3] rounded-[11px] mb-[5%] text-[27px] border-none'>
+        <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[25px] pr-0 pb-[11px] pl-[21px]'>紹介文</h3>
+        <div className='card-body pt-[1%] pr-0 pb-[1%] pl-[1%]'>
           <p className='card-text' style={{ whiteSpace: 'pre-wrap' }}>
             {creator.profile}
           </p>
@@ -195,10 +195,10 @@ export const YourPage = ({
 
       {/* アピールボタン（後継者ログイン時のみ） */}
       {loggedIn && !isCreator && (
-        <div className='appeal-box'>
+        <div className='w-[50%] fixed bottom-0 left-[25%]'>
           <button
             type='button'
-            className='btn btn-lg appeal-btn'
+            className='btn btn-lg w-full bg-[#FFA30D] text-[33px] hover:opacity-90'
             onClick={handleAppeal}
             disabled={isMatched}
           >

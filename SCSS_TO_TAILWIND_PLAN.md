@@ -231,8 +231,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `gallery.scss` 削除
 
 #### your_page.scss（複雑）
-- [ ] `YourPage.tsx` — `.name-age-box`, `.sex-box`, `.is_man`, `.is_woman`, `.age-box`, `.bar-box`, `.favorite_btn`, `.original-nav`, `.box-margin-pro`, `.profile-avatar` 等
-- [ ] `your_page.scss` 削除
+- [x] `YourPage.tsx`, `HeirPage.tsx` — `.name-age-box`, `.sex-box`, `.is_man`, `.is_woman`, `.age-box`, `.bar-box`, `.favorite_btn`, `.original-nav`, `.box-margin-pro`, `.profile-avatar` 等
+- [x] `your_page.scss` 削除
 
 #### index.scss（最複雑）
 - [ ] `IndexPage.tsx`, `SearchUserPage.tsx` — `.main-visual`, `.main-visual-box h1`, `.index-nav`, `.three-box`, `.bg-1`, `.info-title`, `.card-box`, `.card-box-name/title`, `.zone` 等
