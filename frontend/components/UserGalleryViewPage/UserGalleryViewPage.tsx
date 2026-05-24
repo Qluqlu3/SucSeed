@@ -16,16 +16,16 @@ interface Props {
 
 export const UserGalleryViewPage = ({ userName, userId, galleries, flash }: Props) => (
   <>
-    <h1 className='main-title'>{userName}さんのギャラリー</h1>
+    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>{userName}さんのギャラリー</h1>
 
     <FlashMessages flash={flash} />
 
     {galleries.length > 0 && (
-      <div className='gallery-search-box'>
+      <div className='w-full pr-[2%] pb-[1%] text-right'>
         <form
           action={`/gallery/user/search/tag/${userId}`}
           method='post'
-          className='gallery-search-tag'
+          className='inline-flex'
         >
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
           <input
@@ -41,14 +41,14 @@ export const UserGalleryViewPage = ({ userName, userId, galleries, flash }: Prop
       </div>
     )}
 
-    <div className='row user-gallery-row'>
-      <div className='col-lg-12 gallery-col'>
+    <div className='row min-h-[70vh] m-0 py-0 px-[0.7%] w-full'>
+      <div className='col-lg-12 p-0 mb-[10%] bg-p-light border border-p-mid rounded-[7px]'>
         {galleries.length === 0 ? (
-          <div className='nil-box'>
-            <p className='empty-text'>まだありません</p>
+          <div className='h-[50vh]'>
+            <p className='mt-[10%] ml-[15%] text-[39px] text-white'>まだありません</p>
           </div>
         ) : (
-          <div className='row my-row'>
+          <div className='row m-0 p-0'>
             {galleries.map((gallery) => (
               <GalleryCard key={gallery.id} gallery={gallery} />
             ))}

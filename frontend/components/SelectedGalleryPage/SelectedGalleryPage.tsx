@@ -104,13 +104,13 @@ export const SelectedGalleryPage = ({
     <>
       <FlashMessages flash={flash} />
 
-      <div className='row my-selected-row'>
+      <div className='row w-full pl-[1.5%] mb-[13%]'>
         {/* メインカラム */}
-        <div className='col-lg-9 selected-gallery-box'>
-          <div className='selected-gallery-box-in-box'>
+        <div className='col-lg-9 py-[0.5%] px-[0.3%] pb-[5%] m-0 bg-[#275D39] border border-[#1F4B2E] rounded-[7px]'>
+          <div className='bg-white rounded-[0_0_7px_7px]'>
             <img src={dataUrl} width='100%' height='850px' alt='ギャラリー画像' />
-            <div className='post-time-text'>{createdAt}</div>
-            <div className='selected-gallery-box-text'>
+            <div className='py-[0.3%] px-[0.5%] m-0 text-[19px] text-[#333] text-right bg-[#FCF2D3] border-b border-[#ccc]'>{createdAt}</div>
+            <div className='py-[1%] px-[3%] bg-[#FCF2D3] text-[25px]'>
               <p>{comment}</p>
             </div>
           </div>
@@ -122,10 +122,10 @@ export const SelectedGalleryPage = ({
           </div>
 
           {/* タグ一覧 */}
-          <div className='tag-list-box'>
+          <div className='bg-p-brand pt-[1%] pb-[1.5%] pl-[0.5%] pr-0'>
             {tags.map((tag) => (
-              <p key={tag} className='selected-gallery-tag'>
-                <span className='label selected-gallery-tag-in'>{tag}</span>
+              <p key={tag} className='py-2 pl-2 pr-[5px] mt-[0.8%] ml-[0.8%] bg-[#F29626] rounded-[5px] inline-block'>
+                <span className='label p-0 text-center text-[#181818] text-[23px]'>{tag}</span>
               </p>
             ))}
           </div>
@@ -157,8 +157,8 @@ export const SelectedGalleryPage = ({
             {/* コメント一覧・フォーム */}
             <div className='collapse' id={`gallery-${galleryId}`}>
               {comments.map((c) => (
-                <div key={`${c.postTime}-${c.name}`} className='card comment-card text-left'>
-                  <div className='card-header comment-header'>
+                <div key={`${c.postTime}-${c.name}`} className='card my-[1%] ml-[1%] bg-white text-left'>
+                  <div className='card-header pt-[0.3%] pl-[0.5%] pb-0 text-[18px]'>
                     <p>
                       <img
                         src={c.avatarPath}
@@ -170,18 +170,18 @@ export const SelectedGalleryPage = ({
                       {c.name}
                     </p>
                   </div>
-                  <div className='card-body comment-body'>
-                    <p>{c.comment}</p>
+                  <div className='card-body py-[0.5%] pl-[2%]'>
+                    <p className='text-[19px]'>{c.comment}</p>
                   </div>
-                  <div className='card-footer comment-time text-right'>{c.postTime}</div>
+                  <div className='card-footer p-[0.1%] text-[#555] text-right'>{c.postTime}</div>
                 </div>
               ))}
 
               {loggedIn && currentUser ? (
                 <form onSubmit={handleComment}>
-                  <div className='card input-comment-box text-left'>
-                    <div className='card-header input-comment-header'>
-                      <div className='input-comment-header-in'>
+                  <div className='card my-[1.5%] mr-[9%] ml-[10%] text-left'>
+                    <div className='card-header py-[0.5%] pl-[0.5%] text-[19px] bg-[#FCF2D3]'>
+                      <div>
                         <img
                           src={currentUser.avatarPath}
                           className='rounded-circle'
@@ -192,7 +192,7 @@ export const SelectedGalleryPage = ({
                         {currentUser.name}
                       </div>
                     </div>
-                    <div className='card-body input-comment-body'>
+                    <div className='card-body bg-[#FCF2D3] p-[0.5%]'>
                       <textarea
                         className='form-control'
                         placeholder='100文字以内'
@@ -202,9 +202,9 @@ export const SelectedGalleryPage = ({
                         onChange={(e) => setCommentText(e.target.value)}
                       />
                     </div>
-                    <div className='card-footer input-comment-footer'>
+                    <div className='card-footer py-[0.5%] pr-[2%] pl-[0.5%] bg-[#5cb85c]'>
                       <div className='text-right'>
-                        <button type='submit' className='btn comment-btn'>
+                        <button type='submit' className='btn bg-[#FFA30D]'>
                           コメント
                         </button>
                       </div>
@@ -212,18 +212,18 @@ export const SelectedGalleryPage = ({
                   </div>
                 </form>
               ) : (
-                <p className='no-login-text'>ログインしてください</p>
+                <p className='pt-[0.7%] pb-[1%] pl-[3%] text-[23px] text-white'>ログインしてください</p>
               )}
             </div>
           </div>
 
           {/* 関連画像 */}
           {matchTagGalleries.length > 0 && (
-            <div className='match-tag-box'>
-              <div className='match-tag-box-header'>関連画像</div>
-              <div className='row justify-content-center my-match-row'>
+            <div className='mt-[5%] mb-[3%] bg-[#2A553B] border border-[#21442F] rounded-[5px]'>
+              <div className='pt-[0.2%] pl-[1%] pb-[1%] text-[22px] text-white text-left'>関連画像</div>
+              <div className='row justify-content-center m-0 w-full'>
                 {matchTagGalleries.map((g) => (
-                  <div key={g.id} className='col-lg-4 match-tag-content'>
+                  <div key={g.id} className='col-lg-4 p-0 h-[37vh] border border-[#1F4B2E]'>
                     <a href={`/gallery/selected/${g.id}`}>
                       <img src={g.dataUrl} width='100%' height='100%' alt='関連画像' />
                     </a>
@@ -235,12 +235,12 @@ export const SelectedGalleryPage = ({
         </div>
 
         {/* サイドバー */}
-        <div className='col-lg-3 selected-gallery-side'>
+        <div className='col-lg-3 pt-[0.5%] pr-[0.5%] pb-0 pl-[0.6%] m-0 bg-[#275D39] border border-[#1F4B2E] rounded-[7px]'>
           {/* 職人情報 */}
-          <div className='user-info-box'>
-            <div className='user-img-box'>
+          <div className='bg-[#eee] w-full min-h-[55vh] mb-[19vh] rounded-[7px]'>
+            <div className='bg-[#BAA9DA] mx-auto rounded-t-[7px] hover:opacity-80'>
               <a href={`/page/creator/${creator.userId}`}>
-                <div className='user-img'>
+                <div className='w-full text-center'>
                   <img
                     src={creator.avatarPath}
                     className='rounded-circle'
@@ -249,37 +249,37 @@ export const SelectedGalleryPage = ({
                     alt='アバター'
                   />
                 </div>
-                <div className='user-name'>
-                  <h3>{creator.name}</h3>
+                <div className='pt-[13px] pb-2 text-center'>
+                  <h3 className='text-[33px]'>{creator.name}</h3>
                 </div>
               </a>
             </div>
-            <div className='card my-card'>
-              <div className='card-header my-card-header'>創作作品名</div>
-              <div className='card-body my-card-body'>
-                <p className='card-text user-info-text'>{creator.title}</p>
+            <div className='card border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]'>
+              <div className='card-header bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px]'>創作作品名</div>
+              <div className='card-body text-center pt-[3%] pb-[4%] px-0'>
+                <p className='card-text text-[23px] p-0'>{creator.title}</p>
               </div>
             </div>
-            <div className='card my-card'>
-              <div className='card-header my-card-header'>創業年数</div>
-              <div className='card-body my-card-body'>
-                <p className='card-text user-info-text'>{creator.establishment}年</p>
+            <div className='card border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]'>
+              <div className='card-header bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px]'>創業年数</div>
+              <div className='card-body text-center pt-[3%] pb-[4%] px-0'>
+                <p className='card-text text-[23px] p-0'>{creator.establishment}年</p>
               </div>
             </div>
-            <div className='card my-card'>
-              <div className='card-header my-card-header'>従業員数</div>
-              <div className='card-body my-card-body'>
-                <p className='card-text user-info-text'>{creator.employee}人</p>
+            <div className='card border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]'>
+              <div className='card-header bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px]'>従業員数</div>
+              <div className='card-body text-center pt-[3%] pb-[4%] px-0'>
+                <p className='card-text text-[23px] p-0'>{creator.employee}人</p>
               </div>
             </div>
           </div>
 
           {/* その他の投稿 */}
           {otherGalleries.length > 0 && (
-            <div className='other-box'>
-              <div className='other-box-header'>その他の投稿</div>
+            <div className='p-[2%] bg-p-brand rounded-t-[5px]'>
+              <div className='text-[22px] text-white'>その他の投稿</div>
               {otherGalleries.map((g) => (
-                <div key={g.id} className='other-content'>
+                <div key={g.id} className='p-0 h-[37vh] border border-[#1F4B2E]'>
                   <a href={`/gallery/selected/${g.id}`}>
                     <img src={g.dataUrl} width='100%' height='100%' alt='その他の投稿' />
                   </a>

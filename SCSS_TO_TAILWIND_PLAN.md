@@ -227,8 +227,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `message.scss` 削除
 
 #### gallery.scss（複雑）
-- [ ] `MyGalleryPage.tsx`, `GalleryViewPage.tsx`, `GalleryUploadPage.tsx` 等 — `.gallery-col`, `.gallery-card`, `.gallery-card-body`, `.right-box`, `.in-box`, `.my-submit-btn`, `.right-box-top` 等
-- [ ] `gallery.scss` 削除
+- [x] `MyGalleryPage.tsx`, `GalleryViewPage.tsx`, `GalleryUploadPage.tsx` 等 — `.gallery-col`, `.gallery-card`, `.gallery-card-body`, `.right-box`, `.in-box`, `.my-submit-btn`, `.right-box-top` 等
+- [x] `gallery.scss` 削除
 
 #### your_page.scss（複雑）
 - [ ] `YourPage.tsx` — `.name-age-box`, `.sex-box`, `.is_man`, `.is_woman`, `.age-box`, `.bar-box`, `.favorite_btn`, `.original-nav`, `.box-margin-pro`, `.profile-avatar` 等
