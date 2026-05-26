@@ -235,8 +235,8 @@ const [isOpen, setIsOpen] = useState(false);
 - [x] `your_page.scss` 削除
 
 #### index.scss（最複雑）
-- [ ] `IndexPage.tsx`, `SearchUserPage.tsx` — `.main-visual`, `.main-visual-box h1`, `.index-nav`, `.three-box`, `.bg-1`, `.info-title`, `.card-box`, `.card-box-name/title`, `.zone` 等
-- [ ] `index.scss` 削除
+- [x] `IndexPage.tsx`, `SearchUserPage.tsx` — `.main-visual`, `.main-visual-box h1`, `.index-nav`, `.three-box`, `.bg-1`, `.info-title`, `.card-box`, `.card-box-name/title`, `.zone` 等
+- [x] `index.scss` 削除
 
 ---
 

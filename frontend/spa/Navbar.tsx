@@ -20,7 +20,7 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className='navbar navbar-expand-lg my_nav index-nav'>
+    <nav className='navbar navbar-expand-lg my_nav absolute top-0 left-0 z-2 bg-[rgba(104,70,165,0.8)]'>
       <NavbarBrand logoSrc={logoSrc} titleSrc={titleSrc} />
       <NavbarToggleButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
       <div
