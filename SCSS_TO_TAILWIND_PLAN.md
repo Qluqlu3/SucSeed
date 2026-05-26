@@ -298,7 +298,7 @@ gem 'sassc-rails'   # SCSS が不要になれば削除
 
 管理画面は Bootstrap JS を使っていないため比較的容易。
 
-- [ ] `admin.scss` → `AdminLoginPage.tsx`, `AdminCreatePage.tsx`
+- [x] `admin.scss` → `AdminLoginPage.tsx`, `AdminCreatePage.tsx`
 - [ ] `admin_edit.scss` → `AdminIndexPage.tsx` 他 8 ページ
 - [ ] `admin.scss`, `admin_edit.scss` 削除
 
