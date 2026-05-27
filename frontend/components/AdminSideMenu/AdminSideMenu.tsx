@@ -27,12 +27,12 @@ const NAV_ITEMS = [
 ];
 
 export const AdminSideMenu = ({ activeKey }: Props) => (
-  <div className="col-2 admin-col-2">
-    <ul className="nav flex-column admin-side-menu">
+  <div className='w-full lg:w-2/12 h-screen bg-[#CCC] overflow-x-scroll overflow-y-scroll'>
+    <ul className='nav flex-column ml-[13%]'>
       {NAV_ITEMS.map((item, i) => {
         const isActive = item.key === activeKey;
         return (
-          <li key={item.key} className={`nav-item${i === 0 ? ' admin-top-link' : ''}`}>
+          <li key={item.key} className={`nav-item${i === 0 ? ' mt-[27%]' : ''}`}>
             <a href={item.href} className={`nav-link${isActive ? ' active disabled' : ''}`}>
               {item.label}
             </a>

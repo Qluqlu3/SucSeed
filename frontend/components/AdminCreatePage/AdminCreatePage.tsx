@@ -31,7 +31,7 @@ export const AdminCreatePage = ({ errors, flash }: Props) => (
         </ul>
       </div>
     )}
-    <div className='admin-create-box'>
+    <div className='w-[60%] mx-auto'>
       <div className='py-[2%] px-[1%] bg-[#DDD] rounded-[7px]'>
         <form action='/admin/create/user' method='post'>
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />

@@ -27,13 +27,13 @@ interface Props {
 }
 
 export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
-  <div className='row admin-row'>
+  <div className='w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap'>
     <AdminSideMenu activeKey='inquiry' />
-    <div className='col-10 admin-col-9'>
-      <h1 className='admin-main-title'>問い合わせ管理</h1>
+    <div className='w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll'>
+      <h1 className='text-center text-[60px]'>問い合わせ管理</h1>
 
       <FlashMessages flash={flash} />
-      <table className='table table-striped'>
+      <table className='w-screen overflow-x-scroll overflow-y-scroll'>
         <thead>
           <tr>
             <th scope='col'>＃</th>
@@ -59,9 +59,9 @@ export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
               <td>{inquiry.content}</td>
               <td>
                 {inquiry.isCheck ? (
-                  <span className='badge badge-success'>OK</span>
+                  <span className='inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-green-600 text-white'>OK</span>
                 ) : (
-                  <span className='badge badge-danger'>No</span>
+                  <span className='inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-red-600 text-white'>No</span>
                 )}
               </td>
               <td>{inquiry.createdAt}</td>
@@ -69,7 +69,7 @@ export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
               <td>{inquiry.updatedAt}</td>
               <td>{inquiry.deletedAt ?? ''}</td>
               <td>
-                <a href={`/admin/inquiry/detail/${inquiry.id}`} className='btn btn-warning'>
+                <a href={`/admin/inquiry/detail/${inquiry.id}`} className='px-4 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 inline-block'>
                   チェック
                 </a>
               </td>

@@ -9,6 +9,7 @@
 
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
+import { AdminSideMenu } from '../AdminSideMenu';
 import { FlashMessages } from '../FlashMessages';
 
 interface Props {
@@ -26,51 +27,22 @@ export const AdminInquiryDetailPage = ({ inquiryDetail, isCheck, flash }: Props)
   const [checked, setChecked] = useState(isCheck);
 
   return (
-    <div className='row admin-row'>
-      <div className='col-2 admin-col-2'>
-        {/* サイドメニューはアクティブ項目なし（詳細ページ） */}
-        <ul className='nav flex-column admin-side-menu'>
-          <li className='nav-item admin-top-link'>
-            <a href='/admin/management/user' className='nav-link'>
-              ユーザー管理
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a href='/admin/management/diary' className='nav-link'>
-              日記管理
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a href='/admin/management/diary_comment' className='nav-link'>
-              日記コメント
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a href='/admin/management/gallery' className='nav-link'>
-              ギャラリー管理
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a href='/admin/management/inquiry' className='nav-link'>
-              問い合わせ管理
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div className='col-10 admin-col-9'>
-        <h1 className='admin-main-title'>ユーザー編集</h1>
+    <div className='w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap'>
+      <AdminSideMenu activeKey='inquiry' />
+      <div className='w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll'>
+        <h1 className='text-center text-[60px]'>ユーザー編集</h1>
 
         <FlashMessages flash={flash} />
 
-        <div className='card'>
-          <div className='card-header'>
+        <div className='rounded-lg border border-p-mid bg-white'>
+          <div className='px-4 py-2 bg-p-brand text-white'>
             <h3>ID：{inquiryDetail.id}</h3>
             <h5>カテゴリー：{inquiryDetail.categoryName}</h5>
             投稿時間：{inquiryDetail.createdAt}
           </div>
-          <div className='card-body'>{inquiryDetail.content}</div>
-          <div className='card-footer'>
-            <div className='form-check'>
+          <div className='p-4'>{inquiryDetail.content}</div>
+          <div className='p-4 border-t border-p-mid'>
+            <div>
               <form action={`/admin/inquiry/detail/check/${inquiryDetail.id}`} method='post'>
                 <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
                 <input
@@ -78,15 +50,15 @@ export const AdminInquiryDetailPage = ({ inquiryDetail, isCheck, flash }: Props)
                   name='inquiry[is_check]'
                   id='check'
                   value='1'
-                  className='form-check-input'
+                  className='mr-2'
                   checked={checked}
                   onChange={(e) => setChecked(e.target.checked)}
                 />
-                <label htmlFor='check' className='form-check-label'>
+                <label htmlFor='check'>
                   対応チェック
                 </label>
                 <div className='text-right'>
-                  <button type='submit' className='btn btn-warning btn-lg'>
+                  <button type='submit' className='px-5 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 text-lg'>
                     更新
                   </button>
                 </div>

@@ -15,19 +15,24 @@
   </head>
 
   <body>
+  <% is_admin_page = controller_name.in?(["admin", "admin_edit"]) %>
   <!-- Login Modal (React island: frontend/spa/LoginModal.tsx) -->
   <div id="spa-login-modal"></div>
+  <% unless is_admin_page %>
     <header>
       <%# Navbar (React island: frontend/spa/Navbar.tsx) %>
       <div id="spa-navbar"></div>
     </header>
+  <% end %>
     <div class="container-fluid">
       <%= yield %>
     </div>
 
+    <% unless is_admin_page %>
     <!-- ログイン時のスペーサー (React island: islands.tsx が role に応じて class を付与) -->
     <div id="spa-margin-box"></div>
     <!-- Footer (React island: frontend/spa/Footer.tsx) -->
     <div id="spa-footer"></div>
+    <% end %>
   </body>
 </html>

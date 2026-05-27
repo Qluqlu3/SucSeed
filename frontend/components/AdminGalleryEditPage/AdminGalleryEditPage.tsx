@@ -25,13 +25,13 @@ interface Props {
 }
 
 export const AdminGalleryEditPage = ({ galleries, flash }: Props) => (
-  <div className='row admin-row'>
+  <div className='w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap'>
     <AdminSideMenu activeKey='gallery' />
-    <div className='col-10 admin-col-9'>
-      <h1 className='admin-main-title'>ギャラリー管理</h1>
+    <div className='w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll'>
+      <h1 className='text-center text-[60px]'>ギャラリー管理</h1>
 
       <FlashMessages flash={flash} />
-      <table className='table table-striped'>
+      <table className='w-screen overflow-x-scroll overflow-y-scroll'>
         <thead>
           <tr>
             <th scope='col'>＃</th>
@@ -59,7 +59,7 @@ export const AdminGalleryEditPage = ({ galleries, flash }: Props) => (
               <td>
                 <form action={`/admin/gallery/delete/${gallery.id}`} method='post'>
                   <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                  <button type='submit' className='btn btn-danger'>
+                  <button type='submit' className='px-4 py-2 bg-red-600 text-white rounded hover:opacity-80'>
                     削除
                   </button>
                 </form>

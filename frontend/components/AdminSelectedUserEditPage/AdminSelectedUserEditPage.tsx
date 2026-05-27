@@ -20,10 +20,10 @@ interface Props {
 }
 
 export const AdminSelectedUserEditPage = ({ user, flash }: Props) => (
-  <div className='row admin-row'>
+  <div className='w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap'>
     <AdminSideMenu />
-    <div className='col-10 admin-col-9'>
-      <h1 className='admin-main-title'>ユーザー編集</h1>
+    <div className='w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll'>
+      <h1 className='text-center text-[60px]'>ユーザー編集</h1>
 
       <FlashMessages flash={flash} />
       <form
@@ -38,18 +38,18 @@ export const AdminSelectedUserEditPage = ({ user, flash }: Props) => (
         <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
 
         {/* アバター */}
-        <div className='card'>
-          <div className='card-body'>
+        <div className='rounded-lg border border-p-mid bg-white'>
+          <div className='p-4'>
             <img
               src={user.avatarPath}
-              className='img-circle'
+              className='rounded-full'
               alt='アバター画像'
               style={{ width: '100%', height: '100%' }}
             />
             <input
               type='file'
               name='user[avatar_path]'
-              className='form-control-file'
+              className='block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50'
               id='exampleFormControlFile1'
               accept='image/jpg,image/jpeg,image/png'
             />
@@ -57,11 +57,11 @@ export const AdminSelectedUserEditPage = ({ user, flash }: Props) => (
         </div>
 
         {/* プロフィール */}
-        <div className='card'>
-          <div className='card-body'>
+        <div className='rounded-lg border border-p-mid bg-white mt-4'>
+          <div className='p-4'>
             <textarea
               name='user[profile]'
-              className='form-control'
+              className='w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-p-brand'
               placeholder='紹介文'
               rows={15}
               cols={20}
@@ -71,9 +71,9 @@ export const AdminSelectedUserEditPage = ({ user, flash }: Props) => (
         </div>
 
         {/* 送信 */}
-        <div className='card text-right'>
-          <div className='card-body'>
-            <button type='submit' className='btn btn-warning btn-lg'>
+        <div className='rounded-lg border border-p-mid bg-white mt-4 text-right'>
+          <div className='p-4'>
+            <button type='submit' className='px-5 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 text-lg'>
               変更
             </button>
           </div>
