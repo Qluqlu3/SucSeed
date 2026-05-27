@@ -21,7 +21,7 @@ export const PasswordResetPage = ({ errors, flash }: Props) => {
       <FlashMessages flash={flash} />
 
       {errors.length > 0 && (
-        <div id='error_explanation' className='alert alert-danger'>
+        <div id='error_explanation' className='mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700'>
           <ul>
             {errors.map((msg) => (
               <li key={msg}>{msg}</li>
@@ -33,28 +33,28 @@ export const PasswordResetPage = ({ errors, flash }: Props) => {
       <div>
         <form action='/user/password_reset' method='post'>
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-          <div className='input-group'>
-            <span className='input-group-addon'>パスワード</span>
+          <div className='mb-3'>
+            <span className='mb-1 block text-sm text-p-text'>パスワード</span>
             <input
               type='password'
               name='user[password]'
-              className='form-control'
+              className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
               maxLength={16}
               placeholder='パスワード'
             />
           </div>
-          <div className='input-group'>
-            <span className='input-group-addon'>パスワード確認</span>
+          <div className='mb-3'>
+            <span className='mb-1 block text-sm text-p-text'>パスワード確認</span>
             <input
               type='password'
               name='user[password_confirmation]'
-              className='form-control'
+              className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
               maxLength={16}
               placeholder='パスワード確認'
             />
           </div>
-          <div className='right_side'>
-            <button type='submit' className='btn btn-primary btn-lg'>
+          <div className='text-right'>
+            <button type='submit' className='rounded bg-p-brand px-5 py-2 text-lg text-white hover:opacity-80'>
               変更
             </button>
           </div>

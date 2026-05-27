@@ -23,7 +23,10 @@ export const EmailCertifiedPage = ({ userName, userId, flash }: Props) => {
       <div className='h-[68vh] text-center'>
         <form action={`/email/certified/${userId}`} method='post'>
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-          <button type='submit' className='btn btn-success mt-[3%] text-[26px]! h-[60px]'>
+          <button
+            type='submit'
+            className='mt-[3%] h-15 rounded bg-green-600 px-6 text-[26px] text-white hover:opacity-80'
+          >
             メールアドレス認証
           </button>
         </form>

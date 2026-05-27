@@ -15,7 +15,7 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
     <FlashMessages flash={flash} />
 
     {errors.length > 0 && (
-      <div className='alert alert-danger'>
+      <div className='mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700'>
         <ul>
           {errors.map((msg) => (
             <li key={msg}>{msg}</li>
@@ -25,12 +25,12 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
     )}
 
     <div className='min-h-screen'>
-      <div className='row m-0 p-0'>
-        <div className='col-md-9 p-0 mb-[10%] bg-p-light border border-p-mid rounded-[7px]'>
+      <div className='flex flex-wrap m-0 p-0'>
+        <div className='w-full md:w-3/4 p-0 mb-[10%] bg-p-light border border-p-mid rounded-[7px]'>
           {galleries.length === 0 ? (
             <p className='mt-[10%] ml-[15%] text-[39px] text-white'>まだありません</p>
           ) : (
-            <div className='row m-0 p-0'>
+            <div className='flex flex-wrap m-0 p-0'>
               {galleries.map((gallery) => (
                 <GalleryCard key={gallery.id} gallery={gallery} />
               ))}
@@ -38,11 +38,11 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
           )}
         </div>
 
-        <div className='col-sm-3 m-0 mb-[10%] px-[0.8%]'>
+        <div className='w-full md:w-1/4 m-0 mb-[10%] px-[0.8%]'>
           <div className='bg-[#F7F5FB] rounded-[13px] max-h-[70vh] mt-[1vh]'>
             <form action='/gallery/view' method='post' encType='multipart/form-data'>
               <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-              <div className='form-group'>
+              <div>
                 <div className='bg-p-brand rounded-t-[7px]'>
                   <label
                     className='block text-white text-[31px] mt-[1.5%] mb-[1%] ml-[5%]'
@@ -55,7 +55,7 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
                   type='file'
                   id='favorite-gallery-file'
                   name='gallery[data]'
-                  className='form-control-file mt-[3vh]'
+                  className='mt-[3vh] block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50'
                   accept='image/jpg,image/jpeg,image/png'
                 />
                 <label className='text-[16px] mt-[2vh] ml-[5%]' htmlFor='favorite-gallery-tags'>
@@ -66,6 +66,7 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
                     id='favorite-gallery-tags'
                     type='text'
                     name='gallery[tag_list]'
+                    className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                     placeholder='タグを入力'
                   />
                 </div>
@@ -76,7 +77,7 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
                   <textarea
                     id='favorite-gallery-comment'
                     name='gallery[comment]'
-                    className='form-control'
+                    className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                     placeholder='100文字以内'
                     rows={3}
                   />
@@ -84,7 +85,7 @@ export const FavoriteGalleryPage = ({ galleries, errors, flash }: Props) => (
                 <div className='text-right mt-[7%] mr-[5%]'>
                   <button
                     type='submit'
-                    className='btn btn-lg bg-p-brand text-white w-[33%] hover:opacity-80'
+                    className='rounded bg-p-brand px-5 py-2 text-lg text-white hover:opacity-80'
                   >
                     投稿
                   </button>
