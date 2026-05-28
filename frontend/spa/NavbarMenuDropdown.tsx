@@ -21,19 +21,19 @@ export const NavbarMenuDropdown: FC<NavbarMenuDropdownProps> = ({ menuItems }) =
   }, []);
 
   return (
-    <li ref={ref} className='nav-item dropdown'>
+    <li ref={ref} className='relative'>
       <button
         type='button'
-        className='nav-link dropdown-toggle'
+        className='block py-1 px-3 cursor-pointer'
         aria-haspopup='true'
         aria-expanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
       >
         メニュー
       </button>
-      <div className={`dropdown-menu my-dropdown${isOpen ? ' show' : ''}`}>
+      <div className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200 my-dropdown${isOpen ? ' block' : ' hidden'}`}>
         {menuItems.map((item) => (
-          <a key={item.href} href={item.href} className='dropdown-item'>
+          <a key={item.href} href={item.href} className='block px-4 py-2 text-sm hover:bg-gray-100'>
             {item.label}
           </a>
         ))}

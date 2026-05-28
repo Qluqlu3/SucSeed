@@ -94,16 +94,16 @@ export const YourPage = ({
             </div>
             <div className='absolute top-0 right-[0.7%] text-[51px]'>
               {creator.isRecruitment ? (
-                <span className='badge badge-primary'>募集中</span>
+                <span className='inline-block rounded bg-p-brand px-2 py-1 text-sm text-white'>募集中</span>
               ) : (
-                <span className='badge badge-danger'>募集停止中</span>
+                <span className='inline-block rounded bg-red-600 px-2 py-1 text-sm text-white'>募集停止中</span>
               )}
             </div>
           </div>
           <div className='absolute top-[27%] left-[39%]'>
             <img
               src={user.avatarPath}
-              className='card-img-top rounded-circle'
+              className='rounded-full object-cover'
               width='100%'
               height='100%'
               alt='アバター画像'
@@ -119,7 +119,7 @@ export const YourPage = ({
         {loggedIn && !isOwnPage && (
           <button
             type='button'
-            className='btn btn-default btn-lg bg-p-brand text-white'
+            className='rounded bg-p-brand px-4 py-2 text-lg text-white hover:opacity-80'
             onClick={handleFavorite}
           >
             {isFavorited ? (
@@ -132,16 +132,16 @@ export const YourPage = ({
       </div>
 
       {/* タブナビゲーション */}
-      <ul className='nav justify-content-center border-t border-b border-[#aaa] text-[33px] text-white bg-[#666]'>
-        <li className='nav-item'>
-          <a href={`/diary/show/${user.id}`} className='nav-link !text-white hover:!text-[#FFA30D]'>
+      <ul className='flex justify-center border-t border-b border-[#aaa] text-[33px] text-white bg-[#666]'>
+        <li className=''>
+          <a href={`/diary/show/${user.id}`} className='block px-4 py-2 text-white hover:text-[#FFA30D]'>
             日記
           </a>
         </li>
-        <li className='nav-item ml-[5%]'>
+        <li className='ml-[5%]'>
           <a
             href={`/gallery/view/${user.id}`}
-            className='nav-link !text-white hover:!text-[#FFA30D]'
+            className='block px-4 py-2 text-white hover:text-[#FFA30D]'
           >
             ギャラリー
           </a>
@@ -149,25 +149,25 @@ export const YourPage = ({
       </ul>
 
       {/* 制作工芸名・ジャンル */}
-      <div className='w-[93%] mx-auto mt-[2%]'>
-        <div className='row'>
-          <div className='col-md-6'>
-            <div className='card mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
+      <div className='w-[93%] mx-auto'>
+        <div className='flex flex-wrap'>
+          <div className='w-full md:w-1/2'>
+            <div className='mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
               <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[3%] pr-0 pb-[1%] pl-[2%]'>
                 制作工芸名
               </h3>
-              <div className='card-body p-[9px] text-center text-[27px]'>
-                <p className='card-text text-[39px] leading-[9vh]'>{creator.title}</p>
+              <div className='p-[9px] text-center text-[27px]'>
+                <p className='text-[39px] leading-[9vh]'>{creator.title}</p>
               </div>
             </div>
           </div>
-          <div className='col-md-6'>
-            <div className='card mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
+          <div className='w-full md:w-1/2'>
+            <div className='mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
               <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[3%] pr-0 pb-[1%] pl-[2%]'>
                 工芸品ジャンル
               </h3>
-              <div className='card-body p-[9px] text-center text-[27px]'>
-                <p className='card-text text-[39px] leading-[9vh]'>{artCategoryName}</p>
+              <div className='p-[9px] text-center text-[27px]'>
+                <p className='text-[39px] leading-[9vh]'>{artCategoryName}</p>
               </div>
             </div>
           </div>
@@ -176,24 +176,24 @@ export const YourPage = ({
 
       {/* 創業年数・従業員数 */}
       <div className='w-[93%] mx-auto'>
-        <div className='row'>
-          <div className='col-md-6'>
-            <div className='card mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
+        <div className='flex flex-wrap'>
+          <div className='w-full md:w-1/2'>
+            <div className='mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
               <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[3%] pr-0 pb-[1%] pl-[2%]'>
                 創業年数
               </h3>
-              <div className='card-body p-[9px] text-center text-[27px]'>
-                <p className='card-text text-[39px] leading-[9vh]'>{creator.establishment}年</p>
+              <div className='p-[9px] text-center text-[27px]'>
+                <p className='text-[39px] leading-[9vh]'>{creator.establishment}年</p>
               </div>
             </div>
           </div>
-          <div className='col-md-6'>
-            <div className='card mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
+          <div className='w-full md:w-1/2'>
+            <div className='mx-auto border-none bg-[#FCF2D3] mb-[25px] rounded-[11px] h-[17vh]'>
               <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[3%] pr-0 pb-[1%] pl-[2%]'>
                 従業員数
               </h3>
-              <div className='card-body p-[9px] text-center text-[27px]'>
-                <p className='card-text text-[39px] leading-[9vh]'>{creator.employee}人</p>
+              <div className='p-[9px] text-center text-[27px]'>
+                <p className='text-[39px] leading-[9vh]'>{creator.employee}人</p>
               </div>
             </div>
           </div>
@@ -201,12 +201,12 @@ export const YourPage = ({
       </div>
 
       {/* 紹介文 */}
-      <div className='card mx-auto w-[93%] bg-[#FCF2D3] rounded-[11px] mb-[5%] text-[27px] border-none'>
+      <div className='mx-auto w-[93%] bg-[#FCF2D3] rounded-[11px] mb-[5%] text-[27px] border-none'>
         <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[25px] pr-0 pb-[11px] pl-[21px]'>
           紹介文
         </h3>
-        <div className='card-body pt-[1%] pr-0 pb-[1%] pl-[1%]'>
-          <p className='card-text' style={{ whiteSpace: 'pre-wrap' }}>
+        <div className='pt-[1%] pr-0 pb-[1%] pl-[1%]'>
+          <p className='' style={{ whiteSpace: 'pre-wrap' }}>
             {creator.profile}
           </p>
         </div>
@@ -217,7 +217,7 @@ export const YourPage = ({
         <div className='w-[50%] fixed bottom-0 left-[25%]'>
           <button
             type='button'
-            className='btn btn-lg w-full bg-[#FFA30D] text-[33px] hover:opacity-90'
+            className='w-full bg-[#FFA30D] text-[33px] hover:opacity-90 rounded py-2'
             onClick={handleAppeal}
             disabled={isMatched}
           >

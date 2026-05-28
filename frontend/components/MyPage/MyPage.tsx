@@ -33,9 +33,9 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
       <div className='min-h-screen'>
         <div className='w-[93%] mx-auto bg-p-light border border-p-mid rounded-[7px] mb-[5%]'>
           {/* 設定ドロップダウン */}
-          <div className='dropdown text-right mb-5'>
+          <div className='relative text-right mb-5'>
             <button
-              className='btn btn-default dropdown-toggle'
+              className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
               type='button'
               id='dropdownMenu1'
               data-toggle='dropdown'
@@ -45,34 +45,34 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
               <i className='fas fa-cog text-[50px]' />
             </button>
             <ul
-              className='dropdown-menu dropdown-menu-right dropdown-box'
+              className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200'
               aria-labelledby='dropdownMenu1'
             >
               <li className='setting-item'>
-                <a href='/my_page/my_page' className='dropdown-item'>
+                <a href='/my_page/my_page' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                   プロフィール一覧
                 </a>
               </li>
               <li className='setting-item'>
-                <a href='/my_page/update' className='dropdown-item'>
+                <a href='/my_page/update' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                   プロフィール変更
                 </a>
               </li>
               {isCreator ? (
                 <li className='setting-item'>
-                  <a href='/creator/show' className='dropdown-item'>
+                  <a href='/creator/show' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                     プロフィール詳細
                   </a>
                 </li>
               ) : (
                 <>
                   <li className='setting-item'>
-                    <a href='/heir/show' className='dropdown-item'>
+                    <a href='/heir/show' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                       プロフィール詳細
                     </a>
                   </li>
                   <li className='setting-item'>
-                    <a href='/heir/edit' className='dropdown-item'>
+                    <a href='/heir/edit' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                       プロフィール詳細変更
                     </a>
                   </li>
@@ -89,7 +89,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
           )}
 
           {/* アバター */}
-          <div className='col-xl-12'>
+          <div className='w-full'>
             <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 アバター
@@ -97,7 +97,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
               <div className='text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]'>
                 <img
                   src={user.avatarPath || '/assets/default.png'}
-                  className='rounded-circle'
+                  className='rounded-full'
                   width={300}
                   height={300}
                   alt='アバター画像'
@@ -107,7 +107,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
           </div>
 
           {/* ユーザー名 */}
-          <div className='col-xl-12'>
+          <div className='w-full'>
             <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 ユーザー名
@@ -119,7 +119,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
           </div>
 
           {/* 性別 */}
-          <div className='col-xl-12'>
+          <div className='w-full'>
             <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 性別
@@ -131,7 +131,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
           </div>
 
           {/* メールアドレス */}
-          <div className='col-xl-12'>
+          <div className='w-full'>
             <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 メールアドレス
@@ -143,7 +143,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
           </div>
 
           {/* 生年月日 */}
-          <div className='col-xl-12'>
+          <div className='w-full'>
             <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 生年月日
@@ -157,7 +157,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
           </div>
 
           {/* 紹介文 */}
-          <div className='col-xl-12'>
+          <div className='w-full'>
             <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 紹介文

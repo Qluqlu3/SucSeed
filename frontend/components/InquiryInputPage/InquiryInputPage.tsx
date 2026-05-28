@@ -61,10 +61,10 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
 
             <div className='form-group'>
               {/* biome-ignore lint/a11y/noLabelWithoutControl: select は直後に配置 */}
-              <label className='col-xl-12 text-p-text text-[1.5em]'>カテゴリー</label>
+              <label className='text-p-text text-[1.5em]'>カテゴリー</label>
               <select
                 name='inquiry[inquiry_category_id]'
-                className='col-xl-12 form-control'
+                className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value === '' ? '' : Number(e.target.value))}
               >
@@ -79,10 +79,10 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
 
             <div className='form-group mt-[3%]'>
               {/* biome-ignore lint/a11y/noLabelWithoutControl: textarea は直後に配置 */}
-              <label className='col-xl-12 text-p-text text-[1.5em]'>お問い合わせ内容</label>
+              <label className='text-p-text text-[1.5em]'>お問い合わせ内容</label>
               <textarea
                 name='inquiry[content]'
-                className='col-xl-12 form-control min-h-[30vh]'
+                className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none min-h-[30vh]'
                 rows={5}
                 placeholder='お問い合わせ内容'
                 value={content}
@@ -93,7 +93,7 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
             <div className='text-right'>
               <button
                 type='submit'
-                className='btn btn-lg w-[15%] text-[1.5em]! bg-p-brand! text-white!'
+                className='rounded bg-p-brand px-5 py-2 text-[1.5em] text-white hover:opacity-80'
               >
                 送信
               </button>

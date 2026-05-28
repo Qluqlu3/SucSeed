@@ -28,12 +28,12 @@ const NAV_ITEMS = [
 
 export const AdminSideMenu = ({ activeKey }: Props) => (
   <div className='w-full lg:w-2/12 h-screen bg-[#CCC] overflow-x-scroll overflow-y-scroll'>
-    <ul className='nav flex-column ml-[13%]'>
+    <ul className='flex flex-col ml-[13%]'>
       {NAV_ITEMS.map((item, i) => {
         const isActive = item.key === activeKey;
         return (
-          <li key={item.key} className={`nav-item${i === 0 ? ' mt-[27%]' : ''}`}>
-            <a href={item.href} className={`nav-link${isActive ? ' active disabled' : ''}`}>
+          <li key={item.key} className={`${i === 0 ? 'mt-[27%]' : ''}`}>
+            <a href={item.href} className={`block py-1 text-gray-700 hover:text-p-brand${isActive ? ' opacity-50 pointer-events-none' : ''}`}>
               {item.label}
             </a>
           </li>

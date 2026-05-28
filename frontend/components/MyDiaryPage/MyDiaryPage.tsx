@@ -77,9 +77,9 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
       )}
 
       <div className='pt-[23px] w-full min-h-[110vh] mx-auto'>
-        <div className='row w-full !mx-0 pl-[1%]'>
+        <div className='flex flex-wrap w-full !mx-0 pl-[1%]'>
           {/* 左カラム：日記一覧 */}
-          <div className='col-md-9 bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]'>
+          <div className='w-full md:w-9/12 bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]'>
             {diaries.length === 0 ? (
               <p className='text-[39px] text-white'>まだありません</p>
             ) : (
@@ -97,13 +97,13 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
           </div>
 
           {/* 右カラム：投稿フォーム */}
-          <div className='col-md-3 h-[60vh] bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]'>
+          <div className='w-full md:w-3/12 h-[60vh] bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]'>
             <div>
               <div className='mt-[8%] border-2 border-[#D3C9E7] rounded-[5px]'>
                 <div className='pt-[1.3%] pb-[0.8%] pl-[1.5%] bg-[#FCF2D3] rounded-t-[5px] text-[23px]'>
                   <img
                     src={currentUser.avatarPath}
-                    className='rounded-circle'
+                    className='rounded-full'
                     width={60}
                     height={60}
                     alt={currentUser.name}
@@ -113,7 +113,7 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
                 <form onSubmit={handlePost}>
                   <div>
                     <textarea
-                      className='form-control'
+                      className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                       placeholder='文章など'
                       rows={10}
                       value={content}
@@ -123,7 +123,7 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
                   <div className='bg-p-brand text-right'>
                     <button
                       type='submit'
-                      className='btn btn-default btn-lg bg-[#FFA30D] text-black'
+                      className='rounded bg-[#FFA30D] py-2 px-4 text-black hover:opacity-80'
                       disabled={posting}
                     >
                       投稿

@@ -37,7 +37,7 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
 
       <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
         {errors.length > 0 && (
-          <div id='error_explanation' className='alert alert-danger'>
+          <div id='error_explanation' className='mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700'>
             <ul>
               {errors.map((msg) => (
                 <li key={msg}>{msg}</li>
@@ -47,10 +47,10 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
         )}
 
         {/* 編集メニュー */}
-        <div className='dropdown dropdown-right'>
+        <div className='relative'>
           <button
             type='button'
-            className='btn btn-default dropdown-toggle'
+            className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
             id='dropdownMenu1'
             data-toggle='dropdown'
             aria-haspopup='true'
@@ -58,24 +58,24 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
           >
             <i className='fas fa-cog text-[50px]' />
           </button>
-          <ul className='dropdown-menu dropdown-menu-right' aria-labelledby='dropdownMenu1'>
+          <ul className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200' aria-labelledby='dropdownMenu1'>
             <li>
-              <a href='/my_page/my_page' className='dropdown-item'>
+              <a href='/my_page/my_page' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール一覧
               </a>
             </li>
             <li>
-              <a href='/my_page/update' className='dropdown-item'>
+              <a href='/my_page/update' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール変更
               </a>
             </li>
             <li>
-              <a href='/heir/show' className='dropdown-item'>
+              <a href='/heir/show' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール詳細一覧
               </a>
             </li>
             <li>
-              <a href='/heir/edit' className='dropdown-item'>
+              <a href='/heir/edit' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール詳細変更
               </a>
             </li>
@@ -90,10 +90,10 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
             <div className='mb-[3%] border border-p-mid rounded overflow-hidden'>
               <div className='px-3 py-2 text-[17px] text-white bg-p-brand'>兴味のある分野</div>
               <div className='bg-white p-3'>
-                <div className='form-group'>
+                <div>
                   <select
                     name='heir[art_category_id]'
-                    className='form-control'
+                    className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                     value={artCategoryId}
                     onChange={(e) =>
                       setArtCategoryId(e.target.value === '' ? '' : Number(e.target.value))
@@ -116,11 +116,11 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
                 <label htmlFor='heir_introduction'>自己紹介</label>
               </div>
               <div className='bg-white p-3'>
-                <div className='form-group'>
+                <div>
                   <textarea
                     id='heir_introduction'
                     name='heir[introduction]'
-                    className='form-control'
+                    className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                     rows={15}
                     value={introduction}
                     onChange={(e) => setIntroduction(e.target.value)}
@@ -132,7 +132,7 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
             <div className='mt-[1%] mb-[3%] text-right'>
               <button
                 type='submit'
-                className='btn btn-lg w-[11%] text-[23px]! bg-p-brand! text-white!'
+                className='rounded bg-p-brand px-5 py-2 text-[23px] text-white hover:opacity-80'
               >
                 登録
               </button>

@@ -45,25 +45,25 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
     <FlashMessages flash={flash} />
     <div className='min-h-screen'>
       <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
-        <div className='row w-[90%] h-[67vh] mt-[1%] mb-[3%] mx-auto p-0 rounded-[5px] justify-content-center'>
+        <div className='flex flex-wrap w-[90%] h-[67vh] mt-[1%] mb-[3%] mx-auto p-0 rounded-[5px] justify-center'>
           {/* 左パネル: メッセージリスト */}
-          <div className='col-md-5 h-[80vh] p-0 m-0 rounded-[5px]'>
+          <div className='w-full md:w-5/12 h-[80vh] p-0 m-0 rounded-[5px]'>
             <div className='h-[65vh] bg-[#1F4B2E] rounded-[5px] overflow-scroll'>
               {messageLists.map((item) => (
                 <form key={item.id} action={`/message/history/${item.id}`} method='post'>
                   <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                  <button type='submit' className='btn w-full h-[90px] bg-[#D3C9E7]'>
-                    <div className='row w-full h-[100px] m-0'>
-                      <div className='col-md-3 p-0 m-0'>
+                  <button type='submit' className='w-full h-[90px] bg-[#D3C9E7] text-left'>
+                    <div className='flex w-full h-[100px] m-0'>
+                      <div className='w-3/12 p-0 m-0'>
                         <img
                           src={item.avatarPath}
                           width={80}
                           height={80}
-                          className='rounded-circle'
+                          className='rounded-full'
                           alt={item.name}
                         />
                       </div>
-                      <div className='col-md-9 p-0 m-0 text-[25px] text-left leading-[80px]'>
+                      <div className='w-9/12 p-0 m-0 text-[25px] text-left leading-[80px]'>
                         {item.name}
                       </div>
                     </div>
@@ -74,7 +74,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
           </div>
 
           {/* 右パネル: 履歴 + 送信フォーム */}
-          <div className='col-md-7 h-[65vh] p-0 m-0 rounded-[5px]'>
+          <div className='w-full md:w-7/12 h-[65vh] p-0 m-0 rounded-[5px]'>
             <div className='h-[65vh] mx-auto bg-[#eee] rounded-[5px] overflow-scroll'>
               <h3 className='py-[3px] px-2 bg-[#5cb85c]'>{toUser.name}さん</h3>
               {messageHistory.map((msg) =>
@@ -91,7 +91,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                         src={fromUser.avatarPath}
                         width={60}
                         height={60}
-                        className='rounded-circle'
+                        className='rounded-full'
                         alt=''
                       />
                     </div>
@@ -105,7 +105,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                         src={toUser.avatarPath}
                         width={60}
                         height={60}
-                        className='rounded-circle'
+                        className='rounded-full'
                         alt={toUser.name}
                       />
                       <div className='media-body'>
@@ -122,17 +122,17 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
 
             {/* 送信フォーム */}
             <div>
-              <form action={`/message/send/${toUser.id}`} method='post' className='form-control'>
+              <form action={`/message/send/${toUser.id}`} method='post' className='w-full'>
                 <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
                 <div className='input-group'>
                   <input
                     type='text'
                     name='message[content]'
-                    className='form-control'
+                    className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                     placeholder='メッセージ'
                   />
                   <span className='input-group-btn'>
-                    <button type='submit' className='btn p-0 w-[5vw] text-[23px] bg-[#FFA30D]'>
+                    <button type='submit' className='p-0 w-[5vw] text-[23px] bg-[#FFA30D] rounded hover:opacity-80'>
                       <i className='far fa-paper-plane message-icon' />
                     </button>
                   </span>

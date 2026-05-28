@@ -25,8 +25,8 @@ export const GalleryViewPage = ({ errors, flash }: Props) => (
       </div>
     )}
 
-    <div className='row justify-content-center'>
-      <div className='col-md-4'>
+    <div className='flex justify-center'>
+      <div className='w-full md:w-1/3'>
         <div className='right-box bg-[#F7F5FB] rounded-[13px] max-h-[70vh] mt-[1vh]'>
           <form action='/gallery/view' method='post' encType='multipart/form-data'>
             <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
@@ -36,7 +36,7 @@ export const GalleryViewPage = ({ errors, flash }: Props) => (
                 type='file'
                 id='gallery-view-file'
                 name='gallery[data]'
-                className='form-control-file'
+                className='block mt-2'
                 accept='image/jpg,image/jpeg,image/png'
               />
               <div className='text-black mt-[1vh] ml-[5%]'>
@@ -48,7 +48,7 @@ export const GalleryViewPage = ({ errors, flash }: Props) => (
                 />
               </div>
               <div className='mt-[5vh] mr-[3%]'>
-                <button type='submit' className='btn btn-primary btn-lg'>
+                <button type='submit' className='rounded bg-p-brand px-5 py-2 text-white hover:opacity-80'>
                   登録
                 </button>
               </div>

@@ -48,9 +48,9 @@ const isNew = (createdAt: string): boolean => {
 
 // 職人プロフィールカード（一覧・おすすめ共通）
 const CreatorCard = ({ creator }: { creator: Creator }) => (
-  <div className='col-lg-3 mt-[1.5%] new-box hover:opacity-85'>
-    <a href={`/page/creator/${creator.userId}`} className='nav-link hover:text-[#373737]!'>
-      <div className="card overflow-hidden relative bg-[url('/assets/card-background.jpg')] transition duration-300 hover:shadow-[0_8px_16px_0_rgba(0,0,0,0.2)]">
+  <div className='w-1/4 mt-[1.5%] new-box hover:opacity-85'>
+    <a href={`/page/creator/${creator.userId}`} className='block hover:text-[#373737]!'>
+      <div className="overflow-hidden relative bg-[url('/assets/card-background.jpg')] transition duration-300 hover:shadow-[0_8px_16px_0_rgba(0,0,0,0.2)]">
         {isNew(creator.createdAt) && (
           <span className='inline-block absolute top-[-1%] right-0 m-0 pt-[2.3%] pb-[1.3%] px-0 z-2 w-[17%] text-center text-white text-[1.3vw] bg-[#FFA30D] rounded-[7px]'>
             NEW
@@ -59,11 +59,11 @@ const CreatorCard = ({ creator }: { creator: Creator }) => (
         <div className='text-center'>
           <img
             src={creator.avatarPath}
-            className='rounded-circle h-[30vh] w-[30vw] max-w-[37vw] min-w-[20vw]'
+            className='rounded-full h-[30vh] w-[30vw] max-w-[37vw] min-w-[20vw]'
             alt={creator.name}
           />
         </div>
-        <div className='card-body'>
+        <div className='p-4'>
           <h4 className='text-center py-0.75 text-[43px] font-bold'>{creator.name}</h4>
           <p className='text-center py-0.75 text-[33px] font-bold'>{creator.title}</p>
         </div>
@@ -76,14 +76,10 @@ const CreatorCard = ({ creator }: { creator: Creator }) => (
 const ServiceDescription = () => (
   <>
     <div className='bg-p-brand text-center w-full h-15.25' />
-    <div className="col-lg-12 text-center min-h-[53vh] max-h-[310vh] bg-[url('/assets/main3.jpg')] bg-cover">
+    <div className="w-full text-center min-h-[53vh] max-h-[310vh] bg-[url('/assets/main3.jpg')] bg-cover">
       <h3 className='text-[47px] text-white'>どんなシステム？</h3>
-      <div className='col-lg-12 row justify-content-around w-full m-0'>
-        <div className='col-lg-4'>
-          <div className='pb-[8%] text-white h-[90%] bg-[rgba(80,55,128,0.7)] m-px rounded-[39px] mt-[3%]'>
-            <img
-              src='/assets/user.png'
-              className='img-responsive margin img-circle mx-auto'
+      <div className='flex justify-around w-full m-0'>
+        <div className='w-1/3'>
               width={100}
               height={100}
               alt='後継者を募れる'
@@ -96,11 +92,11 @@ const ServiceDescription = () => (
             </p>
           </div>
         </div>
-        <div className='col-lg-4'>
+        <div className='w-1/3'>
           <div className='pb-[8%] text-white h-[90%] bg-[rgba(80,55,128,0.7)] m-px rounded-[39px] mt-[3%]'>
             <img
               src='/assets/info.png'
-              className='img-responsive margin img-circle mx-auto'
+              className='rounded-full block mx-auto'
               width={100}
               height={100}
               alt='詳細情報を入れる'
@@ -113,11 +109,11 @@ const ServiceDescription = () => (
             </p>
           </div>
         </div>
-        <div className='col-lg-4'>
+        <div className='w-1/3'>
           <div className='pb-[8%] text-white h-[90%] bg-[rgba(80,55,128,0.7)] m-px rounded-[39px] mt-[3%]'>
             <img
               src='/assets/handshake.png'
-              className='img-responsive margin img-circle mx-auto'
+              className='rounded-full block mx-auto'
               width={100}
               height={100}
               alt='マッチング'
@@ -145,7 +141,7 @@ export const IndexPage = ({ creators, recommend, loggedIn, flash }: Props) => {
       <div className='text-center relative'>
         <img
           src='/assets/main1.jpg'
-          className='img-responsive margin w-full h-[57em]'
+          className='block w-full h-[57em] object-cover'
           alt='メインヴィジュアル'
           width='100%'
         />
@@ -160,7 +156,7 @@ export const IndexPage = ({ creators, recommend, loggedIn, flash }: Props) => {
       {/* おすすめ職人（後継者ログイン時のみ） */}
       {recommend && recommend.length > 0 && (
         <>
-          <div className='row card-group justify-content-center w-full m-0'>
+          <div className='flex flex-wrap justify-center w-full m-0'>
             <p className='w-full p-0 m-0 text-[#FFA30D] text-[3em] bg-p-brand text-center'>
               おすすめ職人さん
             </p>
@@ -173,8 +169,8 @@ export const IndexPage = ({ creators, recommend, loggedIn, flash }: Props) => {
       )}
 
       {/* 職人カード一覧 */}
-      {/* 元 ERB は 4 件ごとに row を分けていたが Bootstrap の col で自動折り返しするため不要 */}
-      <div className='row card-group justify-content-center w-full m-0'>
+      {/* 元 ERB は 4 件ごとに row を分けていたが Tailwind flex-wrap で自動折り返し */}
+      <div className='flex flex-wrap justify-center w-full m-0'>
         {creators.map((creator) => (
           <CreatorCard key={creator.userId} creator={creator} />
         ))}

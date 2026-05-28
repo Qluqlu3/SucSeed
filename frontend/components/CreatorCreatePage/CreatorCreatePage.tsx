@@ -58,18 +58,18 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
             <input type='hidden' name='_method' value='post' />
             <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
 
-            <div className='form-group row my-[2.7%] min-h-[9vh]'>
-              <div className='col-lg-2 pt-[0.7%] text-[19px] text-p-text'>
+            <div className='flex my-[2.7%] min-h-[9vh]'>
+              <div className='w-1/6 shrink-0 pt-[0.7%] text-[19px] text-p-text'>
                 <label htmlFor='creator_title' className='form-input-label'>
                   制作工芸名
                 </label>
               </div>
-              <div className='col-xl-10'>
+              <div className='flex-1'>
                 <input
                   id='creator_title'
                   type='text'
                   name='creator[title]'
-                  className='form-control'
+                  className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                   placeholder='制作工芸名'
                   maxLength={30}
                   value={title}
@@ -79,17 +79,17 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
               </div>
             </div>
 
-            <div className='form-group row my-[2.7%] min-h-[9vh]'>
-              <div className='col-lg-2 pt-[0.7%] text-[19px] text-p-text'>
+            <div className='flex my-[2.7%] min-h-[9vh]'>
+              <div className='w-1/6 shrink-0 pt-[0.7%] text-[19px] text-p-text'>
                 <label htmlFor='creator_art_category_id' className='form-input-label'>
                   工芸カテゴリ
                 </label>
               </div>
-              <div className='col-10'>
+              <div className='flex-1'>
                 <select
                   id='creator_art_category_id'
                   name='creator[art_category_id]'
-                  className='form-control'
+                  className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                   value={artCategoryId}
                   onChange={(e) =>
                     setArtCategoryId(e.target.value === '' ? '' : Number(e.target.value))
@@ -106,18 +106,18 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
               </div>
             </div>
 
-            <div className='form-group row my-[2.7%] min-h-[9vh]'>
-              <div className='col-lg-2 pt-[0.7%] text-[19px] text-p-text'>
+            <div className='flex my-[2.7%] min-h-[9vh]'>
+              <div className='w-1/6 shrink-0 pt-[0.7%] text-[19px] text-p-text'>
                 <label htmlFor='creator_establishment' className='form-input-label'>
                   創業年数
                 </label>
               </div>
-              <div className='col-xl-10'>
+              <div className='flex-1'>
                 <input
                   id='creator_establishment'
                   type='number'
                   name='creator[establishment]'
-                  className='form-control'
+                  className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                   placeholder='創業年数'
                   min={0}
                   max={500}
@@ -131,18 +131,18 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
               </div>
             </div>
 
-            <div className='form-group row my-[2.7%] min-h-[9vh]'>
-              <div className='col-lg-2 pt-[0.7%] text-[19px] text-p-text'>
+            <div className='flex my-[2.7%] min-h-[9vh]'>
+              <div className='w-1/6 shrink-0 pt-[0.7%] text-[19px] text-p-text'>
                 <label htmlFor='creator_employee' className='form-input-label'>
                   従業員数
                 </label>
               </div>
-              <div className='col-xl-10'>
+              <div className='flex-1'>
                 <input
                   id='creator_employee'
                   type='number'
                   name='creator[employee]'
-                  className='form-control'
+                  className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                   placeholder='従業員数'
                   min={0}
                   max={500}
@@ -154,18 +154,18 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
               </div>
             </div>
 
-            <div className='form-group row my-[2.7%] min-h-[9vh]'>
-              <div className='col-lg-2 pt-[0.7%] text-[19px] text-p-text'>
+            <div className='flex my-[2.7%] min-h-[9vh]'>
+              <div className='w-1/6 shrink-0 pt-[0.7%] text-[19px] text-p-text'>
                 <label htmlFor='creator_postal_code' className='form-input-label'>
                   作業所郵便番号
                 </label>
               </div>
-              <div className='col-10'>
+              <div className='flex-1'>
                 <input
                   id='creator_postal_code'
                   type='text'
                   name='creator[postal_code]'
-                  className='form-control'
+                  className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                   placeholder='作業所郵便番号'
                   maxLength={7}
                   value={postalCode}
@@ -177,9 +177,9 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
               </div>
             </div>
 
-            <div className='form-group row my-[2.7%] min-h-[9vh]'>
-              <div className='col-lg-2 pt-[0.7%] text-[19px] text-p-text'>募集チェック</div>
-              <div className='col-xl-10'>
+            <div className='flex my-[2.7%] min-h-[9vh]'>
+              <div className='w-1/6 shrink-0 pt-[0.7%] text-[19px] text-p-text'>募集チェック</div>
+              <div className='flex-1'>
                 <input
                   id='creator_is_recruitment'
                   type='checkbox'
@@ -206,7 +206,7 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
             <div className='text-right mt-[5%] mr-[1%] mb-[1%]'>
               <button
                 type='submit'
-                className='btn w-[160px] text-[23px]! bg-p-brand! text-white! hover:opacity-80'
+                className='rounded bg-p-brand px-5 py-2 text-[23px] text-white hover:opacity-80'
               >
                 登録
               </button>

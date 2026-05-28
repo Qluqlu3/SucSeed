@@ -26,12 +26,12 @@ export const PasswordForgotPage = ({ flash }: Props) => {
               type='email'
               id='password-forgot-email'
               name='user_email[email]'
-              className='form-control'
+              className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
               placeholder='メールアドレス'
             />
           </div>
           <div className='right_side'>
-            <button type='submit' className='btn btn-primary btn-lg'>
+            <button type='submit' className='rounded bg-p-brand px-5 py-2 text-white hover:opacity-80'>
               変更
             </button>
           </div>

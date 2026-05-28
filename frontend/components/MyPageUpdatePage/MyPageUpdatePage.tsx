@@ -46,9 +46,9 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
 
       <div className='w-[93%] mx-auto bg-p-light border border-p-mid rounded-[7px] mb-[5%]'>
         {/* 設定ドロップダウン */}
-        <div className='dropdown dropdown-right'>
+        <div className='relative'>
           <button
-            className='btn btn-default dropdown-toggle'
+            className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
             type='button'
             id='dropdownMenu1'
             data-toggle='dropdown'
@@ -58,34 +58,34 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
             <i className='fas fa-cog text-[50px]' />
           </button>
           <ul
-            className='dropdown-menu dropdown-menu-right dropdown-box'
+            className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200'
             aria-labelledby='dropdownMenu1'
           >
             <li>
-              <a href='/my_page/my_page' className='dropdown-item'>
+              <a href='/my_page/my_page' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール一覧
               </a>
             </li>
             <li>
-              <a href='/my_page/update' className='dropdown-item'>
+              <a href='/my_page/update' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール変更
               </a>
             </li>
             {isCreator ? (
               <li>
-                <a href='/creator/show' className='dropdown-item'>
+                <a href='/creator/show' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                   プロフィール詳細
                 </a>
               </li>
             ) : (
               <>
                 <li>
-                  <a href='/heir/show' className='dropdown-item'>
+                  <a href='/heir/show' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                     プロフィール詳細
                   </a>
                 </li>
                 <li>
-                  <a href='/heir/edit' className='dropdown-item'>
+                  <a href='/heir/edit' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                     プロフィール詳細変更
                   </a>
                 </li>
@@ -106,12 +106,12 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
             </div>
             <div className='text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]'>
               {user.avatarPath && (
-                <img src={user.avatarPath} className='img-circle' alt='アバター画像' />
+                <img src={user.avatarPath} className='rounded-full inline' alt='アバター画像' />
               )}
               <input
                 type='file'
                 name='user[avatar_path]'
-                className='form-control-file'
+                className='block mt-2'
                 accept='image/jpg,image/jpeg,image/png'
               />
             </div>
@@ -127,7 +127,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
               <input
                 type='text'
                 name='user[name]'
-                className='form-control w-[85%]! mx-auto'
+                className='w-[85%]! mx-auto rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                 maxLength={50}
                 placeholder='ユーザ名'
                 defaultValue={user.name}
@@ -145,7 +145,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
               <input
                 type='email'
                 name='user[email]'
-                className='form-control w-[85%]! mx-auto'
+                className='w-[85%]! mx-auto rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                 maxLength={50}
                 placeholder='メールアドレス'
                 defaultValue={user.email}
@@ -161,7 +161,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
             <div className='text-[2.3em] py-[2%] bg-white [&_p]:pl-[1%]'>
               <textarea
                 name='user[profile]'
-                className='form-control w-[85%]! mx-auto'
+                className='w-[85%]! mx-auto rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
                 placeholder='紹介文'
                 rows={15}
                 defaultValue={user.profile ?? ''}
@@ -174,7 +174,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           <div className='pr-[1%] pb-[2%] text-right'>
             <button
               type='submit'
-              className='btn btn-lg w-[170px] bg-p-brand! text-white! hover:opacity-80'
+              className='rounded bg-p-brand px-5 py-2 text-white hover:opacity-80'
             >
               変更
             </button>

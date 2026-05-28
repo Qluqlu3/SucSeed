@@ -1,7 +1,5 @@
 // font-awesome-sprockets は 5.x 専用。6.x では不要なので削除
 @import "font-awesome";
-@import "bootstrap";
-
 // ページ別スタイル（ERB 削除に伴い application.scss に統合）
 // Phase 4 で各 SCSS を Tailwind に移行するたびにここから削除する
 @import "admin";

@@ -52,23 +52,23 @@ export const ScoutShowPage = ({ scouts, flash }: Props) => (
           <p className='mb-[60vh] text-[39px] text-p-dark'>まだありません</p>
         ) : (
           scouts.map((scout) => (
-            <div key={scout.pageId} className='card mb-[1%]'>
-              <div className='card-header bg-[#BAA9DA]'>
+            <div key={scout.pageId} className='mb-[1%] rounded-lg border border-p-mid'>
+              <div className='px-4 py-2 bg-[#BAA9DA] rounded-t-lg'>
                 {scout.matchTime}&nbsp;{timeAgo(scout.matchTime)}前
               </div>
               <a href={`/page/creator/${scout.pageId}`}>
-                <div className='card-body bg-white'>
-                  <div className='row'>
-                    <div className='col-md-5 text-center'>
+                <div className='p-4 bg-white'>
+                  <div className='flex flex-wrap'>
+                    <div className='w-5/12 text-center'>
                       <img
                         src={scout.avatarPath}
-                        className='img-circle'
+                        className='rounded-full'
                         width={230}
                         height={230}
                         alt={scout.name}
                       />
                     </div>
-                    <div className='col-md-7 text-left'>
+                    <div className='w-7/12 text-left'>
                       <p className='text-[61px] p-0 m-0'>{scout.name}</p>
                       <p className='text-[35px] p-0 my-[1%] ml-[71px]'>
                         {calcAge(scout.birthday)}
@@ -79,25 +79,25 @@ export const ScoutShowPage = ({ scouts, flash }: Props) => (
                   </div>
                 </div>
               </a>
-              <div className='card-footer pt-[0.2%] pb-0 px-0 m-0'>
-                <div className='row'>
-                  <div className='col-6 pr-[0.1%]'>
+              <div className='pt-[0.2%] pb-0 px-0 m-0 border-t border-p-mid rounded-b-lg'>
+                <div className='flex'>
+                  <div className='w-1/2 pr-[0.1%]'>
                     <form action={`/scout/ok/${scout.pageId}`} method='post'>
                       <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
                       <button
                         type='submit'
-                        className='btn btn-primary w-full m-0 py-[1%] text-[30px]'
+                        className='w-full m-0 py-[1%] text-[30px] bg-p-brand text-white rounded hover:opacity-80'
                       >
                         話してみる
                       </button>
                     </form>
                   </div>
-                  <div className='col-6 pl-[0.1%]'>
+                  <div className='w-1/2 pl-[0.1%]'>
                     <form action={`/scout/sorry/${scout.pageId}`} method='post'>
                       <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
                       <button
                         type='submit'
-                        className='btn btn-danger w-full m-0 py-[1%] text-[30px]'
+                        className='w-full m-0 py-[1%] text-[30px] bg-red-600 text-white rounded hover:opacity-80'
                       >
                         ごめんなさい
                       </button>

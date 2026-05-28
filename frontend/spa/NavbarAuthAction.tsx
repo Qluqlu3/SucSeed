@@ -11,9 +11,7 @@ export const NavbarAuthAction: FC<NavbarAuthActionProps> = ({ role }) => {
     return (
       <button
         type='button'
-        className='btn my-login-btn'
-        onClick={() => window.dispatchEvent(new CustomEvent('sucseed:login-modal-open'))}
-      >
+        className='rounded bg-p-brand px-4 py-2 text-white hover:opacity-80 my-login-btn'
         ログイン
       </button>
     );
@@ -21,7 +19,7 @@ export const NavbarAuthAction: FC<NavbarAuthActionProps> = ({ role }) => {
 
   return (
     <PostForm action='/user/logout'>
-      <button type='submit' className='btn my-login-btn'>
+      <button type='submit' className='rounded bg-p-brand px-4 py-2 text-white hover:opacity-80 my-login-btn'>
         ログアウト
       </button>
     </PostForm>

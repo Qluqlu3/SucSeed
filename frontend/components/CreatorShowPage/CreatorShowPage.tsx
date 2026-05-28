@@ -36,10 +36,10 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
     <div className='min-h-screen'>
       <div className='w-[85%] mx-auto mb-[5%] bg-p-light border border-p-mid rounded-[7px]'>
         {/* 編集メニュー */}
-        <div className='dropdown dropdown-right'>
+        <div className='relative'>
           <button
             type='button'
-            className='btn btn-default dropdown-toggle'
+            className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
             id='dropdownMenu1'
             data-toggle='dropdown'
             aria-haspopup='true'
@@ -48,28 +48,28 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
             <i className='fas fa-cog text-[50px]' />
           </button>
           <ul
-            className='dropdown-menu dropdown-menu-right dropdown-box'
+            className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200'
             aria-labelledby='dropdownMenu1'
           >
             <li className='setting-item'>
-              <a href='/my_page/my_page' className='dropdown-item'>
+              <a href='/my_page/my_page' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール一覧
               </a>
             </li>
             <li className='setting-item'>
-              <a href='/my_page/update' className='dropdown-item'>
+              <a href='/my_page/update' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール変更
               </a>
             </li>
             {isCreator ? (
               <>
                 <li className='setting-item'>
-                  <a href='/creator/show' className='dropdown-item'>
+                  <a href='/creator/show' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                     プロフィール詳細
                   </a>
                 </li>
                 <li className='setting-item'>
-                  <a href='/creator/edit' className='dropdown-item'>
+                  <a href='/creator/edit' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                     プロフィール詳細変更
                   </a>
                 </li>
@@ -77,12 +77,12 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
             ) : (
               <>
                 <li className='setting-item'>
-                  <a href='/heir/show' className='dropdown-item'>
+                  <a href='/heir/show' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                     プロフィール詳細
                   </a>
                 </li>
                 <li className='setting-item'>
-                  <a href='/heir/edit' className='dropdown-item'>
+                  <a href='/heir/edit' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                     プロフィール詳細変更
                   </a>
                 </li>
