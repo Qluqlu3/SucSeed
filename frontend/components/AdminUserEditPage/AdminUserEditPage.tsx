@@ -67,7 +67,10 @@ export const AdminUserEditPage = ({ users, flash }: Props) => (
               <td>{user.deletedAt ?? ''}</td>
               <td>{user.loginTime ?? ''}</td>
               <td>
-                <a href={`/admin/user/edit/${user.id}`} className='px-4 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 inline-block'>
+                <a
+                  href={`/admin/user/edit/${user.id}`}
+                  className='px-4 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 inline-block'
+                >
                   編集
                 </a>
               </td>
@@ -80,7 +83,10 @@ export const AdminUserEditPage = ({ users, flash }: Props) => (
                   }}
                 >
                   <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                  <button type='submit' className='px-4 py-2 bg-red-600 text-white rounded hover:opacity-80'>
+                  <button
+                    type='submit'
+                    className='px-4 py-2 bg-red-600 text-white rounded hover:opacity-80'
+                  >
                     削除
                   </button>
                 </form>

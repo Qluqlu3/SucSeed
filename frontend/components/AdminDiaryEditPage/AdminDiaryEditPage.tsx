@@ -54,7 +54,10 @@ export const AdminDiaryEditPage = ({ diaries, flash }: Props) => (
               <td>
                 <form action={`/admin/diary/delete/${diary.id}`} method='post'>
                   <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                  <button type='submit' className='px-4 py-2 bg-red-600 text-white rounded hover:opacity-80'>
+                  <button
+                    type='submit'
+                    className='px-4 py-2 bg-red-600 text-white rounded hover:opacity-80'
+                  >
                     削除
                   </button>
                 </form>

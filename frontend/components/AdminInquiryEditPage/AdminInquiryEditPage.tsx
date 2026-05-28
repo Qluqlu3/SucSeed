@@ -59,9 +59,13 @@ export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
               <td>{inquiry.content}</td>
               <td>
                 {inquiry.isCheck ? (
-                  <span className='inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-green-600 text-white'>OK</span>
+                  <span className='inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-green-600 text-white'>
+                    OK
+                  </span>
                 ) : (
-                  <span className='inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-red-600 text-white'>No</span>
+                  <span className='inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-red-600 text-white'>
+                    No
+                  </span>
                 )}
               </td>
               <td>{inquiry.createdAt}</td>
@@ -69,7 +73,10 @@ export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
               <td>{inquiry.updatedAt}</td>
               <td>{inquiry.deletedAt ?? ''}</td>
               <td>
-                <a href={`/admin/inquiry/detail/${inquiry.id}`} className='px-4 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 inline-block'>
+                <a
+                  href={`/admin/inquiry/detail/${inquiry.id}`}
+                  className='px-4 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 inline-block'
+                >
                   チェック
                 </a>
               </td>

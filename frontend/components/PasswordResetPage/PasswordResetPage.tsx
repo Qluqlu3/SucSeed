@@ -21,7 +21,10 @@ export const PasswordResetPage = ({ errors, flash }: Props) => {
       <FlashMessages flash={flash} />
 
       {errors.length > 0 && (
-        <div id='error_explanation' className='mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700'>
+        <div
+          id='error_explanation'
+          className='mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700'
+        >
           <ul>
             {errors.map((msg) => (
               <li key={msg}>{msg}</li>
@@ -54,7 +57,10 @@ export const PasswordResetPage = ({ errors, flash }: Props) => {
             />
           </div>
           <div className='text-right'>
-            <button type='submit' className='rounded bg-p-brand px-5 py-2 text-lg text-white hover:opacity-80'>
+            <button
+              type='submit'
+              className='rounded bg-p-brand px-5 py-2 text-lg text-white hover:opacity-80'
+            >
               変更
             </button>
           </div>

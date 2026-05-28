@@ -73,7 +73,10 @@ export const AdminSelectedUserEditPage = ({ user, flash }: Props) => (
         {/* 送信 */}
         <div className='rounded-lg border border-p-mid bg-white mt-4 text-right'>
           <div className='p-4'>
-            <button type='submit' className='px-5 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 text-lg'>
+            <button
+              type='submit'
+              className='px-5 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 text-lg'
+            >
               変更
             </button>
           </div>

@@ -48,7 +48,10 @@ export const GalleryUploadPage = ({ errors, flash }: Props) => (
                 />
               </div>
               <div className='mt-[5vh] mr-[3%] text-right'>
-                <button type='submit' className='rounded bg-p-brand px-5 py-2 text-lg text-white hover:opacity-80'>
+                <button
+                  type='submit'
+                  className='rounded bg-p-brand px-5 py-2 text-lg text-white hover:opacity-80'
+                >
                   登録
                 </button>
               </div>
