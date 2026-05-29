@@ -3,6 +3,7 @@
 // /my_page/my_page ページの React コンポーネント。
 // ログインユーザー自身のプロフィール表示。
 
+import { useState } from 'react';
 import { FlashMessages } from '../FlashMessages';
 
 interface User {
@@ -23,6 +24,7 @@ interface Props {
 
 export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => {
   const birthday = new Date(user.birthday);
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <>
@@ -38,14 +40,14 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
               className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
               type='button'
               id='dropdownMenu1'
-              data-toggle='dropdown'
+              onClick={() => setShowMenu(!showMenu)}
               aria-haspopup='true'
-              aria-expanded='true'
+              aria-expanded={showMenu}
             >
               <i className='fas fa-cog text-[50px]' />
             </button>
             <ul
-              className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200'
+              className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}
               aria-labelledby='dropdownMenu1'
             >
               <li className='setting-item'>
@@ -90,7 +92,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* アバター */}
           <div className='w-full'>
-            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 アバター
               </div>
@@ -108,7 +110,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* ユーザー名 */}
           <div className='w-full'>
-            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 ユーザー名
               </div>
@@ -120,7 +122,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* 性別 */}
           <div className='w-full'>
-            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 性別
               </div>
@@ -132,7 +134,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* メールアドレス */}
           <div className='w-full'>
-            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 メールアドレス
               </div>
@@ -144,7 +146,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* 生年月日 */}
           <div className='w-full'>
-            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 生年月日
               </div>
@@ -158,7 +160,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
 
           {/* 紹介文 */}
           <div className='w-full'>
-            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+            <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
               <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
                 紹介文
               </div>

@@ -46,6 +46,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
   const [employee, setEmployee] = useState(creator.employee);
   const [postalCode, setPostalCode] = useState(creator.postalCode);
   const [isRecruitment, setIsRecruitment] = useState(creator.isRecruitment);
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div>
@@ -71,14 +72,14 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             type='button'
             className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
             id='dropdownMenu1'
-            data-toggle='dropdown'
+            onClick={() => setShowMenu(!showMenu)}
             aria-haspopup='true'
-            aria-expanded='true'
+            aria-expanded={showMenu}
           >
             <i className='fas fa-cog text-[50px]' />
           </button>
           <ul
-            className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200'
+            className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}
             aria-labelledby='dropdownMenu1'
           >
             <li className='setting-item'>
@@ -125,7 +126,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
           <input type='hidden' name='_method' value='patch' />
           <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
 
-          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_title'>制作工芸名</label>
             </div>
@@ -144,7 +145,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             </div>
           </div>
 
-          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_art_category_id'>工芸カテゴリ</label>
             </div>
@@ -168,7 +169,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             </div>
           </div>
 
-          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_establishment'>創業年数</label>
             </div>
@@ -187,7 +188,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             </div>
           </div>
 
-          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_employee'>従業員数</label>
             </div>
@@ -206,7 +207,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             </div>
           </div>
 
-          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_postal_code'>作業所郵便番号</label>
             </div>
@@ -225,7 +226,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             </div>
           </div>
 
-          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               <label htmlFor='art_category_is_recruitment'>募集チェック</label>
             </div>
@@ -234,7 +235,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
                 id='art_category_is_recruitment'
                 type='checkbox'
                 name='art_category[is_recruitment]'
-                className='form-check-input [transform:scale(1.7,1.7)]'
+                className='form-check-input transform-[scale(1.7,1.7)]'
                 value='1'
                 checked={isRecruitment}
                 onChange={(e) => setIsRecruitment(e.target.checked)}

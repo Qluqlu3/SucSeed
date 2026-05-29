@@ -6,6 +6,7 @@
 // 【data-props に含まれるデータ】
 //   heir : { artCategoryName, introduction }
 
+import { useState } from 'react';
 import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
@@ -19,7 +20,10 @@ interface Props {
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const HeirShowPage = ({ heir, flash }: Props) => (
+export const HeirShowPage = ({ heir, flash }: Props) => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  return (
   <div>
     <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>後継者情報参照</h1>
 
@@ -32,13 +36,13 @@ export const HeirShowPage = ({ heir, flash }: Props) => (
           type='button'
           className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
           id='dropdownMenu1'
-          data-toggle='dropdown'
+          onClick={() => setShowMenu(!showMenu)}
           aria-haspopup='true'
-          aria-expanded='true'
+          aria-expanded={showMenu}
         >
           <i className='fas fa-cog text-[50px]' />
         </button>
-        <ul className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200' aria-labelledby='dropdownMenu1'>
+        <ul className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`} aria-labelledby='dropdownMenu1'>
           <li>
             <a href='/my_page/my_page' className='block px-4 py-2 text-sm hover:bg-gray-100'>
               プロフィール一覧
@@ -79,4 +83,5 @@ export const HeirShowPage = ({ heir, flash }: Props) => (
       </div>
     </div>
   </div>
-);
+  );
+};

@@ -3,6 +3,7 @@
 // /my_page/update ページの React コンポーネント。
 // プロフィール更新フォーム。PATCH /my_page/update へ multipart/form-data で送信。
 
+import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
 
 import { FlashMessages } from '../FlashMessages';
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
+  const [showMenu, setShowMenu] = useState(false);
   return (
     <>
       <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>
@@ -51,14 +53,14 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
             className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
             type='button'
             id='dropdownMenu1'
-            data-toggle='dropdown'
+            onClick={() => setShowMenu(!showMenu)}
             aria-haspopup='true'
-            aria-expanded='true'
+            aria-expanded={showMenu}
           >
             <i className='fas fa-cog text-[50px]' />
           </button>
           <ul
-            className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200'
+            className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}
             aria-labelledby='dropdownMenu1'
           >
             <li>
@@ -100,7 +102,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           <input type='hidden' name='_method' value='PATCH' />
 
           {/* アバター */}
-          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               アバター
             </div>
@@ -118,7 +120,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           </div>
 
           {/* ユーザー名 */}
-          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               ユーザー名
             </div>
@@ -136,7 +138,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           </div>
 
           {/* メールアドレス */}
-          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               メールアドレス
             </div>
@@ -154,7 +156,7 @@ export const MyPageUpdatePage = ({ user, errors, isCreator, flash }: Props) => {
           </div>
 
           {/* 紹介文 */}
-          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-[8px]'>
+          <div className='min-h-[9vh] w-[93%] mt-[3%] mx-auto border border-p-mid rounded-lg'>
             <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
               紹介文
             </div>

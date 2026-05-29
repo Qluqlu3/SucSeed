@@ -9,6 +9,7 @@
 //   isCreator : 職人セッションかどうか（設定ドロップダウンの出し分けに使用）
 
 // ── 型定義 ──────────────────────────────────────────────────────────
+import { useState } from 'react';
 import { FlashMessages } from '../FlashMessages';
 
 interface CreatorDetail {
@@ -28,7 +29,10 @@ interface Props {
 
 // ── コンポーネント ───────────────────────────────────────────────────
 
-export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
+export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  return (
   <div>
     <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>制作者情報</h1>
 
@@ -41,14 +45,14 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
             type='button'
             className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
             id='dropdownMenu1'
-            data-toggle='dropdown'
+            onClick={() => setShowMenu(!showMenu)}
             aria-haspopup='true'
-            aria-expanded='true'
+            aria-expanded={showMenu}
           >
             <i className='fas fa-cog text-[50px]' />
           </button>
           <ul
-            className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200'
+            className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}
             aria-labelledby='dropdownMenu1'
           >
             <li className='setting-item'>
@@ -91,42 +95,42 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
           </ul>
         </div>
 
-        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
           <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
             工芸名
           </div>
           <div className='text-[27px] py-[2%] bg-white text-center'>{creator.title}</div>
         </div>
 
-        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
           <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
             工芸カテゴリー
           </div>
           <div className='text-[27px] py-[2%] bg-white text-center'>{creator.categoryName}</div>
         </div>
 
-        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
           <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
             創業年数
           </div>
           <div className='text-[27px] py-[2%] bg-white text-center'>{creator.establishment}年</div>
         </div>
 
-        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
           <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
             従業員数
           </div>
           <div className='text-[27px] py-[2%] bg-white text-center'>{creator.employee}人</div>
         </div>
 
-        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
           <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
             作業所郵便番号
           </div>
           <div className='text-[27px] py-[2%] bg-white text-center'>{creator.postalCode}</div>
         </div>
 
-        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-[8px]'>
+        <div className='min-h-[9vh] w-[93%] mt-[4vh] mx-auto border-2 border-[#D7CDE9] rounded-lg'>
           <div className='pt-[1%] pb-[0.3%] pl-[1.5%] text-[23px] text-white bg-p-brand'>
             募集チェック
           </div>
@@ -139,4 +143,5 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => (
       </div>
     </div>
   </div>
-);
+  );
+};

@@ -28,6 +28,7 @@ interface Props {
 export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
   const [artCategoryId, setArtCategoryId] = useState<number | ''>('');
   const [introduction, setIntroduction] = useState('');
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div>
@@ -52,13 +53,13 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
             type='button'
             className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
             id='dropdownMenu1'
-            data-toggle='dropdown'
+            onClick={() => setShowMenu(!showMenu)}
             aria-haspopup='true'
-            aria-expanded='true'
+            aria-expanded={showMenu}
           >
             <i className='fas fa-cog text-[50px]' />
           </button>
-          <ul className='absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200' aria-labelledby='dropdownMenu1'>
+          <ul className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`} aria-labelledby='dropdownMenu1'>
             <li>
               <a href='/my_page/my_page' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール一覧
