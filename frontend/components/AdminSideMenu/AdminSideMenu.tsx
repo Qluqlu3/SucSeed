@@ -33,7 +33,10 @@ export const AdminSideMenu = ({ activeKey }: Props) => (
         const isActive = item.key === activeKey;
         return (
           <li key={item.key} className={`${i === 0 ? 'mt-[27%]' : ''}`}>
-            <a href={item.href} className={`block py-1 text-gray-700 hover:text-p-brand${isActive ? ' opacity-50 pointer-events-none' : ''}`}>
+            <a
+              href={item.href}
+              className={`block py-1 text-gray-700 hover:text-p-brand${isActive ? ' opacity-50 pointer-events-none' : ''}`}
+            >
               {item.label}
             </a>
           </li>

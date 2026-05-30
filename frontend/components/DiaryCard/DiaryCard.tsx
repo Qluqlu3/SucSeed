@@ -181,7 +181,9 @@ export const DiaryCard = ({
               <div className='py-[0.5%] pl-[2%]'>
                 <p className='text-[19px]'>{c.comment}</p>
               </div>
-              <div className='p-[0.1%] text-[#555] text-right border-t border-gray-200'>{c.postTime}</div>
+              <div className='p-[0.1%] text-[#555] text-right border-t border-gray-200'>
+                {c.postTime}
+              </div>
             </div>
           ))}
 

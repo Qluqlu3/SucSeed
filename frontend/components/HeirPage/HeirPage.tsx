@@ -72,7 +72,9 @@ export const HeirPage = ({
         </div>
         {artName && (
           <div className='absolute top-0 right-[0.7%] text-[51px]'>
-            <span className='inline-block rounded bg-p-brand px-2 py-1 text-sm text-white'>{artName}</span>
+            <span className='inline-block rounded bg-p-brand px-2 py-1 text-sm text-white'>
+              {artName}
+            </span>
           </div>
         )}
         <div className='absolute top-[27%] left-[39%]'>

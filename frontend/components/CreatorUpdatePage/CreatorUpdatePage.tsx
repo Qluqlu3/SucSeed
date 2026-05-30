@@ -249,7 +249,10 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
           </div>
 
           <div className='text-right mt-[3%] mr-[4%]'>
-            <button type='submit' className='rounded bg-p-brand px-5 py-2 text-[23px] text-white hover:opacity-80'>
+            <button
+              type='submit'
+              className='rounded bg-p-brand px-5 py-2 text-[23px] text-white hover:opacity-80'
+            >
               変更
             </button>
           </div>

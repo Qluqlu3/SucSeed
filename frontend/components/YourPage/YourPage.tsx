@@ -94,9 +94,13 @@ export const YourPage = ({
             </div>
             <div className='absolute top-0 right-[0.7%] text-[51px]'>
               {creator.isRecruitment ? (
-                <span className='inline-block rounded bg-p-brand px-2 py-1 text-sm text-white'>募集中</span>
+                <span className='inline-block rounded bg-p-brand px-2 py-1 text-sm text-white'>
+                  募集中
+                </span>
               ) : (
-                <span className='inline-block rounded bg-red-600 px-2 py-1 text-sm text-white'>募集停止中</span>
+                <span className='inline-block rounded bg-red-600 px-2 py-1 text-sm text-white'>
+                  募集停止中
+                </span>
               )}
             </div>
           </div>
@@ -134,7 +138,10 @@ export const YourPage = ({
       {/* タブナビゲーション */}
       <ul className='flex justify-center border-t border-b border-[#aaa] text-[33px] text-white bg-[#666]'>
         <li className=''>
-          <a href={`/diary/show/${user.id}`} className='block px-4 py-2 text-white hover:text-[#FFA30D]'>
+          <a
+            href={`/diary/show/${user.id}`}
+            className='block px-4 py-2 text-white hover:text-[#FFA30D]'
+          >
             日記
           </a>
         </li>

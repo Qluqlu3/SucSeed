@@ -38,7 +38,10 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
 
       <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
         {errors.length > 0 && (
-          <div id='error_explanation' className='mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700'>
+          <div
+            id='error_explanation'
+            className='mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700'
+          >
             <ul>
               {errors.map((msg) => (
                 <li key={msg}>{msg}</li>
@@ -59,7 +62,10 @@ export const HeirCreatePage = ({ artCategories, errors, flash }: Props) => {
           >
             <i className='fas fa-cog text-[50px]' />
           </button>
-          <ul className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`} aria-labelledby='dropdownMenu1'>
+          <ul
+            className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}
+            aria-labelledby='dropdownMenu1'
+          >
             <li>
               <a href='/my_page/my_page' className='block px-4 py-2 text-sm hover:bg-gray-100'>
                 プロフィール一覧

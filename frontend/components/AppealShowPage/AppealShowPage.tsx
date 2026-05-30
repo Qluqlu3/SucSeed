@@ -93,14 +93,19 @@ export const AppealShowPage = ({ appeals, flash }: Props) => (
                     <div className='w-full'>
                       <form action={`/message/add/${appeal.pageId}`} method='post'>
                         <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                        <button type='submit' className='p-0 bg-transparent border-none cursor-pointer text-p-brand hover:underline'>
+                        <button
+                          type='submit'
+                          className='p-0 bg-transparent border-none cursor-pointer text-p-brand hover:underline'
+                        >
                           <p>メッセージ</p>
                         </button>
                       </form>
                     </div>
                   ) : (
                     <div className='w-full'>
-                      <p className='w-full m-0 py-[1%] text-[30px] bg-p-brand text-white text-center rounded cursor-default'>アピール済</p>
+                      <p className='w-full m-0 py-[1%] text-[30px] bg-p-brand text-white text-center rounded cursor-default'>
+                        アピール済
+                      </p>
                     </div>
                   )}
                 </div>

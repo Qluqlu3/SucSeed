@@ -26,7 +26,10 @@ export const GallerySearchPage = ({ userName, userId, galleries, flash }: Props)
           className='rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
           placeholder='search tag ...'
         />
-        <button type='submit' className='rounded bg-p-brand px-3 py-2 text-white hover:opacity-80 search_btn'>
+        <button
+          type='submit'
+          className='rounded bg-p-brand px-3 py-2 text-white hover:opacity-80 search_btn'
+        >
           <i className='fas fa-search search_icon' />
         </button>
       </form>

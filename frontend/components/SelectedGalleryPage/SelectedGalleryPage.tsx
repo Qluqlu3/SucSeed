@@ -181,7 +181,9 @@ export const SelectedGalleryPage = ({
                   <div className='py-[0.5%] pl-[2%]'>
                     <p className='text-[19px]'>{c.comment}</p>
                   </div>
-                  <div className='p-[0.1%] text-[#555] text-right border-t border-gray-200'>{c.postTime}</div>
+                  <div className='p-[0.1%] text-[#555] text-right border-t border-gray-200'>
+                    {c.postTime}
+                  </div>
                 </div>
               ))}
 
@@ -212,7 +214,10 @@ export const SelectedGalleryPage = ({
                     </div>
                     <div className='py-[0.5%] pr-[2%] pl-[0.5%] bg-[#5cb85c] border-t border-gray-200'>
                       <div className='text-right'>
-                        <button type='submit' className='rounded bg-[#FFA30D] px-3 py-1 hover:opacity-80'>
+                        <button
+                          type='submit'
+                          className='rounded bg-[#FFA30D] px-3 py-1 hover:opacity-80'
+                        >
                           コメント
                         </button>
                       </div>

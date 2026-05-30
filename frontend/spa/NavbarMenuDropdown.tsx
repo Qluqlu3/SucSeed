@@ -31,7 +31,9 @@ export const NavbarMenuDropdown: FC<NavbarMenuDropdownProps> = ({ menuItems }) =
       >
         メニュー
       </button>
-      <div className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200 my-dropdown${isOpen ? ' block' : ' hidden'}`}>
+      <div
+        className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200 my-dropdown${isOpen ? ' block' : ' hidden'}`}
+      >
         {menuItems.map((item) => (
           <a key={item.href} href={item.href} className='block px-4 py-2 text-sm hover:bg-gray-100'>
             {item.label}
