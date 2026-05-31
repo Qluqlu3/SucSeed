@@ -59,7 +59,7 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
             <input type='hidden' name='_method' value='post' />
             <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
 
-            <div className='form-group'>
+            <div className='mb-3'>
               {/* biome-ignore lint/a11y/noLabelWithoutControl: select は直後に配置 */}
               <label className='text-p-text text-[1.5em]'>カテゴリー</label>
               <select
@@ -77,7 +77,7 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
               </select>
             </div>
 
-            <div className='form-group mt-[3%]'>
+            <div className='mt-[3%]'>
               {/* biome-ignore lint/a11y/noLabelWithoutControl: textarea は直後に配置 */}
               <label className='text-p-text text-[1.5em]'>お問い合わせ内容</label>
               <textarea

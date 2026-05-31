@@ -4,7 +4,7 @@ import { LoginFormField } from './LoginFormField';
 
 export const LoginModalBody: FC = () => (
   <div className="modal-body">
-    <PostForm action="/user/login" className="form-group">
+    <PostForm action="/user/login" className="mb-3">
       <LoginFormField
         id="login-email"
         type="email"

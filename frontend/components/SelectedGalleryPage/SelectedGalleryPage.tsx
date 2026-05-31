@@ -137,7 +137,7 @@ export const SelectedGalleryPage = ({
           </div>
 
           {/* アクションボタン */}
-          <div className='icon-btn-box text-right'>
+          <div className='text-right'>
             {/* いいねボタン */}
             <button
               type='button'

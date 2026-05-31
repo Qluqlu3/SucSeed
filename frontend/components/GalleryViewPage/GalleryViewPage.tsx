@@ -30,7 +30,7 @@ export const GalleryViewPage = ({ errors, flash }: Props) => (
         <div className='right-box bg-[#F7F5FB] rounded-[13px] max-h-[70vh] mt-[1vh]'>
           <form action='/gallery/view' method='post' encType='multipart/form-data'>
             <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-            <div className='form-group'>
+            <div className='mb-3'>
               <label htmlFor='gallery-view-file'>ファイルを選択する</label>
               <input
                 type='file'

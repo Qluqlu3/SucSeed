@@ -49,7 +49,7 @@ export const MyGalleryPage = ({ galleries, errors, flash }: Props) => (
           <div className='bg-[#F7F5FB] rounded-[13px] max-h-[70vh] mt-[1vh]'>
             <form action='/gallery/view' method='post' encType='multipart/form-data'>
               <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-              <div className='form-group'>
+              <div className='mb-3'>
                 <div className='bg-p-brand rounded-t-[7px]'>
                   <label
                     className='block text-white text-[31px] mt-[1.5%] mb-[1%] ml-[5%]'

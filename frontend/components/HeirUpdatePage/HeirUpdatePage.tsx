@@ -99,7 +99,7 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
             <div className='mb-[3%] border border-p-mid rounded overflow-hidden'>
               <div className='px-3 py-2 text-[17px] text-white bg-p-brand'>兴味のある分野</div>
               <div className='bg-white p-3'>
-                <div className='form-group'>
+                <div className='mb-3'>
                   <select
                     name='heir[art_category_id]'
                     className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
@@ -123,7 +123,7 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
                 <label htmlFor='heir_introduction'>自己紹介</label>
               </div>
               <div className='bg-white p-3'>
-                <div className='form-group'>
+                <div className='mb-3'>
                   <textarea
                     id='heir_introduction'
                     name='heir[introduction]'
