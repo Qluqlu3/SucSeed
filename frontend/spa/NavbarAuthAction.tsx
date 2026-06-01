@@ -20,7 +20,10 @@ export const NavbarAuthAction: FC<NavbarAuthActionProps> = ({ role }) => {
 
   return (
     <PostForm action='/user/logout'>
-      <button type='submit' className='rounded bg-p-brand px-4 py-2 text-white hover:opacity-80 my-login-btn'>
+      <button
+        type='submit'
+        className='rounded bg-p-brand px-4 py-2 text-white hover:opacity-80 my-login-btn'
+      >
         ログアウト
       </button>
     </PostForm>
