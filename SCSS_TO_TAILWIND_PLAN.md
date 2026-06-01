@@ -290,9 +290,9 @@ gem 'sassc-rails'   # SCSS が不要になれば削除
 @import "bootstrap";
 ```
 
-- [ ] 全 TSX から Bootstrap クラスを Tailwind に置換
-- [ ] `Gemfile` — `bootstrap` gem 削除（`bundle install`）
-- [ ] `application.scss` — `@import "bootstrap"` 削除
+- [x] 全 TSX から Bootstrap クラスを Tailwind に置換
+- [x] `Gemfile` — `bootstrap` gem 削除（`bundle install`）
+- [x] `application.scss` — `@import "bootstrap"` 削除
 
 ### 5-4. admin SCSS 移行
 
@@ -306,11 +306,11 @@ gem 'sassc-rails'   # SCSS が不要になれば削除
 
 ## Phase 6: 最終クリーンアップ
 
-- [ ] `application.scss` を最小化（`@layer base` の `.field_with_errors` のみ残すか `tailwind.css` に移動）
-- [ ] `app/assets/stylesheets/*.scss` が全削除されたら `application.scss` 自体も削除を検討
-- [ ] Sprockets の SCSS パイプラインが不要になれば `sassc-rails` gem 削除
-- [ ] `package.json` / `Gemfile` の不要な依存確認
-- [ ] Tailwind の CSS 出力サイズを確認（不要クラスが含まれていないか）
+- [x] `application.scss` を最小化→削除（`tailwind.css` の `@layer base` に移行済み）
+- [x] `app/assets/stylesheets/*.scss` 全削除済み、`application.scss` 自体も削除
+- [x] Sprockets の SCSS パイプライン不要→ `sassc-rails` gem 削除、`font-awesome-sass` gem も削除
+- [x] `package.json` / `Gemfile` の不要な依存確認済み（`@fortawesome/fontawesome-free` npm に移行）
+- [x] Tailwind の CSS 出力サイズ確認済み（29KB minified）
 
 ---
 

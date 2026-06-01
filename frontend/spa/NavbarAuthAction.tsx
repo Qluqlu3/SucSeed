@@ -12,6 +12,7 @@ export const NavbarAuthAction: FC<NavbarAuthActionProps> = ({ role }) => {
       <button
         type='button'
         className='rounded bg-p-brand px-4 py-2 text-white hover:opacity-80 my-login-btn'
+      >
         ログイン
       </button>
     );

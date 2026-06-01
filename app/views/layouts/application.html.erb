@@ -5,8 +5,9 @@
     <%= favicon_link_tag "logo.png" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%# Tailwind CSS（esbuild ではなく @tailwindcss/cli が生成） %>
+    <%# Font Awesome（esbuild が app/assets/builds/styles/fontawesome.css を生成） %>
+    <%= stylesheet_link_tag "styles/fontawesome", media: 'all' %>
+    <%# Tailwind CSS（@tailwindcss/cli が app/assets/builds/tailwind.css を生成） %>
     <%= stylesheet_link_tag "tailwind", media: 'all' %>
     <%# esbuild が app/assets/builds/application.js を生成する。type: module が必要 %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>

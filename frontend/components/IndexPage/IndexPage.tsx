@@ -80,6 +80,10 @@ const ServiceDescription = () => (
       <h3 className='text-[47px] text-white'>どんなシステム？</h3>
       <div className='flex justify-around w-full m-0'>
         <div className='w-1/3'>
+          <div className='pb-[8%] text-white h-[90%] bg-[rgba(80,55,128,0.7)] m-px rounded-[39px] mt-[3%]'>
+            <img
+              src='/assets/successor.png'
+              className='rounded-full block mx-auto'
               width={100}
               height={100}
               alt='後継者を募れる'

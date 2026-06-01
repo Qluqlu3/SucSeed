@@ -10,8 +10,8 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "build": "esbuild frontend/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
-    "build:watch": "yarn build --watch=forever",
+    "build": "esbuild frontend/application.ts frontend/styles/fontawesome.css --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts --loader:.woff2=file --loader:.woff=file --loader:.ttf=file --loader:.eot=file --loader:.svg=file --asset-names=webfonts/[name]",
+    "build:watch": "pnpm build --watch=forever",
     "build:css": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --minify",
     "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always",
     "lint": "biome check frontend/",
@@ -19,6 +19,7 @@
     "format": "biome format --write frontend/"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.2.0",
     "@tailwindcss/cli": "^4.2.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
