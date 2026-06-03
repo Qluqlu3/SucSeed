@@ -36,18 +36,18 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
 
   return (
     <div>
-      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>お問い合わせ</h1>
+      <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">お問い合わせ</h1>
 
       <FlashMessages flash={flash} />
 
-      <div className='min-h-screen'>
-        <div className='min-h-[55vh] w-[71%] mx-auto p-[1%] bg-p-light border border-p-mid rounded-[7px] mb-[5%]'>
+      <div className="min-h-screen">
+        <div className="min-h-[55vh] w-[71%] mx-auto p-[1%] bg-p-light border border-p-mid rounded-[7px] mb-[5%]">
           {errors.length > 0 && (
-            <div id='error_explanation' className='error-box'>
-              <p className='error-title'>入力内容にエラーが{errors.length}件あります</p>
-              <ul className='error-index'>
+            <div id="error_explanation" className="error-box">
+              <p className="error-title">入力内容にエラーが{errors.length}件あります</p>
+              <ul className="error-index">
                 {errors.map((msg) => (
-                  <li key={msg} className='error-content'>
+                  <li key={msg} className="error-content">
                     {msg}
                   </li>
                 ))}
@@ -55,20 +55,20 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
             </div>
           )}
 
-          <form action='/inquiry/input' method='post'>
-            <input type='hidden' name='_method' value='post' />
-            <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+          <form action="/inquiry/input" method="post">
+            <input type="hidden" name="_method" value="post" />
+            <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
 
-            <div className='mb-3'>
+            <div className="mb-3">
               {/* biome-ignore lint/a11y/noLabelWithoutControl: select は直後に配置 */}
-              <label className='text-p-text text-[1.5em]'>カテゴリー</label>
+              <label className="text-p-text text-[1.5em]">カテゴリー</label>
               <select
-                name='inquiry[inquiry_category_id]'
-                className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
+                name="inquiry[inquiry_category_id]"
+                className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value === '' ? '' : Number(e.target.value))}
               >
-                <option value=''>選択してください</option>
+                <option value="">選択してください</option>
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.name}
@@ -77,23 +77,23 @@ export const InquiryInputPage = ({ categories, errors, prevValues, flash }: Prop
               </select>
             </div>
 
-            <div className='mt-[3%]'>
+            <div className="mt-[3%]">
               {/* biome-ignore lint/a11y/noLabelWithoutControl: textarea は直後に配置 */}
-              <label className='text-p-text text-[1.5em]'>お問い合わせ内容</label>
+              <label className="text-p-text text-[1.5em]">お問い合わせ内容</label>
               <textarea
-                name='inquiry[content]'
-                className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none min-h-[30vh]'
+                name="inquiry[content]"
+                className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none min-h-[30vh]"
                 rows={5}
-                placeholder='お問い合わせ内容'
+                placeholder="お問い合わせ内容"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
             </div>
 
-            <div className='text-right'>
+            <div className="text-right">
               <button
-                type='submit'
-                className='rounded bg-p-brand px-5 py-2 text-[1.5em] text-white hover:opacity-80'
+                type="submit"
+                className="rounded bg-p-brand px-5 py-2 text-[1.5em] text-white hover:opacity-80"
               >
                 送信
               </button>

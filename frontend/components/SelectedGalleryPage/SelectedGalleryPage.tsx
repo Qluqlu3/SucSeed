@@ -105,57 +105,57 @@ export const SelectedGalleryPage = ({
     <>
       <FlashMessages flash={flash} />
 
-      <div className='flex flex-wrap w-full pl-[1.5%] mb-[13%]'>
+      <div className="flex flex-wrap w-full pl-[1.5%] mb-[13%]">
         {/* メインカラム */}
-        <div className='w-full lg:w-9/12 py-[0.5%] px-[0.3%] pb-[5%] m-0 bg-[#275D39] border border-[#1F4B2E] rounded-[7px]'>
-          <div className='bg-white rounded-[0_0_7px_7px]'>
-            <img src={dataUrl} width='100%' height='850px' alt='ギャラリー画像' />
-            <div className='py-[0.3%] px-[0.5%] m-0 text-[19px] text-[#333] text-right bg-[#FCF2D3] border-b border-[#ccc]'>
+        <div className="w-full lg:w-9/12 py-[0.5%] px-[0.3%] pb-[5%] m-0 bg-[#275D39] border border-[#1F4B2E] rounded-[7px]">
+          <div className="bg-white rounded-[0_0_7px_7px]">
+            <img src={dataUrl} width="100%" height="850px" alt="ギャラリー画像" />
+            <div className="py-[0.3%] px-[0.5%] m-0 text-[19px] text-[#333] text-right bg-[#FCF2D3] border-b border-[#ccc]">
               {createdAt}
             </div>
-            <div className='py-[1%] px-[3%] bg-[#FCF2D3] text-[25px]'>
+            <div className="py-[1%] px-[3%] bg-[#FCF2D3] text-[25px]">
               <p>{comment}</p>
             </div>
           </div>
 
           {/* 3D ビューワー */}
-          <div className='selected-gallery-3d-box'>
-            <div className='selected-gallery-3d-label'>3D プレビュー（ドラッグで回転）</div>
+          <div className="selected-gallery-3d-box">
+            <div className="selected-gallery-3d-label">3D プレビュー（ドラッグで回転）</div>
             <ThreeViewer height={400} />
           </div>
 
           {/* タグ一覧 */}
-          <div className='bg-p-brand pt-[1%] pb-[1.5%] pl-[0.5%] pr-0'>
+          <div className="bg-p-brand pt-[1%] pb-[1.5%] pl-[0.5%] pr-0">
             {tags.map((tag) => (
               <p
                 key={tag}
-                className='py-2 pl-2 pr-[5px] mt-[0.8%] ml-[0.8%] bg-[#F29626] rounded-[5px] inline-block'
+                className="py-2 pl-2 pr-[5px] mt-[0.8%] ml-[0.8%] bg-[#F29626] rounded-[5px] inline-block"
               >
-                <span className='label p-0 text-center text-[#181818] text-[23px]'>{tag}</span>
+                <span className="label p-0 text-center text-[#181818] text-[23px]">{tag}</span>
               </p>
             ))}
           </div>
 
           {/* アクションボタン */}
-          <div className='text-right'>
+          <div className="text-right">
             {/* いいねボタン */}
             <button
-              type='button'
-              className='rounded bg-p-brand px-3 py-1 hover:opacity-80 icon-btn'
+              type="button"
+              className="rounded bg-p-brand px-3 py-1 hover:opacity-80 icon-btn"
               onClick={handleGood}
               disabled={myGood || !loggedIn}
             >
-              <i className='fas fa-thumbs-up thumbs-up-icon' />
+              <i className="fas fa-thumbs-up thumbs-up-icon" />
               {goodCount}
             </button>
 
             {/* コメントトグル */}
             <button
-              type='button'
-              className='rounded bg-p-brand px-3 py-1 hover:opacity-80 icon-btn'
+              type="button"
+              className="rounded bg-p-brand px-3 py-1 hover:opacity-80 icon-btn"
               onClick={() => setShowComments((v) => !v)}
             >
-              <i className='fas fa-comment-alt comment-icon' />
+              <i className="fas fa-comment-alt comment-icon" />
               {comments.length}
             </button>
 
@@ -164,13 +164,13 @@ export const SelectedGalleryPage = ({
               {comments.map((c) => (
                 <div
                   key={`${c.postTime}-${c.name}`}
-                  className='my-[1%] ml-[1%] bg-white text-left rounded'
+                  className="my-[1%] ml-[1%] bg-white text-left rounded"
                 >
-                  <div className='pt-[0.3%] pl-[0.5%] pb-0 text-[18px] border-b border-gray-200'>
+                  <div className="pt-[0.3%] pl-[0.5%] pb-0 text-[18px] border-b border-gray-200">
                     <p>
                       <img
                         src={c.avatarPath}
-                        className='rounded-full'
+                        className="rounded-full"
                         width={45}
                         height={45}
                         alt={c.name}
@@ -178,10 +178,10 @@ export const SelectedGalleryPage = ({
                       {c.name}
                     </p>
                   </div>
-                  <div className='py-[0.5%] pl-[2%]'>
-                    <p className='text-[19px]'>{c.comment}</p>
+                  <div className="py-[0.5%] pl-[2%]">
+                    <p className="text-[19px]">{c.comment}</p>
                   </div>
-                  <div className='p-[0.1%] text-[#555] text-right border-t border-gray-200'>
+                  <div className="p-[0.1%] text-[#555] text-right border-t border-gray-200">
                     {c.postTime}
                   </div>
                 </div>
@@ -189,12 +189,12 @@ export const SelectedGalleryPage = ({
 
               {loggedIn && currentUser ? (
                 <form onSubmit={handleComment}>
-                  <div className='my-[1.5%] mr-[9%] ml-[10%] text-left rounded'>
-                    <div className='py-[0.5%] pl-[0.5%] text-[19px] bg-[#FCF2D3] border-b border-gray-200'>
+                  <div className="my-[1.5%] mr-[9%] ml-[10%] text-left rounded">
+                    <div className="py-[0.5%] pl-[0.5%] text-[19px] bg-[#FCF2D3] border-b border-gray-200">
                       <div>
                         <img
                           src={currentUser.avatarPath}
-                          className='rounded-full'
+                          className="rounded-full"
                           width={43}
                           height={43}
                           alt={currentUser.name}
@@ -202,21 +202,21 @@ export const SelectedGalleryPage = ({
                         {currentUser.name}
                       </div>
                     </div>
-                    <div className='bg-[#FCF2D3] p-[0.5%]'>
+                    <div className="bg-[#FCF2D3] p-[0.5%]">
                       <textarea
-                        className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
-                        placeholder='100文字以内'
+                        className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
+                        placeholder="100文字以内"
                         rows={3}
                         maxLength={100}
                         value={commentText}
                         onChange={(e) => setCommentText(e.target.value)}
                       />
                     </div>
-                    <div className='py-[0.5%] pr-[2%] pl-[0.5%] bg-[#5cb85c] border-t border-gray-200'>
-                      <div className='text-right'>
+                    <div className="py-[0.5%] pr-[2%] pl-[0.5%] bg-[#5cb85c] border-t border-gray-200">
+                      <div className="text-right">
                         <button
-                          type='submit'
-                          className='rounded bg-[#FFA30D] px-3 py-1 hover:opacity-80'
+                          type="submit"
+                          className="rounded bg-[#FFA30D] px-3 py-1 hover:opacity-80"
                         >
                           コメント
                         </button>
@@ -225,7 +225,7 @@ export const SelectedGalleryPage = ({
                   </div>
                 </form>
               ) : (
-                <p className='pt-[0.7%] pb-[1%] pl-[3%] text-[23px] text-white'>
+                <p className="pt-[0.7%] pb-[1%] pl-[3%] text-[23px] text-white">
                   ログインしてください
                 </p>
               )}
@@ -234,15 +234,15 @@ export const SelectedGalleryPage = ({
 
           {/* 関連画像 */}
           {matchTagGalleries.length > 0 && (
-            <div className='mt-[5%] mb-[3%] bg-[#2A553B] border border-[#21442F] rounded-[5px]'>
-              <div className='pt-[0.2%] pl-[1%] pb-[1%] text-[22px] text-white text-left'>
+            <div className="mt-[5%] mb-[3%] bg-[#2A553B] border border-[#21442F] rounded-[5px]">
+              <div className="pt-[0.2%] pl-[1%] pb-[1%] text-[22px] text-white text-left">
                 関連画像
               </div>
-              <div className='flex flex-wrap justify-center m-0 w-full'>
+              <div className="flex flex-wrap justify-center m-0 w-full">
                 {matchTagGalleries.map((g) => (
-                  <div key={g.id} className='w-1/3 p-0 h-[37vh] border border-[#1F4B2E]'>
+                  <div key={g.id} className="w-1/3 p-0 h-[37vh] border border-[#1F4B2E]">
                     <a href={`/gallery/selected/${g.id}`}>
-                      <img src={g.dataUrl} width='100%' height='100%' alt='関連画像' />
+                      <img src={g.dataUrl} width="100%" height="100%" alt="関連画像" />
                     </a>
                   </div>
                 ))}
@@ -252,59 +252,59 @@ export const SelectedGalleryPage = ({
         </div>
 
         {/* サイドバー */}
-        <div className='w-full lg:w-3/12 pt-[0.5%] pr-[0.5%] pb-0 pl-[0.6%] m-0 bg-[#275D39] border border-[#1F4B2E] rounded-[7px]'>
+        <div className="w-full lg:w-3/12 pt-[0.5%] pr-[0.5%] pb-0 pl-[0.6%] m-0 bg-[#275D39] border border-[#1F4B2E] rounded-[7px]">
           {/* 職人情報 */}
-          <div className='bg-[#eee] w-full min-h-[55vh] mb-[19vh] rounded-[7px]'>
-            <div className='bg-[#BAA9DA] mx-auto rounded-t-[7px] hover:opacity-80'>
+          <div className="bg-[#eee] w-full min-h-[55vh] mb-[19vh] rounded-[7px]">
+            <div className="bg-[#BAA9DA] mx-auto rounded-t-[7px] hover:opacity-80">
               <a href={`/page/creator/${creator.userId}`}>
-                <div className='w-full text-center'>
+                <div className="w-full text-center">
                   <img
                     src={creator.avatarPath}
-                    className='rounded-full'
+                    className="rounded-full"
                     width={180}
                     height={180}
-                    alt='アバター'
+                    alt="アバター"
                   />
                 </div>
-                <div className='pt-[13px] pb-2 text-center'>
-                  <h3 className='text-[33px]'>{creator.name}</h3>
+                <div className="pt-[13px] pb-2 text-center">
+                  <h3 className="text-[33px]">{creator.name}</h3>
                 </div>
               </a>
             </div>
-            <div className='border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]'>
-              <div className='bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]'>
+            <div className="border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]">
+              <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
                 創作作品名
               </div>
-              <div className='text-center pt-[3%] pb-[4%] px-0'>
-                <p className='text-[23px] p-0'>{creator.title}</p>
+              <div className="text-center pt-[3%] pb-[4%] px-0">
+                <p className="text-[23px] p-0">{creator.title}</p>
               </div>
             </div>
-            <div className='border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]'>
-              <div className='bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]'>
+            <div className="border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]">
+              <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
                 創業年数
               </div>
-              <div className='text-center pt-[3%] pb-[4%] px-0'>
-                <p className='text-[23px] p-0'>{creator.establishment}年</p>
+              <div className="text-center pt-[3%] pb-[4%] px-0">
+                <p className="text-[23px] p-0">{creator.establishment}年</p>
               </div>
             </div>
-            <div className='border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]'>
-              <div className='bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]'>
+            <div className="border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]">
+              <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
                 従業員数
               </div>
-              <div className='text-center pt-[3%] pb-[4%] px-0'>
-                <p className='text-[23px] p-0'>{creator.employee}人</p>
+              <div className="text-center pt-[3%] pb-[4%] px-0">
+                <p className="text-[23px] p-0">{creator.employee}人</p>
               </div>
             </div>
           </div>
 
           {/* その他の投稿 */}
           {otherGalleries.length > 0 && (
-            <div className='p-[2%] bg-p-brand rounded-t-[5px]'>
-              <div className='text-[22px] text-white'>その他の投稿</div>
+            <div className="p-[2%] bg-p-brand rounded-t-[5px]">
+              <div className="text-[22px] text-white">その他の投稿</div>
               {otherGalleries.map((g) => (
-                <div key={g.id} className='p-0 h-[37vh] border border-[#1F4B2E]'>
+                <div key={g.id} className="p-0 h-[37vh] border border-[#1F4B2E]">
                   <a href={`/gallery/selected/${g.id}`}>
-                    <img src={g.dataUrl} width='100%' height='100%' alt='その他の投稿' />
+                    <img src={g.dataUrl} width="100%" height="100%" alt="その他の投稿" />
                   </a>
                 </div>
               ))}

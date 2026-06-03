@@ -11,27 +11,30 @@ type Props = { flash: Record<string, string> };
 export const PasswordForgotPage = ({ flash }: Props) => {
   return (
     <>
-      <h1 className='text-2xl font-bold mb-4'>メールアドレス確認</h1>
+      <h1 className="text-2xl font-bold mb-4">メールアドレス確認</h1>
 
       <FlashMessages flash={flash} />
 
       <div>
-        <form action='/user/password_forgot' method='post'>
-          <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-          <div className='input-group'>
-            <label className='input-group-addon' htmlFor='password-forgot-email'>
+        <form action="/user/password_forgot" method="post">
+          <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+          <div className="input-group">
+            <label className="input-group-addon" htmlFor="password-forgot-email">
               メールアドレス
             </label>
             <input
-              type='email'
-              id='password-forgot-email'
-              name='user_email[email]'
-              className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
-              placeholder='メールアドレス'
+              type="email"
+              id="password-forgot-email"
+              name="user_email[email]"
+              className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
+              placeholder="メールアドレス"
             />
           </div>
-          <div className='right_side'>
-            <button type='submit' className='rounded bg-p-brand px-5 py-2 text-white hover:opacity-80'>
+          <div className="right_side">
+            <button
+              type="submit"
+              className="rounded bg-p-brand px-5 py-2 text-white hover:opacity-80"
+            >
               変更
             </button>
           </div>

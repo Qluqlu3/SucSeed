@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import type { FC } from 'react';
+import { useState } from 'react';
 import { NavbarAuthAction } from './NavbarAuthAction';
 import { NavbarBrand } from './NavbarBrand';
 import { NavbarMenuDropdown } from './NavbarMenuDropdown';
@@ -20,19 +20,19 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className='navbar navbar-expand-lg my_nav absolute top-0 left-0 z-2 bg-[rgba(104,70,165,0.8)]'>
+    <nav className="navbar navbar-expand-lg my_nav absolute top-0 left-0 z-2 bg-[rgba(104,70,165,0.8)]">
       <NavbarBrand logoSrc={logoSrc} titleSrc={titleSrc} />
       <NavbarToggleButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
       <div
         className={`collapse navbar-collapse${isOpen ? ' show' : ''}`}
-        id='navbarSupportedContent'
+        id="navbarSupportedContent"
       >
-        <ul className='navbar-nav mr-auto'>
+        <ul className="navbar-nav mr-auto">
           {menuItems.length > 0 && <NavbarMenuDropdown menuItems={menuItems} />}
           <NavbarSearchForm artCategories={artCategories} />
         </ul>
-        <ul className='nav navbar-nav navbar-right'>
-          <li className='login-ul'>
+        <ul className="nav navbar-nav navbar-right">
+          <li className="login-ul">
             <NavbarAuthAction role={role} />
           </li>
         </ul>

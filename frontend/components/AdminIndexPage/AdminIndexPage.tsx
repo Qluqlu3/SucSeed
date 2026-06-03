@@ -14,20 +14,20 @@ const NAV_ITEMS = [
 ];
 
 export const AdminIndexPage = () => (
-  <div className='w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap'>
-    <div className='w-full lg:w-2/12 h-screen bg-[#CCC] overflow-x-scroll overflow-y-scroll'>
-      <ul className='flex flex-col ml-[13%]'>
+  <div className="w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap">
+    <div className="w-full lg:w-2/12 h-screen bg-[#CCC] overflow-x-scroll overflow-y-scroll">
+      <ul className="flex flex-col ml-[13%]">
         {NAV_ITEMS.map((item, i) => (
           <li key={item.href} className={`${i === 0 ? 'mt-[27%]' : ''}`}>
-            <a href={item.href} className='block py-1 text-gray-700 hover:text-p-brand'>
+            <a href={item.href} className="block py-1 text-gray-700 hover:text-p-brand">
               {item.label}
             </a>
           </li>
         ))}
       </ul>
     </div>
-    <div className='w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll'>
-      <h1 className='text-center text-[60px]'>管理者トップ</h1>
+    <div className="w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll">
+      <h1 className="text-center text-[60px]">管理者トップ</h1>
     </div>
   </div>
 );

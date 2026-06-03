@@ -40,30 +40,30 @@ interface Props {
 
 export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, flash }: Props) => (
   <div>
-    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>メッセージ</h1>
+    <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">メッセージ</h1>
 
     <FlashMessages flash={flash} />
-    <div className='min-h-screen'>
-      <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
-        <div className='flex flex-wrap w-[90%] h-[67vh] mt-[1%] mb-[3%] mx-auto p-0 rounded-[5px] justify-center'>
+    <div className="min-h-screen">
+      <div className="w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]">
+        <div className="flex flex-wrap w-[90%] h-[67vh] mt-[1%] mb-[3%] mx-auto p-0 rounded-[5px] justify-center">
           {/* 左パネル: メッセージリスト */}
-          <div className='w-full md:w-5/12 h-[80vh] p-0 m-0 rounded-[5px]'>
-            <div className='h-[65vh] bg-[#1F4B2E] rounded-[5px] overflow-scroll'>
+          <div className="w-full md:w-5/12 h-[80vh] p-0 m-0 rounded-[5px]">
+            <div className="h-[65vh] bg-[#1F4B2E] rounded-[5px] overflow-scroll">
               {messageLists.map((item) => (
-                <form key={item.id} action={`/message/history/${item.id}`} method='post'>
-                  <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                  <button type='submit' className='w-full h-[90px] bg-[#D3C9E7] text-left'>
-                    <div className='flex w-full h-[100px] m-0'>
-                      <div className='w-3/12 p-0 m-0'>
+                <form key={item.id} action={`/message/history/${item.id}`} method="post">
+                  <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+                  <button type="submit" className="w-full h-[90px] bg-[#D3C9E7] text-left">
+                    <div className="flex w-full h-[100px] m-0">
+                      <div className="w-3/12 p-0 m-0">
                         <img
                           src={item.avatarPath}
                           width={80}
                           height={80}
-                          className='rounded-full'
+                          className="rounded-full"
                           alt={item.name}
                         />
                       </div>
-                      <div className='w-9/12 p-0 m-0 text-[25px] text-left leading-[80px]'>
+                      <div className="w-9/12 p-0 m-0 text-[25px] text-left leading-[80px]">
                         {item.name}
                       </div>
                     </div>
@@ -74,16 +74,16 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
           </div>
 
           {/* 右パネル: 履歴 + 送信フォーム */}
-          <div className='w-full md:w-7/12 h-[65vh] p-0 m-0 rounded-[5px]'>
-            <div className='h-[65vh] mx-auto bg-[#eee] rounded-[5px] overflow-scroll'>
-              <h3 className='py-[3px] px-2 bg-[#5cb85c]'>{toUser.name}さん</h3>
+          <div className="w-full md:w-7/12 h-[65vh] p-0 m-0 rounded-[5px]">
+            <div className="h-[65vh] mx-auto bg-[#eee] rounded-[5px] overflow-scroll">
+              <h3 className="py-[3px] px-2 bg-[#5cb85c]">{toUser.name}さん</h3>
               {messageHistory.map((msg) =>
                 msg.sendUserId === fromUser.id ? (
                   // 自分の発言
-                  <div key={`${msg.sendUserId}-${msg.createdAt}`} className='mt-2 text-right'>
-                    <div className='media text-right'>
-                      <div className='media-body'>
-                        <p className='p-[7px] text-[17px] [border-radius:17px_17px_0_17px] bg-[#A3CAFF] inline-block'>
+                  <div key={`${msg.sendUserId}-${msg.createdAt}`} className="mt-2 text-right">
+                    <div className="media text-right">
+                      <div className="media-body">
+                        <p className="p-[7px] text-[17px] [border-radius:17px_17px_0_17px] bg-[#A3CAFF] inline-block">
                           {msg.content}
                         </p>
                       </div>
@@ -91,30 +91,30 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                         src={fromUser.avatarPath}
                         width={60}
                         height={60}
-                        className='rounded-full'
-                        alt=''
+                        className="rounded-full"
+                        alt=""
                       />
                     </div>
-                    <p className='px-[5px] text-[13px] text-[#aaa]'>{msg.createdAt}</p>
+                    <p className="px-[5px] text-[13px] text-[#aaa]">{msg.createdAt}</p>
                   </div>
                 ) : (
                   // 相手の発言
-                  <div key={`${msg.sendUserId}-${msg.createdAt}`} className='mt-2 text-left'>
-                    <div className='media text-left'>
+                  <div key={`${msg.sendUserId}-${msg.createdAt}`} className="mt-2 text-left">
+                    <div className="media text-left">
                       <img
                         src={toUser.avatarPath}
                         width={60}
                         height={60}
-                        className='rounded-full'
+                        className="rounded-full"
                         alt={toUser.name}
                       />
-                      <div className='media-body'>
-                        <p className='p-[7px] text-[17px] [border-radius:17px_17px_17px_0] bg-[#3D91FF] inline-block'>
+                      <div className="media-body">
+                        <p className="p-[7px] text-[17px] [border-radius:17px_17px_17px_0] bg-[#3D91FF] inline-block">
                           {msg.content}
                         </p>
                       </div>
                     </div>
-                    <p className='px-[5px] text-[13px] text-[#aaa]'>{msg.createdAt}</p>
+                    <p className="px-[5px] text-[13px] text-[#aaa]">{msg.createdAt}</p>
                   </div>
                 ),
               )}
@@ -122,18 +122,21 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
 
             {/* 送信フォーム */}
             <div>
-              <form action={`/message/send/${toUser.id}`} method='post' className='w-full'>
-                <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
-                <div className='input-group'>
+              <form action={`/message/send/${toUser.id}`} method="post" className="w-full">
+                <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+                <div className="input-group">
                   <input
-                    type='text'
-                    name='message[content]'
-                    className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
-                    placeholder='メッセージ'
+                    type="text"
+                    name="message[content]"
+                    className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
+                    placeholder="メッセージ"
                   />
-                  <span className='input-group-btn'>
-                    <button type='submit' className='p-0 w-[5vw] text-[23px] bg-[#FFA30D] rounded hover:opacity-80'>
-                      <i className='far fa-paper-plane message-icon' />
+                  <span className="input-group-btn">
+                    <button
+                      type="submit"
+                      className="p-0 w-[5vw] text-[23px] bg-[#FFA30D] rounded hover:opacity-80"
+                    >
+                      <i className="far fa-paper-plane message-icon" />
                     </button>
                   </span>
                 </div>

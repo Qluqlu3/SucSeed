@@ -51,14 +51,14 @@ export const HeirPage = ({
   };
 
   return (
-    <div className='min-h-screen'>
+    <div className="min-h-screen">
       <FlashMessages flash={flash} />
 
       {/* プロフィールヘッダー */}
-      <div className='w-full relative mx-auto'>
-        <img src='/assets/main1.jpg' height='800px' width='100%' alt='背景画像' />
-        <div className='absolute top-[2%] left-[1%]'>
-          <h1 className='bg-[#FCF2D3] rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]'>
+      <div className="w-full relative mx-auto">
+        <img src="/assets/main1.jpg" height="800px" width="100%" alt="背景画像" />
+        <div className="absolute top-[2%] left-[1%]">
+          <h1 className="bg-[#FCF2D3] rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]">
             {user.name}
           </h1>
           <p
@@ -66,37 +66,37 @@ export const HeirPage = ({
           >
             {user.isMan ? '男性' : '女性'}
           </p>
-          <p className='py-[5px] px-[15px] inline-block text-[31px] rounded-[17px] bg-p-light'>
+          <p className="py-[5px] px-[15px] inline-block text-[31px] rounded-[17px] bg-p-light">
             {calcAge(user.birthday)}歳
           </p>
         </div>
         {artName && (
-          <div className='absolute top-0 right-[0.7%] text-[51px]'>
-            <span className='inline-block rounded bg-p-brand px-2 py-1 text-sm text-white'>
+          <div className="absolute top-0 right-[0.7%] text-[51px]">
+            <span className="inline-block rounded bg-p-brand px-2 py-1 text-sm text-white">
               {artName}
             </span>
           </div>
         )}
-        <div className='absolute top-[27%] left-[39%]'>
+        <div className="absolute top-[27%] left-[39%]">
           <img
             src={user.avatarPath}
-            className='rounded-full object-cover'
-            width='100%'
-            height='100%'
-            alt='アバター画像'
+            className="rounded-full object-cover"
+            width="100%"
+            height="100%"
+            alt="アバター画像"
           />
         </div>
       </div>
 
-      <div className='w-full h-[50px] bg-p-brand' />
+      <div className="w-full h-[50px] bg-p-brand" />
 
       {/* 紹介文 */}
-      <div className='mx-auto w-[93%] bg-[#FCF2D3] rounded-[11px] mb-[5%] text-[27px] border-none mt-[5%]'>
-        <h3 className='text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[25px] pr-0 pb-[11px] pl-[21px]'>
+      <div className="mx-auto w-[93%] bg-[#FCF2D3] rounded-[11px] mb-[5%] text-[27px] border-none mt-[5%]">
+        <h3 className="text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[25px] pr-0 pb-[11px] pl-[21px]">
           紹介文
         </h3>
-        <div className='pt-[1%] pr-0 pb-[1%] pl-[1%]'>
-          <p className='text-[39px] leading-[9vh]' style={{ whiteSpace: 'pre-wrap' }}>
+        <div className="pt-[1%] pr-0 pb-[1%] pl-[1%]">
+          <p className="text-[39px] leading-[9vh]" style={{ whiteSpace: 'pre-wrap' }}>
             {user.profile}
           </p>
         </div>
@@ -104,10 +104,10 @@ export const HeirPage = ({
 
       {/* スカウトボタン（職人ログイン時のみ） */}
       {loggedIn && isCreator && (
-        <div className='w-[50%] fixed bottom-0 left-[25%]'>
+        <div className="w-[50%] fixed bottom-0 left-[25%]">
           <button
-            type='button'
-            className='w-full bg-[#FFA30D] text-[33px] hover:opacity-90 rounded py-2'
+            type="button"
+            className="w-full bg-[#FFA30D] text-[33px] hover:opacity-90 rounded py-2"
             onClick={handleScout}
             disabled={isScouted}
           >

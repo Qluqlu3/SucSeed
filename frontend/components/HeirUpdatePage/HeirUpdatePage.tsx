@@ -37,13 +37,13 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
 
   return (
     <div>
-      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>後継者情報更新</h1>
+      <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">後継者情報更新</h1>
 
       <FlashMessages flash={flash} />
 
-      <div className='w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]'>
+      <div className="w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]">
         {errors.length > 0 && (
-          <div id='error_explanation' className='alert alert-danger'>
+          <div id="error_explanation" className="alert alert-danger">
             <ul>
               {errors.map((msg) => (
                 <li key={msg}>{msg}</li>
@@ -53,81 +53,81 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
         )}
 
         {/* 編集メニュー */}
-        <div className='relative'>
+        <div className="relative">
           <button
-            type='button'
-            className='rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80'
-            id='dropdownMenu1'
+            type="button"
+            className="rounded bg-white border border-gray-300 px-3 py-2 hover:opacity-80"
+            id="dropdownMenu1"
             onClick={() => setShowMenu(!showMenu)}
-            aria-haspopup='true'
+            aria-haspopup="true"
             aria-expanded={showMenu}
           >
-            <i className='fas fa-cog text-[50px]' />
+            <i className="fas fa-cog text-[50px]" />
           </button>
           <ul
             className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}
-            aria-labelledby='dropdownMenu1'
+            aria-labelledby="dropdownMenu1"
           >
             <li>
-              <a href='/my_page/my_page' className='block px-4 py-2 text-sm hover:bg-gray-100'>
+              <a href="/my_page/my_page" className="block px-4 py-2 text-sm hover:bg-gray-100">
                 プロフィール一覧
               </a>
             </li>
             <li>
-              <a href='/my_page/update' className='block px-4 py-2 text-sm hover:bg-gray-100'>
+              <a href="/my_page/update" className="block px-4 py-2 text-sm hover:bg-gray-100">
                 プロフィール変更
               </a>
             </li>
             <li>
-              <a href='/heir/show' className='block px-4 py-2 text-sm hover:bg-gray-100'>
+              <a href="/heir/show" className="block px-4 py-2 text-sm hover:bg-gray-100">
                 プロフィール詳細一覧
               </a>
             </li>
             <li>
-              <a href='/heir/edit' className='block px-4 py-2 text-sm hover:bg-gray-100'>
+              <a href="/heir/edit" className="block px-4 py-2 text-sm hover:bg-gray-100">
                 プロフィール詳細変更
               </a>
             </li>
           </ul>
         </div>
 
-        <form action='/heir/update' method='post'>
-          <input type='hidden' name='_method' value='patch' />
-          <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+        <form action="/heir/update" method="post">
+          <input type="hidden" name="_method" value="patch" />
+          <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
 
-          <div className='w-[80%] h-screen mt-[7%] mx-auto'>
-            <div className='mb-[3%] border border-p-mid rounded overflow-hidden'>
-              <div className='px-3 py-2 text-[17px] text-white bg-p-brand'>兴味のある分野</div>
-              <div className='bg-white p-3'>
-                <div className='mb-3'>
+          <div className="w-[80%] h-screen mt-[7%] mx-auto">
+            <div className="mb-[3%] border border-p-mid rounded overflow-hidden">
+              <div className="px-3 py-2 text-[17px] text-white bg-p-brand">兴味のある分野</div>
+              <div className="bg-white p-3">
+                <div className="mb-3">
                   <select
-                    name='heir[art_category_id]'
-                    className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
+                    name="heir[art_category_id]"
+                    className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
                     value={artCategoryId}
                     onChange={(e) => setArtCategoryId(Number(e.target.value))}
                   >
-                    <option value=''>選択してください</option>
+                    <option value="">選択してください</option>
                     {artCategories.map((cat) => (
                       <option key={cat.id} value={cat.id}>
                         {cat.name}
                       </option>
                     ))}
                   </select>
-                  <small className='text-red-500'>必須</small>
+                  <small className="text-red-500">必須</small>
                 </div>
               </div>
             </div>
 
-            <div className='mb-[3%] border border-p-mid rounded overflow-hidden'>
-              <div className='px-3 py-2 text-[17px] text-white bg-p-brand'>
-                <label htmlFor='heir_introduction'>自己紹介</label>
+            <div className="mb-[3%] border border-p-mid rounded overflow-hidden">
+              <div className="px-3 py-2 text-[17px] text-white bg-p-brand">
+                <label htmlFor="heir_introduction">自己紹介</label>
               </div>
-              <div className='bg-white p-3'>
-                <div className='mb-3'>
+              <div className="bg-white p-3">
+                <div className="mb-3">
                   <textarea
-                    id='heir_introduction'
-                    name='heir[introduction]'
-                    className='w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none'
+                    id="heir_introduction"
+                    name="heir[introduction]"
+                    className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
                     rows={15}
                     value={introduction}
                     onChange={(e) => setIntroduction(e.target.value)}
@@ -136,10 +136,10 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
               </div>
             </div>
 
-            <div className='mt-[1%] mb-[3%] text-right'>
+            <div className="mt-[1%] mb-[3%] text-right">
               <button
-                type='submit'
-                className='rounded bg-p-brand px-5 py-2 text-[23px] text-white hover:opacity-80'
+                type="submit"
+                className="rounded bg-p-brand px-5 py-2 text-[23px] text-white hover:opacity-80"
               >
                 登録
               </button>

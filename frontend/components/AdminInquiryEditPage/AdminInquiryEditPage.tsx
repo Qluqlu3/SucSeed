@@ -27,43 +27,43 @@ interface Props {
 }
 
 export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
-  <div className='w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap'>
-    <AdminSideMenu activeKey='inquiry' />
-    <div className='w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll'>
-      <h1 className='text-center text-[60px]'>問い合わせ管理</h1>
+  <div className="w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap">
+    <AdminSideMenu activeKey="inquiry" />
+    <div className="w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll">
+      <h1 className="text-center text-[60px]">問い合わせ管理</h1>
 
       <FlashMessages flash={flash} />
-      <table className='w-screen overflow-x-scroll overflow-y-scroll'>
+      <table className="w-screen overflow-x-scroll overflow-y-scroll">
         <thead>
           <tr>
-            <th scope='col'>＃</th>
-            <th scope='col'>ID</th>
-            <th scope='col'>ユーザーID</th>
-            <th scope='col'>カテゴリー</th>
-            <th scope='col'>内容</th>
-            <th scope='col'>対応チェック</th>
-            <th scope='col'>登録日時</th>
-            <th scope='col'>経過日数</th>
-            <th scope='col'>更新日時</th>
-            <th scope='col'>削除日時</th>
+            <th scope="col">＃</th>
+            <th scope="col">ID</th>
+            <th scope="col">ユーザーID</th>
+            <th scope="col">カテゴリー</th>
+            <th scope="col">内容</th>
+            <th scope="col">対応チェック</th>
+            <th scope="col">登録日時</th>
+            <th scope="col">経過日数</th>
+            <th scope="col">更新日時</th>
+            <th scope="col">削除日時</th>
             <th />
           </tr>
         </thead>
         <tbody>
           {inquiries.map((inquiry, i) => (
             <tr key={inquiry.id}>
-              <th scope='row'>{i + 1}</th>
+              <th scope="row">{i + 1}</th>
               <td>{inquiry.id}</td>
               <td>{inquiry.userId}</td>
               <td>{inquiry.name}</td>
               <td>{inquiry.content}</td>
               <td>
                 {inquiry.isCheck ? (
-                  <span className='inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-green-600 text-white'>
+                  <span className="inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-green-600 text-white">
                     OK
                   </span>
                 ) : (
-                  <span className='inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-red-600 text-white'>
+                  <span className="inline-block px-2 py-1 text-xs rounded-full text-[19px] bg-red-600 text-white">
                     No
                   </span>
                 )}
@@ -75,7 +75,7 @@ export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
               <td>
                 <a
                   href={`/admin/inquiry/detail/${inquiry.id}`}
-                  className='px-4 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 inline-block'
+                  className="px-4 py-2 bg-[#f0ad4e] text-black rounded hover:opacity-80 inline-block"
                 >
                   チェック
                 </a>

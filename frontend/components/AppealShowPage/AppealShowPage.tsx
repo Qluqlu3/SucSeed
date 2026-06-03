@@ -6,8 +6,8 @@
 // 【data-props に含まれるデータ】
 //   appeals : [{ pageId, name, birthday, avatarPath, title, matchTime, isOk }]
 
-import { FlashMessages } from '../FlashMessages';
 import { getCsrfToken } from '../../utils/csrf';
+import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface AppealUser {
@@ -50,60 +50,60 @@ function timeAgo(dateStr: string): string {
 
 export const AppealShowPage = ({ appeals, flash }: Props) => (
   <div>
-    <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>アピール確認</h1>
+    <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">アピール確認</h1>
 
     <FlashMessages flash={flash} />
 
-    <div className='min-h-screen'>
-      <div className='w-[93%] mx-auto mb-[5%] p-[3%] bg-p-light border border-p-mid rounded-[7px]'>
+    <div className="min-h-screen">
+      <div className="w-[93%] mx-auto mb-[5%] p-[3%] bg-p-light border border-p-mid rounded-[7px]">
         {appeals.length === 0 ? (
-          <p className='mb-[60vh] text-[39px] text-p-dark'>まだありません</p>
+          <p className="mb-[60vh] text-[39px] text-p-dark">まだありません</p>
         ) : (
           appeals.map((appeal) => (
-            <div key={appeal.pageId} className='mb-[1%] rounded-lg border border-p-mid'>
-              <div className='px-4 py-2 bg-[#BAA9DA] rounded-t-lg'>
+            <div key={appeal.pageId} className="mb-[1%] rounded-lg border border-p-mid">
+              <div className="px-4 py-2 bg-[#BAA9DA] rounded-t-lg">
                 {appeal.matchTime}&nbsp;{timeAgo(appeal.matchTime)}前
               </div>
               <a href={`/page/creator/${appeal.pageId}`}>
-                <div className='p-4 bg-white'>
-                  <div className='flex flex-wrap'>
-                    <div className='w-5/12 text-center'>
+                <div className="p-4 bg-white">
+                  <div className="flex flex-wrap">
+                    <div className="w-5/12 text-center">
                       <img
                         src={appeal.avatarPath}
-                        className='rounded-full'
+                        className="rounded-full"
                         width={230}
                         height={230}
                         alt={appeal.name}
                       />
                     </div>
-                    <div className='w-7/12 text-left'>
-                      <p className='text-[61px] p-0 m-0'>{appeal.name}</p>
-                      <p className='text-[35px] p-0 my-[1%] ml-[71px]'>
+                    <div className="w-7/12 text-left">
+                      <p className="text-[61px] p-0 m-0">{appeal.name}</p>
+                      <p className="text-[35px] p-0 my-[1%] ml-[71px]">
                         {calcAge(appeal.birthday)}
                         <small>歳</small>
                       </p>
-                      <p className='text-[47px] p-0 m-0'>{appeal.title}</p>
+                      <p className="text-[47px] p-0 m-0">{appeal.title}</p>
                     </div>
                   </div>
                 </div>
               </a>
-              <div className='pt-[0.2%] pb-0 px-0 m-0 border-t border-p-mid rounded-b-lg'>
-                <div className='flex'>
+              <div className="pt-[0.2%] pb-0 px-0 m-0 border-t border-p-mid rounded-b-lg">
+                <div className="flex">
                   {appeal.isOk ? (
-                    <div className='w-full'>
-                      <form action={`/message/add/${appeal.pageId}`} method='post'>
-                        <input type='hidden' name='authenticity_token' value={getCsrfToken()} />
+                    <div className="w-full">
+                      <form action={`/message/add/${appeal.pageId}`} method="post">
+                        <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
                         <button
-                          type='submit'
-                          className='p-0 bg-transparent border-none cursor-pointer text-p-brand hover:underline'
+                          type="submit"
+                          className="p-0 bg-transparent border-none cursor-pointer text-p-brand hover:underline"
                         >
                           <p>メッセージ</p>
                         </button>
                       </form>
                     </div>
                   ) : (
-                    <div className='w-full'>
-                      <p className='w-full m-0 py-[1%] text-[30px] bg-p-brand text-white text-center rounded cursor-default'>
+                    <div className="w-full">
+                      <p className="w-full m-0 py-[1%] text-[30px] bg-p-brand text-white text-center rounded cursor-default">
                         アピール済
                       </p>
                     </div>

@@ -20,15 +20,15 @@ interface Props {
 export const DiarySelectPage = ({ diaries, currentUser, flash }: Props) => {
   return (
     <>
-      <h1 className='mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand'>日記</h1>
+      <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">日記</h1>
 
       <FlashMessages flash={flash} />
 
-      <div className='pt-[23px] w-full min-h-[110vh] mx-auto'>
-        <div className='flex flex-wrap w-full !mx-0 pl-[1%]'>
-          <div className='w-full md:w-9/12 bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]'>
+      <div className="pt-[23px] w-full min-h-[110vh] mx-auto">
+        <div className="flex flex-wrap w-full !mx-0 pl-[1%]">
+          <div className="w-full md:w-9/12 bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]">
             {diaries.length === 0 ? (
-              <p className='text-[39px] text-white'>まだありません</p>
+              <p className="text-[39px] text-white">まだありません</p>
             ) : (
               diaries.map((entry) => (
                 <DiaryCard
