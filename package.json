@@ -7,7 +7,14 @@
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.183.1",
     "esbuild": "^0.27.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "typescript": "^5.9.3"
+  },
+  "lint-staged": {
+    "frontend/**/*.{ts,tsx}": [
+      "biome check --write"
+    ]
   },
   "scripts": {
     "build": "esbuild frontend/application.ts frontend/styles/fontawesome.css --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts --loader:.woff2=file --loader:.woff=file --loader:.ttf=file --loader:.eot=file --loader:.svg=file --asset-names=webfonts/[name]",
@@ -16,7 +23,8 @@
     "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always",
     "lint": "biome check frontend/",
     "lint:fix": "biome check --write frontend/",
-    "format": "biome format --write frontend/"
+    "format": "biome format --write frontend/",
+    "prepare": "husky"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.2.0",
