@@ -31,22 +31,22 @@ export const LoginModal: FC = () => {
     <>
       {/* オーバーレイ: クリックで閉じる */}
       <div
-        className='modal show'
+        className="modal show"
         style={{ display: 'block' }}
-        role='dialog'
-        aria-modal='true'
-        aria-labelledby='loginModalTitle'
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="loginModalTitle"
         onClick={close}
         onKeyDown={(e) => e.key === 'Escape' && close()}
       >
         {/* ダイアログ: クリックを親に伝播させない */}
         <div
-          className='modal-dialog modal-dialog-centered'
-          role='document'
+          className="modal-dialog modal-dialog-centered"
+          role="document"
           onClick={(e) => e.stopPropagation()}
           onKeyDown={(e) => e.stopPropagation()}
         >
-          <div className='modal-content my-modal'>
+          <div className="modal-content my-modal">
             <LoginModalHeader onClose={close} />
             <LoginModalBody />
             <LoginModalFooter />
@@ -54,7 +54,7 @@ export const LoginModal: FC = () => {
         </div>
       </div>
       {/* バックドロップ */}
-      <div className='modal-backdrop show' />
+      <div className="modal-backdrop show" />
     </>,
     document.body,
   );
