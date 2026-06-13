@@ -245,10 +245,11 @@ class DiaryController < ApplicationController
       @diary_user = User.joins(:diaries).where(diaries: {user_id: session[:id]}).or(User.joins(:diaries).where(diaries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.*").order("diaries.created_at DESC")
       #@diary_user = User.find_by_sql('SELECT diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.* FROM users INNER JOIN diaries ON diaries.user_id = users.id INNER JOIN favorites ON favorites.user_id = users.id WHERE(diaries.user_id = ?) OR (diaries.user_id IN (SELECT favorites.favorite_user_id FROM favorites WHERE favorites.user_id = ?)) ORDER BY(diaries.created_at DESC)',session[:id], session[:id])
       @user = User.find(session[:id])
-      @comment = User.joins(:diary_comments).select("diary_comments.*, diary_comments.created_at AS post_time, users.*")
-      @comment_count = DiaryComment.group(:diary_id).count
+      diary_ids = @diary_user.map(&:diaries_id)
+      @comment = User.joins(:diary_comments).where(diary_comments: {diary_id: diary_ids}).select("diary_comments.*, diary_comments.created_at AS post_time, users.*")
+      @comment_count = DiaryComment.where(diary_id: diary_ids).group(:diary_id).count
       @diary_good = DiaryGood.new
-      @good = DiaryGood.group(:diary_id).count
+      @good = DiaryGood.where(diary_id: diary_ids).group(:diary_id).count
       @diary_comment = DiaryComment.new
       @favorite_user = Favorite.where(user_id: session[:id]).select("favorite_user_id")
       @good_user = Diary.joins(:diary_goods).where(diary_goods: {diary_id: Diary.where(user_id: @favorite_user).select("diaries.id")}).select("diary_goods.user_id")
@@ -256,6 +257,9 @@ class DiaryController < ApplicationController
       @my_good = Diary.joins(:diary_goods).where(diary_goods: {user_id: session[:id]}).where(diaries: {user_id: session[:id]}).or(Diary.joins(:diary_goods).where(diaries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("diaries.id AS id").order("diaries.created_at DESC")
       # @diary.diary_media.build
       @user = User.find(session[:id])
+      comment_by_diary     = @comment.group_by(&:diary_id)
+      good_avatar_by_diary = @good_avatar.group_by(&:diary_id)
+      my_good_ids          = @my_good.map(&:id).to_set
       @page_props = {
         diaries: @diary_user.map { |d|
           {
@@ -266,9 +270,9 @@ class DiaryController < ApplicationController
             content:      d.content,
             postTime:     d.post_time.strftime("%Y/%m/%d %H:%M"),
             goodCount:    @good[d.diaries_id] || 0,
-            goodAvatars:  @good_avatar.select { |ga| ga.diary_id == d.diaries_id }.map { |ga| { avatarPath: ga.avatar_path.to_s } },
-            myGood:       @my_good.any? { |mg| mg.id == d.diaries_id },
-            comments:     @comment.select { |c| c.diary_id == d.diaries_id }.map { |c|
+            goodAvatars:  (good_avatar_by_diary[d.diaries_id] || []).map { |ga| { avatarPath: ga.avatar_path.to_s } },
+            myGood:       my_good_ids.include?(d.diaries_id),
+            comments:     (comment_by_diary[d.diaries_id] || []).map { |c|
               { name: c.name, avatarPath: c.avatar_path.to_s, comment: c.comment, postTime: c.post_time.strftime("%Y/%m/%d %H:%M") }
             },
             commentCount: @comment_count[d.diaries_id] || 0
