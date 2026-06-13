@@ -5,8 +5,10 @@ class GalleryController < ApplicationController
     if session[:id].present?
       @gallery = Gallery.new
       @favorite_gallery = Gallery.joins(:user).select("users.*, galleries.*, galleries.id AS page_id").where(galleries: {user_id: session[:id]}).or(Gallery.joins(:user).select("users.*, galleries.*, galleries.id AS page_id").where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).order("galleries.created_at DESC")
-      @good_count = GalleryGood.group(:gallery_id).count
+      gallery_ids = @favorite_gallery.map(&:page_id)
+      @good_count = GalleryGood.where(gallery_id: gallery_ids).group(:gallery_id).count
       @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: session[:id]}).or(Gallery.joins(:gallery_goods).where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("galleries.id AS id").order("galleries.created_at DESC")
+      my_good_ids = @my_good.map(&:id).to_set
       @page_props = {
         galleries: @favorite_gallery.map { |g|
           {
@@ -14,7 +16,7 @@ class GalleryController < ApplicationController
             dataUrl:   g.data.to_s,
             tags:      g.tag_list.to_a,
             goodCount: @good_count[g.page_id] || 0,
-            myGood:    @my_good.any? { |mg| mg.id == g.page_id }
+            myGood:    my_good_ids.include?(g.page_id)
           }
         },
         errors: @gallery.errors.full_messages,
@@ -30,9 +32,11 @@ class GalleryController < ApplicationController
   def my_gallery
     if session[:id].present?
       @gallery = Gallery.new
-      @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: session[:id]}).or(Gallery.joins(:gallery_goods).where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("galleries.id AS id").order("galleries.created_at DESC")
       @my_gallery = Gallery.where(user_id: session[:id]).includes(:taggings, :tags).order("created_at DESC")
-      @good_count = GalleryGood.group(:gallery_id).count
+      gallery_ids = @my_gallery.map(&:id)
+      @good_count = GalleryGood.where(gallery_id: gallery_ids).group(:gallery_id).count
+      @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: session[:id]}).or(Gallery.joins(:gallery_goods).where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("galleries.id AS id").order("galleries.created_at DESC")
+      my_good_ids = @my_good.map(&:id).to_set
       @page_props = {
         galleries: @my_gallery.map { |g|
           {
@@ -40,7 +44,7 @@ class GalleryController < ApplicationController
             dataUrl:   g.data.to_s,
             tags:      g.tag_list.to_a,
             goodCount: @good_count[g.id] || 0,
-            myGood:    @my_good.any? { |mg| mg.id == g.id }
+            myGood:    my_good_ids.include?(g.id)
           }
         },
         errors: @gallery.errors.full_messages,
@@ -57,8 +61,10 @@ class GalleryController < ApplicationController
     @gallery = Gallery.new
     @user = User.find_by(id: params[:id])
     @user_gallery = Gallery.joins(:user).includes(:taggings, :tags).select("users.name", "galleries.*").where(galleries: {user_id: params[:id]}).order("galleries.created_at DESC")
+    gallery_ids = @user_gallery.map(&:id)
+    @good_count = GalleryGood.where(gallery_id: gallery_ids).group(:gallery_id).count
     @my_good = Gallery.joins(:gallery_goods).select("galleries.*, gallery_goods.*").where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: params[:id]}).order("galleries.created_at DESC")
-    @good_count = GalleryGood.group(:gallery_id).count
+    my_good_ids = @my_good.map(&:id).to_set
     @page_props = {
       userName: @user.name,
       userId:   @user.id,
@@ -68,7 +74,7 @@ class GalleryController < ApplicationController
           dataUrl:   g.data.to_s,
           tags:      g.tag_list.to_a,
           goodCount: @good_count[g.id] || 0,
-          myGood:    @my_good.any? { |mg| mg.id == g.id }
+          myGood:    my_good_ids.include?(g.id)
         }
       },
       flash: flash.to_h
