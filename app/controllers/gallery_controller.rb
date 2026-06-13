@@ -103,10 +103,9 @@ class GalleryController < ApplicationController
     @selected_gallery = Gallery.find_by(id: params[:id])
     @user = User.find_by(id: @selected_gallery.user_id)
     @selected_gallery_user = User.joins(:creator).select("users.name, users.avatar_path, creators.user_id, creators.title, creators.establishment, creators.employee").find_by(users: {id: @selected_gallery.user_id})
-    @good_count = GalleryGood.group(:gallery_id).count
+    @good_count = GalleryGood.where(gallery_id: @selected_gallery.id).count
     @comment = User.joins(:gallery_comments).where(gallery_comments: {gallery_id: @selected_gallery.id}).select("gallery_comments.*, gallery_comments.created_at AS post_time, users.*").order("gallery_comments.created_at DESC")
-    @comment_count = GalleryComment.group(:gallery_id).count
-    @my_good = Gallery.joins(:gallery_goods).select("galleries.*, gallery_goods.user_id, gallery_goods.gallery_id").where(gallery_goods: {user_id: session[:id]}).order("galleries.created_at DESC")
+    @my_good = GalleryGood.where(gallery_id: @selected_gallery.id, user_id: session[:id]).exists?
     @gallery_comment = GalleryComment.new
     #タグ検索
     @match_tag = Gallery.tagged_with([@selected_gallery.tag_list], :any => true).where.not(user_id: @selected_gallery.user_id).order("RAND()").limit(3)
@@ -118,9 +117,9 @@ class GalleryController < ApplicationController
       tags:       @selected_gallery.tag_list.to_a,
       comment:    @selected_gallery.comment,
       createdAt:  @selected_gallery.created_at.strftime("%Y/%m/%d %H:%M"),
-      goodCount:  @good_count[@selected_gallery.id] || 0,
-      myGood:     @my_good.any? { |mg| mg.id == @selected_gallery.id },
-      comments:   @comment.select { |c| c.gallery_id == @selected_gallery.id }.map { |c|
+      goodCount:  @good_count,
+      myGood:     @my_good,
+      comments:   @comment.map { |c|
         { name: c.name, avatarPath: c.avatar_path.to_s, comment: c.comment, postTime: c.post_time.strftime("%Y/%m/%d %H:%M") }
       },
       matchTagGalleries: @match_tag.map { |g| { id: g.id, dataUrl: g.data.to_s } },
