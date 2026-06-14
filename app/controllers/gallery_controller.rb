@@ -10,15 +10,10 @@ class GalleryController < ApplicationController
       @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: session[:id]}).or(Gallery.joins(:gallery_goods).where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("galleries.id AS id").order("galleries.created_at DESC")
       my_good_ids = @my_good.map(&:id).to_set
       @page_props = {
-        galleries: @favorite_gallery.map { |g|
-          {
-            id:        g.page_id,
-            dataUrl:   g.data.to_s,
-            tags:      g.tag_list.to_a,
-            goodCount: @good_count[g.page_id] || 0,
-            myGood:    my_good_ids.include?(g.page_id)
-          }
-        },
+        galleries: GalleryFeedPresenter.build(
+          galleries: @favorite_gallery, good_count: @good_count,
+          my_good_ids: my_good_ids, id_method: :page_id
+        ),
         errors: @gallery.errors.full_messages,
         flash:  flash.to_h
       }
@@ -38,15 +33,9 @@ class GalleryController < ApplicationController
       @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: session[:id]}).or(Gallery.joins(:gallery_goods).where(galleries: {user_id: Favorite.where(user_id: session[:id]).select("favorites.favorite_user_id")})).select("galleries.id AS id").order("galleries.created_at DESC")
       my_good_ids = @my_good.map(&:id).to_set
       @page_props = {
-        galleries: @my_gallery.map { |g|
-          {
-            id:        g.id,
-            dataUrl:   g.data.to_s,
-            tags:      g.tag_list.to_a,
-            goodCount: @good_count[g.id] || 0,
-            myGood:    my_good_ids.include?(g.id)
-          }
-        },
+        galleries: GalleryFeedPresenter.build(
+          galleries: @my_gallery, good_count: @good_count, my_good_ids: my_good_ids
+        ),
         errors: @gallery.errors.full_messages,
         flash:  flash.to_h
       }
@@ -66,17 +55,11 @@ class GalleryController < ApplicationController
     @my_good = Gallery.joins(:gallery_goods).select("galleries.*, gallery_goods.*").where(gallery_goods: {user_id: session[:id]}).where(galleries: {user_id: params[:id]}).order("galleries.created_at DESC")
     my_good_ids = @my_good.map(&:id).to_set
     @page_props = {
-      userName: @user.name,
-      userId:   @user.id,
-      galleries: @user_gallery.map { |g|
-        {
-          id:        g.id,
-          dataUrl:   g.data.to_s,
-          tags:      g.tag_list.to_a,
-          goodCount: @good_count[g.id] || 0,
-          myGood:    my_good_ids.include?(g.id)
-        }
-      },
+      userName:  @user.name,
+      userId:    @user.id,
+      galleries: GalleryFeedPresenter.build(
+        galleries: @user_gallery, good_count: @good_count, my_good_ids: my_good_ids
+      ),
       flash: flash.to_h
     }
     render :user_gallery_view
