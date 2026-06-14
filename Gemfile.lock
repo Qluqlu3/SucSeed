@@ -195,7 +195,7 @@ GEM
     mysql2 (0.5.7)
       bigdecimal
     nenv (0.3.0)
-    net-imap (0.6.4)
+    net-imap (0.6.4.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -338,6 +338,7 @@ DEPENDENCIES
   listen (~> 3.8)
   mini_magick (>= 4.8.0)
   mysql2 (>= 0.4.4, < 0.6.0)
+  net-imap (>= 0.6.4.1)
   puma (~> 6.0)
   rails (~> 7.2, >= 7.2.3.1)
   rails-i18n (~> 7.0)

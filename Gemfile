@@ -52,6 +52,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'net-imap', '>= 0.6.4.1'
 
 # rails-i18n 7.x が Rails 7.1 対応版
 gem 'rails-i18n', '~> 7.0'
