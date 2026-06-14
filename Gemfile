@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.3.0'
 
 # Rails 7.2.3.1 以上: Active Storage の DoS 脆弱性修正版を含む
-gem 'rails', '~> 7.2', '>= 7.2.3.1'
+gem 'rails', '>= 7.2.3.1', '< 8.0'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.4.4', '< 0.6.0'
 # Use Puma as the app server

@@ -340,7 +340,7 @@ DEPENDENCIES
   mysql2 (>= 0.4.4, < 0.6.0)
   net-imap (>= 0.6.4.1)
   puma (~> 7.2, >= 7.2.1)
-  rails (~> 7.2, >= 7.2.3.1)
+  rails (>= 7.2.3.1, < 8.0)
   rails-i18n (~> 7.0)
   selenium-webdriver
   tzinfo-data
