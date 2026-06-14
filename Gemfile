@@ -61,7 +61,7 @@ gem 'bcrypt', '>= 3.1.22'
 
 # 画像アップロード
 gem 'addressable', '>= 2.9.0'
-gem 'carrierwave', '>= 1.2.3'
+gem 'carrierwave', '>= 3.1.3'
 gem 'mini_magick', '>= 4.8.0'
 
 # jsbundling-rails: esbuild/rollup/webpack などを Rails と繋ぐ公式 gem
