@@ -1,11 +1,19 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one:
+  user_id: user_one
+  title: Creator Title One
+  art_category_id: 1
+  establishment: 2010
+  employee: 5
+  postal_code: "1234567"
+  is_recruitment: true
+  created_at: "2020-01-01 00:00:00"
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+two:
+  user_id: user_two
+  title: Creator Title Two
+  art_category_id: 1
+  establishment: 2015
+  employee: 3
+  postal_code: "7654321"
+  is_recruitment: false
+  created_at: "2020-01-01 00:00:00"
