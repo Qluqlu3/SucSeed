@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module SucSeed
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 7.2
 
     config.active_record.default_timezone = :local
     config.time_zone = 'Tokyo'
