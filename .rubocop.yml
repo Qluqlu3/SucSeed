@@ -47,6 +47,12 @@ Metrics/PerceivedComplexity:
 
 Metrics/BlockLength:
   Max: 50
+  Exclude:
+    - 'config/routes.rb'
+
+# Rails 8.0 で追加された API。Rails 7.2 では使用不可
+Rails/StrongParametersExpect:
+  Enabled: false
 
 # ── Style ─────────────────────────────────────────────────────────────────────
 
