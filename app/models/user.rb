@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include SoftDeletable
+
   mount_uploader :avatar_path, AvatarUploader
   has_secure_password
   has_secure_token :id

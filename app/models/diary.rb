@@ -1,4 +1,6 @@
 class Diary < ApplicationRecord
+  include SoftDeletable
+
   has_secure_token :id
   belongs_to :user
   has_many :diary_goods, dependent: :destroy

@@ -1,4 +1,6 @@
 class Inquiry < ApplicationRecord
+  include SoftDeletable
+
   belongs_to :inquiry_category, optional: true
   belongs_to :user, optional: true
   belongs_to :admin, optional: true

@@ -1,4 +1,6 @@
 class Gallery < ApplicationRecord
+  include SoftDeletable
+
   mount_uploader :data, GalleryUploader
   has_secure_token :id
   belongs_to :user

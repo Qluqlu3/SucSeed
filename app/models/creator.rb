@@ -1,4 +1,6 @@
 class Creator < ApplicationRecord
+  include SoftDeletable
+
   validates :user_id, presence: true
   validates :title, presence: true, length: {maximum: 50}
   validates :art_category_id, presence: true

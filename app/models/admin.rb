@@ -1,4 +1,6 @@
 class Admin < ApplicationRecord
+  include SoftDeletable
+
   has_secure_password
   has_many :inquiries
   validates :password, presence: true, confirmation: true, length: {in: 8..16}

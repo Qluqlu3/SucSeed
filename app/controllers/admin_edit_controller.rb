@@ -5,7 +5,7 @@ class AdminEditController < ApplicationController
   end
 
   def user
-    @user = User.all.order("created_at DESC")
+    @user = User.with_deleted.order("created_at DESC")
     @page_props = {
       users: @user.map { |u| {
         id: u.id,
@@ -22,7 +22,7 @@ class AdminEditController < ApplicationController
   end
 
   def diary
-    @diary = Diary.all.order("created_at DESC")
+    @diary = Diary.with_deleted.order("created_at DESC")
     @page_props = {
       diaries: @diary.map { |d| {
         id: d.id,
@@ -37,7 +37,7 @@ class AdminEditController < ApplicationController
   end
 
   def diary_comment
-    @diary_comment = DiaryComment.all.order("created_at DESC")
+    @diary_comment = DiaryComment.with_deleted.order("created_at DESC")
     @page_props = {
       comments: @diary_comment.map { |c| {
         id: c.id,
@@ -53,7 +53,7 @@ class AdminEditController < ApplicationController
   end
 
   def gallery
-    @gallery = Gallery.all.order("created_at DESC")
+    @gallery = Gallery.with_deleted.order("created_at DESC")
     @page_props = {
       galleries: @gallery.map { |g| {
         id: g.id,
@@ -69,7 +69,7 @@ class AdminEditController < ApplicationController
   end
 
   def inquiry
-    @inquiry = InquiryCategory.joins(:inquiry).select("inquiries.*, inquiry_categories.name").order("inquiries.created_at DESC")
+    @inquiry = Inquiry.with_deleted.joins(:inquiry_category).select("inquiries.*, inquiry_categories.name AS name").order("inquiries.created_at DESC")
     @page_props = {
       inquiries: @inquiry.map { |q| {
         id: q.id,
@@ -89,7 +89,7 @@ class AdminEditController < ApplicationController
 
   #ユーザー削除
   def user_delete
-    if User.find(params[:id]).destroy
+    if User.find(params[:id]).soft_delete
       flash[:success] = "success"
     else
       flash[:danger] = "error"
@@ -99,7 +99,7 @@ class AdminEditController < ApplicationController
 
   #ユーザー編集
   def user_edit_show
-    @user = User.find_by(id: params[:id])
+    @user = User.with_deleted.find_by(id: params[:id])
     @page_props = {
       user: {
         id: @user.id,
@@ -113,7 +113,7 @@ class AdminEditController < ApplicationController
 
   #patch
   def user_edit
-    user = User.find_by(id: params[:id])
+    user = User.with_deleted.find_by(id: params[:id])
     if user.update(:avatar_path => params[:user][:avatar_path], :profile => params[:user][:profile])
       flash[:success] = "success"
       redirect_to "/admin/management/user"
@@ -124,7 +124,7 @@ class AdminEditController < ApplicationController
 
   #ダイアリー削除
   def diary_delete
-    if Diary.find(params[:id]).destroy
+    if Diary.find(params[:id]).soft_delete
       flash[:success] = "success"
     else
       flash[:danger] = "error"
@@ -134,7 +134,7 @@ class AdminEditController < ApplicationController
 
   #ダイアリーコメント削除
   def diary_comment_delete
-    if DiaryComment.find(params[:id]).destroy
+    if DiaryComment.find(params[:id]).soft_delete
       flash[:success] = "success"
     else
       flash[:danger] = "error"
@@ -144,7 +144,7 @@ class AdminEditController < ApplicationController
 
   #ギャラリー削除
   def gallery_delete
-    if Gallery.find(params[:id]).destroy
+    if Gallery.find(params[:id]).soft_delete
       flash[:success] = "success"
     else
       flash[:danger] = "error"

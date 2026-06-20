@@ -114,13 +114,13 @@ class DiaryController < ApplicationController
   #投稿削除
   def post_delete
     if session[:id].present?
-      if Diary.where(id: params[:id]).where(user_id: session[:id]).destroy_all
+      diary = Diary.find_by(id: params[:id], user_id: session[:id])
+      if diary&.soft_delete
         flash[:success] = "success"
-        redirect_to "/diary/my_diary"
       else
         flash[:danger] = "エラー"
-        redirect_to "/diary/my_diary"
       end
+      redirect_to "/diary/my_diary"
     else
       redirect_to "/index"
     end
