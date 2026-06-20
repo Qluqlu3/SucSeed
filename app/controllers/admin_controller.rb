@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :require_basic_auth, only: [:create, :create_user]
+  before_action :require_basic_auth, only: %i[create create_user]
 
   def login
     @admin = Admin.new
@@ -8,16 +8,16 @@ class AdminController < ApplicationController
   end
 
   def login_challenge
-    if session[:admin].nil?
-      admin = Admin.find_by(user_id: params[:admin][:user_id].downcase)
-      if admin && admin.authenticate(params[:admin][:password])
-        session[:admin] = admin[:id]
-        redirect_to "/admin/index"
-      else
-        flash[:danger] = "ユーザーIDまたはパスワードが間違っています"
-        @page_props = { flash: flash.to_h }
-        render :admin_login
-      end
+    return unless session[:admin].nil?
+
+    admin = Admin.find_by(user_id: params[:admin][:user_id].downcase)
+    if admin&.authenticate(params[:admin][:password])
+      session[:admin] = admin[:id]
+      redirect_to '/admin/index'
+    else
+      flash[:danger] = 'ユーザーIDまたはパスワードが間違っています'
+      @page_props = { flash: flash.to_h }
+      render :admin_login
     end
   end
 
@@ -30,8 +30,8 @@ class AdminController < ApplicationController
   def create_user
     @admin = Admin.new(admin_create_params)
     if @admin.save
-      flash[:success] = "success"
-      redirect_to "/admin/login"
+      flash[:success] = 'success'
+      redirect_to '/admin/login'
     else
       @page_props = { errors: @admin.errors.full_messages, flash: flash.to_h }
       render :admin_create

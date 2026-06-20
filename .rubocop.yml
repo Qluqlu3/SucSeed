@@ -1,0 +1,106 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/**/*'
+    - 'bin/**/*'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'config/boot.rb'
+    - 'config/environment.rb'
+
+# ── Layout ────────────────────────────────────────────────────────────────────
+
+# controllers の AR クエリチェーンは 160 超が多い。Service 化後に除外を外す予定
+Layout/LineLength:
+  Max: 160
+  AllowedPatterns:
+    - '\A\s*#'
+  Exclude:
+    - 'app/controllers/**/*'
+    - 'app/uploaders/**/*'
+
+# ── Metrics ───────────────────────────────────────────────────────────────────
+# 既存のファットコントローラに合わせて緩和 (将来の Service 化で絞る予定)
+
+Metrics/MethodLength:
+  Max: 50
+
+Metrics/ClassLength:
+  Max: 250
+
+# 既存のファットコントローラが超過。Service 化完了後に 50 へ戻す予定
+Metrics/AbcSize:
+  Max: 100
+
+Metrics/CyclomaticComplexity:
+  Max: 15
+
+Metrics/PerceivedComplexity:
+  Max: 15
+
+Metrics/BlockLength:
+  Max: 50
+
+# ── Style ─────────────────────────────────────────────────────────────────────
+
+# クラス/モジュール doc コメントは必須にしない
+Style/Documentation:
+  Enabled: false
+
+# frozen_string_literal マジックコメントは任意
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# 既存コードはシングルクォート主体
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
+# ── Rails ─────────────────────────────────────────────────────────────────────
+
+Rails/FilePath:
+  EnforcedStyle: slashes
+
+# update_all は意図的に使用 (is_ok など boolean 一括更新)
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'app/controllers/match_controller.rb'
+    - 'app/controllers/admin_edit_controller.rb'
+    - 'app/controllers/message_controller.rb'
+    - 'app/models/concerns/soft_deletable.rb'
+
+# Flash メッセージの i18n 化は別タスクで対応予定
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+# DB index の有無は schema で管理 (model 側 cop は誤検知が多い)
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+# inverse_of は Rails が自動推論できるケースが多い
+Rails/InverseOf:
+  Enabled: false
+
+# art_categories / inquiry_categories はマスタデータで dependent 不要
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+# render_404 / get_history はルーティングで参照済みのメソッド名
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+# DiaryFeedPresenter は引数 6 個が適切 (キーワード引数でラベル明確)
+Metrics/ParameterLists:
+  Max: 6

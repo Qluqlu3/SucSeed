@@ -8,18 +8,17 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # storage :fog
 
   # 保存形式をJPGにする
-  #process :convert => "png"
+  # process :convert => "png"
   def default_url
-    "default.png"
+    'default.png'
   end
 
   def size_range
-    1..5.megabytes
+    1..(5.megabytes)
   end
 
-  #画像リサイズ
-  process :resize_to_fill => [300, 300]
-
+  # 画像リサイズ
+  process resize_to_fill: [300, 300]
 
   def filename
     "#{secure_token}.#{file.extension}" if original_filename.present?
@@ -32,10 +31,11 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   def extension_whitelist
-    %w(jpg jpeg png)
+    %w[jpg jpeg png]
   end
 
   protected
+
   def secure_token
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)

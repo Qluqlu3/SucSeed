@@ -6,21 +6,17 @@ class InquiryController < ApplicationController
       categories: @categories.map { |c| { id: c.id, name: c.name } },
       errors: [],
       prevValues: { inquiryCategoryId: '', content: '' },
-      flash:   flash.to_h,
+      flash: flash.to_h
     }
     render :input_page
   end
 
   def send_inquiry
-    if session[:id].present?
-      params[:inquiry][:user_id] = session[:id]
-    else
-      params[:inquiry][:user_id] = nil
-    end
+    params[:inquiry][:user_id] = session[:id].presence
     @inquiry = Inquiry.new(inquiry_params)
     if @inquiry.save
-      flash[:success] = "お問い合わせありがとうございます"
-      redirect_to "/inquiry/input"
+      flash[:success] = 'お問い合わせありがとうございます'
+      redirect_to '/inquiry/input'
     else
       @categories = InquiryCategory.all
       @page_props = {
@@ -28,13 +24,14 @@ class InquiryController < ApplicationController
         errors: @inquiry.errors.full_messages,
         prevValues: {
           inquiryCategoryId: @inquiry.inquiry_category_id || '',
-          content:           @inquiry.content.to_s,
+          content: @inquiry.content.to_s
         },
-        flash:   flash.to_h,
+        flash: flash.to_h
       }
       render :input_page
     end
   end
+
   private
 
   def inquiry_params

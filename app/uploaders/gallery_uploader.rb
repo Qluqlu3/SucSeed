@@ -14,8 +14,9 @@ class GalleryUploader < CarrierWave::Uploader::Base
   end
 
   def size_range
-    1..5.megabytes
+    1..(5.megabytes)
   end
+
   # Process files as they are uploaded:
   # process scale: [200, 300]
   #
@@ -27,6 +28,7 @@ class GalleryUploader < CarrierWave::Uploader::Base
   end
 
   protected
+
   def secure_token
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
@@ -40,6 +42,6 @@ class GalleryUploader < CarrierWave::Uploader::Base
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_whitelist
-    %w(jpg jpeg png)
+    %w[jpg jpeg png]
   end
 end

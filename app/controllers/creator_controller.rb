@@ -6,27 +6,52 @@ class CreatorController < ApplicationController
       @page_props = {
         artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
         errors: [],
-        flash:  flash.to_h,
+        flash: flash.to_h
       }
       render :create
     else
-      @creator = User.joins(:creator).select("users.*, creators.*").find_by(creators: {user_id: session[:id]})
+      @creator = User.joins(:creator).select('users.*, creators.*').find_by(creators: { user_id: session[:id] })
       @category = ArtCategory.find(@creator.art_category_id)
       @is_creator = session[:creator].present?
       @page_props = {
         creator: {
-          title:         @creator.title,
-          categoryName:  @category.name,
+          title: @creator.title,
+          categoryName: @category.name,
           establishment: @creator.establishment,
-          employee:      @creator.employee,
-          postalCode:    @creator.postal_code,
-          isRecruitment: @creator.is_recruitment,
+          employee: @creator.employee,
+          postalCode: @creator.postal_code,
+          isRecruitment: @creator.is_recruitment
         },
         isCreator: @is_creator,
-        flash: flash.to_h,
+        flash: flash.to_h
       }
       render :show
     end
+  end
+
+  def edit
+    return if session[:creator].blank?
+
+    @creator = ArtCategory.joins(:creators).select('creators.*, art_categories.name').find_by(creators: { user_id: session[:id] })
+    @art_categories = ArtCategory.all
+    @is_creator = session[:creator].present?
+    @check = @creator.is_recruitment == 1
+    @page_props = {
+      creator: {
+        title: @creator.title,
+        artCategoryId: @creator.art_category_id,
+        categoryName: @creator.name,
+        establishment: @creator.establishment,
+        employee: @creator.employee,
+        postalCode: @creator.postal_code,
+        isRecruitment: @check
+      },
+      artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
+      isCreator: @is_creator,
+      errors: [],
+      flash: flash.to_h
+    }
+    render :update
   end
 
   def create
@@ -34,50 +59,26 @@ class CreatorController < ApplicationController
     params[:creator][:user_id] = session[:id]
     @creator = Creator.new(creator_params)
     if @creator.save
-      flash[:success] = "success"
-      redirect_to "/creator/show"
+      flash[:success] = 'success'
+      redirect_to '/creator/show'
     else
       @page_props = {
         artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
         errors: @creator.errors.full_messages,
-        flash:  flash.to_h,
+        flash: flash.to_h
       }
       render :create
     end
   end
 
-  def edit
-    if session[:creator].present?
-      @creator = ArtCategory.joins(:creators).select("creators.*, art_categories.name").find_by(creators: {user_id: session[:id]})
-      @art_categories = ArtCategory.all
-      @is_creator = session[:creator].present?
-      @check = @creator.is_recruitment == 1
-      @page_props = {
-        creator: {
-          title:         @creator.title,
-          artCategoryId: @creator.art_category_id,
-          categoryName:  @creator.name,
-          establishment: @creator.establishment,
-          employee:      @creator.employee,
-          postalCode:    @creator.postal_code,
-          isRecruitment: @check,
-        },
-        artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
-        isCreator: @is_creator,
-        errors: [],
-        flash:  flash.to_h,
-      }
-      render :update
-    end
-  end
-
   def update
-    if Creator.find_by(user_id: session[:id]).update(title: params[:art_category][:title], art_category_id: params[:art_category][:art_category_id], establishment: params[:art_category][:establishment], employee: params[:art_category][:employee], postal_code: params[:art_category][:postal_code], is_recruitment: params[:art_category][:is_recruitment])
-      flash[:success] = "success"
-      redirect_to "/creator/show"
+    if Creator.find_by(user_id: session[:id]).update(title: params[:art_category][:title], art_category_id: params[:art_category][:art_category_id],
+                                                     establishment: params[:art_category][:establishment], employee: params[:art_category][:employee], postal_code: params[:art_category][:postal_code], is_recruitment: params[:art_category][:is_recruitment])
+      flash[:success] = 'success'
+      redirect_to '/creator/show'
     else
-      flash[:danger] = "エラー"
-      redirect_to "/creator/edit"
+      flash[:danger] = 'エラー'
+      redirect_to '/creator/edit'
     end
   end
 

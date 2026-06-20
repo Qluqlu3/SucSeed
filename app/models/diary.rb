@@ -5,6 +5,5 @@ class Diary < ApplicationRecord
   belongs_to :user
   has_many :diary_goods, dependent: :destroy
   has_many :diary_comments, dependent: :destroy
-  validates :content, presence: true, length: {minimum: 1}
-  validates :user_id, presence: true
+  validates :content, presence: true, length: { minimum: 1 }
 end

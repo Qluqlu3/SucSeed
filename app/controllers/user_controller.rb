@@ -1,24 +1,23 @@
 class UserController < ApplicationController
   def login
-    if session[:id].nil?
-      user = User.find_by(email: params[:session][:email].downcase)
-      if user && user.authenticate(params[:session][:password])
-        reset_session
-        session[:id] = user[:id]
-        session[:creator] = user[:id] if user[:is_creator]
-        flash[:success] = "ログイン成功"
-        redirect_to "/index"
-      else
-        flash[:danger] = '『メールアドレス』もしくは『パスワード』が誤っています'
-        redirect_to "/index"
-      end
+    return unless session[:id].nil?
+
+    user = User.find_by(email: params[:session][:email].downcase)
+    if user&.authenticate(params[:session][:password])
+      reset_session
+      session[:id] = user[:id]
+      session[:creator] = user[:id] if user[:is_creator]
+      flash[:success] = 'ログイン成功'
+    else
+      flash[:danger] = '『メールアドレス』もしくは『パスワード』が誤っています'
     end
+    redirect_to '/index'
   end
 
   def logout
     reset_session
-    flash[:success] = "ログアウト"
-    redirect_to "/index"
+    flash[:success] = 'ログアウト'
+    redirect_to '/index'
   end
 
   def regist
@@ -32,8 +31,8 @@ class UserController < ApplicationController
     if @user.save
       # GmailMailer.send_create(@user).deliver
       # GmailMailer.send_certification(@user).deliver
-      flash[:success] = "登録完了"
-      redirect_to "/index"
+      flash[:success] = '登録完了'
+      redirect_to '/index'
     else
       @page_props = { errors: @user.errors.full_messages, flash: flash.to_h }
       render :regist
@@ -46,25 +45,21 @@ class UserController < ApplicationController
   end
 
   def email_exist
-    begin
-      if params[:user_email][:email] != ""
-        if user = User.find_by(email: params[:user_email][:email])
-          session[:reset_id] = user[:id]
-          redirect_to "/user/password_reset"
-        else
-          flash.now[:danger] = "入力されたメールアドレスは存在しません"
-          @page_props = { flash: flash.to_h }
-          render :password_forgot
-        end
-      else
-        flash.now[:danger] = "メールアドレスを入力してください"
-        @page_props = { flash: flash.to_h }
-        render :password_forgot
-      end
-    rescue => e
+    if params[:user_email][:email] == ''
+      flash.now[:danger] = 'メールアドレスを入力してください'
+      @page_props = { flash: flash.to_h }
+      render :password_forgot
+    elsif (user = User.find_by(email: params[:user_email][:email]))
+      session[:reset_id] = user[:id]
+      redirect_to '/user/password_reset'
+    else
+      flash.now[:danger] = '入力されたメールアドレスは存在しません'
       @page_props = { flash: flash.to_h }
       render :password_forgot
     end
+  rescue StandardError
+    @page_props = { flash: flash.to_h }
+    render :password_forgot
   end
 
   def password_edit
@@ -75,12 +70,12 @@ class UserController < ApplicationController
 
   def password_reset
     @user = User.find(session[:reset_id])
-    if @user.update(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
-      flash[:success] = "success"
+    if @user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
+      flash[:success] = 'success'
       session[:reset_id] = nil
-      redirect_to "/index"
+      redirect_to '/index'
     else
-      flash.now[:danger] = "エラー"
+      flash.now[:danger] = 'エラー'
       @page_props = { errors: @user.errors.full_messages, flash: flash.to_h }
       render :password_reset
     end
@@ -92,23 +87,21 @@ class UserController < ApplicationController
       @page_props = { userName: @user.name, userId: session[:id], flash: flash.to_h }
       render :email_certified
     else
-      redirect_to "/index"
+      redirect_to '/index'
     end
   end
 
-  #メールアドレス認証
+  # メールアドレス認証
   def email_certified
     user = User.find_by(id: params[:id])
-    if user.nil? || user.is_certified?
-      redirect_to "/index"
-    else
+    unless user.nil? || user.is_certified?
       if user.update(is_certified: true)
-        flash[:success] = "メールアドレス認証完了"
+        flash[:success] = 'メールアドレス認証完了'
       else
-        flash[:danger] = "メールアドレス認証エラー"
+        flash[:danger] = 'メールアドレス認証エラー'
       end
-      redirect_to "/index"
     end
+    redirect_to '/index'
   end
 
   private

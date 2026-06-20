@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from:       'SucSeed'
+  default from: 'SucSeed'
 
   layout 'mailer'
 end

@@ -41,6 +41,10 @@ group :development do
   # Docker 環境では spring はほぼ不要だが spring.rb が存在するので gem は残す。
   gem 'listen', '~> 3.8'
   gem 'web-console', '>= 3.3.0'
+
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-performance', require: false
 end
 
 group :test do

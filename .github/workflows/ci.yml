@@ -77,6 +77,22 @@ jobs:
       - name: TypeScript type check
         run: pnpm exec tsc --noEmit
 
+  # ── RuboCop ────────────────────────────────────────────────────
+  rubocop:
+    name: RuboCop
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.0'
+          bundler-cache: true
+
+      - name: Run RuboCop
+        run: bundle exec rubocop --parallel
+
   # ── Gem セキュリティ監査 ────────────────────────────────────────
   bundle-audit:
     name: Bundle Audit
