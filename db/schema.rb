@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2019_02_25_161150) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_21_000002) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "user_id", null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema[7.2].define(version: 2019_02_25_161150) do
     t.string "user_id", null: false
     t.timestamp "created_at", null: false
     t.index ["diary_id"], name: "fk_rails_b7c652964c"
-    t.index ["user_id"], name: "fk_rails_da8d03400c"
+    t.index ["user_id", "diary_id"], name: "index_diary_goods_on_user_id_and_diary_id", unique: true
   end
 
   create_table "favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -71,7 +71,7 @@ ActiveRecord::Schema[7.2].define(version: 2019_02_25_161150) do
     t.string "favorite_user_id", null: false
     t.timestamp "created_at", null: false
     t.index ["favorite_user_id"], name: "fk_rails_0bb10dcefc"
-    t.index ["user_id"], name: "fk_rails_d15744e438"
+    t.index ["user_id", "favorite_user_id"], name: "index_favorites_on_user_id_and_favorite_user_id", unique: true
   end
 
   create_table "galleries", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -98,7 +98,7 @@ ActiveRecord::Schema[7.2].define(version: 2019_02_25_161150) do
     t.string "user_id", null: false
     t.timestamp "created_at", null: false
     t.index ["gallery_id"], name: "fk_rails_d33d7a5d17"
-    t.index ["user_id"], name: "fk_rails_2769ec3bc8"
+    t.index ["user_id", "gallery_id"], name: "index_gallery_goods_on_user_id_and_gallery_id", unique: true
   end
 
   create_table "heirs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -138,7 +138,7 @@ ActiveRecord::Schema[7.2].define(version: 2019_02_25_161150) do
     t.timestamp "created_at", null: false
     t.timestamp "updated_at"
     t.index ["target_user_id"], name: "fk_rails_c475acfdab"
-    t.index ["user_id"], name: "fk_rails_1766d8a780"
+    t.index ["user_id", "target_user_id"], name: "index_matches_on_user_id_and_target_user_id", unique: true
   end
 
   create_table "message_lists", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -146,7 +146,7 @@ ActiveRecord::Schema[7.2].define(version: 2019_02_25_161150) do
     t.string "heir_user_id", null: false
     t.timestamp "created_at", null: false
     t.timestamp "updated_at"
-    t.index ["creator_user_id"], name: "fk_rails_c44687bc14"
+    t.index ["creator_user_id", "heir_user_id"], name: "index_message_lists_on_creator_user_id_and_heir_user_id", unique: true
     t.index ["heir_user_id"], name: "fk_rails_8e0dafab66"
   end
 
@@ -204,6 +204,9 @@ ActiveRecord::Schema[7.2].define(version: 2019_02_25_161150) do
     t.timestamp "created_at", null: false
     t.timestamp "login_time"
     t.timestamp "deleted_at"
+    t.string "email_verification_token"
+    t.index ["email"], name: "index_users_on_email_unique", unique: true
+    t.index ["email_verification_token"], name: "index_users_on_email_verification_token", unique: true
   end
 
   add_foreign_key "creators", "art_categories"
