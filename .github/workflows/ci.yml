@@ -34,6 +34,9 @@ jobs:
       DB_PASSWORD: password
       DB_NAME_TEST: sucseed_test
       SECRET_KEY_BASE: ci_secret_key_base_not_used_in_production
+      # アセットは下の「Build assets」ステップで明示的にビルドするため、
+      # test:prepare が暗黙的に呼ぶ javascript:build（= pnpm install/build）を無効化する。
+      SKIP_JS_BUILD: '1'
 
     steps:
       - uses: actions/checkout@v4
@@ -49,6 +52,11 @@ jobs:
 
       - name: Install JS dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build assets
+        run: |
+          pnpm build
+          pnpm build:css
 
       - uses: ruby/setup-ruby@v1
         with:
