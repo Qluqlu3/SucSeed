@@ -7,6 +7,7 @@ class GmailMailer < ApplicationMailer
 
   def send_certification(user)
     @user = user
+    @certification_url = email_certified_url(user.email_verification_token)
     mail to: user.email,
          subject: 'メールアドレス認証'
   end

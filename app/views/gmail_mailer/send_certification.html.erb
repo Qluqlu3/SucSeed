@@ -1,16 +1,17 @@
-
 <hr>
 
-<h3>
-  <%= @user.name %>さん
-</h3>
+<h3><%= @user.name %>さん</h3>
+
+<p>SucSeed へのご登録ありがとうございます。<br>
+以下のボタンをクリックしてメールアドレスを認証してください。</p>
 
 <p>
-  メールアドレスの認証をお願いいたします。
+  <a href="<%= @certification_url %>"
+     style="display:inline-block;padding:12px 24px;background:#16a34a;color:#fff;text-decoration:none;border-radius:4px;font-size:16px;">
+    メールアドレスを認証する
+  </a>
 </p>
 
-<div class="text-center">
-  <%= button_to("http://matcha-kay.work/email/certified/#{@user.id}", {method: "get"}, {class: "btn btn-success"}) do %>
-    メールアドレスを認証する
-  <% end %>
-</div>
+<p style="color:#888;font-size:12px;">
+  このリンクの有効期限はありません。心当たりのない場合は無視してください。
+</p>

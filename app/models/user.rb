@@ -27,4 +27,12 @@ class User < ApplicationRecord
   has_many :creator_message_lists, class_name: 'MessageList', foreign_key: :creator_user_id, dependent: :destroy
   has_many :heir_message_lists, class_name: 'MessageList', foreign_key: :heir_user_id, dependent: :destroy
   acts_as_tagger
+
+  before_create :generate_email_verification_token
+
+  private
+
+  def generate_email_verification_token
+    self.email_verification_token = SecureRandom.urlsafe_base64(32)
+  end
 end

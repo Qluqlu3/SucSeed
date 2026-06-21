@@ -1,19 +1,13 @@
-// frontend/components/EmailCertifiedPage/EmailCertifiedPage.tsx
-//
-// /user/email_certified ページの React コンポーネント。
-// ユーザー名と session[:id] を props で受け取り、メールアドレス認証ボタンを表示する。
-// フォームは POST /email/certified/:user_id へ送信する。
-
 import { getCsrfToken } from '../../utils/csrf';
 import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   userName: string;
-  userId: number;
+  token: string;
   flash: Record<string, string>;
 }
 
-export const EmailCertifiedPage = ({ userName, userId, flash }: Props) => {
+export const EmailCertifiedPage = ({ userName, token, flash }: Props) => {
   return (
     <>
       <FlashMessages flash={flash} />
@@ -21,7 +15,7 @@ export const EmailCertifiedPage = ({ userName, userId, flash }: Props) => {
         {userName}さんメールアドレスの認証をお願いいたします。
       </p>
       <div className="h-[68vh] text-center">
-        <form action={`/email/certified/${userId}`} method="post">
+        <form action={`/email/certified/${token}`} method="post">
           <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
           <button
             type="submit"
