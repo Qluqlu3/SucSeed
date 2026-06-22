@@ -48,34 +48,48 @@ class UserController < ApplicationController
       flash.now[:danger] = 'メールアドレスを入力してください'
       @page_props = { flash: flash.to_h }
       render :password_forgot
-    elsif (user = User.find_by(email: params[:user_email][:email]))
-      session[:reset_id] = user[:id]
-      redirect_to '/user/password_reset'
-    else
-      flash.now[:danger] = '入力されたメールアドレスは存在しません'
-      @page_props = { flash: flash.to_h }
-      render :password_forgot
+      return
     end
+
+    user = User.find_by(email: params[:user_email][:email])
+    if user
+      user.generate_password_reset_token!
+      GmailMailer.send_password_reset(user).deliver_now
+    end
+    flash[:success] = 'パスワードリセット用のメールを送信しました（登録済みの場合）'
+    redirect_to '/index'
   rescue StandardError
     @page_props = { flash: flash.to_h }
     render :password_forgot
   end
 
   def password_edit
-    @user = User.new
-    @page_props = { errors: [], flash: flash.to_h }
+    user = User.find_by(password_reset_token: params[:token])
+    if user.nil? || user.password_reset_token_expired?
+      flash[:danger] = 'リンクが無効か期限切れです。再度お試しください。'
+      redirect_to '/user/password_forgot'
+      return
+    end
+
+    @page_props = { token: params[:token], errors: [], flash: flash.to_h }
     render :password_reset
   end
 
   def password_reset
-    @user = User.find(session[:reset_id])
-    if @user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
-      flash[:success] = 'success'
-      session[:reset_id] = nil
+    user = User.find_by(password_reset_token: params[:token])
+    if user.nil? || user.password_reset_token_expired?
+      flash[:danger] = 'リンクが無効か期限切れです。再度お試しください。'
+      redirect_to '/user/password_forgot'
+      return
+    end
+
+    if user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
+      user.update_columns(password_reset_token: nil, password_reset_sent_at: nil)
+      flash[:success] = 'パスワードを変更しました。'
       redirect_to '/index'
     else
       flash.now[:danger] = 'エラー'
-      @page_props = { errors: @user.errors.full_messages, flash: flash.to_h }
+      @page_props = { token: params[:token], errors: user.errors.full_messages, flash: flash.to_h }
       render :password_reset
     end
   end

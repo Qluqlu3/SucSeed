@@ -1,19 +1,14 @@
-// frontend/components/PasswordResetPage/PasswordResetPage.tsx
-//
-// /user/password_reset ページ（パスワード変更）の React コンポーネント。
-// Rails の @user.errors.full_messages を errors プロップで受け取って表示する。
-// フォームは POST /user/password_reset へ送信する。
-
 import { getCsrfToken } from '../../utils/csrf';
 
 import { FlashMessages } from '../FlashMessages';
 
 interface Props {
+  token: string;
   errors: string[];
   flash: Record<string, string>;
 }
 
-export const PasswordResetPage = ({ errors, flash }: Props) => {
+export const PasswordResetPage = ({ token, errors, flash }: Props) => {
   return (
     <>
       <h1 className="text-2xl font-bold mb-4">パスワード変更</h1>
@@ -34,7 +29,7 @@ export const PasswordResetPage = ({ errors, flash }: Props) => {
       )}
 
       <div>
-        <form action="/user/password_reset" method="post">
+        <form action={`/user/password_reset/${token}`} method="post">
           <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
           <div className="mb-3">
             <span className="mb-1 block text-sm text-p-text">パスワード</span>

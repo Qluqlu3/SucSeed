@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'index' => 'index#index'
 
   get 'user/password_forgot' => 'user#password_forgot'
-  get 'user/password_reset' => 'user#password_edit'
+  get 'user/password_reset/:token', to: 'user#password_edit', as: :password_reset
   get 'user/create' => 'user#regist'
   get 'email/certified/:token', to: 'user#email_certified_show', as: :email_certified
 
@@ -71,8 +71,8 @@ Rails.application.routes.draw do
   post 'user/login' => 'user#login'
   post 'user/create' => 'user#create'
   post 'user/password_forgot' => 'user#email_exist'
-  patch 'user/password_reset' => 'user#password_reset'
-  post 'user/password_reset' => 'user#password_reset'
+  patch 'user/password_reset/:token', to: 'user#password_reset'
+  post  'user/password_reset/:token', to: 'user#password_reset'
 
   # メールアドレス認証
   post 'email/certified/:token', to: 'user#email_certified'

@@ -82,7 +82,9 @@ Rails/SkipsModelValidations:
     - 'app/controllers/match_controller.rb'
     - 'app/controllers/admin_edit_controller.rb'
     - 'app/controllers/message_controller.rb'
+    - 'app/controllers/user_controller.rb'
     - 'app/models/concerns/soft_deletable.rb'
+    - 'app/models/user.rb'
 
 # Flash メッセージの i18n 化は別タスクで対応予定
 Rails/I18nLocaleTexts:

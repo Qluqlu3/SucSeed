@@ -30,6 +30,17 @@ class User < ApplicationRecord
 
   before_create :generate_email_verification_token
 
+  def generate_password_reset_token!
+    update_columns(
+      password_reset_token: SecureRandom.urlsafe_base64(32),
+      password_reset_sent_at: Time.current
+    )
+  end
+
+  def password_reset_token_expired?
+    password_reset_sent_at < 1.hour.ago
+  end
+
   private
 
   def generate_email_verification_token

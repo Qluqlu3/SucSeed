@@ -11,4 +11,11 @@ class GmailMailer < ApplicationMailer
     mail to: user.email,
          subject: 'メールアドレス認証'
   end
+
+  def send_password_reset(user)
+    @user = user
+    @reset_url = password_reset_url(user.password_reset_token)
+    mail to: user.email,
+         subject: 'パスワードリセット'
+  end
 end

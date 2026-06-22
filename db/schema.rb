@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_21_000002) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_22_000001) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "user_id", null: false
@@ -205,8 +205,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_21_000002) do
     t.timestamp "login_time"
     t.timestamp "deleted_at"
     t.string "email_verification_token"
+    t.string "password_reset_token"
+    t.datetime "password_reset_sent_at"
     t.index ["email"], name: "index_users_on_email_unique", unique: true
     t.index ["email_verification_token"], name: "index_users_on_email_verification_token", unique: true
+    t.index ["password_reset_token"], name: "index_users_on_password_reset_token", unique: true
   end
 
   add_foreign_key "creators", "art_categories"
