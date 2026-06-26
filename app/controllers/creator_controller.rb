@@ -56,8 +56,7 @@ class CreatorController < ApplicationController
 
   def create
     @art_categories = ArtCategory.all
-    params[:creator][:user_id] = session[:id]
-    @creator = Creator.new(creator_params)
+    @creator = Creator.new(creator_params.merge(user_id: session[:id]))
     if @creator.save
       flash[:success] = 'success'
       redirect_to '/creator/show'
@@ -85,6 +84,6 @@ class CreatorController < ApplicationController
   private
 
   def creator_params
-    params.require(:creator).permit(:user_id, :title, :art_category_id, :establishment, :employee, :postal_code, :is_recruitment)
+    params.require(:creator).permit(:title, :art_category_id, :establishment, :employee, :postal_code, :is_recruitment)
   end
 end

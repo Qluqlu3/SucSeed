@@ -18,8 +18,7 @@ class DiaryController < ApplicationController
   # 投稿+画像もあればアップロード
   def post
     if session[:creator].present?
-      params[:diary][:user_id] = session[:id]
-      @diary = Diary.new(diary_params)
+      @diary = Diary.new(diary_params.merge(user_id: session[:id]))
       if @diary.save
         flash[:success] = 'success'
       else
@@ -165,9 +164,7 @@ class DiaryController < ApplicationController
       end
       return
     end
-    params[:diary_comment][:user_id] = session[:id]
-    params[:diary_comment][:diary_id] = params[:id]
-    @diary_comment = DiaryComment.new(diary_comment_params)
+    @diary_comment = DiaryComment.new(diary_comment_params.merge(user_id: session[:id], diary_id: params[:id]))
     fallback = session[:creator] ? '/diary/view' : '/diary/heir/favorite'
     if @diary_comment.save
       respond_to do |f|
@@ -225,10 +222,10 @@ class DiaryController < ApplicationController
   private
 
   def diary_params
-    params.require(:diary).permit(:user_id, :content, diary_media_attributes: [:media_data])
+    params.require(:diary).permit(:content, diary_media_attributes: [:media_data])
   end
 
   def diary_comment_params
-    params.require(:diary_comment).permit(:diary_id, :user_id, :comment)
+    params.require(:diary_comment).permit(:comment)
   end
 end

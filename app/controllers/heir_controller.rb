@@ -29,8 +29,7 @@ class HeirController < ApplicationController
   # 詳細情報入力
   def heir_create
     if session[:id].present?
-      params[:heir][:user_id] = session[:id]
-      @heir = Heir.new(heir_params)
+      @heir = Heir.new(heir_params.merge(user_id: session[:id]))
       if @heir.save
         flash[:success] = 'success'
       else
@@ -83,6 +82,6 @@ class HeirController < ApplicationController
   private
 
   def heir_params
-    params.require(:heir).permit(:user_id, :art_category_id, :introduction)
+    params.require(:heir).permit(:art_category_id, :introduction)
   end
 end

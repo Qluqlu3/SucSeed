@@ -68,8 +68,7 @@ class GalleryController < ApplicationController
   # 投稿 post
   def upload
     if session[:creator].present?
-      params[:gallery][:user_id] = session[:creator]
-      @gallery = Gallery.new(gallery_params)
+      @gallery = Gallery.new(gallery_params.merge(user_id: session[:creator]))
       if @gallery.save
         flash[:success] = 'success'
       else
@@ -185,9 +184,7 @@ class GalleryController < ApplicationController
 
   def gallery_comment
     if session[:id].present?
-      params[:gallery_comment][:gallery_id] = params[:id]
-      params[:gallery_comment][:user_id] = session[:id]
-      @selected_gallery = GalleryComment.new(gallery_comment_params)
+      @selected_gallery = GalleryComment.new(gallery_comment_params.merge(gallery_id: params[:id], user_id: session[:id]))
       if @selected_gallery.save
         flash[:success] = 'success'
       else
@@ -202,10 +199,10 @@ class GalleryController < ApplicationController
   private
 
   def gallery_params
-    params.require(:gallery).permit(:user_id, :data, :comment, :tag_list)
+    params.require(:gallery).permit(:data, :comment, :tag_list)
   end
 
   def gallery_comment_params
-    params.require(:gallery_comment).permit(:gallery_id, :user_id, :comment)
+    params.require(:gallery_comment).permit(:comment)
   end
 end

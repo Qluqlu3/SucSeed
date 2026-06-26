@@ -65,9 +65,7 @@ class MessageController < ApplicationController
   # 送信
   def send_message
     if session[:id].present?
-      params[:message][:send_user_id] = session[:id]
-      params[:message][:receive_user_id] = params[:id]
-      @message = Message.new(message_params)
+      @message = Message.new(message_params.merge(send_user_id: session[:id], receive_user_id: params[:id]))
       if @message.save
         @message = Message.new
         # @message_list = User.joins(:message_lists).select("users.*, users.id AS user, message_lists.*").where(message_lists: {creator_user_id: session[:id]}).order("message_lists.updated_at DESC")
@@ -102,7 +100,7 @@ class MessageController < ApplicationController
   end
 
   def message_params
-    params.require(:message).permit(:send_user_id, :receive_user_id, :content)
+    params.require(:message).permit(:content)
   end
 
   def message_list_params

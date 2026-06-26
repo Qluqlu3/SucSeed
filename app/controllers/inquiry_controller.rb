@@ -12,8 +12,7 @@ class InquiryController < ApplicationController
   end
 
   def send_inquiry
-    params[:inquiry][:user_id] = session[:id].presence
-    @inquiry = Inquiry.new(inquiry_params)
+    @inquiry = Inquiry.new(inquiry_params.merge(user_id: session[:id].presence))
     if @inquiry.save
       flash[:success] = 'お問い合わせありがとうございます'
       redirect_to '/inquiry/input'
@@ -35,6 +34,6 @@ class InquiryController < ApplicationController
   private
 
   def inquiry_params
-    params.require(:inquiry).permit(:user_id, :inquiry_category_id, :content)
+    params.require(:inquiry).permit(:inquiry_category_id, :content)
   end
 end
