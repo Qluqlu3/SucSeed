@@ -200,6 +200,6 @@ class AdminEditController < ApplicationController
   def session_check
     return unless session[:admin].nil?
 
-    redirect_to '/admin/index'
+    redirect_to '/admin/login'
   end
 end
