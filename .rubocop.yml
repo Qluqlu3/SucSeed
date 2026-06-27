@@ -112,3 +112,8 @@ Naming/AccessorMethodName:
 # DiaryFeedPresenter は引数 6 個が適切 (キーワード引数でラベル明確)
 Metrics/ParameterLists:
   Max: 6
+
+# Rack::Attack の公式記法は compact style (class Rack::Attack)
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'config/initializers/rack_attack.rb'
