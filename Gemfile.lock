@@ -235,6 +235,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.6)
+    rack-attack (6.8.0)
+      rack (>= 1.0, < 4)
     rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -375,6 +377,7 @@ DEPENDENCIES
   mysql2 (>= 0.4.4, < 0.6.0)
   net-imap (>= 0.6.4.1)
   puma (~> 7.2, >= 7.2.1)
+  rack-attack
   rails (>= 7.2.3.1, < 8.0)
   rails-i18n (~> 7.0)
   rubocop
