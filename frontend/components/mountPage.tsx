@@ -1,5 +1,6 @@
 import { type ComponentType, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
+import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 
 export const mountPage = <P extends object>(
   elementId: string,
@@ -15,5 +16,7 @@ export const mountPage = <P extends object>(
     ? (JSON.parse(rootElement.dataset.props) as P)
     : (fallbackProps ?? ({} as P));
 
-  createRoot(rootElement).render(createElement(Component, props));
+  createRoot(rootElement).render(
+    createElement(ErrorBoundary, null, createElement(Component, props)),
+  );
 };
