@@ -95,22 +95,26 @@ class UserController < ApplicationController
   end
 
   def email_certified_show
-    @user = User.find_by(email_verification_token: params[:token])
-    if @user
-      @page_props = { userName: @user.name, token: params[:token], flash: flash.to_h }
+    user = User.find_by(email_verification_token: params[:token])
+    if user && !user.email_verification_token_expired?
+      @page_props = { userName: user.name, token: params[:token], flash: flash.to_h }
       render :email_certified
+    elsif user&.email_verification_token_expired?
+      flash[:danger] = '認証リンクの有効期限（24時間）が切れています。再度登録をお試しください。'
+      redirect_to '/index'
     else
       flash[:danger] = '認証リンクが無効です。再度登録をお試しください。'
       redirect_to '/index'
     end
   end
 
-  # メールアドレス認証
   def email_certified
     user = User.find_by(email_verification_token: params[:token])
     if user.nil? || user.is_certified?
       flash[:danger] = '認証リンクが無効か、すでに認証済みです。'
-    elsif user.update(is_certified: true, email_verification_token: nil)
+    elsif user.email_verification_token_expired?
+      flash[:danger] = '認証リンクの有効期限（24時間）が切れています。再度登録をお試しください。'
+    elsif user.update(is_certified: true, email_verification_token: nil, email_verification_sent_at: nil)
       flash[:success] = 'メールアドレスの認証が完了しました。'
     else
       flash[:danger] = 'メールアドレス認証エラー'

@@ -41,9 +41,14 @@ class User < ApplicationRecord
     password_reset_sent_at < 1.hour.ago
   end
 
+  def email_verification_token_expired?
+    email_verification_sent_at < 24.hours.ago
+  end
+
   private
 
   def generate_email_verification_token
     self.email_verification_token = SecureRandom.urlsafe_base64(32)
+    self.email_verification_sent_at = Time.current
   end
 end
