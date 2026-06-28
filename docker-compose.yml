@@ -1,7 +1,7 @@
 # ローカル開発用 docker-compose.yml
 #
 # よく使うコマンド:
-#   docker compose up --build   # 初回・Gemfile 変更後はこちら
+#   docker compose up --build   # 初回・Gemfile / package.json 変更後はこちら
 #   docker compose up           # 2回目以降
 #   docker compose down         # 停止
 #   docker compose down -v      # DB データも含めて全リセット
@@ -46,6 +46,7 @@ services:
     volumes:
       - .:/app                            # ホストのコードをマウント → コード変更が即反映
       - bundle_cache:/usr/local/bundle    # gem をボリュームに逃がしてマウントで消えないようにする
+      - node_modules:/app/node_modules    # macOS バイナリが混入しないよう Linux 用を分離
       - uploads:/app/public/uploads       # CarrierWave の画像アップロード先を永続化
     depends_on:
       db:
@@ -55,12 +56,15 @@ services:
 
   # ── esbuild watch（JS/TSX）──────────────────────────────
   # frontend/ 以下の JS/TSX ファイルを監視して app/assets/builds/application.js へ再バンドル
+  # pnpm install を毎回実行することで Linux 用バイナリが確実に揃う
   js:
     build: .
-    command: yarn build:watch
+    command: sh -c "pnpm install --frozen-lockfile && pnpm run build:watch"
     volumes:
       - .:/app
       - bundle_cache:/usr/local/bundle
+      - node_modules:/app/node_modules    # web / css サービスと共有
+      - pnpm_store:/root/.local/share/pnpm/store   # ダウンロード済みパッケージをキャッシュ
     environment:
       RAILS_ENV: development
 
@@ -69,10 +73,12 @@ services:
   # ERB・TSX に書いた Tailwind クラスのツリーシェイキングもここで行われる
   css:
     build: .
-    command: yarn build:css:watch
+    command: sh -c "pnpm install --frozen-lockfile && pnpm run build:css:watch"
     volumes:
       - .:/app
       - bundle_cache:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - pnpm_store:/root/.local/share/pnpm/store
     environment:
       RAILS_ENV: development
     stdin_open: true
@@ -82,6 +88,8 @@ services:
 volumes:
   db_data:
   bundle_cache:
+  node_modules:    # コンテナ用 node_modules（ホストの macOS バイナリと分離）
+  pnpm_store:      # pnpm のパッケージダウンロードキャッシュ（再起動時の高速化）
   uploads:
 
 # ── デプロイ時のメモ（今は使わない）────────────────────────

@@ -5,7 +5,6 @@ FROM ruby:3.3.0-slim
 # ネイティブ拡張 gem のビルドや画像処理に必要な OS ライブラリをインストール
 #   build-essential          … mysql2 / bcrypt などのコンパイルに必要
 #   default-libmysqlclient-dev … mysql2 gem が MySQL のヘッダーを参照するため必要
-#   nodejs                   … Sprockets が JS を処理するときに使う実行環境
 #   imagemagick              … mini_magick（画像リサイズ）の実行バイナリ
 #   git                      … Gemfile で github: 参照している gem があるときに必要
 RUN apt-get update -qq && \
@@ -22,9 +21,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
   apt-get install -y --no-install-recommends nodejs && \
   rm -rf /var/lib/apt/lists/*
 
-# yarn: jsbundling-rails (esbuild) が JS パッケージ管理に使う
-# npm 経由でグローバルインストールするのが Docker では最もシンプル
-RUN npm install -g yarn
+# pnpm v11（プロジェクトのパッケージマネージャ。lockfileVersion 9.0 は pnpm v9+ 対応）
+RUN npm install -g pnpm@11
 
 # コンテナ内の作業ディレクトリを /app に固定
 WORKDIR /app
@@ -34,12 +32,16 @@ RUN gem install bundler
 
 # Gemfile だけ先にコピーして bundle install する
 # → アプリコードを変えても Gemfile が変わっていなければこのレイヤーはキャッシュが効く
-# Gemfile* とすることで Gemfile.lock がなくても COPY が失敗しない
-# （lock がある場合はそのバージョンで固定、ない場合は bundle が最新解決する）
 COPY Gemfile* ./
 RUN bundle install --jobs 4 --retry 3
 
-# アプリ全体をコンテナにコピー（.dockerignore で不要ファイルは除外済み）
+# package.json + pnpm-lock.yaml を先にコピーして pnpm install する
+# → package.json が変わっていなければこのレイヤーもキャッシュが効く
+# → node_modules を Linux 用バイナリで構築する（macOS バイナリの混入を防ぐ）
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# アプリ全体をコンテナにコピー（.dockerignore で node_modules 等は除外済み）
 COPY . .
 
 # Puma が待ち受けるポート番号を宣言（docker-compose.yml の ports と合わせる）
