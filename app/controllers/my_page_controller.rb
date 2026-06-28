@@ -1,21 +1,12 @@
 class MyPageController < ApplicationController
+  before_action :require_login
+
   def my_page
-    if session[:id].nil?
-      flash[:danger] = 'ログインしてください'
-      redirect_to '/index'
-    elsif session[:creator].present?
-      @created = if Creator.find_by(user_id: session[:id])
-                   0
-                 else
-                   1
-                 end
-    else
-      @created = if Heir.find_by(user_id: session[:id])
-                   0
-                 else
-                   1
-                 end
-    end
+    @created = if session[:creator].present?
+                 Creator.find_by(user_id: session[:id]) ? 0 : 1
+               else
+                 Heir.find_by(user_id: session[:id]) ? 0 : 1
+               end
     @user = User.find(session[:id])
     @page_props = {
       user: {
@@ -33,29 +24,24 @@ class MyPageController < ApplicationController
   end
 
   def show
-    if session[:id].present?
-      @user = User.find(session[:id])
-      @page_props = {
-        user: {
-          name: @user.name,
-          email: @user.email,
-          profile: @user.profile,
-          avatarPath: @user.avatar_path.to_s
-        },
-        errors: [],
-        isCreator: session[:creator].present?,
-        flash: flash.to_h
-      }
-      render :update
-    else
-      redirect_to '/index'
-    end
+    @user = User.find(session[:id])
+    @page_props = {
+      user: {
+        name: @user.name,
+        email: @user.email,
+        profile: @user.profile,
+        avatarPath: @user.avatar_path.to_s
+      },
+      errors: [],
+      isCreator: session[:creator].present?,
+      flash: flash.to_h
+    }
+    render :update
   end
 
   # アップデート実行
   def update
     @user = User.find(session[:id])
-    # :name => params[:user][:name], :email => params[:user][:email], :phone_number => params[:user][:phone_number], :postal_code => params[:user][:postal_code], :address_1 => params[:user][:address_1], :address_2 => params[:user][:address_2], :profile => params[:user][:profile]
     if @user.update(avatar_path: params[:user][:avatar_path], name: params[:user][:name], email: params[:user][:email],
                     profile: params[:user][:profile])
       flash[:success] = 'success'

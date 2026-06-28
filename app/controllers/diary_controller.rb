@@ -1,4 +1,6 @@
 class DiaryController < ApplicationController
+  before_action :require_login, except: %i[your_diary heir_user_diary comment_delete]
+
   # 投稿フォーム表示
   def regist
     if session[:creator].present?
@@ -58,31 +60,27 @@ class DiaryController < ApplicationController
 
   # マイ日記
   def my_diary
-    if session[:id].present?
-      @diary_user = User.joins(:diaries).where(diaries: { user_id: session[:id] }).select('diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.*').order('diaries.created_at DESC')
-      @user = User.find(session[:id])
-      diary_ids = @diary_user.map(&:diaries_id)
-      @comment = User.joins(:diary_comments).where(diary_comments: { diary_id: diary_ids }).select('diary_comments.*, diary_comments.created_at AS post_time, users.*')
-      @comment_count = DiaryComment.where(diary_id: diary_ids).group(:diary_id).count
-      @diary_good = DiaryGood.new
-      @good = DiaryGood.where(diary_id: diary_ids).group(:diary_id).count
-      @diary_comment = DiaryComment.new
-      @good_user = Diary.joins(:diary_goods).where(diary_goods: { diary_id: Diary.where(user_id: session[:id]).select('diaries.id') }).select('diary_goods.user_id')
-      @good_avatar = User.joins(:diary_goods).where(id: @good_user).select('diary_goods.*, diary_goods.diary_id, users.*').order('RAND()').limit(5)
-      @my_good = Diary.joins(:diary_goods).where(diaries: { user_id: session[:id] }).where(diary_goods: { user_id: session[:id] }).select('diaries.id AS id').order('diaries.created_at DESC')
-      @diary = Diary.new
-      @page_props = {
-        diaries: DiaryFeedPresenter.build(
-          diaries: @diary_user, comments: @comment, comment_count: @comment_count,
-          good: @good, good_avatar: @good_avatar, my_good: @my_good
-        ),
-        errors: @diary.errors.full_messages,
-        flash: flash.to_h,
-        currentUser: { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s }
-      }
-    else
-      redirect_to '/index'
-    end
+    @diary_user = User.joins(:diaries).where(diaries: { user_id: session[:id] }).select('diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.*').order('diaries.created_at DESC')
+    @user = User.find(session[:id])
+    diary_ids = @diary_user.map(&:diaries_id)
+    @comment = User.joins(:diary_comments).where(diary_comments: { diary_id: diary_ids }).select('diary_comments.*, diary_comments.created_at AS post_time, users.*')
+    @comment_count = DiaryComment.where(diary_id: diary_ids).group(:diary_id).count
+    @diary_good = DiaryGood.new
+    @good = DiaryGood.where(diary_id: diary_ids).group(:diary_id).count
+    @diary_comment = DiaryComment.new
+    @good_user = Diary.joins(:diary_goods).where(diary_goods: { diary_id: Diary.where(user_id: session[:id]).select('diaries.id') }).select('diary_goods.user_id')
+    @good_avatar = User.joins(:diary_goods).where(id: @good_user).select('diary_goods.*, diary_goods.diary_id, users.*').order('RAND()').limit(5)
+    @my_good = Diary.joins(:diary_goods).where(diaries: { user_id: session[:id] }).where(diary_goods: { user_id: session[:id] }).select('diaries.id AS id').order('diaries.created_at DESC')
+    @diary = Diary.new
+    @page_props = {
+      diaries: DiaryFeedPresenter.build(
+        diaries: @diary_user, comments: @comment, comment_count: @comment_count,
+        good: @good, good_avatar: @good_avatar, my_good: @my_good
+      ),
+      errors: @diary.errors.full_messages,
+      flash: flash.to_h,
+      currentUser: { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s }
+    }
   end
 
   # 相手ページからの日記
@@ -112,28 +110,17 @@ class DiaryController < ApplicationController
 
   # 投稿削除
   def post_delete
-    if session[:id].present?
-      diary = Diary.find_by(id: params[:id], user_id: session[:id])
-      if diary&.soft_delete
-        flash[:success] = 'success'
-      else
-        flash[:danger] = 'エラー'
-      end
-      redirect_to '/diary/my_diary'
+    diary = Diary.find_by(id: params[:id], user_id: session[:id])
+    if diary&.soft_delete
+      flash[:success] = 'success'
     else
-      redirect_to '/index'
+      flash[:danger] = 'エラー'
     end
+    redirect_to '/diary/my_diary'
   end
 
   # いいねボタン
   def good
-    unless session[:id]
-      respond_to do |f|
-        f.html { redirect_to '/index' }
-        f.json { head :unauthorized }
-      end
-      return
-    end
     @diary_good = DiaryGood.new(diary_id: params[:id], user_id: session[:id])
     fallback = session[:creator] ? '/diary/view' : '/diary/heir/favorite'
     if @diary_good.save
@@ -157,13 +144,6 @@ class DiaryController < ApplicationController
 
   # コメント
   def comment
-    unless session[:id]
-      respond_to do |f|
-        f.html { redirect_to '/index' }
-        f.json { head :unauthorized }
-      end
-      return
-    end
     @diary_comment = DiaryComment.new(diary_comment_params.merge(user_id: session[:id], diary_id: params[:id]))
     fallback = session[:creator] ? '/diary/view' : '/diary/heir/favorite'
     if @diary_comment.save
@@ -189,31 +169,27 @@ class DiaryController < ApplicationController
 
   # 後継者側お気に入り
   def heir_favorite_diary
-    if session[:id].present?
-      @diary_user = User.joins(:diaries).where(diaries: { user_id: session[:id] }).or(User.joins(:diaries).where(diaries: { user_id: Favorite.where(user_id: session[:id]).select('favorites.favorite_user_id') })).select('diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.*').order('diaries.created_at DESC')
-      @user = User.find(session[:id])
-      diary_ids = @diary_user.map(&:diaries_id)
-      @comment = User.joins(:diary_comments).where(diary_comments: { diary_id: diary_ids }).select('diary_comments.*, diary_comments.created_at AS post_time, users.*')
-      @comment_count = DiaryComment.where(diary_id: diary_ids).group(:diary_id).count
-      @diary_good = DiaryGood.new
-      @good = DiaryGood.where(diary_id: diary_ids).group(:diary_id).count
-      @diary_comment = DiaryComment.new
-      @favorite_user = Favorite.where(user_id: session[:id]).select('favorite_user_id')
-      @good_user = Diary.joins(:diary_goods).where(diary_goods: { diary_id: Diary.where(user_id: @favorite_user).select('diaries.id') }).select('diary_goods.user_id')
-      @good_avatar = User.joins(:diary_goods).where(id: @good_user).select('diary_goods.*, diary_goods.diary_id, users.*')
-      @my_good = Diary.joins(:diary_goods).where(diary_goods: { user_id: session[:id] }).where(diaries: { user_id: session[:id] }).or(Diary.joins(:diary_goods).where(diaries: { user_id: Favorite.where(user_id: session[:id]).select('favorites.favorite_user_id') })).select('diaries.id AS id').order('diaries.created_at DESC')
-      @page_props = {
-        diaries: DiaryFeedPresenter.build(
-          diaries: @diary_user, comments: @comment, comment_count: @comment_count,
-          good: @good, good_avatar: @good_avatar, my_good: @my_good
-        ),
-        currentUser: { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s },
-        flash: flash.to_h
-      }
-      render :diary_heir_favorite
-    else
-      redirect_to '/index'
-    end
+    @diary_user = User.joins(:diaries).where(diaries: { user_id: session[:id] }).or(User.joins(:diaries).where(diaries: { user_id: Favorite.where(user_id: session[:id]).select('favorites.favorite_user_id') })).select('diaries.*, diaries.id AS diaries_id, diaries.created_at AS post_time, users.*').order('diaries.created_at DESC')
+    @user = User.find(session[:id])
+    diary_ids = @diary_user.map(&:diaries_id)
+    @comment = User.joins(:diary_comments).where(diary_comments: { diary_id: diary_ids }).select('diary_comments.*, diary_comments.created_at AS post_time, users.*')
+    @comment_count = DiaryComment.where(diary_id: diary_ids).group(:diary_id).count
+    @diary_good = DiaryGood.new
+    @good = DiaryGood.where(diary_id: diary_ids).group(:diary_id).count
+    @diary_comment = DiaryComment.new
+    @favorite_user = Favorite.where(user_id: session[:id]).select('favorite_user_id')
+    @good_user = Diary.joins(:diary_goods).where(diary_goods: { diary_id: Diary.where(user_id: @favorite_user).select('diaries.id') }).select('diary_goods.user_id')
+    @good_avatar = User.joins(:diary_goods).where(id: @good_user).select('diary_goods.*, diary_goods.diary_id, users.*')
+    @my_good = Diary.joins(:diary_goods).where(diary_goods: { user_id: session[:id] }).where(diaries: { user_id: session[:id] }).or(Diary.joins(:diary_goods).where(diaries: { user_id: Favorite.where(user_id: session[:id]).select('favorites.favorite_user_id') })).select('diaries.id AS id').order('diaries.created_at DESC')
+    @page_props = {
+      diaries: DiaryFeedPresenter.build(
+        diaries: @diary_user, comments: @comment, comment_count: @comment_count,
+        good: @good, good_avatar: @good_avatar, my_good: @my_good
+      ),
+      currentUser: { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s },
+      flash: flash.to_h
+    }
+    render :diary_heir_favorite
   end
 
   # 後継者側個別

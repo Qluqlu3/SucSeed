@@ -1,15 +1,13 @@
 class MessageController < ApplicationController
-  def view
-    return redirect_to '/index' if session[:id].blank?
+  before_action :require_login
 
+  def view
     message_list = MessageQueryService.message_list(user_id: session[:id], is_creator: session[:creator].present?)
     @page_props = { messageLists: format_message_list(message_list), flash: flash.to_h }
     render :message_list
   end
 
   def message_list_add
-    return redirect_to '/index' if session[:id].blank?
-
     message_list = if session[:creator].present?
                      MessageList.new(creator_user_id: session[:id], heir_user_id: params[:id])
                    else
@@ -26,8 +24,6 @@ class MessageController < ApplicationController
   end
 
   def get_history
-    return redirect_to '/index' if session[:id].blank?
-
     message_list    = MessageQueryService.message_list(user_id: session[:id], is_creator: session[:creator].present?)
     message_history = MessageQueryService.message_history(user_id: session[:id], other_id: params[:id])
     from_user       = User.find(session[:id])
@@ -37,8 +33,6 @@ class MessageController < ApplicationController
   end
 
   def send_message
-    return redirect_to '/index' if session[:id].blank?
-
     message = Message.new(message_params.merge(send_user_id: session[:id], receive_user_id: params[:id]))
     flash[:danger] = 'エラー' unless message.save
     redirect_to "/message/history/#{params[:id]}"

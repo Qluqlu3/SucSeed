@@ -1,4 +1,6 @@
 class MatchController < ApplicationController
+  before_action :require_login
+
   def appealed_list_view
     return redirect_to '/index' if session[:creator].blank?
 
@@ -15,8 +17,6 @@ class MatchController < ApplicationController
   end
 
   def matching_list_view
-    return redirect_to '/index' if session[:id].blank?
-
     @match = User
              .joins(:sent_matches)
              .select('users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time')
@@ -38,8 +38,6 @@ class MatchController < ApplicationController
   def appeal_answer_sorry = handle_appeal_answer(is_ok: false)
 
   def appeal_send
-    return redirect_to '/index' if session[:id].blank?
-
     @match = Match.new(user_id: session[:id], target_user_id: params[:id], is_scout: false)
     flash[:success] = 'success' if @match.save
     redirect_to "/page/creator/#{params[:id]}"

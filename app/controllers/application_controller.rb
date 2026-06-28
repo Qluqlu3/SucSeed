@@ -18,6 +18,15 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def require_login
+    return if session[:id].present?
+
+    respond_to do |format|
+      format.html { redirect_to '/index', flash: { danger: 'ログインしてください' } }
+      format.json { head :unauthorized }
+    end
+  end
+
   def render_400
     respond_to do |format|
       format.html do

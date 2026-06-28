@@ -1,28 +1,22 @@
 class FavoriteController < ApplicationController
+  before_action :require_login
+
   def add
-    if session[:id].present?
-      @favorite = Favorite.new(user_id: session[:id], favorite_user_id: params[:id])
-      if @favorite.save
-        flash[:success] = 'success'
-      else
-        flash[:danger] = 'エラー'
-      end
-      redirect_to "/page/creator/#{params[:id]}"
+    @favorite = Favorite.new(user_id: session[:id], favorite_user_id: params[:id])
+    if @favorite.save
+      flash[:success] = 'success'
     else
-      redirect_to '/index'
+      flash[:danger] = 'エラー'
     end
+    redirect_to "/page/creator/#{params[:id]}"
   end
 
   def delete
-    if session[:id].present?
-      if Favorite.where(user_id: session[:id]).where(favorite_user_id: params[:id]).delete_all
-        flash[:success] = 'success'
-      else
-        flash[:danger] = 'エラー'
-      end
-      redirect_to "/page/creator/#{params[:id]}"
+    if Favorite.where(user_id: session[:id]).where(favorite_user_id: params[:id]).delete_all
+      flash[:success] = 'success'
     else
-      redirect_to '/index'
+      flash[:danger] = 'エラー'
     end
+    redirect_to "/page/creator/#{params[:id]}"
   end
 end

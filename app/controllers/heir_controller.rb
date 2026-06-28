@@ -1,4 +1,6 @@
 class HeirController < ApplicationController
+  before_action :require_login, except: [:heir_show]
+
   # 詳細情報入力振り分け
   def heir_show
     if session[:id].present? && !Heir.find_by(user_id: session[:id])
@@ -28,38 +30,30 @@ class HeirController < ApplicationController
 
   # 詳細情報入力
   def heir_create
-    if session[:id].present?
-      @heir = Heir.new(heir_params.merge(user_id: session[:id]))
-      if @heir.save
-        flash[:success] = 'success'
-      else
-        flash[:danger] = 'エラー'
-      end
-      redirect_to '/heir/show'
+    @heir = Heir.new(heir_params.merge(user_id: session[:id]))
+    if @heir.save
+      flash[:success] = 'success'
     else
-      redirect_to '/index'
+      flash[:danger] = 'エラー'
     end
+    redirect_to '/heir/show'
   end
 
   # 更新ページ
   def heir_edit
-    if !!Heir.find_by(user_id: session[:id])
-      if session[:id].present?
-        @heir = Heir.find_by(user_id: session[:id])
-        @art_categories = ArtCategory.all
-        @page_props = {
-          heir: {
-            artCategoryId: @heir.art_category_id,
-            introduction: @heir.introduction.to_s
-          },
-          artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
-          errors: [],
-          flash: flash.to_h
-        }
-        render :update
-      else
-        redirect_to '/index'
-      end
+    if Heir.find_by(user_id: session[:id])
+      @heir = Heir.find_by(user_id: session[:id])
+      @art_categories = ArtCategory.all
+      @page_props = {
+        heir: {
+          artCategoryId: @heir.art_category_id,
+          introduction: @heir.introduction.to_s
+        },
+        artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
+        errors: [],
+        flash: flash.to_h
+      }
+      render :update
     else
       redirect_to '/heir/show'
     end
@@ -67,8 +61,6 @@ class HeirController < ApplicationController
 
   # 更新
   def heir_update
-    return if session[:id].blank?
-
     @heir = Heir.find_by(user_id: session[:id])
     if @heir.update(art_category_id: params[:heir][:art_category_id], introduction: params[:heir][:introduction])
       flash[:success] = 'success'
