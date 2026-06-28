@@ -11,6 +11,12 @@
     "noEmit": true,
     // 厳格な型チェックを有効化（バグを早期発見できる）
     "strict": true,
+    // 外部ライブラリの型定義ファイル（.d.ts）の型エラーを無視する
+    // 親ディレクトリの node_modules にある別バージョンの @types/* との衝突防止
+    "skipLibCheck": true,
+    // @types/* の探索範囲をこのプロジェクトの node_modules のみに制限
+    // 親ディレクトリの node_modules を誤って参照しないようにする
+    "typeRoots": ["./node_modules/@types"],
     // ESM の import/export を使う
     "module": "ESNext",
     "moduleResolution": "bundler",
