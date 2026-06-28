@@ -7,6 +7,8 @@ class UserController < ApplicationController
       reset_session
       session[:id] = user[:id]
       session[:creator] = user[:id] if user[:is_creator]
+      session[:last_active_at] = Time.current
+      user.update_column(:login_time, Time.current)
       flash[:success] = 'ログイン成功'
     else
       flash[:danger] = '『メールアドレス』もしくは『パスワード』が誤っています'
