@@ -8,6 +8,10 @@
 //   このファイルを frontend/src/main.tsx に移動し、
 //   Rails 側は API レスポンスのみ返すように変更する。
 
+// ── Sentry（エラー監視） ─────────────────────────────────────────────
+// DSN が meta タグにセットされている場合のみ（＝本番環境）初期化される
+import './spa/sentry';
+
 // ── ページマウント（各ページの専用 mountXxxPage.tsx）────────────────
 // Admin
 import './components/AdminCreatePage/mountAdminCreatePage';

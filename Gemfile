@@ -31,6 +31,10 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # ブルートフォース・DoS 対策
 gem 'rack-attack'
 
+# エラー監視
+gem 'sentry-ruby'
+gem 'sentry-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bundler-audit', '>= 0.9.0'

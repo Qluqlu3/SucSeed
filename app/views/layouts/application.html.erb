@@ -5,6 +5,8 @@
     <%= favicon_link_tag "logo.png" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name="sentry-dsn" content="<%= ENV.fetch('SENTRY_DSN', '') %>">
+    <meta name="rails-env" content="<%= Rails.env %>">
     <%# Font Awesome（esbuild が app/assets/builds/styles/fontawesome.css を生成） %>
     <%= stylesheet_link_tag "styles/fontawesome", media: 'all' %>
     <%# Tailwind CSS（@tailwindcss/cli が app/assets/builds/tailwind.css を生成） %>

@@ -41,6 +41,7 @@ services:
       DB_NAME:        sucseed_development
       RAILS_ENV:      development
       SECRET_KEY_BASE: devsecret_local_only   # ローカル限定なので固定値で OK
+      SENTRY_DSN:     ''            # 本番では Sentry DSN を設定する（空なら無効）
     ports:
       - "3000:3000"   # localhost:3000 でブラウザからアクセス
     volumes:
