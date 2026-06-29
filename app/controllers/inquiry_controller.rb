@@ -14,7 +14,7 @@ class InquiryController < ApplicationController
   def send_inquiry
     @inquiry = Inquiry.new(inquiry_params.merge(user_id: session[:id].presence))
     if @inquiry.save
-      flash[:success] = 'お問い合わせありがとうございます'
+      flash[:success] = t('flash.success.inquiry_sent')
       redirect_to '/inquiry/input'
     else
       @categories = InquiryCategory.all

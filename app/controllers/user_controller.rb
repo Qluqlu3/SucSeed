@@ -9,16 +9,16 @@ class UserController < ApplicationController
       session[:creator] = user[:id] if user[:is_creator]
       session[:last_active_at] = Time.current
       user.update_column(:login_time, Time.current)
-      flash[:success] = 'ログイン成功'
+      flash[:success] = t('flash.success.login')
     else
-      flash[:danger] = '『メールアドレス』もしくは『パスワード』が誤っています'
+      flash[:danger] = t('flash.danger.login_failed')
     end
     redirect_to '/index'
   end
 
   def logout
     reset_session
-    flash[:success] = 'ログアウト'
+    flash[:success] = t('flash.success.logout')
     redirect_to '/index'
   end
 
@@ -32,7 +32,7 @@ class UserController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       GmailMailer.send_certification(@user).deliver_now
-      flash[:success] = '登録完了。認証メールを送信しました。'
+      flash[:success] = t('flash.success.register')
       redirect_to '/index'
     else
       @page_props = { errors: @user.errors.full_messages, flash: flash.to_h }
@@ -47,7 +47,7 @@ class UserController < ApplicationController
 
   def email_exist
     if params[:user_email][:email] == ''
-      flash.now[:danger] = 'メールアドレスを入力してください'
+      flash.now[:danger] = t('flash.danger.email_blank')
       @page_props = { flash: flash.to_h }
       render :password_forgot
       return
@@ -58,7 +58,7 @@ class UserController < ApplicationController
       user.generate_password_reset_token!
       GmailMailer.send_password_reset(user).deliver_now
     end
-    flash[:success] = 'パスワードリセット用のメールを送信しました（登録済みの場合）'
+    flash[:success] = t('flash.success.password_reset_sent')
     redirect_to '/index'
   rescue StandardError
     @page_props = { flash: flash.to_h }
@@ -68,7 +68,7 @@ class UserController < ApplicationController
   def password_edit
     user = User.find_by(password_reset_token: params[:token])
     if user.nil? || user.password_reset_token_expired?
-      flash[:danger] = 'リンクが無効か期限切れです。再度お試しください。'
+      flash[:danger] = t('flash.danger.invalid_link')
       redirect_to '/user/password_forgot'
       return
     end
@@ -80,17 +80,17 @@ class UserController < ApplicationController
   def password_reset
     user = User.find_by(password_reset_token: params[:token])
     if user.nil? || user.password_reset_token_expired?
-      flash[:danger] = 'リンクが無効か期限切れです。再度お試しください。'
+      flash[:danger] = t('flash.danger.invalid_link')
       redirect_to '/user/password_forgot'
       return
     end
 
     if user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
       user.update_columns(password_reset_token: nil, password_reset_sent_at: nil)
-      flash[:success] = 'パスワードを変更しました。'
+      flash[:success] = t('flash.success.password_changed')
       redirect_to '/index'
     else
-      flash.now[:danger] = 'エラー'
+      flash.now[:danger] = t('flash.danger.error')
       @page_props = { token: params[:token], errors: user.errors.full_messages, flash: flash.to_h }
       render :password_reset
     end
@@ -102,10 +102,10 @@ class UserController < ApplicationController
       @page_props = { userName: user.name, token: params[:token], flash: flash.to_h }
       render :email_certified
     elsif user&.email_verification_token_expired?
-      flash[:danger] = '認証リンクの有効期限（24時間）が切れています。再度登録をお試しください。'
+      flash[:danger] = t('flash.danger.email_token_expired')
       redirect_to '/index'
     else
-      flash[:danger] = '認証リンクが無効です。再度登録をお試しください。'
+      flash[:danger] = t('flash.danger.email_token_invalid')
       redirect_to '/index'
     end
   end
@@ -113,13 +113,13 @@ class UserController < ApplicationController
   def email_certified
     user = User.find_by(email_verification_token: params[:token])
     if user.nil? || user.is_certified?
-      flash[:danger] = '認証リンクが無効か、すでに認証済みです。'
+      flash[:danger] = t('flash.danger.email_already_certified')
     elsif user.email_verification_token_expired?
-      flash[:danger] = '認証リンクの有効期限（24時間）が切れています。再度登録をお試しください。'
+      flash[:danger] = t('flash.danger.email_token_expired')
     elsif user.update(is_certified: true, email_verification_token: nil, email_verification_sent_at: nil)
-      flash[:success] = 'メールアドレスの認証が完了しました。'
+      flash[:success] = t('flash.success.email_certified')
     else
-      flash[:danger] = 'メールアドレス認証エラー'
+      flash[:danger] = t('flash.danger.email_certified_error')
     end
     redirect_to '/index'
   end

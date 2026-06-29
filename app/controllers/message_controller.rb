@@ -18,7 +18,7 @@ class MessageController < ApplicationController
       Match.where(target_user_id: session[:id], user_id: params[:id]).update_all(is_add_list: true)
       Match.where(user_id: session[:id], target_user_id: params[:id]).update_all(is_add_list: true)
     else
-      flash[:information] = '追加済み'
+      flash[:information] = t('flash.information.added')
     end
     redirect_to '/message/list'
   end
@@ -34,7 +34,7 @@ class MessageController < ApplicationController
 
   def send_message
     message = Message.new(message_params.merge(send_user_id: session[:id], receive_user_id: params[:id]))
-    flash[:danger] = 'エラー' unless message.save
+    flash[:danger] = t('flash.danger.error') unless message.save
     redirect_to "/message/history/#{params[:id]}"
   end
 

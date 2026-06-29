@@ -32,9 +32,9 @@ class HeirController < ApplicationController
   def heir_create
     @heir = Heir.new(heir_params.merge(user_id: session[:id]))
     if @heir.save
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'エラー'
+      flash[:danger] = t('flash.danger.error')
     end
     redirect_to '/heir/show'
   end
@@ -63,10 +63,10 @@ class HeirController < ApplicationController
   def heir_update
     @heir = Heir.find_by(user_id: session[:id])
     if @heir.update(art_category_id: params[:heir][:art_category_id], introduction: params[:heir][:introduction])
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
       redirect_to '/heir/show'
     else
-      flash[:danger] = 'エラー'
+      flash[:danger] = t('flash.danger.error')
       redirect_to '/heir/update'
     end
   end

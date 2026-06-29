@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     if session[:last_active_at].present? && session[:last_active_at] < SESSION_TIMEOUT.ago
       reset_session
       respond_to do |format|
-        format.html { redirect_to '/index', flash: { danger: 'セッションの有効期限が切れました。再度ログインしてください。' } }
+        format.html { redirect_to '/index', flash: { danger: t('flash.danger.session_expired') } }
         format.json { head :unauthorized }
       end
     else
@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     return if session[:id].present?
 
     respond_to do |format|
-      format.html { redirect_to '/index', flash: { danger: 'ログインしてください' } }
+      format.html { redirect_to '/index', flash: { danger: t('flash.danger.require_login') } }
       format.json { head :unauthorized }
     end
   end
@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
   def render_400
     respond_to do |format|
       format.html do
-        flash[:danger] = '不正なリクエストです'
+        flash[:danger] = t('flash.danger.invalid_request')
         redirect_to '/index'
       end
       format.json { render json: { error: 'Bad Request' }, status: :bad_request }

@@ -1,4 +1,31 @@
 ja:
+  flash:
+    success:
+      login: 'ログイン成功'
+      logout: 'ログアウト'
+      register: '登録完了。認証メールを送信しました。'
+      password_reset_sent: 'パスワードリセット用のメールを送信しました（登録済みの場合）'
+      password_changed: 'パスワードを変更しました。'
+      email_certified: 'メールアドレスの認証が完了しました。'
+      inquiry_sent: 'お問い合わせありがとうございます'
+      saved: '保存しました'
+    danger:
+      login_failed: '『メールアドレス』もしくは『パスワード』が誤っています'
+      admin_login_failed: 'ユーザーIDまたはパスワードが間違っています'
+      require_login: 'ログインしてください'
+      session_expired: 'セッションの有効期限が切れました。再度ログインしてください。'
+      invalid_request: '不正なリクエストです'
+      invalid_link: 'リンクが無効か期限切れです。再度お試しください。'
+      email_already_certified: '認証リンクが無効か、すでに認証済みです。'
+      email_token_expired: '認証リンクの有効期限（24時間）が切れています。再度登録をお試しください。'
+      email_token_invalid: '認証リンクが無効です。再度登録をお試しください。'
+      email_certified_error: 'メールアドレス認証エラー'
+      email_blank: 'メールアドレスを入力してください'
+      comment_blank: 'コメントを入力してください'
+      error: 'エラーが発生しました'
+    information:
+      added: '追加済み'
+
   activerecord:
     models:
       user:

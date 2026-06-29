@@ -64,9 +64,9 @@ class GalleryController < ApplicationController
     if session[:creator].present?
       @gallery = Gallery.new(gallery_params.merge(user_id: session[:creator]))
       if @gallery.save
-        flash[:success] = 'success'
+        flash[:success] = t('flash.success.saved')
       else
-        flash[:danger] = 'エラー'
+        flash[:danger] = t('flash.danger.error')
       end
       redirect_to '/gallery/my_gallery'
     else
@@ -161,9 +161,9 @@ class GalleryController < ApplicationController
   def gallery_good
     @selected_gallery = GalleryGood.new(gallery_id: params[:id], user_id: session[:id])
     if @selected_gallery.save
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'エラ−'
+      flash[:danger] = t('flash.danger.error')
     end
     redirect_to "/gallery/selected/#{params[:id]}"
   end
@@ -171,9 +171,9 @@ class GalleryController < ApplicationController
   def gallery_comment
     @selected_gallery = GalleryComment.new(gallery_comment_params.merge(gallery_id: params[:id], user_id: session[:id]))
     if @selected_gallery.save
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'コメントを入力してください'
+      flash[:danger] = t('flash.danger.comment_blank')
     end
     redirect_to "/gallery/selected/#{params[:id]}"
   end

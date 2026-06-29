@@ -44,10 +44,10 @@ class MyPageController < ApplicationController
     @user = User.find(session[:id])
     if @user.update(avatar_path: params[:user][:avatar_path], name: params[:user][:name], email: params[:user][:email],
                     profile: params[:user][:profile])
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
       redirect_to '/my_page/my_page'
     else
-      flash[:danger] = 'エラー'
+      flash[:danger] = t('flash.danger.error')
       @page_props = {
         user: {
           name: @user.name,

@@ -15,7 +15,7 @@ class AdminController < ApplicationController
       session[:admin] = admin[:id]
       redirect_to '/admin/index'
     else
-      flash[:danger] = 'ユーザーIDまたはパスワードが間違っています'
+      flash[:danger] = t('flash.danger.admin_login_failed')
       @page_props = { flash: flash.to_h }
       render :admin_login
     end
@@ -30,7 +30,7 @@ class AdminController < ApplicationController
   def create_user
     @admin = Admin.new(admin_create_params)
     if @admin.save
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
       redirect_to '/admin/login'
     else
       @page_props = { errors: @admin.errors.full_messages, flash: flash.to_h }

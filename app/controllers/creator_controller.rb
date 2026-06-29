@@ -58,7 +58,7 @@ class CreatorController < ApplicationController
     @art_categories = ArtCategory.all
     @creator = Creator.new(creator_params.merge(user_id: session[:id]))
     if @creator.save
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
       redirect_to '/creator/show'
     else
       @page_props = {
@@ -73,10 +73,10 @@ class CreatorController < ApplicationController
   def update
     if Creator.find_by(user_id: session[:id]).update(title: params[:art_category][:title], art_category_id: params[:art_category][:art_category_id],
                                                      establishment: params[:art_category][:establishment], employee: params[:art_category][:employee], postal_code: params[:art_category][:postal_code], is_recruitment: params[:art_category][:is_recruitment])
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
       redirect_to '/creator/show'
     else
-      flash[:danger] = 'エラー'
+      flash[:danger] = t('flash.danger.error')
       redirect_to '/creator/edit'
     end
   end

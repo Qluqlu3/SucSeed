@@ -39,7 +39,7 @@ class MatchController < ApplicationController
 
   def appeal_send
     @match = Match.new(user_id: session[:id], target_user_id: params[:id], is_scout: false)
-    flash[:success] = 'success' if @match.save
+    flash[:success] = t('flash.success.saved') if @match.save
     redirect_to "/page/creator/#{params[:id]}"
   end
 
@@ -61,7 +61,7 @@ class MatchController < ApplicationController
     return redirect_to '/index' if session[:creator].blank?
 
     scout = Match.new(user_id: params[:id], target_user_id: session[:id], is_scout: true)
-    scout.save ? flash[:success] = 'success' : flash[:danger] = 'エラー'
+    scout.save ? flash[:success] = t('flash.success.saved') : flash[:danger] = t('flash.danger.error')
     redirect_to "/page/heir/#{params[:id]}"
   end
 
@@ -103,7 +103,7 @@ class MatchController < ApplicationController
     return redirect_to '/index' if session[:creator].blank?
 
     match = Match.where(user_id: params[:id], target_user_id: session[:id])
-    match.update_all(is_ok: is_ok) ? flash[:success] = 'success' : flash[:danger] = 'エラー'
+    match.update_all(is_ok: is_ok) ? flash[:success] = t('flash.success.saved') : flash[:danger] = t('flash.danger.error')
     redirect_to '/match/appealed/list'
   end
 
@@ -111,7 +111,7 @@ class MatchController < ApplicationController
     return redirect_to '/index' unless session[:id].present? && session[:creator].nil?
 
     scout = Match.where(is_scout: true, user_id: session[:id], target_user_id: params[:id])
-    scout.update_all(is_ok: is_ok) ? flash[:success] = 'success' : flash[:danger] = 'エラー'
+    scout.update_all(is_ok: is_ok) ? flash[:success] = t('flash.success.saved') : flash[:danger] = t('flash.danger.error')
     redirect_to '/match/scouted/list'
   end
 end

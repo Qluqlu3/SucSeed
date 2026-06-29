@@ -100,9 +100,9 @@ class AdminEditController < ApplicationController
   # ユーザー削除
   def user_delete
     if User.find(params[:id]).soft_delete
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'error'
+      flash[:danger] = t('flash.danger.error')
     end
     redirect_to '/admin/management/user'
   end
@@ -125,19 +125,19 @@ class AdminEditController < ApplicationController
   def user_edit
     user = User.with_deleted.find_by(id: params[:id])
     if user.update(avatar_path: params[:user][:avatar_path], profile: params[:user][:profile])
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
       redirect_to '/admin/management/user'
     else
-      flash.now[:danger] = 'error'
+      flash.now[:danger] = t('flash.danger.error')
     end
   end
 
   # ダイアリー削除
   def diary_delete
     if Diary.find(params[:id]).soft_delete
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'error'
+      flash[:danger] = t('flash.danger.error')
     end
     redirect_to '/admin/management/diary'
   end
@@ -145,9 +145,9 @@ class AdminEditController < ApplicationController
   # ダイアリーコメント削除
   def diary_comment_delete
     if DiaryComment.find(params[:id]).soft_delete
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'error'
+      flash[:danger] = t('flash.danger.error')
     end
     redirect_to '/admin/management/diary_comment'
   end
@@ -155,9 +155,9 @@ class AdminEditController < ApplicationController
   # ギャラリー削除
   def gallery_delete
     if Gallery.find(params[:id]).soft_delete
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'error'
+      flash[:danger] = t('flash.danger.error')
     end
     redirect_to '/admin/management/gallery'
   end
@@ -188,9 +188,9 @@ class AdminEditController < ApplicationController
   # お問い合わせ対応
   def inquiry_detail_check
     if Inquiry.where(id: params[:id]).update_all(is_check: params[:inquiry][:is_check], admin_id: session[:admin])
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'エラー'
+      flash[:danger] = t('flash.danger.error')
     end
     redirect_to '/admin/management/inquiry'
   end

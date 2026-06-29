@@ -22,9 +22,9 @@ class DiaryController < ApplicationController
     if session[:creator].present?
       @diary = Diary.new(diary_params.merge(user_id: session[:id]))
       if @diary.save
-        flash[:success] = 'success'
+        flash[:success] = t('flash.success.saved')
       else
-        flash[:danger] = 'エラー'
+        flash[:danger] = t('flash.danger.error')
       end
       redirect_to '/diary/my_diary'
     else
@@ -112,9 +112,9 @@ class DiaryController < ApplicationController
   def post_delete
     diary = Diary.find_by(id: params[:id], user_id: session[:id])
     if diary&.soft_delete
-      flash[:success] = 'success'
+      flash[:success] = t('flash.success.saved')
     else
-      flash[:danger] = 'エラー'
+      flash[:danger] = t('flash.danger.error')
     end
     redirect_to '/diary/my_diary'
   end
@@ -126,7 +126,7 @@ class DiaryController < ApplicationController
     if @diary_good.save
       respond_to do |f|
         f.html do
-          flash[:success] = 'success'
+          flash[:success] = t('flash.success.saved')
           redirect_to fallback
         end
         f.json { head :ok }
@@ -134,7 +134,7 @@ class DiaryController < ApplicationController
     else
       respond_to do |f|
         f.html do
-          flash[:danger] = 'エラー'
+          flash[:danger] = t('flash.danger.error')
           redirect_to fallback
         end
         f.json { head :unprocessable_content }
@@ -149,7 +149,7 @@ class DiaryController < ApplicationController
     if @diary_comment.save
       respond_to do |f|
         f.html do
-          flash[:success] = 'success'
+          flash[:success] = t('flash.success.saved')
           redirect_to fallback
         end
         f.json { head :ok }
@@ -157,7 +157,7 @@ class DiaryController < ApplicationController
     else
       respond_to do |f|
         f.html do
-          flash[:danger] = 'エラー'
+          flash[:danger] = t('flash.danger.error')
           redirect_to fallback
         end
         f.json { head :unprocessable_content }
