@@ -21,7 +21,7 @@ export const fetchSessionPayload = async (): Promise<{
   layoutAssets: LayoutAssets;
 }> => {
   try {
-    const response = await getJson('/api/session');
+    const response = await getJson('/api/v1/session');
 
     if (!response.ok) {
       return { role: 'guest', artCategories: [], layoutAssets: EMPTY_LAYOUT_ASSETS };
