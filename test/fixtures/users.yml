@@ -1,17 +1,36 @@
-one:
-  id: user_one
-  name: User One
-  email: user_one@example.com
+alice:
+  id: testuser_alice_00001
+  name: Alice
+  email: alice@example.com
   birthday: "1990-01-01"
   is_man: true
-  password_digest: "$2a$12$placeholder_hash_for_test_fixture_1xx"
-  created_at: "2020-01-01 00:00:00"
+  is_creator: false
+  is_certified: true
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  email_verification_sent_at: "2026-01-01 00:00:00"
+  created_at: "2026-01-01 00:00:00"
 
-two:
-  id: user_two
-  name: User Two
-  email: user_two@example.com
-  birthday: "1991-06-15"
+creator_bob:
+  id: testuser_creator_0001
+  name: CreatorBob
+  email: creator@example.com
+  birthday: "1985-03-15"
+  is_man: true
+  is_creator: true
+  is_certified: true
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  email_verification_sent_at: "2026-01-01 00:00:00"
+  created_at: "2026-01-01 00:00:00"
+
+unverified:
+  id: testuser_unverified_01
+  name: Unverified
+  email: unverified@example.com
+  birthday: "1995-07-20"
   is_man: false
-  password_digest: "$2a$12$placeholder_hash_for_test_fixture_2xx"
-  created_at: "2020-01-01 00:00:00"
+  is_creator: false
+  is_certified: false
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  email_verification_token: valid_email_token_001
+  email_verification_sent_at: "2026-06-29 00:00:00"
+  created_at: "2026-06-29 00:00:00"

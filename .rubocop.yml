@@ -85,6 +85,7 @@ Rails/SkipsModelValidations:
     - 'app/controllers/user_controller.rb'
     - 'app/models/concerns/soft_deletable.rb'
     - 'app/models/user.rb'
+    - 'test/**/*'
 
 # Flash メッセージの i18n 化は別タスクで対応予定
 Rails/I18nLocaleTexts:
