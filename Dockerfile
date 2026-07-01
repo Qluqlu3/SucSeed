@@ -16,13 +16,13 @@ RUN apt-get update -qq && \
   imagemagick && \
   rm -rf /var/lib/apt/lists/*
 
-# Node.js 20 LTS（Tailwind CSS v4 が Node >= 20 を要求するため apt 版 18 は使わない）
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+# Node.js 22 LTS（pnpm 11 が node:sqlite を必要とするため Node 22+ が必須）
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
   apt-get install -y --no-install-recommends nodejs && \
   rm -rf /var/lib/apt/lists/*
 
-# pnpm v11（プロジェクトのパッケージマネージャ。lockfileVersion 9.0 は pnpm v9+ 対応）
-RUN npm install -g pnpm@11
+# pnpm v9（lockfileVersion 9.0 対応、Node 22 で動作。pnpm 11 は Docker 非対話環境でのビルドスクリプト実行に問題あり）
+RUN npm install -g pnpm@9
 
 # コンテナ内の作業ディレクトリを /app に固定
 WORKDIR /app

@@ -68,6 +68,7 @@ services:
       - pnpm_store:/root/.local/share/pnpm/store   # ダウンロード済みパッケージをキャッシュ
     environment:
       RAILS_ENV: development
+      CI: 'true'   # pnpm の非対話モード（node_modules 再構築時の TTY 確認をスキップ）
 
   # ── Tailwind CSS watch（CSS）────────────────────────────
   # frontend/styles/tailwind.css を監視して app/assets/builds/tailwind.css を再生成
@@ -82,6 +83,7 @@ services:
       - pnpm_store:/root/.local/share/pnpm/store
     environment:
       RAILS_ENV: development
+      CI: 'true'
     stdin_open: true
     tty: true
 
