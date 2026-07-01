@@ -58,7 +58,7 @@ export const HeirPage = ({
       <div className="w-full relative mx-auto">
         <img src="/assets/main1.jpg" height="800px" width="100%" alt="背景画像" />
         <div className="absolute top-[2%] left-[1%]">
-          <h1 className="bg-[#FCF2D3] rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]">
+          <h1 className="bg-p-light rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]">
             {user.name}
           </h1>
           <p
@@ -91,7 +91,7 @@ export const HeirPage = ({
       <div className="w-full h-[50px] bg-p-brand" />
 
       {/* 紹介文 */}
-      <div className="mx-auto w-[93%] bg-[#FCF2D3] rounded-[11px] mb-[5%] text-[27px] border-none mt-[5%]">
+      <div className="mx-auto w-[93%] bg-p-light rounded-[11px] mb-[5%] text-[27px] border-none mt-[5%]">
         <h3 className="text-white bg-p-brand text-[25px] [border-radius:11px_11px_0_0] pt-[25px] pr-0 pb-[11px] pl-[21px]">
           紹介文
         </h3>

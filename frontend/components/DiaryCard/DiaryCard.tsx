@@ -92,7 +92,7 @@ export const DiaryCard = ({
   return (
     <div className="mt-[2%] border-2 border-[#D3C9E7] rounded-[5px]">
       {/* カードヘッダー */}
-      <div className="pt-[0.5%] pl-[0.8%] pb-[0.5%] rounded-t-[5px] bg-[#FCF2D3] text-[25px]">
+      <div className="pt-[0.5%] pl-[0.8%] pb-[0.5%] rounded-t-[5px] bg-p-light text-[25px]">
         <img
           src={entry.avatarPath}
           className="rounded-full"
@@ -104,7 +104,7 @@ export const DiaryCard = ({
       </div>
 
       {/* カードボディ */}
-      <div className="pt-[0.3%] px-[0.5%] pb-[1.5%] bg-[#FCF2D3]">
+      <div className="pt-[0.3%] px-[0.5%] pb-[1.5%] bg-p-light">
         <div className="pr-[0.5%] text-right text-[17px] text-[#555]">{entry.postTime}</div>
         <div className="py-[1%] pl-[1%]">
           <p style={{ whiteSpace: 'pre-wrap' }} className="text-[21px]">
@@ -191,7 +191,7 @@ export const DiaryCard = ({
           {currentUserId ? (
             <form onSubmit={handleComment}>
               <div className="my-[1.5%] mr-[9%] ml-[10%] rounded bg-white">
-                <div className="py-[0.5%] pl-[0.5%] text-[19px] bg-[#FCF2D3] border-b border-gray-200">
+                <div className="py-[0.5%] pl-[0.5%] text-[19px] bg-p-light border-b border-gray-200">
                   <div>
                     <img
                       src={currentUserAvatar ?? ''}
@@ -203,7 +203,7 @@ export const DiaryCard = ({
                     {currentUserName}
                   </div>
                 </div>
-                <div className="bg-[#FCF2D3] p-[0.5%]">
+                <div className="bg-p-light p-[0.5%]">
                   <textarea
                     className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
                     placeholder="100文字以内"

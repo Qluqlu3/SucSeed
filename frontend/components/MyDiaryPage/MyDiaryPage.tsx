@@ -100,7 +100,7 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
           <div className="w-full md:w-3/12 h-[60vh] bg-p-dark border border-p-brand rounded-[7px] pl-[1%] pb-[5%]">
             <div>
               <div className="mt-[8%] border-2 border-[#D3C9E7] rounded-[5px]">
-                <div className="pt-[1.3%] pb-[0.8%] pl-[1.5%] bg-[#FCF2D3] rounded-t-[5px] text-[23px]">
+                <div className="pt-[1.3%] pb-[0.8%] pl-[1.5%] bg-p-light rounded-t-[5px] text-[23px]">
                   <img
                     src={currentUser.avatarPath}
                     className="rounded-full"

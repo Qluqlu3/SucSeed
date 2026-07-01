@@ -110,10 +110,10 @@ export const SelectedGalleryPage = ({
         <div className="w-full lg:w-9/12 py-[0.5%] px-[0.3%] pb-[5%] m-0 bg-p-dark border border-p-brand rounded-[7px]">
           <div className="bg-white rounded-[0_0_7px_7px]">
             <img src={dataUrl} width="100%" height="850px" alt="ギャラリー画像" />
-            <div className="py-[0.3%] px-[0.5%] m-0 text-[19px] text-[#333] text-right bg-[#FCF2D3] border-b border-[#ccc]">
+            <div className="py-[0.3%] px-[0.5%] m-0 text-[19px] text-[#333] text-right bg-p-light border-b border-[#ccc]">
               {createdAt}
             </div>
-            <div className="py-[1%] px-[3%] bg-[#FCF2D3] text-[25px]">
+            <div className="py-[1%] px-[3%] bg-p-light text-[25px]">
               <p>{comment}</p>
             </div>
           </div>
@@ -190,7 +190,7 @@ export const SelectedGalleryPage = ({
               {loggedIn && currentUser ? (
                 <form onSubmit={handleComment}>
                   <div className="my-[1.5%] mr-[9%] ml-[10%] text-left rounded">
-                    <div className="py-[0.5%] pl-[0.5%] text-[19px] bg-[#FCF2D3] border-b border-gray-200">
+                    <div className="py-[0.5%] pl-[0.5%] text-[19px] bg-p-light border-b border-gray-200">
                       <div>
                         <img
                           src={currentUser.avatarPath}
@@ -202,7 +202,7 @@ export const SelectedGalleryPage = ({
                         {currentUser.name}
                       </div>
                     </div>
-                    <div className="bg-[#FCF2D3] p-[0.5%]">
+                    <div className="bg-p-light p-[0.5%]">
                       <textarea
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
                         placeholder="100文字以内"
@@ -271,7 +271,7 @@ export const SelectedGalleryPage = ({
                 </div>
               </a>
             </div>
-            <div className="border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]">
+            <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
               <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
                 創作作品名
               </div>
@@ -279,7 +279,7 @@ export const SelectedGalleryPage = ({
                 <p className="text-[23px] p-0">{creator.title}</p>
               </div>
             </div>
-            <div className="border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]">
+            <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
               <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
                 創業年数
               </div>
@@ -287,7 +287,7 @@ export const SelectedGalleryPage = ({
                 <p className="text-[23px] p-0">{creator.establishment}年</p>
               </div>
             </div>
-            <div className="border-2 border-[#D7CDE9] bg-[#FCF2D3] mt-[7%] rounded-[5px]">
+            <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
               <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
                 従業員数
               </div>
