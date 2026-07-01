@@ -65,7 +65,7 @@ Rails.application.routes.draw do
   get 'admin/management/inquiry' => 'admin_edit#inquiry'
   get 'admin/inquiry/detail/:id' => 'admin_edit#inquiry_detail_show'
 
-  post 'index' => 'user#logout'
+  post 'user/logout' => 'user#logout'
   post 'search/user' => 'index#search_user'
 
   post 'user/login' => 'user#login'
