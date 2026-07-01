@@ -46,6 +46,8 @@
   --color-p-nav: #cbb5ff; /* Navbar リンク hover 色 */
   --color-p-list: #baa9da; /* リストカードヘッダー背景 */
   --color-p-msg: #d3c9e7; /* メッセージリストボタン背景 */
+  --color-p-gold: #d1a441; /* アクセントゴールド（いいね・NEWバッジ・タグ等、紫と合わせる差し色） */
+  --color-p-danger: #e5484d; /* 削除・エラー等の警告色（統一前は赤系が複数混在していた） */
 
   /* ── フォント ──────────────────────────────────────────────── */
   --font-mincho:
@@ -86,7 +88,7 @@
 
   /* Rails が自動付与するバリデーションエラーラッパー */
   .field_with_errors {
-    background-color: #ff0022;
+    background-color: var(--color-p-danger);
     padding: 2px;
     display: inline;
   }
@@ -189,7 +191,7 @@
   }
 
   .login-form-btn {
-    background-color: #4caf50;
+    background-color: var(--color-p-brand);
     color: #fff;
     padding: 3px 7px;
     margin: 8px 0;
@@ -205,7 +207,7 @@
   .cancelbtn {
     width: auto;
     padding: 10px 18px;
-    background-color: #f44336;
+    background-color: var(--color-p-muted);
   }
 
   .imgcontainer {
@@ -229,7 +231,7 @@
   }
 
   .my-dropdown {
-    background-color: #452f6e;
+    background-color: var(--color-p-dark);
     border-radius: 10px;
   }
 
@@ -285,7 +287,7 @@
   }
 
   .modal-small {
-    color: #ff0000;
+    color: var(--color-p-danger);
     padding: 0 0 0 2px;
     margin: 0;
   }
@@ -313,7 +315,7 @@
   .search_icon {
     padding: 0;
     font-size: 20px;
-    color: #1f8a70;
+    color: var(--color-p-dark);
   }
 
   /* ── Footer ──────────────────────────────────────────────── */
@@ -367,14 +369,14 @@
   .error-box {
     font-size: 19px;
     background-color: #fff;
-    color: #e50000;
+    color: var(--color-p-danger);
   }
 
   .error-title {
     padding: 1%;
     font-size: 25px;
     color: #fff;
-    background-color: #ff4c4c;
+    background-color: var(--color-p-danger);
   }
 
   .error-index {
