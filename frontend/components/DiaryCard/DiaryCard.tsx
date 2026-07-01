@@ -82,6 +82,7 @@ export const DiaryCard = ({
   };
 
   const handleDelete = async () => {
+    if (!confirm('この日記を削除してよいですか？')) return;
     await postJson(`/diary/post/${entry.diaryId}/delete`);
     setDeleted(true);
   };
