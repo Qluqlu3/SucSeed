@@ -38,14 +38,11 @@ Ruby on Rails 7.2 / MySQL 8.0 で構築。Docker で簡単にローカル起動�
 git clone git@github.com:Qluqlu3/SucSeed.git
 cd SucSeed
 
-# 2. イメージをビルド（初回・Gemfile / package.json 変更後はこちら）
-docker compose build
+# 2. イメージをビルドして起動（初回）
+docker compose up --build
 
-# 3. DB を作成してマイグレーション
+# 3. DB を作成してマイグレーション（別ターミナルで）
 docker compose run --rm web rails db:create db:migrate
-
-# 4. 起動（Rails + esbuild + Tailwind + MySQL の 4 サービスが立ち上がる）
-docker compose up
 ```
 
 ブラウザで http://localhost:3000 にアクセス。
@@ -53,23 +50,57 @@ docker compose up
 ### よく使うコマンド
 
 ```sh
-docker compose up                         # 起動（2回目以降）
-docker compose down                       # 停止
-docker compose down -v                    # DB・node_modules データごとリセット
-
-docker compose run --rm web rails console    # Rails コンソール
-docker compose run --rm web rails routes     # ルーティング確認
-docker compose run --rm web rails db:migrate # マイグレーション追加後
+docker compose up                              # 起動（2回目以降）
+docker compose down                            # 停止
+docker compose run --rm web rails console      # Rails コンソール
+docker compose run --rm web rails routes       # ルーティング確認
+docker compose run --rm web rails db:migrate   # マイグレーション追加後
 ```
 
-### Gemfile または package.json を変更した場合
+### Gemfile を変更した場合
 
-gem や npm パッケージを追加・更新したらイメージを再ビルドしてください。
+gem を追加・更新したあとは、**イメージの再ビルドだけでは不十分**です。  
+gem は `bundle_cache` という名前付きボリュームに永続化されており、起動時にコンテナの `/usr/local/bundle` をマウントで上書きします。ボリューム内を直接更新する必要があります。
 
 ```sh
-docker compose build
+docker compose run --rm web bundle install   # ボリューム内の gem を更新
 docker compose up
 ```
+
+### package.json を変更した場合
+
+```sh
+docker compose up --build   # イメージを再ビルド（pnpm install が走る）
+```
+
+### トラブルシューティング
+
+**`Could not find <gem名> in locally installed gems` が出る**
+
+Gemfile.lock が更新されたがボリューム内の gem が古い状態です。
+
+```sh
+docker compose run --rm web bundle install
+docker compose up
+```
+
+**すべてをリセットしたい（DB データは残す）**
+
+```sh
+docker compose down
+docker volume rm sucseed_bundle_cache
+docker compose up --build
+```
+
+**DB データも含めて完全リセット**
+
+```sh
+docker compose down -v
+docker compose up --build
+docker compose run --rm web rails db:create db:migrate
+```
+
+---
 
 ## フロントエンド開発
 
@@ -79,29 +110,46 @@ docker compose up
 frontend/
 ├── application.ts          # esbuild エントリーポイント
 ├── components/
-│   ├── mount.ts            # data-react-component 属性でコンポーネントを自動マウント
-│   └── (コンポーネントをここに追加)
-├── pages/
-│   └── (ページ単位コンポーネントをここに追加)
+│   ├── mountPage.tsx       # 全ページ共通のマウントロジック
+│   ├── ErrorBoundary/
+│   ├── CreatorCard/        # 複数ページで共用する共通コンポーネント
+│   ├── FlashMessages/
+│   ├── IndexPage/          # ページごとに 1 ディレクトリ
+│   │   ├── IndexPage.tsx       # コンポーネント本体
+│   │   ├── index.ts            # re-export
+│   │   └── mountIndexPage.tsx  # このページ専用のマウント処理
+│   └── ...
+├── spa/                    # Navbar・LoginModal など全ページ共通の island
+├── three/                  # Three.js 3D ビューワー
+├── utils/                  # csrf.ts / postJson.ts など汎用ユーティリティ
 └── styles/
-    └── tailwind.css        # Tailwind CSS v4 エントリーポイント
+    ├── tailwind.css        # Tailwind CSS v4 エントリーポイント
+    └── fontawesome.css
 ```
 
 ### ERB ページに React コンポーネントを埋め込む
 
-`data-react-component` 属性で任意の ERB ページにコンポーネントをマウントできます。
+**1. ERB に `id` と `data-props` を持つ div を置く**
 
 ```erb
-<%# props は JSON 文字列で渡す %>
-<div data-react-component="MyComponent" data-props='{"title":"こんにちは"}'></div>
+<div id="my-page" data-props="<%= @page_props.to_json %>"></div>
 ```
 
-`frontend/components/mount.ts` の `COMPONENTS` にコンポーネントを登録してください。
+**2. `mountMyPage.tsx` でマウントする**
+
+```tsx
+import { mountPage } from '../mountPage';
+import { MyPage } from './MyPage';
+
+mountPage('my-page', MyPage, { /* fallback props */ });
+```
+
+`mountPage` は `data-props` の JSON を自動でパースしてコンポーネントに渡します。
+
+**3. `application.ts` に import を追加する**
 
 ```ts
-const COMPONENTS = {
-  MyComponent,  // ← 追加
-};
+import '../components/MyPage/mountMyPage';
 ```
 
 ### Lint / Format コマンド
