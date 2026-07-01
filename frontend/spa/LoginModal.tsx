@@ -28,34 +28,28 @@ export const LoginModal: FC = () => {
   if (!isOpen) return null;
 
   return createPortal(
-    <>
-      {/* オーバーレイ: クリックで閉じる */}
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="loginModalTitle"
+      onClick={close}
+      onKeyDown={(e) => e.key === 'Escape' && close()}
+    >
+      {/* ダイアログ: クリックを親に伝播させない */}
       <div
-        className="modal show"
-        style={{ display: 'block' }}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="loginModalTitle"
-        onClick={close}
-        onKeyDown={(e) => e.key === 'Escape' && close()}
+        className="w-full max-w-md"
+        role="document"
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => e.stopPropagation()}
       >
-        {/* ダイアログ: クリックを親に伝播させない */}
-        <div
-          className="modal-dialog modal-dialog-centered"
-          role="document"
-          onClick={(e) => e.stopPropagation()}
-          onKeyDown={(e) => e.stopPropagation()}
-        >
-          <div className="modal-content my-modal">
-            <LoginModalHeader onClose={close} />
-            <LoginModalBody />
-            <LoginModalFooter />
-          </div>
+        <div className="my-modal overflow-hidden rounded-[5px] bg-white shadow-lg">
+          <LoginModalHeader onClose={close} />
+          <LoginModalBody />
+          <LoginModalFooter />
         </div>
       </div>
-      {/* バックドロップ */}
-      <div className="modal-backdrop show" />
-    </>,
+    </div>,
     document.body,
   );
 };
