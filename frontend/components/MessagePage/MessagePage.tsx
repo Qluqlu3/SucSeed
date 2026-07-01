@@ -94,17 +94,15 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                   msg.sendUserId === fromUser.id ? (
                     // 自分の発言
                     <div key={`${msg.sendUserId}-${msg.createdAt}`} className="mt-2 text-right">
-                      <div className="media text-right">
-                        <div className="media-body">
-                          <p className="p-[7px] text-[17px] [border-radius:17px_17px_0_17px] bg-p-mid inline-block">
-                            {msg.content}
-                          </p>
-                        </div>
+                      <div className="flex items-end justify-end gap-2">
+                        <p className="p-[7px] text-[17px] [border-radius:17px_17px_0_17px] bg-p-mid inline-block">
+                          {msg.content}
+                        </p>
                         <img
                           src={fromUser.avatarPath}
                           width={60}
                           height={60}
-                          className="rounded-full"
+                          className="shrink-0 rounded-full"
                           alt=""
                         />
                       </div>
@@ -113,19 +111,17 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                   ) : (
                     // 相手の発言
                     <div key={`${msg.sendUserId}-${msg.createdAt}`} className="mt-2 text-left">
-                      <div className="media text-left">
+                      <div className="flex items-end gap-2">
                         <img
                           src={toUser.avatarPath}
                           width={60}
                           height={60}
-                          className="rounded-full"
+                          className="shrink-0 rounded-full"
                           alt={toUser.name}
                         />
-                        <div className="media-body">
-                          <p className="p-[7px] text-[17px] [border-radius:17px_17px_17px_0] bg-p-list inline-block">
-                            {msg.content}
-                          </p>
-                        </div>
+                        <p className="p-[7px] text-[17px] [border-radius:17px_17px_17px_0] bg-p-list inline-block">
+                          {msg.content}
+                        </p>
                       </div>
                       <p className="px-[5px] text-[13px] text-[#aaa]">{msg.createdAt}</p>
                     </div>
@@ -137,21 +133,19 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
               <div>
                 <form action={`/message/send/${toUser.id}`} method="post" className="w-full">
                   <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-                  <div className="input-group">
+                  <div className="flex w-full gap-2">
                     <input
                       type="text"
                       name="message[content]"
-                      className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
+                      className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
                       placeholder="メッセージ"
                     />
-                    <span className="input-group-btn">
-                      <button
-                        type="submit"
-                        className="p-0 w-[5vw] text-[23px] bg-p-gold rounded hover:opacity-80"
-                      >
-                        <i className="far fa-paper-plane message-icon" />
-                      </button>
-                    </span>
+                    <button
+                      type="submit"
+                      className="flex w-[5vw] items-center justify-center rounded bg-p-gold text-white hover:opacity-80"
+                    >
+                      <i className="far fa-paper-plane message-icon" />
+                    </button>
                   </div>
                 </form>
               </div>

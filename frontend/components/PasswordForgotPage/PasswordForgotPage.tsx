@@ -11,15 +11,17 @@ type Props = { flash: Record<string, string> };
 export const PasswordForgotPage = ({ flash }: Props) => {
   return (
     <>
-      <h1 className="text-2xl font-bold mb-4">メールアドレス確認</h1>
+      <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">
+        メールアドレス確認
+      </h1>
 
       <FlashMessages flash={flash} />
 
-      <div>
+      <div className="w-[90%] mx-auto mb-[5%] p-[3%] bg-p-light border border-p-mid rounded-[7px]">
         <form action="/user/password_forgot" method="post">
           <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-          <div className="input-group">
-            <label className="input-group-addon" htmlFor="password-forgot-email">
+          <div className="mb-4">
+            <label className="block mb-1 text-p-text" htmlFor="password-forgot-email">
               メールアドレス
             </label>
             <input
@@ -30,7 +32,7 @@ export const PasswordForgotPage = ({ flash }: Props) => {
               placeholder="メールアドレス"
             />
           </div>
-          <div className="right_side">
+          <div className="text-right">
             <button
               type="submit"
               className="rounded bg-p-brand px-5 py-2 text-white hover:opacity-80"

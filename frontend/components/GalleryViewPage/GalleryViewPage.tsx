@@ -16,7 +16,7 @@ export const GalleryViewPage = ({ errors, flash }: Props) => (
     <FlashMessages flash={flash} />
 
     {errors.length > 0 && (
-      <div className="alert alert-danger">
+      <div className="mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700">
         <ul>
           {errors.map((msg) => (
             <li key={msg}>{msg}</li>

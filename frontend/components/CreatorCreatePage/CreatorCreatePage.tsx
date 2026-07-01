@@ -184,17 +184,14 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
                   id="creator_is_recruitment"
                   type="checkbox"
                   name="creator[is_recruitment]"
-                  className="form-check-input ml-[0.1%]"
+                  className="ml-[0.1%]"
                   value="1"
                   checked={isRecruitment}
                   onChange={(e) => setIsRecruitment(e.target.checked)}
                 />
                 {/* チェックなし時に "0" を送信するための hidden */}
                 <input type="hidden" name="creator[is_recruitment]" value="0" />
-                <label
-                  htmlFor="creator_is_recruitment"
-                  className="form-check-label ml-[2%] text-[20px] text-p-text"
-                >
+                <label htmlFor="creator_is_recruitment" className="ml-[2%] text-[20px] text-p-text">
                   後継者を募集中
                 </label>
                 <small className="text-p-muted text-[13px] m-0 p-0">

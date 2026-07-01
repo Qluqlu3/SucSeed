@@ -119,8 +119,10 @@ export const SelectedGalleryPage = ({
           </div>
 
           {/* 3D ビューワー */}
-          <div className="selected-gallery-3d-box">
-            <div className="selected-gallery-3d-label">3D プレビュー（ドラッグで回転）</div>
+          <div className="mt-[1%]">
+            <div className="bg-p-light px-[1%] py-[0.5%] text-[19px] text-p-text">
+              3D プレビュー（ドラッグで回転）
+            </div>
             <ThreeViewer height={400} />
           </div>
 
@@ -141,7 +143,7 @@ export const SelectedGalleryPage = ({
             {/* いいねボタン */}
             <button
               type="button"
-              className="rounded bg-p-brand px-3 py-1 hover:opacity-80 icon-btn"
+              className="rounded bg-p-brand px-3 py-1 hover:opacity-80"
               onClick={handleGood}
               disabled={myGood || !loggedIn}
             >
@@ -152,7 +154,7 @@ export const SelectedGalleryPage = ({
             {/* コメントトグル */}
             <button
               type="button"
-              className="rounded bg-p-brand px-3 py-1 hover:opacity-80 icon-btn"
+              className="rounded bg-p-brand px-3 py-1 hover:opacity-80"
               onClick={() => setShowComments((v) => !v)}
             >
               <i className="fas fa-comment-alt comment-icon" />

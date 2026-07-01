@@ -9,7 +9,10 @@ type NavbarSearchFormProps = {
 export const NavbarSearchForm: FC<NavbarSearchFormProps> = ({ artCategories }) => (
   <div className="flex items-center">
     <PostForm action="/search/user">
-      <select name="search[art_category_id]" className="form-control">
+      <select
+        name="search[art_category_id]"
+        className="rounded border border-gray-300 px-2 py-1 focus:border-p-brand focus:outline-none"
+      >
         <option value="">select category ...</option>
         {artCategories.map((category) => (
           <option key={category.id} value={category.id}>

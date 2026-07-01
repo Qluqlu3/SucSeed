@@ -43,7 +43,10 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
 
       <div className="w-[90%] mx-auto bg-p-light border border-p-mid rounded-[7px]">
         {errors.length > 0 && (
-          <div id="error_explanation" className="alert alert-danger">
+          <div
+            id="error_explanation"
+            className="mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700"
+          >
             <ul>
               {errors.map((msg) => (
                 <li key={msg}>{msg}</li>

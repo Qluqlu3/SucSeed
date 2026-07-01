@@ -237,14 +237,14 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
                 id="art_category_is_recruitment"
                 type="checkbox"
                 name="art_category[is_recruitment]"
-                className="form-check-input transform-[scale(1.7,1.7)]"
+                className="transform-[scale(1.7,1.7)]"
                 value="1"
                 checked={isRecruitment}
                 onChange={(e) => setIsRecruitment(e.target.checked)}
               />
               {/* チェックなし時に "0" を送信するための hidden */}
               <input type="hidden" name="art_category[is_recruitment]" value="0" />
-              <label htmlFor="art_category_is_recruitment" className="form-check-label">
+              <label htmlFor="art_category_is_recruitment" className="ml-2">
                 後継者を募集中
               </label>
             </div>

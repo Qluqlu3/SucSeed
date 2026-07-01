@@ -11,24 +11,24 @@ interface Props {
 export const PasswordResetPage = ({ token, errors, flash }: Props) => {
   return (
     <>
-      <h1 className="text-2xl font-bold mb-4">パスワード変更</h1>
+      <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">パスワード変更</h1>
 
       <FlashMessages flash={flash} />
 
-      {errors.length > 0 && (
-        <div
-          id="error_explanation"
-          className="mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700"
-        >
-          <ul>
-            {errors.map((msg) => (
-              <li key={msg}>{msg}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="w-[90%] mx-auto mb-[5%] p-[3%] bg-p-light border border-p-mid rounded-[7px]">
+        {errors.length > 0 && (
+          <div
+            id="error_explanation"
+            className="mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-red-700"
+          >
+            <ul>
+              {errors.map((msg) => (
+                <li key={msg}>{msg}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-      <div>
         <form action={`/user/password_reset/${token}`} method="post">
           <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
           <div className="mb-3">

@@ -16,7 +16,7 @@ interface Props {
 export const DiaryPostPage = ({ errors, userName, avatarPath, flash }: Props) => {
   return (
     <>
-      <h1>日記投稿</h1>
+      <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">日記投稿</h1>
 
       <FlashMessages flash={flash} />
 
@@ -33,33 +33,29 @@ export const DiaryPostPage = ({ errors, userName, avatarPath, flash }: Props) =>
         </div>
       )}
 
-      <div className="panel panel-default diary-panel">
-        <div className="panel-heading diary-panel-header">
-          <h3 className="panel-title">
-            <img
-              src={avatarPath}
-              className="rounded-full inline"
-              width={50}
-              height={50}
-              alt={userName}
-            />
-            {userName}
-          </h3>
+      <div className="rounded-[7px] border border-p-mid bg-p-light">
+        <div className="flex items-center gap-2 rounded-t-[7px] bg-p-brand p-2 text-white">
+          <img
+            src={avatarPath}
+            className="inline rounded-full"
+            width={50}
+            height={50}
+            alt={userName}
+          />
+          <h3 className="text-[23px]">{userName}</h3>
         </div>
 
         <form action="/diary/post" method="post" encType="multipart/form-data">
           <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-          <div className="panel-body main-panel">
-            <div>
-              <textarea
-                name="diary[content]"
-                className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
-                placeholder="文章など"
-                rows={10}
-              />
-            </div>
+          <div className="p-4">
+            <textarea
+              name="diary[content]"
+              className="w-full rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
+              placeholder="文章など"
+              rows={10}
+            />
           </div>
-          <div className="panel-footer text-right">
+          <div className="p-4 text-right">
             <button
               type="submit"
               className="rounded bg-p-brand px-5 py-2 text-white hover:opacity-80"
