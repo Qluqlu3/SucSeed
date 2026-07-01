@@ -10,7 +10,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # 保存形式をJPGにする
   # process :convert => "png"
   def default_url
-    'default.png'
+    '/assets/default.png'
   end
 
   def size_range
