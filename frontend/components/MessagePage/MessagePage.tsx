@@ -89,7 +89,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                 ref={historyRef}
                 className="h-[65vh] mx-auto bg-[#eee] rounded-[5px] overflow-scroll"
               >
-                <h3 className="py-[3px] px-2 bg-[#5cb85c]">{toUser.name}さん</h3>
+                <h3 className="py-[3px] px-2 bg-p-msg">{toUser.name}さん</h3>
                 {messageHistory.map((msg) =>
                   msg.sendUserId === fromUser.id ? (
                     // 自分の発言

@@ -158,7 +158,7 @@ export const DiaryCard = ({
               className="rounded bg-p-gold px-3 py-1 hover:text-black"
               onClick={handleDelete}
             >
-              <i className="fas fa-trash-alt text-[#FF0000] text-[21px]" />
+              <i className="fas fa-trash-alt text-p-danger text-[21px]" />
             </button>
           )}
         </div>
@@ -213,7 +213,7 @@ export const DiaryCard = ({
                     onChange={(e) => setCommentText(e.target.value)}
                   />
                 </div>
-                <div className="py-[0.5%] pr-[2%] pl-[0.5%] bg-[#5cb85c] border-t border-gray-200">
+                <div className="py-[0.5%] pr-[2%] pl-[0.5%] bg-p-msg border-t border-gray-200">
                   <div className="text-right">
                     <button
                       type="submit"

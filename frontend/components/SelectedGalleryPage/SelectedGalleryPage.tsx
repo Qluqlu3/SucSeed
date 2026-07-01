@@ -212,7 +212,7 @@ export const SelectedGalleryPage = ({
                         onChange={(e) => setCommentText(e.target.value)}
                       />
                     </div>
-                    <div className="py-[0.5%] pr-[2%] pl-[0.5%] bg-[#5cb85c] border-t border-gray-200">
+                    <div className="py-[0.5%] pr-[2%] pl-[0.5%] bg-p-msg border-t border-gray-200">
                       <div className="text-right">
                         <button
                           type="submit"
