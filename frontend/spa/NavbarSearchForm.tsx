@@ -7,7 +7,7 @@ type NavbarSearchFormProps = {
 };
 
 export const NavbarSearchForm: FC<NavbarSearchFormProps> = ({ artCategories }) => (
-  <div className="form-inline">
+  <div className="flex items-center">
     <PostForm action="/search/user">
       <select name="search[art_category_id]" className="form-control">
         <option value="">select category ...</option>
@@ -17,7 +17,7 @@ export const NavbarSearchForm: FC<NavbarSearchFormProps> = ({ artCategories }) =
           </option>
         ))}
       </select>
-      <button type="submit" className="btn search_btn">
+      <button type="submit" className="rounded px-3 py-2 search_btn">
         <i className="fas fa-search search_icon" aria-hidden="true" />
       </button>
     </PostForm>

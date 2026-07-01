@@ -20,18 +20,20 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="navbar navbar-expand-lg my_nav absolute top-0 left-0 z-2 bg-[rgba(104,70,165,0.8)]">
-      <NavbarBrand logoSrc={logoSrc} titleSrc={titleSrc} />
+    <nav className="my_nav absolute top-0 left-0 z-2 flex w-full flex-wrap items-center justify-between bg-[rgba(104,70,165,0.8)] px-[1%]">
+      <div className="flex items-center gap-2">
+        <NavbarBrand logoSrc={logoSrc} titleSrc={titleSrc} />
+      </div>
       <NavbarToggleButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
       <div
-        className={`collapse navbar-collapse${isOpen ? ' show' : ''}`}
+        className={`w-full flex-col gap-3 rounded-b bg-p-dark p-4 md:static md:flex md:w-auto md:flex-1 md:flex-row md:items-center md:justify-between md:gap-4 md:bg-transparent md:p-0 ${isOpen ? 'absolute top-full left-0 flex' : 'hidden'}`}
         id="navbarSupportedContent"
       >
-        <ul className="navbar-nav mr-auto">
+        <ul className="flex flex-col gap-2 md:flex-row md:items-center">
           {menuItems.length > 0 && <NavbarMenuDropdown menuItems={menuItems} />}
           <NavbarSearchForm artCategories={artCategories} />
         </ul>
-        <ul className="nav navbar-nav navbar-right">
+        <ul className="flex">
           <li className="login-ul">
             <NavbarAuthAction role={role} />
           </li>

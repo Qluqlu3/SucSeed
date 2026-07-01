@@ -7,7 +7,7 @@ type NavbarToggleButtonProps = {
 
 export const NavbarToggleButton: FC<NavbarToggleButtonProps> = ({ isOpen, onClick }) => (
   <button
-    className="navbar-toggler"
+    className="navbar-toggler rounded px-2 py-1 md:hidden"
     type="button"
     onClick={onClick}
     aria-controls="navbarSupportedContent"
