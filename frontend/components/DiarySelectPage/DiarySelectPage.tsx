@@ -26,7 +26,7 @@ export const DiarySelectPage = ({ diaries, currentUser, flash }: Props) => {
 
       <div className="pt-[23px] w-full min-h-[110vh] mx-auto">
         <div className="flex flex-wrap w-full !mx-0 pl-[1%]">
-          <div className="w-full md:w-9/12 bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]">
+          <div className="w-full md:w-9/12 bg-p-dark border border-p-brand rounded-[7px] pl-[1%] pb-[5%]">
             {diaries.length === 0 ? (
               <p className="text-[39px] text-white">まだありません</p>
             ) : (

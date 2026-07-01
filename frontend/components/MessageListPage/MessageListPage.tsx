@@ -31,7 +31,7 @@ export const MessageListPage = ({ messageLists, flash }: Props) => (
         <div className="flex flex-wrap w-[90%] h-[67vh] mt-[1%] mb-[3%] mx-auto p-0 rounded-[5px] justify-center">
           {/* 左パネル: メッセージリスト */}
           <div className="w-full md:w-5/12 h-[80vh] p-0 m-0 rounded-[5px]">
-            <div className="h-[65vh] bg-[#1F4B2E] rounded-[5px] overflow-scroll">
+            <div className="h-[65vh] bg-p-dark rounded-[5px] overflow-scroll">
               {messageLists.map((item) => (
                 <form key={item.id} action={`/message/history/${item.id}`} method="post">
                   <input type="hidden" name="authenticity_token" value={getCsrfToken()} />

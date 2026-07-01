@@ -79,7 +79,7 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
       <div className="pt-[23px] w-full min-h-[110vh] mx-auto">
         <div className="flex flex-wrap w-full !mx-0 pl-[1%]">
           {/* 左カラム：日記一覧 */}
-          <div className="w-full md:w-9/12 bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]">
+          <div className="w-full md:w-9/12 bg-p-dark border border-p-brand rounded-[7px] pl-[1%] pb-[5%]">
             {diaries.length === 0 ? (
               <p className="text-[39px] text-white">まだありません</p>
             ) : (
@@ -97,7 +97,7 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
           </div>
 
           {/* 右カラム：投稿フォーム */}
-          <div className="w-full md:w-3/12 h-[60vh] bg-[#275D39] border border-[#1F4B2E] rounded-[7px] pl-[1%] pb-[5%]">
+          <div className="w-full md:w-3/12 h-[60vh] bg-p-dark border border-p-brand rounded-[7px] pl-[1%] pb-[5%]">
             <div>
               <div className="mt-[8%] border-2 border-[#D3C9E7] rounded-[5px]">
                 <div className="pt-[1.3%] pb-[0.8%] pl-[1.5%] bg-[#FCF2D3] rounded-t-[5px] text-[23px]">

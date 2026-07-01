@@ -107,7 +107,7 @@ export const SelectedGalleryPage = ({
 
       <div className="flex flex-wrap w-full pl-[1.5%] mb-[13%]">
         {/* メインカラム */}
-        <div className="w-full lg:w-9/12 py-[0.5%] px-[0.3%] pb-[5%] m-0 bg-[#275D39] border border-[#1F4B2E] rounded-[7px]">
+        <div className="w-full lg:w-9/12 py-[0.5%] px-[0.3%] pb-[5%] m-0 bg-p-dark border border-p-brand rounded-[7px]">
           <div className="bg-white rounded-[0_0_7px_7px]">
             <img src={dataUrl} width="100%" height="850px" alt="ギャラリー画像" />
             <div className="py-[0.3%] px-[0.5%] m-0 text-[19px] text-[#333] text-right bg-[#FCF2D3] border-b border-[#ccc]">
@@ -234,13 +234,13 @@ export const SelectedGalleryPage = ({
 
           {/* 関連画像 */}
           {matchTagGalleries.length > 0 && (
-            <div className="mt-[5%] mb-[3%] bg-[#2A553B] border border-[#21442F] rounded-[5px]">
+            <div className="mt-[5%] mb-[3%] bg-p-brand border border-p-dark rounded-[5px]">
               <div className="pt-[0.2%] pl-[1%] pb-[1%] text-[22px] text-white text-left">
                 関連画像
               </div>
               <div className="flex flex-wrap justify-center m-0 w-full">
                 {matchTagGalleries.map((g) => (
-                  <div key={g.id} className="w-1/3 p-0 h-[37vh] border border-[#1F4B2E]">
+                  <div key={g.id} className="w-1/3 p-0 h-[37vh] border border-p-brand">
                     <a href={`/gallery/selected/${g.id}`}>
                       <img src={g.dataUrl} width="100%" height="100%" alt="関連画像" />
                     </a>
@@ -252,7 +252,7 @@ export const SelectedGalleryPage = ({
         </div>
 
         {/* サイドバー */}
-        <div className="w-full lg:w-3/12 pt-[0.5%] pr-[0.5%] pb-0 pl-[0.6%] m-0 bg-[#275D39] border border-[#1F4B2E] rounded-[7px]">
+        <div className="w-full lg:w-3/12 pt-[0.5%] pr-[0.5%] pb-0 pl-[0.6%] m-0 bg-p-dark border border-p-brand rounded-[7px]">
           {/* 職人情報 */}
           <div className="bg-[#eee] w-full min-h-[55vh] mb-[19vh] rounded-[7px]">
             <div className="bg-[#BAA9DA] mx-auto rounded-t-[7px] hover:opacity-80">
@@ -302,7 +302,7 @@ export const SelectedGalleryPage = ({
             <div className="p-[2%] bg-p-brand rounded-t-[5px]">
               <div className="text-[22px] text-white">その他の投稿</div>
               {otherGalleries.map((g) => (
-                <div key={g.id} className="p-0 h-[37vh] border border-[#1F4B2E]">
+                <div key={g.id} className="p-0 h-[37vh] border border-p-brand">
                   <a href={`/gallery/selected/${g.id}`}>
                     <img src={g.dataUrl} width="100%" height="100%" alt="その他の投稿" />
                   </a>

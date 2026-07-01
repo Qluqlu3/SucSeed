@@ -30,7 +30,7 @@ export const YourDiaryPage = ({ diaries, ownerName, currentUser, flash }: Props)
 
       <div className="pt-[23px] w-full min-h-[110vh] mx-auto">
         <div className="flex flex-wrap w-full !mx-0 px-[1%]">
-          <div className="w-full bg-[#275D39] border border-[#1F4B2E] rounded-[7px] px-[1%] pb-[5%]">
+          <div className="w-full bg-p-dark border border-p-brand rounded-[7px] px-[1%] pb-[5%]">
             {diaries.length === 0 ? (
               <p className="text-[39px] text-white">まだありません</p>
             ) : (
