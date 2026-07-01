@@ -13,9 +13,17 @@
 //   既存の index.scss / application.scss / Bootstrap を引き続き使う。
 //   Tailwind は今後新規コンポーネントから段階的に導入する。
 
+import { Handshake, Info, UserPlus } from 'lucide-react';
 import type { Creator } from '../CreatorCard';
 import { CreatorCard } from '../CreatorCard';
 import { FlashMessages } from '../FlashMessages';
+
+// サービス説明カードのアイコン共通スタイル（画像アイコンからライブラリアイコンに統一）
+const ServiceIcon = ({ icon: IconComponent }: { icon: typeof UserPlus }) => (
+  <div className="mx-auto flex h-[100px] w-[100px] items-center justify-center rounded-full bg-p-gold">
+    <IconComponent className="text-white" size={50} />
+  </div>
+);
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Props {
@@ -36,13 +44,7 @@ const ServiceDescription = () => (
       <div className="flex justify-around w-full m-0">
         <div className="w-1/3">
           <div className="pb-[8%] text-white h-[90%] bg-[rgba(80,55,128,0.7)] m-px rounded-[39px] mt-[3%]">
-            <img
-              src="/assets/successor.png"
-              className="rounded-full block mx-auto"
-              width={100}
-              height={100}
-              alt="後継者を募れる"
-            />
+            <ServiceIcon icon={UserPlus} />
             <h3 className="text-[200%]">後継者を募れる</h3>
             <p className="mt-[6%] mr-[13%] ml-[13%] text-[130%] text-left">
               素晴らしい伝統技術が失われてしまうのは勿体無い。
@@ -53,13 +55,7 @@ const ServiceDescription = () => (
         </div>
         <div className="w-1/3">
           <div className="pb-[8%] text-white h-[90%] bg-[rgba(80,55,128,0.7)] m-px rounded-[39px] mt-[3%]">
-            <img
-              src="/assets/info.png"
-              className="rounded-full block mx-auto"
-              width={100}
-              height={100}
-              alt="詳細情報を入れる"
-            />
+            <ServiceIcon icon={Info} />
             <h3 className="text-[200%]">詳細情報を入れる</h3>
             <p className="mt-[6%] mr-[13%] ml-[13%] text-[130%] text-left">
               自分の制作している作品を多くの人に宣伝して、知ってもらおう。
@@ -70,13 +66,7 @@ const ServiceDescription = () => (
         </div>
         <div className="w-1/3">
           <div className="pb-[8%] text-white h-[90%] bg-[rgba(80,55,128,0.7)] m-px rounded-[39px] mt-[3%]">
-            <img
-              src="/assets/handshake.png"
-              className="rounded-full block mx-auto"
-              width={100}
-              height={100}
-              alt="マッチング"
-            />
+            <ServiceIcon icon={Handshake} />
             <h3 className="text-[200%]">マッチング</h3>
             <p className="mt-[6%] mr-[13%] ml-[13%] text-[130%] text-left">
               制作者サイドはスカウト機能で気になった方をスカウトしてお話ができます。

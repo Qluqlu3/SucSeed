@@ -3,6 +3,7 @@
 // /page/creator/:id ページの React コンポーネント（職人ページ）。
 // お気に入り追加/削除は fetch API で Rails に送信する。
 
+import { Star } from 'lucide-react';
 import { useState } from 'react';
 import { postJson } from '../../utils/postJson';
 import { FlashMessages } from '../FlashMessages';
@@ -127,9 +128,9 @@ export const YourPage = ({
             onClick={handleFavorite}
           >
             {isFavorited ? (
-              <i className="fas fa-star pt-[7%] text-p-brand text-[33px]" />
+              <Star className="text-p-gold" size={33} fill="currentColor" />
             ) : (
-              <i className="far fa-star pt-[7%] text-white text-[33px]" />
+              <Star className="text-white" size={33} />
             )}
           </button>
         )}

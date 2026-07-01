@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import type { FC } from 'react';
 import { PostForm } from '../components/PostForm';
 import type { ArtCategory } from './sessionTypes';
@@ -21,7 +22,7 @@ export const NavbarSearchForm: FC<NavbarSearchFormProps> = ({ artCategories }) =
         ))}
       </select>
       <button type="submit" className="rounded px-3 py-2 search_btn">
-        <i className="fas fa-search search_icon" aria-hidden="true" />
+        <Search className="search_icon" size={20} aria-hidden="true" />
       </button>
     </PostForm>
   </div>

@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import { getCsrfToken } from '../../utils/csrf';
 import { FlashMessages } from '../FlashMessages';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
@@ -30,7 +31,7 @@ export const GallerySearchPage = ({ userName, userId, galleries, flash }: Props)
           type="submit"
           className="rounded bg-p-brand px-3 py-2 text-white hover:opacity-80 search_btn"
         >
-          <i className="fas fa-search search_icon" />
+          <Search className="search_icon" size={20} />
         </button>
       </form>
     </div>

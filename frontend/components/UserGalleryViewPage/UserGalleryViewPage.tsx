@@ -3,6 +3,7 @@
 // /gallery/view/:id ページ（特定ユーザーのギャラリー一覧）の React コンポーネント。
 // タグ検索フォームは POST /gallery/user/search/tag/:userId へ送信。
 
+import { Search } from 'lucide-react';
 import { getCsrfToken } from '../../utils/csrf';
 import { FlashMessages } from '../FlashMessages';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
@@ -36,7 +37,7 @@ export const UserGalleryViewPage = ({ userName, userId, galleries, flash }: Prop
             type="submit"
             className="rounded bg-p-brand px-3 py-2 text-white hover:opacity-80 search_btn"
           >
-            <i className="fas fa-search search_icon" />
+            <Search className="search_icon" size={20} />
           </button>
         </form>
       </div>

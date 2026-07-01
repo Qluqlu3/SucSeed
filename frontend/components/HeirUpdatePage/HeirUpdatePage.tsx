@@ -8,6 +8,7 @@
 //   artCategories: ArtCategory 一覧 [{ id, name }]
 //   errors       : バリデーションエラー文字列の配列
 
+import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
 import { FlashMessages } from '../FlashMessages';
@@ -65,7 +66,7 @@ export const HeirUpdatePage = ({ heir, artCategories, errors, flash }: Props) =>
             aria-haspopup="true"
             aria-expanded={showMenu}
           >
-            <i className="fas fa-cog text-[50px]" />
+            <Settings size={50} />
           </button>
           <ul
             className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}

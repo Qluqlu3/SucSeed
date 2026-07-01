@@ -9,6 +9,7 @@
 //   fromUser        : { id, avatarPath }
 //   toUser          : { id, name, avatarPath }
 
+import { Send } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
 import { FlashMessages } from '../FlashMessages';
@@ -144,7 +145,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                       type="submit"
                       className="flex w-[5vw] items-center justify-center rounded bg-p-gold text-white hover:opacity-80"
                     >
-                      <i className="far fa-paper-plane message-icon" />
+                      <Send size={20} />
                     </button>
                   </div>
                 </form>

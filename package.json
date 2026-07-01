@@ -17,7 +17,7 @@
     ]
   },
   "scripts": {
-    "build": "esbuild frontend/application.ts frontend/styles/fontawesome.css --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts --loader:.woff2=file --loader:.woff=file --loader:.ttf=file --loader:.eot=file --loader:.svg=file --asset-names=webfonts/[name]",
+    "build": "esbuild frontend/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
     "build:watch": "pnpm build --watch=forever",
     "build:css": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --minify",
     "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always",
@@ -27,15 +27,20 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^7.2.0",
     "@sentry/react": "^10.62.0",
     "@tailwindcss/cli": "^4.2.1",
+    "lucide-react": "^1.22.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "tailwindcss": "^4.2.1",
     "three": "^0.183.2"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@biomejs/biome", "@parcel/watcher", "@tailwindcss/cli", "esbuild"]
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "@parcel/watcher",
+      "@tailwindcss/cli",
+      "esbuild"
+    ]
   }
 }

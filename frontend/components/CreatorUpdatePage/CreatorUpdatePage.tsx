@@ -9,6 +9,7 @@
 //   isCreator    : 職人セッションかどうか（設定ドロップダウンの出し分け）
 //   errors       : バリデーションエラー文字列の配列
 
+import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
 import { FlashMessages } from '../FlashMessages';
@@ -78,7 +79,7 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
             aria-haspopup="true"
             aria-expanded={showMenu}
           >
-            <i className="fas fa-cog text-[50px]" />
+            <Settings size={50} />
           </button>
           <ul
             className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}

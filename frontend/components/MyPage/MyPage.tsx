@@ -3,6 +3,7 @@
 // /my_page/my_page ページの React コンポーネント。
 // ログインユーザー自身のプロフィール表示。
 
+import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import { FlashMessages } from '../FlashMessages';
 
@@ -44,7 +45,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
               aria-haspopup="true"
               aria-expanded={showMenu}
             >
-              <i className="fas fa-cog text-[50px]" />
+              <Settings size={50} />
             </button>
             <ul
               className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}

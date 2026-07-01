@@ -4,6 +4,7 @@
 // DiarySelectPage / MyDiaryPage / YourDiaryPage / DiaryHeirFavoritePage で使い回す。
 // いいね・コメント投稿・削除は fetch API で処理するためページ全体の再レンダリングが不要。
 
+import { MessageSquare, ThumbsUp, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { postJson } from '../../utils/postJson';
 
@@ -137,7 +138,7 @@ export const DiaryCard = ({
             onClick={handleGood}
             disabled={myGood}
           >
-            <i className="fas fa-thumbs-up text-p-dark text-[21px]" />
+            <ThumbsUp className="text-p-dark" size={21} />
             {goodCount}
           </button>
 
@@ -147,7 +148,7 @@ export const DiaryCard = ({
             className="rounded bg-p-gold px-3 py-1 hover:text-black"
             onClick={() => setShowComments((v) => !v)}
           >
-            <i className="fas fa-comment-alt text-p-dark text-[21px]" />
+            <MessageSquare className="text-p-dark" size={21} />
             {comments.length}
           </button>
 
@@ -158,7 +159,7 @@ export const DiaryCard = ({
               className="rounded bg-p-gold px-3 py-1 hover:text-black"
               onClick={handleDelete}
             >
-              <i className="fas fa-trash-alt text-p-danger text-[21px]" />
+              <Trash2 className="text-p-danger" size={21} />
             </button>
           )}
         </div>

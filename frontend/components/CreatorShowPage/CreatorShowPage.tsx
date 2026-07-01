@@ -9,6 +9,7 @@
 //   isCreator : 職人セッションかどうか（設定ドロップダウンの出し分けに使用）
 
 // ── 型定義 ──────────────────────────────────────────────────────────
+import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import { FlashMessages } from '../FlashMessages';
 
@@ -49,7 +50,7 @@ export const CreatorShowPage = ({ creator, isCreator, flash }: Props) => {
               aria-haspopup="true"
               aria-expanded={showMenu}
             >
-              <i className="fas fa-cog text-[50px]" />
+              <Settings size={50} />
             </button>
             <ul
               className={`absolute right-0 z-10 mt-1 w-48 rounded bg-white shadow-lg border border-gray-200${showMenu ? '' : ' hidden'}`}

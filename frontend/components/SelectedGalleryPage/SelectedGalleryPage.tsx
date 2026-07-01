@@ -3,6 +3,7 @@
 // /gallery/selected/:id ページ（ギャラリー個別表示）の React コンポーネント。
 // いいね・コメントは fetch API で処理。関連画像・職人情報をサイドバーに表示。
 
+import { MessageSquare, ThumbsUp } from 'lucide-react';
 import { useState } from 'react';
 import { ThreeViewer } from '../../three/ThreeViewer';
 import { postJson } from '../../utils/postJson';
@@ -147,7 +148,7 @@ export const SelectedGalleryPage = ({
               onClick={handleGood}
               disabled={myGood || !loggedIn}
             >
-              <i className="fas fa-thumbs-up thumbs-up-icon" />
+              <ThumbsUp className="text-white" size={21} />
               {goodCount}
             </button>
 
@@ -157,7 +158,7 @@ export const SelectedGalleryPage = ({
               className="rounded bg-p-brand px-3 py-1 hover:opacity-80"
               onClick={() => setShowComments((v) => !v)}
             >
-              <i className="fas fa-comment-alt comment-icon" />
+              <MessageSquare className="text-white" size={21} />
               {comments.length}
             </button>
 

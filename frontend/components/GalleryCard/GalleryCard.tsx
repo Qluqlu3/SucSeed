@@ -3,6 +3,8 @@
 // ギャラリーサムネイルカード共通コンポーネント。
 // UserGalleryViewPage / MyGalleryPage / FavoriteGalleryPage / HeirFavoriteGalleryPage で共用。
 
+import { ThumbsUp } from 'lucide-react';
+
 export interface GalleryItem {
   id: number;
   dataUrl: string;
@@ -30,7 +32,7 @@ export const GalleryCard = ({ gallery }: { gallery: GalleryItem }) => (
             ))}
           </p>
           <div className="text-right pt-[1%] pr-[2%] text-white">
-            <i className="fas fa-thumbs-up text-[23px] text-p-gold" />
+            <ThumbsUp className="text-p-gold" size={23} />
             {gallery.goodCount}
           </div>
         </div>

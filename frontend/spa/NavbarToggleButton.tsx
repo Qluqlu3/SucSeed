@@ -1,3 +1,4 @@
+import { Menu } from 'lucide-react';
 import type { FC } from 'react';
 
 type NavbarToggleButtonProps = {
@@ -14,8 +15,6 @@ export const NavbarToggleButton: FC<NavbarToggleButtonProps> = ({ isOpen, onClic
     aria-expanded={isOpen}
     aria-label="Toggle navigation"
   >
-    <span className="navbar-toggler-icon">
-      <i className="fas fa-list mini-list" aria-hidden="true" />
-    </span>
+    <Menu className="mini-list" size={26} aria-hidden="true" />
   </button>
 );
