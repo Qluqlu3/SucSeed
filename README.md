@@ -39,6 +39,7 @@ git clone git@github.com:Qluqlu3/SucSeed.git
 cd SucSeed
 
 # 2. イメージをビルドして起動（初回）
+#    起動時に gem が不足していれば bundle install が自動で走る
 docker compose up --build
 
 # 3. DB を作成してマイグレーション（別ターミナルで）
@@ -59,11 +60,10 @@ docker compose run --rm web rails db:migrate   # マイグレーション追加�
 
 ### Gemfile を変更した場合
 
-gem を追加・更新したあとは、**イメージの再ビルドだけでは不十分**です。  
-gem は `bundle_cache` という名前付きボリュームに永続化されており、起動時にコンテナの `/usr/local/bundle` をマウントで上書きします。ボリューム内を直接更新する必要があります。
+`docker compose up` で起動すると `entrypoint.sh` が `bundle check` を実行し、
+不足 gem があれば自動で `bundle install` します。手動操作は不要です。
 
 ```sh
-docker compose run --rm web bundle install   # ボリューム内の gem を更新
 docker compose up
 ```
 
@@ -77,7 +77,8 @@ docker compose up --build   # イメージを再ビルド（pnpm install が走�
 
 **`Could not find <gem名> in locally installed gems` が出る**
 
-Gemfile.lock が更新されたがボリューム内の gem が古い状態です。
+`bundle_cache` ボリュームが空か古い状態です。`docker compose up` を再実行すると
+`entrypoint.sh` が自動で `bundle install` を走らせます。それでも解決しない場合：
 
 ```sh
 docker compose run --rm web bundle install
