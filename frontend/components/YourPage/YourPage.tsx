@@ -140,7 +140,7 @@ export const YourPage = ({
         <li className="">
           <a
             href={`/diary/show/${user.id}`}
-            className="block px-4 py-2 text-white hover:text-[#FFA30D]"
+            className="block px-4 py-2 text-white hover:text-p-gold"
           >
             日記
           </a>
@@ -148,7 +148,7 @@ export const YourPage = ({
         <li className="ml-[5%]">
           <a
             href={`/gallery/view/${user.id}`}
-            className="block px-4 py-2 text-white hover:text-[#FFA30D]"
+            className="block px-4 py-2 text-white hover:text-p-gold"
           >
             ギャラリー
           </a>
@@ -224,7 +224,7 @@ export const YourPage = ({
         <div className="w-[50%] fixed bottom-0 left-[25%]">
           <button
             type="button"
-            className="w-full bg-[#FFA30D] text-[33px] hover:opacity-90 rounded py-2"
+            className="w-full bg-p-gold text-[33px] hover:opacity-90 rounded py-2"
             onClick={handleAppeal}
             disabled={isMatched}
           >

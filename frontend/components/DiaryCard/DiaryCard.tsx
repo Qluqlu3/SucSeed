@@ -133,21 +133,21 @@ export const DiaryCard = ({
           {/* いいねボタン */}
           <button
             type="button"
-            className="rounded bg-[#FFA30D] px-3 py-1 hover:text-black"
+            className="rounded bg-p-gold px-3 py-1 hover:text-black"
             onClick={handleGood}
             disabled={myGood}
           >
-            <i className="fas fa-thumbs-up text-[#1F8A70] text-[21px]" />
+            <i className="fas fa-thumbs-up text-p-dark text-[21px]" />
             {goodCount}
           </button>
 
           {/* コメントトグルボタン */}
           <button
             type="button"
-            className="rounded bg-[#FFA30D] px-3 py-1 hover:text-black"
+            className="rounded bg-p-gold px-3 py-1 hover:text-black"
             onClick={() => setShowComments((v) => !v)}
           >
-            <i className="fas fa-comment-alt text-[#1F8A70] text-[21px]" />
+            <i className="fas fa-comment-alt text-p-dark text-[21px]" />
             {comments.length}
           </button>
 
@@ -155,7 +155,7 @@ export const DiaryCard = ({
           {(isOwn || canDelete) && (
             <button
               type="button"
-              className="rounded bg-[#FFA30D] px-3 py-1 hover:text-black"
+              className="rounded bg-p-gold px-3 py-1 hover:text-black"
               onClick={handleDelete}
             >
               <i className="fas fa-trash-alt text-[#FF0000] text-[21px]" />

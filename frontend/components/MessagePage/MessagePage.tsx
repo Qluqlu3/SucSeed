@@ -147,7 +147,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                     <span className="input-group-btn">
                       <button
                         type="submit"
-                        className="p-0 w-[5vw] text-[23px] bg-[#FFA30D] rounded hover:opacity-80"
+                        className="p-0 w-[5vw] text-[23px] bg-p-gold rounded hover:opacity-80"
                       >
                         <i className="far fa-paper-plane message-icon" />
                       </button>

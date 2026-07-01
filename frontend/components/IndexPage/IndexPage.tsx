@@ -116,7 +116,7 @@ export const IndexPage = ({ creators, recommend, loggedIn, flash }: Props) => {
       {recommend && recommend.length > 0 && (
         <>
           <div className="flex flex-wrap justify-center w-full m-0">
-            <p className="w-full p-0 m-0 text-[#FFA30D] text-[3em] bg-p-brand text-center">
+            <p className="w-full p-0 m-0 text-p-gold text-[3em] bg-p-brand text-center">
               おすすめ職人さん
             </p>
             {recommend.map((creator) => (

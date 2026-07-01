@@ -23,14 +23,14 @@ export const GalleryCard = ({ gallery }: { gallery: GalleryItem }) => (
             {gallery.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="label bg-[#F29626] py-[5px] px-[5px] mx-[3px] rounded-[5px] text-[#181818] text-[18px]"
+                className="label bg-p-gold py-[5px] px-[5px] mx-[3px] rounded-[5px] text-[#181818] text-[18px]"
               >
                 {tag}
               </span>
             ))}
           </p>
           <div className="text-right pt-[1%] pr-[2%] text-white">
-            <i className="fas fa-thumbs-up text-[23px] text-[#FFA30D]" />
+            <i className="fas fa-thumbs-up text-[23px] text-p-gold" />
             {gallery.goodCount}
           </div>
         </div>

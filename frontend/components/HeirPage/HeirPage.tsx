@@ -107,7 +107,7 @@ export const HeirPage = ({
         <div className="w-[50%] fixed bottom-0 left-[25%]">
           <button
             type="button"
-            className="w-full bg-[#FFA30D] text-[33px] hover:opacity-90 rounded py-2"
+            className="w-full bg-p-gold text-[33px] hover:opacity-90 rounded py-2"
             onClick={handleScout}
             disabled={isScouted}
           >

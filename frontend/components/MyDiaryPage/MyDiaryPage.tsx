@@ -123,7 +123,7 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
                   <div className="bg-p-brand text-right">
                     <button
                       type="submit"
-                      className="rounded bg-[#FFA30D] py-2 px-4 text-black hover:opacity-80"
+                      className="rounded bg-p-gold py-2 px-4 text-black hover:opacity-80"
                       disabled={posting}
                     >
                       投稿

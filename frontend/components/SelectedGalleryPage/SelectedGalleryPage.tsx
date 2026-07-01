@@ -129,7 +129,7 @@ export const SelectedGalleryPage = ({
             {tags.map((tag) => (
               <p
                 key={tag}
-                className="py-2 pl-2 pr-[5px] mt-[0.8%] ml-[0.8%] bg-[#F29626] rounded-[5px] inline-block"
+                className="py-2 pl-2 pr-[5px] mt-[0.8%] ml-[0.8%] bg-p-gold rounded-[5px] inline-block"
               >
                 <span className="label p-0 text-center text-[#181818] text-[23px]">{tag}</span>
               </p>
@@ -216,7 +216,7 @@ export const SelectedGalleryPage = ({
                       <div className="text-right">
                         <button
                           type="submit"
-                          className="rounded bg-[#FFA30D] px-3 py-1 hover:opacity-80"
+                          className="rounded bg-p-gold px-3 py-1 hover:opacity-80"
                         >
                           コメント
                         </button>
