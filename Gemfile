@@ -74,6 +74,10 @@ gem 'addressable', '>= 2.9.0'
 gem 'carrierwave', '>= 3.1.3'
 gem 'mini_magick', '>= 4.8.0'
 
+# アセットパイプライン（Sprockets）
+# stylesheet_link_tag / javascript_include_tag が /assets/... を生成するために必要
+gem 'sprockets-rails'
+
 # jsbundling-rails: esbuild/rollup/webpack などを Rails と繋ぐ公式 gem
 # esbuild でバンドルした JS を app/assets/builds/ に出力し
 # Sprockets がそれを通常のアセットとして扱えるようにする
