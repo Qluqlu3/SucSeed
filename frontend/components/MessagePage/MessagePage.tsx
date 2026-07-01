@@ -96,7 +96,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                     <div key={`${msg.sendUserId}-${msg.createdAt}`} className="mt-2 text-right">
                       <div className="media text-right">
                         <div className="media-body">
-                          <p className="p-[7px] text-[17px] [border-radius:17px_17px_0_17px] bg-[#A3CAFF] inline-block">
+                          <p className="p-[7px] text-[17px] [border-radius:17px_17px_0_17px] bg-p-mid inline-block">
                             {msg.content}
                           </p>
                         </div>
@@ -122,7 +122,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                           alt={toUser.name}
                         />
                         <div className="media-body">
-                          <p className="p-[7px] text-[17px] [border-radius:17px_17px_17px_0] bg-[#3D91FF] inline-block">
+                          <p className="p-[7px] text-[17px] [border-radius:17px_17px_17px_0] bg-p-list inline-block">
                             {msg.content}
                           </p>
                         </div>
