@@ -40,6 +40,22 @@ class IndexController < ApplicationController
   private
 
   def format_creators(creators)
-    creators.map { |c| { userId: c.user_id, name: c.name, title: c.title, avatarPath: c.avatar_path.to_s, createdAt: c.created_at } }
+    creators = creators.to_a
+    galleries_by_user = Gallery.where(user_id: creators.map(&:user_id))
+                               .order(created_at: :desc)
+                               .group_by(&:user_id)
+
+    creators.map do |c|
+      galleries = galleries_by_user[c.user_id] || []
+      {
+        userId: c.user_id,
+        name: c.name,
+        title: c.title,
+        avatarPath: c.avatar_path.to_s,
+        createdAt: c.created_at,
+        galleryCount: galleries.size,
+        galleryPreviewPath: galleries.first&.data&.to_s
+      }
+    end
   end
 end
