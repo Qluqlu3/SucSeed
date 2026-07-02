@@ -103,6 +103,8 @@ class DiaryController < ApplicationController
         good: @good, good_avatar: @good_avatar, my_good: @my_good
       ),
       ownerName: @name.name,
+      targetUserId: params[:id].to_i,
+      targetIsCreator: Creator.exists?(user_id: params[:id]),
       currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil,
       flash: flash.to_h
     }

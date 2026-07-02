@@ -6,6 +6,7 @@
 import { Star } from 'lucide-react';
 import { useState } from 'react';
 import { postJson } from '../../utils/postJson';
+import { CreatorProfileTabs } from '../CreatorProfileTabs/CreatorProfileTabs';
 import { FlashMessages } from '../FlashMessages';
 
 function calcAge(birthday: string): number {
@@ -137,24 +138,7 @@ export const YourPage = ({
       </div>
 
       {/* タブナビゲーション */}
-      <ul className="flex justify-center border-t border-b border-[#aaa] text-[33px] text-white bg-[#666]">
-        <li className="">
-          <a
-            href={`/diary/show/${user.id}`}
-            className="block px-4 py-2 text-white hover:text-p-gold"
-          >
-            日記
-          </a>
-        </li>
-        <li className="ml-[5%]">
-          <a
-            href={`/gallery/view/${user.id}`}
-            className="block px-4 py-2 text-white hover:text-p-gold"
-          >
-            ギャラリー
-          </a>
-        </li>
-      </ul>
+      <CreatorProfileTabs targetUserId={user.id} active="profile" />
 
       {/* 制作工芸名・ジャンル */}
       <div className="w-[93%] mx-auto">

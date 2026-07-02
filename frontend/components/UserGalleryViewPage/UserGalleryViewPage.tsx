@@ -5,6 +5,7 @@
 
 import { Search } from 'lucide-react';
 import { getCsrfToken } from '../../utils/csrf';
+import { CreatorProfileTabs } from '../CreatorProfileTabs/CreatorProfileTabs';
 import { FlashMessages } from '../FlashMessages';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
 
@@ -20,6 +21,8 @@ export const UserGalleryViewPage = ({ userName, userId, galleries, flash }: Prop
     <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">
       {userName}さんのギャラリー
     </h1>
+
+    <CreatorProfileTabs targetUserId={userId} active="gallery" />
 
     <FlashMessages flash={flash} />
 

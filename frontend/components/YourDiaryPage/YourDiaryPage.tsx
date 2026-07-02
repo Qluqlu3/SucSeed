@@ -3,6 +3,7 @@
 // /diary/show/:id ページ（相手ユーザーの日記一覧）の React コンポーネント。
 // 未ログインでも閲覧可能だが、いいね・コメントはログイン必須。
 
+import { CreatorProfileTabs } from '../CreatorProfileTabs/CreatorProfileTabs';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
 import { FlashMessages } from '../FlashMessages';
 
@@ -15,16 +16,27 @@ interface CurrentUser {
 interface Props {
   diaries: DiaryEntry[];
   ownerName: string;
+  targetUserId: number;
+  targetIsCreator: boolean;
   currentUser: CurrentUser | null;
   flash: Record<string, string>;
 }
 
-export const YourDiaryPage = ({ diaries, ownerName, currentUser, flash }: Props) => {
+export const YourDiaryPage = ({
+  diaries,
+  ownerName,
+  targetUserId,
+  targetIsCreator,
+  currentUser,
+  flash,
+}: Props) => {
   return (
     <>
       <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">
         {ownerName}さんの日記
       </h1>
+
+      {targetIsCreator && <CreatorProfileTabs targetUserId={targetUserId} active="diary" />}
 
       <FlashMessages flash={flash} />
 
