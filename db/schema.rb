@@ -205,9 +205,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_27_000001) do
     t.timestamp "login_time"
     t.timestamp "deleted_at"
     t.string "email_verification_token"
-    t.datetime "email_verification_sent_at"
     t.string "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.datetime "email_verification_sent_at"
     t.index ["email"], name: "index_users_on_email_unique", unique: true
     t.index ["email_verification_token"], name: "index_users_on_email_verification_token", unique: true
     t.index ["password_reset_token"], name: "index_users_on_password_reset_token", unique: true
