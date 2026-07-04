@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get '' => 'index#root'
   get 'index' => 'index#index'
+  get 'map' => 'map#index'
 
   get 'user/password_forgot' => 'user#password_forgot'
   get 'user/password_reset/:token', to: 'user#password_edit', as: :password_reset

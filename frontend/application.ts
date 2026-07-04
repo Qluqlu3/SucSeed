@@ -63,6 +63,7 @@ import './components/Error404Page/mountError404Page';
 import './components/Error500Page/mountError500Page';
 import './components/IndexPage/mountIndexPage';
 import './components/InquiryInputPage/mountInquiryInputPage';
+import './components/MapPage/mountMapPage';
 import './components/MyPage/mountMyPage';
 import './components/MyPageUpdatePage/mountMyPageUpdatePage';
 import './components/PasswordForgotPage/mountPasswordForgotPage';
