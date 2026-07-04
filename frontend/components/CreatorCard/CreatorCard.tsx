@@ -6,6 +6,7 @@ export interface Creator {
   title: string;
   avatarPath: string;
   createdAt: string;
+  prefectureCode: number | null;
   galleryCount: number;
   galleryPreviewPath: string | null;
 }
