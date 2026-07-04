@@ -7,4 +7,13 @@ class Creator < ApplicationRecord
   validates :postal_code, presence: true, numericality: true, length: { is: 7 }
   belongs_to :art_category
   belongs_to :user
+
+  before_validation :set_prefecture_code
+
+  private
+
+  # 郵便番号から都道府県コードを自動算出しておく（地図機能でのgroup byを軽くするための非正規化）
+  def set_prefecture_code
+    self.prefecture_code = PostalCodePrefecture.code_for(postal_code)
+  end
 end

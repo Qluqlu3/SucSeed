@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_27_000001) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_04_000001) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "user_id", null: false
@@ -35,7 +35,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_27_000001) do
     t.timestamp "created_at", null: false
     t.timestamp "updated_at"
     t.timestamp "deleted_at"
+    t.integer "prefecture_code"
     t.index ["art_category_id"], name: "index_creators_on_art_category_id"
+    t.index ["prefecture_code"], name: "index_creators_on_prefecture_code"
     t.index ["user_id"], name: "fk_rails_f0c5a1a18a"
   end
 
