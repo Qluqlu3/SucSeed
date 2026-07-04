@@ -1,3 +1,4 @@
+import { Map as MapIcon } from 'lucide-react';
 import type { FC } from 'react';
 import { useState } from 'react';
 import { NavbarAuthAction } from './NavbarAuthAction';
@@ -31,6 +32,15 @@ export const Navbar: FC<NavbarProps> = ({ role, artCategories, logoSrc, titleSrc
       >
         <ul className="flex flex-col gap-2 md:flex-row md:items-center">
           {menuItems.length > 0 && <NavbarMenuDropdown menuItems={menuItems} />}
+          <li>
+            <a
+              href="/map"
+              className="flex items-center gap-1 px-3 py-1 text-white hover:text-p-gold"
+            >
+              <MapIcon size={18} />
+              地図から探す
+            </a>
+          </li>
           <NavbarSearchForm artCategories={artCategories} />
         </ul>
         <ul className="flex">

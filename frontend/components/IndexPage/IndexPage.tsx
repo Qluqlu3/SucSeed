@@ -13,7 +13,7 @@
 //   既存の index.scss / application.scss / Bootstrap を引き続き使う。
 //   Tailwind は今後新規コンポーネントから段階的に導入する。
 
-import { Handshake, Info, UserPlus } from 'lucide-react';
+import { Handshake, Info, Map as MapIcon, UserPlus } from 'lucide-react';
 import type { Creator } from '../CreatorCard';
 import { CreatorCard } from '../CreatorCard';
 import { FlashMessages } from '../FlashMessages';
@@ -116,6 +116,15 @@ export const IndexPage = ({ creators, recommend, loggedIn, flash }: Props) => {
           <div className="h-[5vh] w-full bg-p-brand" />
         </>
       )}
+
+      {/* 地図から探すバナー */}
+      <a
+        href="/map"
+        className="flex items-center justify-center gap-3 bg-p-dark py-[2%] text-white hover:opacity-90"
+      >
+        <MapIcon size={32} />
+        <span className="text-[27px] font-bold">都道府県の地図から職人を探す</span>
+      </a>
 
       {/* 職人カード一覧 */}
       {/* 元 ERB は 4 件ごとに row を分けていたが Tailwind flex-wrap で自動折り返し */}
