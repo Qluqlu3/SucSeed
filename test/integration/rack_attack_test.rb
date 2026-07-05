@@ -1,12 +1,8 @@
 require 'test_helper'
 
 # Rack::Attack レートリミットの統合テスト
-# 各テスト前にキャッシュをクリアしてスロットル状態をリセットする
+# キャッシュのクリアは test_helper.rb の共通 setup で行われる
 class RackAttackTest < ActionDispatch::IntegrationTest
-  setup do
-    Rails.cache.clear
-  end
-
   # ── ログインスロットル (5 回/分) ──────────────────────────────────
 
   test 'ログイン 5 回目まで 200/302 が返る' do
