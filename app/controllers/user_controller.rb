@@ -36,7 +36,7 @@ class UserController < ApplicationController
       redirect_to '/index'
     else
       @page_props = { errors: @user.errors.full_messages, flash: flash.to_h }
-      render :regist
+      render :regist, status: :unprocessable_content
     end
   end
 
