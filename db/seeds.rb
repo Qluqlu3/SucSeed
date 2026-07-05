@@ -20,3 +20,5 @@ InquiryCategory.create(name: '質問')
 InquiryCategory.create(name: '不具合')
 InquiryCategory.create(name: '要望')
 InquiryCategory.create(name: 'その他')
+
+load Rails.root.join('db/seeds/traditional_crafts.rb')
