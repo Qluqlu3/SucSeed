@@ -23,9 +23,11 @@ class Rack::Attack
   end
 
   # --- 429 レスポンス ---
-  self.throttled_responder = lambda do |env|
-    req = Rack::Request.new(env)
-    if req.accepts?('text/html') || req.content_type&.include?('application/x-www-form-urlencoded')
+  # throttled_responder には Rack::Attack::Request(Rack::Requestのサブクラス)が渡される。
+  # Accept ヘッダでの内容判定にActionDispatchのフォーマット判定を使うためenvから作り直す。
+  self.throttled_responder = lambda do |request|
+    req = ActionDispatch::Request.new(request.env)
+    if req.format.html? || req.content_type&.include?('application/x-www-form-urlencoded')
       [
         429,
         { 'Content-Type' => 'text/html; charset=utf-8' },
