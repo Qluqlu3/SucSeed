@@ -11,13 +11,15 @@ import { FlashMessages } from '../FlashMessages';
 import { JapanMap } from './JapanMap';
 import { PREFECTURE_SHAPES } from './japanPrefectureShapes';
 import { colorForCount } from './prefectureColorScale';
+import { type TraditionalCraft, TraditionalCraftCard } from './TraditionalCraftCard';
 
 interface Props {
   creators: Creator[];
+  traditionalCrafts: TraditionalCraft[];
   flash: Record<string, string>;
 }
 
-export const MapPage = ({ creators, flash }: Props) => {
+export const MapPage = ({ creators, traditionalCrafts, flash }: Props) => {
   const [selectedCode, setSelectedCode] = useState<number | null>(null);
 
   const countByPrefecture = useMemo(() => {
@@ -33,6 +35,9 @@ export const MapPage = ({ creators, flash }: Props) => {
 
   const visibleCreators =
     selectedCode == null ? creators : creators.filter((c) => c.prefectureCode === selectedCode);
+
+  const visibleCrafts =
+    selectedCode == null ? [] : traditionalCrafts.filter((c) => c.prefectureCode === selectedCode);
 
   return (
     <>
@@ -76,6 +81,24 @@ export const MapPage = ({ creators, flash }: Props) => {
           })}
         </div>
       </div>
+
+      {/* 選択中の都道府県の伝統工芸品紹介 */}
+      {selectedShape && (
+        <div className="mx-auto mb-[3%] w-[90%]">
+          <h2 className="mb-2 text-[27px] font-bold text-p-text">
+            {selectedShape.nameJa}の伝統工芸品
+          </h2>
+          {visibleCrafts.length === 0 ? (
+            <p className="text-[16px] text-p-muted">この都道府県の工芸品データは準備中です。</p>
+          ) : (
+            <div className="flex flex-wrap -m-2">
+              {visibleCrafts.map((craft) => (
+                <TraditionalCraftCard key={craft.id} craft={craft} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 選択中の都道府県 / 全国一覧 */}
       <div className="mx-auto mb-[1%] flex w-[90%] items-center justify-center gap-3">

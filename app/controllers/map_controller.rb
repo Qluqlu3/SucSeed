@@ -11,6 +11,7 @@ class MapController < ApplicationController
 
     @page_props = {
       creators: CreatorCardPresenter.build(@creator),
+      traditionalCrafts: TraditionalCraftPresenter.build(TraditionalCraft.includes(:art_category)),
       flash: flash.to_h
     }
   end

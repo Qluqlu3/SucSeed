@@ -3,5 +3,6 @@ import { MapPage } from './MapPage';
 
 mountPage('map-page', MapPage, {
   creators: [],
+  traditionalCrafts: [],
   flash: {},
 });
