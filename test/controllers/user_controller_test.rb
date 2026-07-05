@@ -38,10 +38,10 @@ class UserControllerTest < ActionDispatch::IntegrationTest
 
   # ── ログアウト ─────────────────────────────────────────────────────
 
-  test 'POST /index (logout) — セッションクリアして /index へリダイレクト' do
+  test 'POST /user/logout — セッションクリアして /index へリダイレクト' do
     log_in_as(@user)
     assert_not_nil session[:id]
-    post '/index'
+    post '/user/logout'
     assert_redirected_to '/index'
     assert_nil session[:id]
   end

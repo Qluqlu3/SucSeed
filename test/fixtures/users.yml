@@ -7,7 +7,7 @@ alice:
   is_creator: false
   is_certified: true
   password_digest: <%= BCrypt::Password.create('password123') %>
-  email_verification_sent_at: "2026-01-01 00:00:00"
+  email_verification_sent_at: <%= Time.current %>
   created_at: "2026-01-01 00:00:00"
 
 creator_bob:
@@ -19,7 +19,7 @@ creator_bob:
   is_creator: true
   is_certified: true
   password_digest: <%= BCrypt::Password.create('password123') %>
-  email_verification_sent_at: "2026-01-01 00:00:00"
+  email_verification_sent_at: <%= Time.current %>
   created_at: "2026-01-01 00:00:00"
 
 unverified:
@@ -32,5 +32,5 @@ unverified:
   is_certified: false
   password_digest: <%= BCrypt::Password.create('password123') %>
   email_verification_token: valid_email_token_001
-  email_verification_sent_at: "2026-06-29 00:00:00"
+  email_verification_sent_at: <%= Time.current %>
   created_at: "2026-06-29 00:00:00"
