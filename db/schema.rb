@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_04_000001) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_04_000002) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "user_id", null: false
@@ -193,6 +193,18 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_04_000001) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "traditional_crafts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", limit: 50, null: false
+    t.integer "prefecture_code", null: false
+    t.bigint "art_category_id"
+    t.text "summary", null: false
+    t.text "features", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["art_category_id"], name: "index_traditional_crafts_on_art_category_id"
+    t.index ["prefecture_code"], name: "index_traditional_crafts_on_prefecture_code"
+  end
+
   create_table "users", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "email", limit: 256, null: false
@@ -241,4 +253,5 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_04_000001) do
   add_foreign_key "messages", "users", column: "receive_user_id", on_delete: :cascade
   add_foreign_key "messages", "users", column: "send_user_id", on_delete: :cascade
   add_foreign_key "news", "users", on_delete: :cascade
+  add_foreign_key "traditional_crafts", "art_categories"
 end
