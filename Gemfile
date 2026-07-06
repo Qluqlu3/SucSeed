@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.3.0'
+ruby '3.3.11'
 
 # Rails 7.2.3.1 以上: Active Storage の DoS 脆弱性修正版を含む
 gem 'rails', '>= 7.2.3.1', '< 8.0'
