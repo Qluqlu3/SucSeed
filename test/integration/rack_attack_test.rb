@@ -5,13 +5,13 @@ require 'test_helper'
 #
 # Rack::Attack のスロットルは実時刻を period で割った固定ウィンドウでカウントするため、
 # リクエストのループ中に時刻が次のウィンドウへ切り替わると本来のリクエスト回数を
-# 数えきれず期待通りに 429 が返らないことがある。travel_to で時刻を固定し、
+# 数えきれず期待通りに 429 が返らないことがある。freeze_time で時刻を固定し、
 # テストの実行タイミングに依存しないようにする。
 class RackAttackTest < ActionDispatch::IntegrationTest
   # ── ログインスロットル (5 回/分) ──────────────────────────────────
 
   test 'ログイン 5 回目まで 200/302 が返る' do
-    travel_to Time.current do
+    freeze_time do
       5.times do
         post '/user/login', params: { session: { email: 'x@x.com', password: 'wrong' } },
                             headers: { 'REMOTE_ADDR' => '1.2.3.4' }
@@ -21,7 +21,7 @@ class RackAttackTest < ActionDispatch::IntegrationTest
   end
 
   test 'ログイン 6 回目で 429 が返る' do
-    travel_to Time.current do
+    freeze_time do
       5.times do
         post '/user/login', params: { session: { email: 'x@x.com', password: 'wrong' } },
                             headers: { 'REMOTE_ADDR' => '2.3.4.5' }
@@ -33,7 +33,7 @@ class RackAttackTest < ActionDispatch::IntegrationTest
   end
 
   test '別の IP からのログインはスロットルされない' do
-    travel_to Time.current do
+    freeze_time do
       5.times do
         post '/user/login', params: { session: { email: 'x@x.com', password: 'wrong' } },
                             headers: { 'REMOTE_ADDR' => '3.4.5.6' }
@@ -47,7 +47,7 @@ class RackAttackTest < ActionDispatch::IntegrationTest
   # ── パスワードリセットスロットル (5 回/時間) ──────────────────────
 
   test 'パスワードリセット 6 回目で 429 が返る' do
-    travel_to Time.current do
+    freeze_time do
       5.times do
         post '/user/password_forgot', params: { user_email: { email: 'x@x.com' } },
                                       headers: { 'REMOTE_ADDR' => '4.5.6.7' }
@@ -61,7 +61,7 @@ class RackAttackTest < ActionDispatch::IntegrationTest
   # ── 管理者ログインスロットル (5 回/分) ────────────────────────────
 
   test '管理者ログイン 6 回目で 429 が返る' do
-    travel_to Time.current do
+    freeze_time do
       5.times do
         post '/admin/login', params: { admin: { user_id: 'x', password: 'wrong' } },
                              headers: { 'REMOTE_ADDR' => '5.6.7.8' }
