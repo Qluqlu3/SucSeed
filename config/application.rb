@@ -11,6 +11,10 @@ module SucSeed
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.2
 
+    # Ruby 3.3.0 の YJIT には mail gem の生成パーサ（message_ids_parser 等）で
+    # セグフォルトを起こすバグがあるため無効化する。
+    config.yjit = false
+
     config.middleware.use Rack::Attack
 
     config.active_record.default_timezone = :local
