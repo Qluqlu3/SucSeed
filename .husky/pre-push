@@ -1,3 +1,14 @@
+# git hook はログインシェルの設定 (rbenv init など) を経由しないため、
+# rbenv の shims が PATH に無く bundle/ruby がシステム版に解決されてしまうことがある。
+# ここで明示的に shims を PATH に追加しておく。
+if [ -d "$HOME/.rbenv/shims" ]; then
+  export PATH="$HOME/.rbenv/shims:$PATH"
+fi
+
+# シェルに RBENV_VERSION が残っていると .ruby-version より優先されてしまい、
+# 意図しない Ruby バージョンで bundle/rails が実行され失敗することがあるため外す。
+unset RBENV_VERSION
+
 echo "pre-push: TypeScript の型チェックを実行します..."
 pnpm exec tsc --noEmit || exit 1
 
