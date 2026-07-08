@@ -17,6 +17,9 @@
     ],
     "**/*.rb": [
       "bundle exec rubocop -a"
+    ],
+    "Gemfile.lock": [
+      "bin/check_lockfile_platforms"
     ]
   },
   "scripts": {

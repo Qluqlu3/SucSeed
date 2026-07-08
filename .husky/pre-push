@@ -1,0 +1,12 @@
+echo "pre-push: TypeScript の型チェックを実行します..."
+pnpm exec tsc --noEmit || exit 1
+
+DB_HOST="${DB_HOST:-127.0.0.1}"
+DB_PORT="${DB_PORT:-3306}"
+
+if command -v mysqladmin >/dev/null 2>&1 && mysqladmin ping -h "$DB_HOST" -P "$DB_PORT" -u root -ppassword --silent >/dev/null 2>&1; then
+  echo "pre-push: Rails のテストを実行します..."
+  RAILS_ENV=test DB_HOST="$DB_HOST" DB_PORT="$DB_PORT" bundle exec rails test || exit 1
+else
+  echo "pre-push: テスト用DB (${DB_HOST}:${DB_PORT}) に接続できないため Rails テストをスキップしました。CI での結果を確認してください。"
+fi

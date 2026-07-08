@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# bundle install/exec をローカル環境で実行すると、その環境固有の platform
+# （例: x86_64-darwin-25）が Gemfile.lock の PLATFORMS に自動追加されてしまうことがある。
+# CI（x86_64-linux）や他の開発者の環境と無関係な platform が紛れ込むのを防ぐ。
+
+ALLOWED_PLATFORMS = %w[x86_64-darwin-23 x86_64-linux].freeze
+
+lockfile = File.expand_path('../Gemfile.lock', __dir__)
+content = File.read(lockfile)
+
+platforms_section = content[/^PLATFORMS\n((?:^\s{2}.+\n)+)/, 1]
+platforms = platforms_section.to_s.lines.map(&:strip)
+
+unexpected = platforms - ALLOWED_PLATFORMS
+if unexpected.any?
+  warn "Gemfile.lock の PLATFORMS に想定外のエントリがあります: #{unexpected.join(', ')}"
+  warn 'ローカルの bundle install/exec で自動追加された可能性があります。'
+  warn "以下のいずれかで削除してください: bundle lock --remove-platform #{unexpected.join(' ')}"
+  exit 1
+end

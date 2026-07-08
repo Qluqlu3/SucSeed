@@ -33,3 +33,7 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# gem fetch や sed -i.bak などで誤って作られがちな一時ファイル
+*.gem
+*.bak
