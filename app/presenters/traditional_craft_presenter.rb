@@ -7,7 +7,7 @@ class TraditionalCraftPresenter
         prefectureCode: c.prefecture_code,
         categoryName: c.art_category&.name,
         summary: c.summary,
-        features: c.feature_list
+        features: c.feature_list,
       }
     end
   end

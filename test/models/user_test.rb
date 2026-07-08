@@ -8,7 +8,7 @@ class UserTest < ActiveSupport::TestCase
       birthday: Date.new(1990, 1, 1),
       is_man: true,
       password: 'password123',
-      password_confirmation: 'password123'
+      password_confirmation: 'password123',
     }.merge(overrides))
   end
 
@@ -39,7 +39,7 @@ class UserTest < ActiveSupport::TestCase
   test '同じ email で 2 件目は invalid' do
     email = "dup_#{SecureRandom.hex(4)}@example.com"
     User.create!(build_user(email: email).attributes.except('id').merge(
-                   password: 'password123', password_confirmation: 'password123'
+                   password: 'password123', password_confirmation: 'password123',
                  ))
     dup = build_user(email: email)
     assert dup.invalid?

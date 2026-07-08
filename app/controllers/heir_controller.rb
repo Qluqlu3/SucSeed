@@ -9,7 +9,7 @@ class HeirController < ApplicationController
       @page_props = {
         artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
         errors: @heir.errors.full_messages,
-        flash: flash.to_h
+        flash: flash.to_h,
       }
       render :heir
     elsif session[:id].nil?
@@ -20,9 +20,9 @@ class HeirController < ApplicationController
       @page_props = {
         heir: {
           artCategoryName: @interest.name,
-          introduction: @heir.introduction.to_s
+          introduction: @heir.introduction.to_s,
         },
-        flash: flash.to_h
+        flash: flash.to_h,
       }
       render :show
     end
@@ -47,11 +47,11 @@ class HeirController < ApplicationController
       @page_props = {
         heir: {
           artCategoryId: @heir.art_category_id,
-          introduction: @heir.introduction.to_s
+          introduction: @heir.introduction.to_s,
         },
         artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
         errors: [],
-        flash: flash.to_h
+        flash: flash.to_h,
       }
       render :update
     else

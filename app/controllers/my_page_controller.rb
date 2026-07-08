@@ -15,11 +15,11 @@ class MyPageController < ApplicationController
         isMan: @user.is_man,
         email: @user.email,
         birthday: @user.birthday.to_s,
-        profile: @user.profile
+        profile: @user.profile,
       },
       profileIncomplete: @created == 1,
       isCreator: session[:creator].present?,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
   end
 
@@ -30,11 +30,11 @@ class MyPageController < ApplicationController
         name: @user.name,
         email: @user.email,
         profile: @user.profile,
-        avatarPath: @user.avatar_path.to_s
+        avatarPath: @user.avatar_path.to_s,
       },
       errors: [],
       isCreator: session[:creator].present?,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :update
   end
@@ -53,11 +53,11 @@ class MyPageController < ApplicationController
           name: @user.name,
           email: @user.email,
           profile: @user.profile,
-          avatarPath: @user.avatar_path.to_s
+          avatarPath: @user.avatar_path.to_s,
         },
         errors: @user.errors.full_messages,
         isCreator: session[:creator].present?,
-        flash: flash.to_h
+        flash: flash.to_h,
       }
       render :update
     end

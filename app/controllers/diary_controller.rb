@@ -10,7 +10,7 @@ class DiaryController < ApplicationController
         errors: [],
         flash: flash.to_h,
         userName: @user.name,
-        avatarPath: @user.avatar_path.to_s
+        avatarPath: @user.avatar_path.to_s,
       }
     else
       redirect_to '/index'
@@ -53,7 +53,7 @@ class DiaryController < ApplicationController
         good: @good, good_avatar: @good_avatar, my_good: @my_good
       ),
       currentUser: { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s },
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :select_diary
   end
@@ -79,7 +79,7 @@ class DiaryController < ApplicationController
       ),
       errors: @diary.errors.full_messages,
       flash: flash.to_h,
-      currentUser: { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s }
+      currentUser: { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s },
     }
   end
 
@@ -106,7 +106,7 @@ class DiaryController < ApplicationController
       targetUserId: params[:id].to_i,
       targetIsCreator: Creator.exists?(user_id: params[:id]),
       currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
   end
 
@@ -189,7 +189,7 @@ class DiaryController < ApplicationController
         good: @good, good_avatar: @good_avatar, my_good: @my_good
       ),
       currentUser: { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s },
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :diary_heir_favorite
   end

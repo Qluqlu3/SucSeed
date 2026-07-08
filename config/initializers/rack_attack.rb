@@ -31,7 +31,7 @@ class Rack::Attack
       [
         429,
         { 'Content-Type' => 'text/html; charset=utf-8' },
-        [<<~HTML]
+        [<<~HTML],
           <!DOCTYPE html>
           <html lang="ja">
           <head><meta charset="UTF-8"><title>リクエスト制限</title>

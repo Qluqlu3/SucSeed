@@ -15,7 +15,7 @@ class GalleryController < ApplicationController
         my_good_ids: my_good_ids, id_method: :page_id
       ),
       errors: @gallery.errors.full_messages,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :favorite_gallery
   end
@@ -30,10 +30,10 @@ class GalleryController < ApplicationController
     my_good_ids = @my_good.to_set(&:id)
     @page_props = {
       galleries: GalleryFeedPresenter.build(
-        galleries: @my_gallery, good_count: @good_count, my_good_ids: my_good_ids
+        galleries: @my_gallery, good_count: @good_count, my_good_ids: my_good_ids,
       ),
       errors: @gallery.errors.full_messages,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :my_gallery
   end
@@ -52,9 +52,9 @@ class GalleryController < ApplicationController
       userName: @user.name,
       userId: @user.id,
       galleries: GalleryFeedPresenter.build(
-        galleries: @user_gallery, good_count: @good_count, my_good_ids: my_good_ids
+        galleries: @user_gallery, good_count: @good_count, my_good_ids: my_good_ids,
       ),
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :user_gallery_view
   end
@@ -106,11 +106,11 @@ class GalleryController < ApplicationController
         avatarPath: @user.avatar_path.to_s,
         title: @selected_gallery_user.title,
         establishment: @selected_gallery_user.establishment,
-        employee: @selected_gallery_user.employee
+        employee: @selected_gallery_user.employee,
       },
       loggedIn: session[:id].present?,
       currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
   end
 
@@ -130,10 +130,10 @@ class GalleryController < ApplicationController
           dataUrl: g.data.to_s,
           tags: g.tag_list.to_a,
           goodCount: 0,
-          myGood: false
+          myGood: false,
         }
       end,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :gallery_search_user_tag
   end
@@ -150,10 +150,10 @@ class GalleryController < ApplicationController
           dataUrl: g.data.to_s,
           tags: g.tag_list.to_a,
           goodCount: 0,
-          myGood: false
+          myGood: false,
         }
       end,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :heir_favorite_gallery
   end

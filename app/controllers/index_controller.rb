@@ -18,7 +18,7 @@ class IndexController < ApplicationController
       recommend: @recommend&.then { |r| CreatorCardPresenter.build(r) },
       loggedIn: session[:id].present?,
       isCreator: session[:creator].present?,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
   end
 

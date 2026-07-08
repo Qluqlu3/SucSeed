@@ -11,7 +11,7 @@ class MatchController < ApplicationController
                  .order('matches.created_at ASC')
     @page_props = {
       matches: @match.map { |m| { pageId: m.page_id.to_s, name: m.name, birthday: m.birthday, avatarPath: m.avatar_path, matchTime: m.match_time } },
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :appealed_list
   end
@@ -24,12 +24,12 @@ class MatchController < ApplicationController
              .or(
                User.joins(:target_matches)
                    .select('users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time')
-                   .where(matches: { user_id: session[:id], is_ok: true })
+                   .where(matches: { user_id: session[:id], is_ok: true }),
              )
              .order('matches.created_at DESC')
     @page_props = {
       matches: @match.map { |m| { id: m.id.to_s, name: m.name, birthday: m.birthday, avatarPath: m.avatar_path.to_s, matchTime: m.match_time, isAddList: m.is_add_list.to_i } },
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :matching
   end
@@ -52,7 +52,7 @@ class MatchController < ApplicationController
                   .order('matches.created_at ASC')
     @page_props = {
       appeals: @appeal.map { |a| { pageId: a.page_id.to_s, name: a.name, birthday: a.birthday, avatarPath: a.avatar_path.to_s, title: a.title, matchTime: a.match_time, isOk: a.is_ok } },
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :appeal_show
   end
@@ -78,7 +78,7 @@ class MatchController < ApplicationController
                  .order('matches.created_at ASC')
     @page_props = {
       scouts: @scout.map { |s| { pageId: s.page_id.to_s, name: s.name, birthday: s.birthday, avatarPath: s.avatar_path, matchTime: s.match_time, title: s.title } },
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :scout_check
   end
@@ -92,7 +92,7 @@ class MatchController < ApplicationController
                  .order('matches.created_at ASC')
     @page_props = {
       scouts: @scout.map { |s| { pageId: s.page_id.to_s, name: s.name, birthday: s.birthday, avatarPath: s.avatar_path.to_s, matchTime: s.match_time, title: '' } },
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :scout_show
   end

@@ -91,9 +91,9 @@ Rails.application.configure do
     user_name: ENV.fetch('GMAIL_USERNAME', nil),
     password: ENV.fetch('GMAIL_PASSWORD', nil),
     authentication: 'plain',
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
   }
   config.action_mailer.default_url_options = {
-    host: ENV.fetch('APP_HOST', 'localhost')
+    host: ENV.fetch('APP_HOST', 'localhost'),
   }
 end

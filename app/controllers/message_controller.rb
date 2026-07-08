@@ -45,7 +45,7 @@ class MessageController < ApplicationController
       messageLists: format_message_list(message_list),
       messageHistory: message_history.map { |m| { sendUserId: m.send_user_id.to_s, content: m.content, createdAt: m.created_at } },
       fromUser: { id: from_user.id.to_s, avatarPath: from_user.avatar_path, name: from_user.name },
-      toUser: { id: to_user.id.to_s, name: to_user.name, avatarPath: to_user.avatar_path }
+      toUser: { id: to_user.id.to_s, name: to_user.name, avatarPath: to_user.avatar_path },
     }
   end
 

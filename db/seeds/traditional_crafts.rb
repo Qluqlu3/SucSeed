@@ -153,7 +153,7 @@ CRAFTS = [
     features: ['泥田の鉄分で染める「泥染め」が最大の特徴', '手織り・草木染め・締機による絣柄が緻密', '100%絹・手織り等の厳格な認定基準がある'] },
   { name: '琉球びんがた', prefecture_code: 47, category: '染織物',
     summary: '首里を中心に作られてきた沖縄を代表する染物で、鮮やかな色彩と大胆な模様が特徴。発祥は琉球王国成立直後の1450年頃に遡り、東南アジア交易の中で技法を取り入れて発展した。1984年に経済産業大臣指定伝統的工芸品に指定。',
-    features: ['「びん」は色、「がた」は模様を意味する', '型紙を用いた顔料・染料による多彩な染色技法', '琉球王朝の王族・士族の衣装として発展した'] }
+    features: ['「びん」は色、「がた」は模様を意味する', '型紙を用いた顔料・染料による多彩な染色技法', '琉球王朝の王族・士族の衣装として発展した'] },
 ].freeze
 
 CRAFTS.each do |c|
@@ -162,7 +162,7 @@ CRAFTS.each do |c|
     prefecture_code: c[:prefecture_code],
     art_category: ArtCategory.find_by(name: c[:category]),
     summary: c[:summary],
-    features: c[:features].join("\n")
+    features: c[:features].join("\n"),
   )
   craft.save!
 end

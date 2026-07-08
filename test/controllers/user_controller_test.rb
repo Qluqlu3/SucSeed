@@ -24,7 +24,8 @@ class UserControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST /user/login — 存在しないメールでセッション未設定' do
-    post '/user/login', params: { session: { email: 'nobody@example.com', password: 'password123' } }
+    post '/user/login',
+         params: { session: { email: 'nobody@example.com', password: 'password123' } }
     assert_redirected_to '/index'
     assert_nil session[:id]
   end
@@ -58,8 +59,8 @@ class UserControllerTest < ActionDispatch::IntegrationTest
           is_man: true,
           is_creator: false,
           password: 'password123',
-          password_confirmation: 'password123'
-        }
+          password_confirmation: 'password123',
+        },
       }
     end
     assert_redirected_to '/index'
@@ -75,8 +76,8 @@ class UserControllerTest < ActionDispatch::IntegrationTest
           birthday: '1990-01-01',
           is_man: true,
           password: 'password123',
-          password_confirmation: 'password123'
-        }
+          password_confirmation: 'password123',
+        },
       }
     end
     assert_response :unprocessable_entity
@@ -110,7 +111,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
   test 'GET /user/password_reset/:token — 期限切れトークンで /user/password_forgot へリダイレクト' do
     @user.update_columns(
       password_reset_token: 'expired_token_001',
-      password_reset_sent_at: 2.hours.ago
+      password_reset_sent_at: 2.hours.ago,
     )
     get '/user/password_reset/expired_token_001'
     assert_redirected_to '/user/password_forgot'
@@ -120,7 +121,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     @user.generate_password_reset_token!
     token = @user.reload.password_reset_token
     patch "/user/password_reset/#{token}", params: {
-      user: { password: 'newpass99', password_confirmation: 'newpass99' }
+      user: { password: 'newpass99', password_confirmation: 'newpass99' },
     }
     assert_redirected_to '/index'
     assert_nil @user.reload.password_reset_token

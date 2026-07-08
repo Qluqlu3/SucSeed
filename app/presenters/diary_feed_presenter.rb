@@ -14,12 +14,15 @@ class DiaryFeedPresenter
         content: d.content,
         postTime: d.post_time.strftime('%Y/%m/%d %H:%M'),
         goodCount: good[id] || 0,
-        goodAvatars: (good_avatar_by_diary[id] || []).map { |ga| { avatarPath: ga.avatar_path.to_s } },
+        goodAvatars: (good_avatar_by_diary[id] || []).map do |ga|
+          { avatarPath: ga.avatar_path.to_s }
+        end,
         myGood: my_good_ids.include?(id),
         comments: (comment_by_diary[id] || []).map do |c|
-          { name: c.name, avatarPath: c.avatar_path.to_s, comment: c.comment, postTime: c.post_time.strftime('%Y/%m/%d %H:%M') }
+          { name: c.name, avatarPath: c.avatar_path.to_s, comment: c.comment,
+            postTime: c.post_time.strftime('%Y/%m/%d %H:%M') }
         end,
-        commentCount: comment_count[id] || 0
+        commentCount: comment_count[id] || 0,
       }
     end
   end

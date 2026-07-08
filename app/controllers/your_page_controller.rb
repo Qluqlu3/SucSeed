@@ -16,14 +16,14 @@ class YourPageController < ApplicationController
         name: @user.name,
         avatarPath: @user.avatar_path.to_s,
         isMan: @user.is_man,
-        birthday: @user.birthday.to_s
+        birthday: @user.birthday.to_s,
       },
       creator: {
         title: @creator.title,
         establishment: @creator.establishment,
         employee: @creator.employee,
         profile: @creator.profile,
-        isRecruitment: @creator.is_recruitment
+        isRecruitment: @creator.is_recruitment,
       },
       artCategoryName: @art_category.name,
       isFavorited: @fv_check.present?,
@@ -32,7 +32,7 @@ class YourPageController < ApplicationController
       isCreator: session[:creator].present?,
       isMatched: @match.present?,
       targetUserId: @user.id,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :your_page
   end
@@ -51,14 +51,14 @@ class YourPageController < ApplicationController
         avatarPath: @user.avatar_path.to_s,
         isMan: @user.is_man,
         birthday: @user.birthday.to_s,
-        profile: @user.profile
+        profile: @user.profile,
       },
       artName: @art_name&.name,
       isScouted: @scout.present?,
       loggedIn: session[:id].present?,
       isCreator: session[:creator].present?,
       targetUserId: params[:id].to_i,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :heir_page
   end

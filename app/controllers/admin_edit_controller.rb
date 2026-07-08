@@ -15,10 +15,10 @@ class AdminEditController < ApplicationController
           profile: u.profile.to_s,
           createdAt: u.created_at.to_s,
           deletedAt: u.deleted_at&.to_s,
-          loginTime: u.login_time&.to_s
+          loginTime: u.login_time&.to_s,
         }
       end,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :admin_user_edit
   end
@@ -32,10 +32,10 @@ class AdminEditController < ApplicationController
           userId: d.user_id,
           content: d.content.to_s,
           createdAt: d.created_at.to_s,
-          deletedAt: d.deleted_at&.to_s
+          deletedAt: d.deleted_at&.to_s,
         }
       end,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :admin_diary_edit
   end
@@ -50,10 +50,10 @@ class AdminEditController < ApplicationController
           diaryId: c.diary_id,
           comment: c.comment.to_s,
           createdAt: c.created_at.to_s,
-          deletedAt: c.deleted_at&.to_s
+          deletedAt: c.deleted_at&.to_s,
         }
       end,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :admin_diary_comment_edit
   end
@@ -68,10 +68,10 @@ class AdminEditController < ApplicationController
           data: g.data.to_s,
           comment: g.comment.to_s,
           createdAt: g.created_at.to_s,
-          deletedAt: g.deleted_at&.to_s
+          deletedAt: g.deleted_at&.to_s,
         }
       end,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :admin_gallery_edit
   end
@@ -89,10 +89,10 @@ class AdminEditController < ApplicationController
           createdAt: q.created_at.to_s,
           updatedAt: q.updated_at.to_s,
           deletedAt: q.deleted_at&.to_s,
-          elapsedDays: ((Time.zone.now - q.created_at) / 86_400).to_i
+          elapsedDays: ((Time.zone.now - q.created_at) / 86_400).to_i,
         }
       end,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :admin_inquiry_edit
   end
@@ -114,9 +114,9 @@ class AdminEditController < ApplicationController
       user: {
         id: @user.id,
         avatarPath: @user.avatar_path.to_s,
-        profile: @user.profile.to_s
+        profile: @user.profile.to_s,
       },
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     render :selected_user_edit
   end
@@ -172,10 +172,10 @@ class AdminEditController < ApplicationController
         id: @inquiry_detail.id,
         categoryName: @category.name,
         content: @inquiry_detail.content.to_s,
-        createdAt: @inquiry_detail.created_at.to_s
+        createdAt: @inquiry_detail.created_at.to_s,
       },
       isCheck: @inquiry_detail.is_check ? true : false,
-      flash: flash.to_h
+      flash: flash.to_h,
     }
     @check = if @inquiry_detail.is_check
                true

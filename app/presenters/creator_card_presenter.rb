@@ -17,7 +17,7 @@ class CreatorCardPresenter
         createdAt: c.created_at,
         prefectureCode: c.prefecture_code,
         galleryCount: galleries.size,
-        galleryPreviewPath: galleries.first&.data&.to_s
+        galleryPreviewPath: galleries.first&.data&.to_s,
       }
     end
   end

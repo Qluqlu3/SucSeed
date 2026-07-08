@@ -17,14 +17,16 @@ AllCops:
 
 # ── Layout ────────────────────────────────────────────────────────────────────
 
-# controllers の AR クエリチェーンは 160 超が多い。Service 化後に除外を外す予定
+# frontend の biome.json (lineWidth: 100) に合わせる。
+# controllers の AR クエリチェーンと db/seeds の説明文（日本語の長文）は対象外
 Layout/LineLength:
-  Max: 160
+  Max: 100
   AllowedPatterns:
     - '\A\s*#'
   Exclude:
     - 'app/controllers/**/*'
     - 'app/uploaders/**/*'
+    - 'db/seeds/**/*'
 
 # ── Metrics ───────────────────────────────────────────────────────────────────
 # 既存のファットコントローラに合わせて緩和 (将来の Service 化で絞る予定)
@@ -64,12 +66,23 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-# 既存コードはシングルクォート主体
+# 既存コードはシングルクォート主体（biome.json の quoteStyle: single と揃える）
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: single_quotes
+
+# biome.json の trailingCommas: all と揃え、複数行の引数/配列/ハッシュには
+# 末尾カンマを付ける（要素追加時の diff を1行に抑えるため）
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
 
 # ── Rails ─────────────────────────────────────────────────────────────────────
 
