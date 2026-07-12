@@ -14,9 +14,13 @@
 //   Tailwind は今後新規コンポーネントから段階的に導入する。
 
 import { Handshake, Info, Map as MapIcon, UserPlus } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import type { Creator } from '../CreatorCard';
 import { CreatorCard } from '../CreatorCard';
 import { FlashMessages } from '../FlashMessages';
+import { JapanMap } from '../MapPage/JapanMap';
+import { PREFECTURE_SHAPES } from '../MapPage/japanPrefectureShapes';
+import { type TraditionalCraft, TraditionalCraftCard } from '../MapPage/TraditionalCraftCard';
 
 // サービス説明カードのアイコン共通スタイル（画像アイコンからライブラリアイコンに統一）
 const ServiceIcon = ({ icon: IconComponent }: { icon: typeof UserPlus }) => (
@@ -30,6 +34,7 @@ interface Props {
   creators: Creator[];
   // 後継者ログイン時のみ存在する。未ログイン・職人ログインは null
   recommend: Creator[] | null;
+  traditionalCrafts: TraditionalCraft[];
   loggedIn: boolean;
   isCreator: boolean;
   flash: Record<string, string>;
@@ -81,7 +86,23 @@ const ServiceDescription = () => (
 );
 
 // ── メインコンポーネント ──────────────────────────────────────────────
-export const IndexPage = ({ creators, recommend, loggedIn, flash }: Props) => {
+export const IndexPage = ({ creators, recommend, traditionalCrafts, loggedIn, flash }: Props) => {
+  const [selectedCode, setSelectedCode] = useState<number | null>(null);
+
+  const countByPrefecture = useMemo(() => {
+    const counts: Record<number, number> = {};
+    for (const creator of creators) {
+      if (creator.prefectureCode == null) continue;
+      counts[creator.prefectureCode] = (counts[creator.prefectureCode] ?? 0) + 1;
+    }
+    return counts;
+  }, [creators]);
+
+  const selectedShape = PREFECTURE_SHAPES.find((p) => p.code === selectedCode) ?? null;
+
+  const visibleCrafts =
+    selectedCode == null ? [] : traditionalCrafts.filter((c) => c.prefectureCode === selectedCode);
+
   return (
     <>
       <FlashMessages flash={flash} />
@@ -116,6 +137,52 @@ export const IndexPage = ({ creators, recommend, loggedIn, flash }: Props) => {
           <div className="h-[5vh] w-full bg-p-brand" />
         </>
       )}
+
+      {/* 都道府県から伝統工芸品を探す */}
+      <div className="w-full bg-p-pale py-[3%]">
+        <h2 className="mb-2 text-center text-[35px] font-bold text-p-text">
+          都道府県から伝統工芸品を探す
+        </h2>
+        <p className="mx-auto mb-[2%] w-[90%] text-center text-[16px] text-p-muted">
+          地図上の都道府県をクリックすると、その地域の代表的な伝統工芸品を紹介します。
+        </p>
+
+        <div className="mx-auto w-[90%] max-w-[900px] rounded-[7px] border border-p-mid bg-white p-[3%]">
+          <JapanMap
+            countByPrefecture={countByPrefecture}
+            selectedCode={selectedCode}
+            onSelect={setSelectedCode}
+          />
+        </div>
+
+        {selectedShape && (
+          <div className="mx-auto mt-[3%] w-[90%]">
+            <div className="mb-2 flex items-center justify-center gap-3">
+              <h3 className="text-[24px] font-bold text-p-text">
+                {selectedShape.nameJa}の伝統工芸品
+              </h3>
+              <button
+                type="button"
+                onClick={() => setSelectedCode(null)}
+                className="rounded bg-p-muted px-3 py-1 text-[14px] text-white hover:opacity-80"
+              >
+                閉じる
+              </button>
+            </div>
+            {visibleCrafts.length === 0 ? (
+              <p className="text-center text-[16px] text-p-muted">
+                この都道府県の工芸品データは準備中です。
+              </p>
+            ) : (
+              <div className="flex flex-wrap -m-2">
+                {visibleCrafts.map((craft) => (
+                  <TraditionalCraftCard key={craft.id} craft={craft} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* 地図から探すバナー */}
       <a

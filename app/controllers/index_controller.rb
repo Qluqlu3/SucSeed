@@ -16,6 +16,7 @@ class IndexController < ApplicationController
     @page_props = {
       creators: CreatorCardPresenter.build(@creator),
       recommend: @recommend&.then { |r| CreatorCardPresenter.build(r) },
+      traditionalCrafts: TraditionalCraftPresenter.build(TraditionalCraft.includes(:art_category)),
       loggedIn: session[:id].present?,
       isCreator: session[:creator].present?,
       flash: flash.to_h,
