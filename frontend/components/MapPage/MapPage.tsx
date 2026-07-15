@@ -19,8 +19,17 @@ interface Props {
   flash: Record<string, string>;
 }
 
+// URLの?pref=<都道府県コード>から初期選択状態を復元する。伝統工芸品カードの
+// 「この工芸品に携わる職人を見る」リンクなど、他ページからの絞り込み付き遷移に使う。
+const readPrefectureFromQuery = (): number | null => {
+  if (typeof window === 'undefined') return null;
+  const raw = new URLSearchParams(window.location.search).get('pref');
+  const code = raw ? Number(raw) : Number.NaN;
+  return Number.isInteger(code) && code >= 1 && code <= 47 ? code : null;
+};
+
 export const MapPage = ({ creators, traditionalCrafts, flash }: Props) => {
-  const [selectedCode, setSelectedCode] = useState<number | null>(null);
+  const [selectedCode, setSelectedCode] = useState<number | null>(readPrefectureFromQuery);
 
   const countByPrefecture = useMemo(() => {
     const counts: Record<number, number> = {};
