@@ -2,10 +2,11 @@
 # frozen_string_literal: true
 
 # bundle install/exec をローカル環境で実行すると、その環境固有の platform
-# （例: x86_64-darwin-25）が Gemfile.lock の PLATFORMS に自動追加されてしまうことがある。
-# CI（x86_64-linux）や他の開発者の環境と無関係な platform が紛れ込むのを防ぐ。
+# （例: macOSアップデート後の x86_64-darwin-26 など）が Gemfile.lock の PLATFORMS に
+# 自動追加されてしまうことがある。CI（x86_64-linux）や想定外の platform が
+# 紛れ込むのを防ぐ。
 
-ALLOWED_PLATFORMS = %w[x86_64-darwin-23 x86_64-linux].freeze
+ALLOWED_PLATFORMS = %w[x86_64-darwin-25 x86_64-linux].freeze
 
 lockfile = File.expand_path('../Gemfile.lock', __dir__)
 content = File.read(lockfile)
