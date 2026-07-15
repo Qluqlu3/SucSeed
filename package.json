@@ -16,7 +16,7 @@
       "biome check --write"
     ],
     "**/*.rb": [
-      "bundle exec rubocop -a"
+      "bundle exec rubocop -a --force-exclusion"
     ],
     "Gemfile.lock": [
       "bin/check_lockfile_platforms"
