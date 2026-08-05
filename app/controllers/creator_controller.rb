@@ -37,7 +37,7 @@ class CreatorController < ApplicationController
     @creator = ArtCategory.joins(:creators).select('creators.*, art_categories.name').find_by(creators: { user_id: session[:id] })
     @art_categories = ArtCategory.all
     @is_creator = session[:creator].present?
-    @check = @creator.is_recruitment == 1
+    @is_recruitment = @creator.is_recruitment == 1
     @page_props = {
       creator: {
         title: @creator.title,
@@ -46,7 +46,7 @@ class CreatorController < ApplicationController
         establishment: @creator.establishment,
         employee: @creator.employee,
         postalCode: @creator.postal_code,
-        isRecruitment: @check,
+        isRecruitment: @is_recruitment,
       },
       artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
       isCreator: @is_creator,

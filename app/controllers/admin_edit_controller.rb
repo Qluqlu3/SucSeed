@@ -177,11 +177,6 @@ class AdminEditController < ApplicationController
       isCheck: @inquiry_detail.is_check ? true : false,
       flash: flash.to_h,
     }
-    @check = if @inquiry_detail.is_check
-               true
-             else
-               false
-             end
     render :inquiry_detail
   end
 
