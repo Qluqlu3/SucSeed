@@ -11,6 +11,8 @@ class CreatorController < ApplicationController
       render :create
     else
       @creator = User.joins(:creator).select('users.*, creators.*').find_by(creators: { user_id: session[:id] })
+      return redirect_to '/index' unless @creator
+
       @category = ArtCategory.find(@creator.art_category_id)
       @is_creator = session[:creator].present?
       @page_props = {
