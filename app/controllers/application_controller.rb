@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :check_session_timeout
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  rescue_from ActiveRecord::InvalidForeignKey, with: :render_404
   rescue_from ActionController::ParameterMissing, with: :render_400
 
   def render_404

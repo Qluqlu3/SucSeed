@@ -109,7 +109,7 @@ class AdminEditController < ApplicationController
 
   # ユーザー編集
   def user_edit_show
-    @user = User.with_deleted.find_by(id: params[:id])
+    @user = User.with_deleted.find(params[:id])
     @page_props = {
       user: {
         id: @user.id,
@@ -123,7 +123,7 @@ class AdminEditController < ApplicationController
 
   # patch
   def user_edit
-    user = User.with_deleted.find_by(id: params[:id])
+    user = User.with_deleted.find(params[:id])
     if user.update(avatar_path: params[:user][:avatar_path], profile: params[:user][:profile])
       flash[:success] = t('flash.success.saved')
       redirect_to '/admin/management/user'
@@ -165,7 +165,7 @@ class AdminEditController < ApplicationController
   # お問い合わせ詳細表示
   def inquiry_detail_show
     @inquiry = Inquiry.new
-    @inquiry_detail = Inquiry.find_by(id: params[:id])
+    @inquiry_detail = Inquiry.find(params[:id])
     @category = InquiryCategory.find(@inquiry_detail.inquiry_category_id)
     @page_props = {
       inquiryDetail: {
