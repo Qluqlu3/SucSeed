@@ -52,6 +52,10 @@ group :development do
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
+
+  gem 'guard-livereload', '>= 2.5.2'
+  gem 'better_errors', '>= 2.5.0'
+  gem 'binding_of_caller', '>= 0.8.0'
 end
 
 group :test do
@@ -85,11 +89,5 @@ gem 'jsbundling-rails'
 
 # タグ
 gem 'acts-as-taggable-on', '>= 6.0.0'
-
-gem 'guard-livereload', '>= 2.5.2'
-
-gem 'better_errors', '>= 2.5.0'
-
-gem 'binding_of_caller', '>= 0.8.0'
 
 # trigram は app/ 内で未使用かつ2012年以降メンテされていないため削除
