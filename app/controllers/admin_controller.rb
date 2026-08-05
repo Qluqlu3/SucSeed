@@ -42,7 +42,8 @@ class AdminController < ApplicationController
 
   def require_basic_auth
     authenticate_or_request_with_http_basic('Admin Setup') do |_user, password|
-      password == ENV.fetch('ADMIN_CREATE_PASSWORD', nil)
+      expected_password = ENV.fetch('ADMIN_CREATE_PASSWORD', nil)
+      expected_password.present? && ActiveSupport::SecurityUtils.secure_compare(password.to_s, expected_password)
     end
   end
 
