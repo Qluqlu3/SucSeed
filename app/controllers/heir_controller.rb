@@ -67,7 +67,7 @@ class HeirController < ApplicationController
       redirect_to '/heir/show'
     else
       flash[:danger] = t('flash.danger.error')
-      redirect_to '/heir/update'
+      redirect_to '/heir/edit'
     end
   end
 
