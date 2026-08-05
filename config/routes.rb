@@ -82,7 +82,6 @@ Rails.application.routes.draw do
 
   post 'creator/create' => 'creator#create'
   patch 'creator/edit' => 'creator#update'
-  post 'creator/:id/delete' => 'creator#delete'
 
   post 'diary/post' => 'diary#post'
   post 'diary/show/:id/good' => 'diary#good'
