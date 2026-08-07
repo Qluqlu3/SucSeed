@@ -84,9 +84,9 @@ class GalleryController < ApplicationController
     @my_good = GalleryGood.exists?(gallery_id: @selected_gallery.id, user_id: session[:id])
     @gallery_comment = GalleryComment.new
     # タグ検索
-    @match_tag = Gallery.tagged_with([@selected_gallery.tag_list], any: true).where.not(user_id: @selected_gallery.user_id).order('RAND()').limit(3)
+    @match_tag = Gallery.tagged_with([@selected_gallery.tag_list], any: true).where.not(user_id: @selected_gallery.user_id).random_sample(3)
     # ユーザの他投稿
-    @other_gallery = Gallery.where(user_id: @selected_gallery.user_id).where.not(id: params[:id]).order('RAND()').limit(2)
+    @other_gallery = Gallery.where(user_id: @selected_gallery.user_id).where.not(id: params[:id]).random_sample(2)
     @page_props = {
       galleryId: @selected_gallery.id,
       dataUrl: @selected_gallery.data.to_s,

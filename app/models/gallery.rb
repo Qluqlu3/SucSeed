@@ -1,5 +1,6 @@
 class Gallery < ApplicationRecord
   include SoftDeletable
+  include RandomSampleable
 
   mount_uploader :data, GalleryUploader
   has_secure_token :id

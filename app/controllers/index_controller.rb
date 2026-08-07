@@ -10,7 +10,7 @@ class IndexController < ApplicationController
 
     @recommend = if session[:id].present? && session[:creator].nil?
                    interest = Heir.select('heirs.art_category_id').find_by(user_id: session[:id])
-                   User.joins(:creator).select(CREATOR_COLUMNS).where(creators: { art_category_id: interest, is_recruitment: true }).order('RAND()').limit(4)
+                   User.joins(:creator).select(CREATOR_COLUMNS).where(creators: { art_category_id: interest, is_recruitment: true }).random_sample(4)
                  end
 
     @page_props = {

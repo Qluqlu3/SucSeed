@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include SoftDeletable
+  include RandomSampleable
 
   mount_uploader :avatar_path, AvatarUploader
   has_secure_password

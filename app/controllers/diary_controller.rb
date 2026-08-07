@@ -69,7 +69,7 @@ class DiaryController < ApplicationController
     @good = DiaryGood.where(diary_id: diary_ids).group(:diary_id).count
     @diary_comment = DiaryComment.new
     @good_user = Diary.joins(:diary_goods).where(diary_goods: { diary_id: Diary.where(user_id: session[:id]).select('diaries.id') }).select('diary_goods.user_id')
-    @good_avatar = User.joins(:diary_goods).where(id: @good_user).select('diary_goods.*, diary_goods.diary_id, users.*').order('RAND()').limit(5)
+    @good_avatar = User.joins(:diary_goods).where(id: @good_user).select('diary_goods.*, diary_goods.diary_id, users.*').random_sample(5)
     @my_good = Diary.joins(:diary_goods).where(diaries: { user_id: session[:id] }).where(diary_goods: { user_id: session[:id] }).select('diaries.id AS id').order('diaries.created_at DESC')
     @diary = Diary.new
     @page_props = {
@@ -94,7 +94,7 @@ class DiaryController < ApplicationController
     @good = DiaryGood.where(diary_id: diary_ids).group(:diary_id).count
     @diary_comment = DiaryComment.new
     @good_user = Diary.joins(:diary_goods).select('diary_goods.user_id').where(diary_goods: { diary_id: Diary.where(user_id: params[:id]).select('diaries.id') })
-    @good_avatar = User.joins(:diary_goods).where(id: @good_user).select('diary_goods.*, diary_goods.diary_id, users.*').order('RAND()').limit(5)
+    @good_avatar = User.joins(:diary_goods).where(id: @good_user).select('diary_goods.*, diary_goods.diary_id, users.*').random_sample(5)
     @my_good = Diary.joins(:diary_goods).where(diaries: { user_id: params[:id] }).where(diary_goods: { user_id: session[:id] }).select('diaries.id AS id').order('diaries.created_at DESC')
     @name = User.select('users.name').find(params[:id])
     @page_props = {
