@@ -11,7 +11,7 @@ class TraditionalCraft < ApplicationRecord
   validates :production_area, length: { maximum: 50 }, allow_nil: true
   validates :designated_year, allow_nil: true,
                               numericality: { only_integer: true, greater_than: 1868 }
-  validates :source_url, format: { with: %r{\Ahttps?://} }, allow_blank: true
+  validates :source_url, format: { with: %r{\Ahttps?://\S+\z} }, allow_blank: true
 
   def feature_list
     features.to_s.split("\n").map(&:strip).reject(&:empty?)

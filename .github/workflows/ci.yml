@@ -131,3 +131,21 @@ jobs:
 
       - name: Audit Gemfile.lock
         run: bundle exec bundler-audit check --format text
+
+  # ── Rails 静的セキュリティ解析 ──────────────────────────────────
+  brakeman:
+    name: Brakeman
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.11'
+          bundler-cache: true
+
+      # EOLRails/EOLRuby はバージョン自体の陳腐化警告であり、Mass Assignment/SQLi/XSS
+      # 等のコード上の脆弱性検査とは性質が異なるため対象外にする（Railsアップデートは別課題として管理）。
+      - name: Run Brakeman
+        run: bundle exec brakeman --no-pager --except EOLRails,EOLRuby

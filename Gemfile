@@ -39,6 +39,8 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bundler-audit', '>= 0.9.0'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  # Railsアプリの静的セキュリティ解析（Mass Assignment, SQLi, XSS等の脆弱性検査）
+  gem 'brakeman', require: false
 end
 
 group :development do
@@ -53,9 +55,9 @@ group :development do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
 
-  gem 'guard-livereload', '>= 2.5.2'
   gem 'better_errors', '>= 2.5.0'
   gem 'binding_of_caller', '>= 0.8.0'
+  gem 'guard-livereload', '>= 2.5.2'
 end
 
 group :test do

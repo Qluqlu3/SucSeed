@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }
   validates :email, uniqueness: true, on: :create
   validates :password, allow_nil: true, presence: true, confirmation: true, length: { in: 8..16 },
-                       format: { with: /[a-zA-Z0-9]/ }
+                       format: { with: /\A[a-zA-Z0-9]+\z/ }
   has_one :creator, dependent: :destroy
   has_one :heir, dependent: :destroy
   has_many :diaries, dependent: :destroy
