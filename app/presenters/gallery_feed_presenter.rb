@@ -1,7 +1,7 @@
 class GalleryFeedPresenter
-  def self.build(galleries:, good_count:, my_good_ids:, id_method: :id)
+  def self.build(galleries:, good_count:, my_good_ids:)
     galleries.map do |g|
-      id = g.public_send(id_method)
+      id = g.id
       {
         id: id,
         dataUrl: g.data.to_s,

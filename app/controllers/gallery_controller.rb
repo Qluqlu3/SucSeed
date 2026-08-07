@@ -4,16 +4,9 @@ class GalleryController < ApplicationController
   # お気に入りユーザのギャラリー
   def favorite_gallery
     @gallery = Gallery.new
-    @favorite_gallery = Gallery.joins(:user).select('users.*, galleries.*, galleries.id AS page_id').where(galleries: { user_id: session[:id] }).or(Gallery.joins(:user).select('users.*, galleries.*, galleries.id AS page_id').where(galleries: { user_id: Favorite.where(user_id: session[:id]).select('favorites.favorite_user_id') })).order('galleries.created_at DESC')
-    gallery_ids = @favorite_gallery.map(&:page_id)
-    @good_count = GalleryGood.where(gallery_id: gallery_ids).group(:gallery_id).count
-    @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: { user_id: session[:id] }).where(galleries: { user_id: session[:id] }).or(Gallery.joins(:gallery_goods).where(galleries: { user_id: Favorite.where(user_id: session[:id]).select('favorites.favorite_user_id') })).select('galleries.id AS id').order('galleries.created_at DESC')
-    my_good_ids = @my_good.to_set(&:id)
+    feed = GalleryFeedQueryService.build(target_ids: Favorite.self_and_favorite_ids(session[:id]), viewer_id: session[:id])
     @page_props = {
-      galleries: GalleryFeedPresenter.build(
-        galleries: @favorite_gallery, good_count: @good_count,
-        my_good_ids: my_good_ids, id_method: :page_id
-      ),
+      galleries: feed[:galleries],
       errors: @gallery.errors.full_messages,
       flash: flash.to_h,
     }
@@ -23,15 +16,9 @@ class GalleryController < ApplicationController
   # マイギャラリー
   def my_gallery
     @gallery = Gallery.new
-    @my_gallery = Gallery.where(user_id: session[:id]).includes(:taggings, :tags).order(created_at: :desc)
-    gallery_ids = @my_gallery.map(&:id)
-    @good_count = GalleryGood.where(gallery_id: gallery_ids).group(:gallery_id).count
-    @my_good = Gallery.joins(:gallery_goods).where(gallery_goods: { user_id: session[:id] }).where(galleries: { user_id: session[:id] }).or(Gallery.joins(:gallery_goods).where(galleries: { user_id: Favorite.where(user_id: session[:id]).select('favorites.favorite_user_id') })).select('galleries.id AS id').order('galleries.created_at DESC')
-    my_good_ids = @my_good.to_set(&:id)
+    feed = GalleryFeedQueryService.build(target_ids: session[:id], viewer_id: session[:id])
     @page_props = {
-      galleries: GalleryFeedPresenter.build(
-        galleries: @my_gallery, good_count: @good_count, my_good_ids: my_good_ids,
-      ),
+      galleries: feed[:galleries],
       errors: @gallery.errors.full_messages,
       flash: flash.to_h,
     }
@@ -140,19 +127,9 @@ class GalleryController < ApplicationController
 
   # 後継者側のお気に入り
   def heir_favorite_gallery
-    @favorite_gallery = Gallery.joins(:user).includes(:taggings,
-                                                      :tags).select('users.*, galleries.*, galleries.id AS page_id').where(galleries: { user_id: session[:id] }).or(Gallery.joins(:user).includes(:taggings,
-                                                                                                                                                                                                  :tags).select('users.*, galleries.*, galleries.id AS page_id').where(galleries: { user_id: Favorite.where(user_id: session[:id]).select('favorites.favorite_user_id') })).order('galleries.created_at DESC')
+    feed = GalleryFeedQueryService.build(target_ids: Favorite.self_and_favorite_ids(session[:id]), viewer_id: session[:id])
     @page_props = {
-      galleries: @favorite_gallery.map do |g|
-        {
-          id: g.page_id,
-          dataUrl: g.data.to_s,
-          tags: g.tag_list.to_a,
-          goodCount: 0,
-          myGood: false,
-        }
-      end,
+      galleries: feed[:galleries],
       flash: flash.to_h,
     }
     render :heir_favorite_gallery
