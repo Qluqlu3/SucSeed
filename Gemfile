@@ -92,4 +92,7 @@ gem 'jsbundling-rails'
 # タグ
 gem 'acts-as-taggable-on', '>= 6.0.0'
 
+# ページネーション(JSON propsにpage/pages/countを渡すだけなので軽量なPagyを採用)
+gem 'pagy', '~> 9.0'
+
 # trigram は app/ 内で未使用かつ2012年以降メンテされていないため削除

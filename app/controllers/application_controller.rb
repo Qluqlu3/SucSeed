@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pagy::Backend
+
   SESSION_TIMEOUT = 2.hours
 
   before_action :check_session_timeout
@@ -6,6 +8,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActiveRecord::InvalidForeignKey, with: :render_404
   rescue_from ActionController::ParameterMissing, with: :render_400
+  rescue_from Pagy::OverflowError, with: :render_pagy_overflow
 
   def render_404
     respond_to do |format|
@@ -54,5 +57,15 @@ class ApplicationController < ActionController::Base
       end
       format.json { render json: { error: 'Bad Request' }, status: :bad_request }
     end
+  end
+
+  # ?page=999 のような範囲外ページ指定時、有効な最終ページへリダイレクトする
+  def render_pagy_overflow(exception)
+    query = request.query_parameters.merge('page' => exception.pagy.last).to_query
+    redirect_to "#{request.path}?#{query}"
+  end
+
+  def pagination_props(pagy)
+    { currentPage: pagy.page, totalPages: pagy.pages, totalCount: pagy.count }
   end
 end
