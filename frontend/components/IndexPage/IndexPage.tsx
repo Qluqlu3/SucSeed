@@ -14,13 +14,14 @@
 //   Tailwind は今後新規コンポーネントから段階的に導入する。
 
 import { Handshake, Info, Map as MapIcon, UserPlus } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { Creator } from '../CreatorCard';
 import { CreatorCard } from '../CreatorCard';
 import { FlashMessages } from '../FlashMessages';
 import { JapanMap } from '../MapPage/JapanMap';
 import { PREFECTURE_SHAPES } from '../MapPage/japanPrefectureShapes';
 import { type TraditionalCraft, TraditionalCraftCard } from '../MapPage/TraditionalCraftCard';
+import { Pagination, type PaginationInfo } from '../Pagination';
 
 // サービス説明カードのアイコン共通スタイル（画像アイコンからライブラリアイコンに統一）
 const ServiceIcon = ({ icon: IconComponent }: { icon: typeof UserPlus }) => (
@@ -32,6 +33,9 @@ const ServiceIcon = ({ icon: IconComponent }: { icon: typeof UserPlus }) => (
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Props {
   creators: Creator[];
+  // 職人一覧(募集中)の都道府県別件数。地図の表示件数は現在ページに依らず全体を反映する
+  creatorCountByPrefecture: Record<number, number>;
+  pagination: PaginationInfo;
   // 後継者ログイン時のみ存在する。未ログイン・職人ログインは null
   recommend: Creator[] | null;
   traditionalCrafts: TraditionalCraft[];
@@ -86,17 +90,16 @@ const ServiceDescription = () => (
 );
 
 // ── メインコンポーネント ──────────────────────────────────────────────
-export const IndexPage = ({ creators, recommend, traditionalCrafts, loggedIn, flash }: Props) => {
+export const IndexPage = ({
+  creators,
+  creatorCountByPrefecture,
+  pagination,
+  recommend,
+  traditionalCrafts,
+  loggedIn,
+  flash,
+}: Props) => {
   const [selectedCode, setSelectedCode] = useState<number | null>(null);
-
-  const countByPrefecture = useMemo(() => {
-    const counts: Record<number, number> = {};
-    for (const creator of creators) {
-      if (creator.prefectureCode == null) continue;
-      counts[creator.prefectureCode] = (counts[creator.prefectureCode] ?? 0) + 1;
-    }
-    return counts;
-  }, [creators]);
 
   const selectedShape = PREFECTURE_SHAPES.find((p) => p.code === selectedCode) ?? null;
 
@@ -149,7 +152,7 @@ export const IndexPage = ({ creators, recommend, traditionalCrafts, loggedIn, fl
 
         <div className="mx-auto w-[90%] max-w-[900px] rounded-[7px] border border-p-mid bg-white p-[3%]">
           <JapanMap
-            countByPrefecture={countByPrefecture}
+            countByPrefecture={creatorCountByPrefecture}
             selectedCode={selectedCode}
             onSelect={setSelectedCode}
           />
@@ -201,6 +204,12 @@ export const IndexPage = ({ creators, recommend, traditionalCrafts, loggedIn, fl
         ))}
         {creators.length > 0 && <div className="w-full mt-[5%]" />}
       </div>
+
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        buildHref={(page) => `/index?page=${page}`}
+      />
     </>
   );
 };

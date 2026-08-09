@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get '' => 'index#root'
   get 'index' => 'index#index'
+  get 'search/user' => 'index#search_user'
   get 'map' => 'map#index'
 
   get 'user/password_forgot' => 'user#password_forgot'
@@ -67,7 +68,6 @@ Rails.application.routes.draw do
   get 'admin/inquiry/detail/:id' => 'admin_edit#inquiry_detail_show'
 
   post 'user/logout' => 'user#logout'
-  post 'search/user' => 'index#search_user'
 
   post 'user/login' => 'user#login'
   post 'user/create' => 'user#create'
