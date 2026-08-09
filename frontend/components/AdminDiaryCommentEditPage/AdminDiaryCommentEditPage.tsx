@@ -9,6 +9,7 @@
 import { getCsrfToken } from '../../utils/csrf';
 import { AdminSideMenu } from '../AdminSideMenu';
 import { FlashMessages } from '../FlashMessages';
+import { Pagination, type PaginationInfo } from '../Pagination';
 
 interface AdminDiaryComment {
   id: number;
@@ -21,10 +22,11 @@ interface AdminDiaryComment {
 
 interface Props {
   comments: AdminDiaryComment[];
+  pagination: PaginationInfo;
   flash: Record<string, string>;
 }
 
-export const AdminDiaryCommentEditPage = ({ comments, flash }: Props) => (
+export const AdminDiaryCommentEditPage = ({ comments, pagination, flash }: Props) => (
   <div className="w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap">
     <AdminSideMenu activeKey="diary_comment" />
     <div className="w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll">
@@ -69,6 +71,12 @@ export const AdminDiaryCommentEditPage = ({ comments, flash }: Props) => (
           ))}
         </tbody>
       </table>
+
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        buildHref={(page) => `/admin/management/diary_comment?page=${page}`}
+      />
     </div>
   </div>
 );

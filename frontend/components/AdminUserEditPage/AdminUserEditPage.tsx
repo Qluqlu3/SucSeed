@@ -9,6 +9,7 @@
 import { getCsrfToken } from '../../utils/csrf';
 import { AdminSideMenu } from '../AdminSideMenu';
 import { FlashMessages } from '../FlashMessages';
+import { Pagination, type PaginationInfo } from '../Pagination';
 
 interface AdminUser {
   id: number;
@@ -22,10 +23,11 @@ interface AdminUser {
 
 interface Props {
   users: AdminUser[];
+  pagination: PaginationInfo;
   flash: Record<string, string>;
 }
 
-export const AdminUserEditPage = ({ users, flash }: Props) => (
+export const AdminUserEditPage = ({ users, pagination, flash }: Props) => (
   <div className="w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap">
     <AdminSideMenu activeKey="user" />
     <div className="w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll">
@@ -95,6 +97,12 @@ export const AdminUserEditPage = ({ users, flash }: Props) => (
           ))}
         </tbody>
       </table>
+
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        buildHref={(page) => `/admin/management/user?page=${page}`}
+      />
     </div>
   </div>
 );

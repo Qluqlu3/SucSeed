@@ -9,6 +9,7 @@
 import { getCsrfToken } from '../../utils/csrf';
 import { AdminSideMenu } from '../AdminSideMenu';
 import { FlashMessages } from '../FlashMessages';
+import { Pagination, type PaginationInfo } from '../Pagination';
 
 interface AdminGallery {
   id: number;
@@ -21,10 +22,11 @@ interface AdminGallery {
 
 interface Props {
   galleries: AdminGallery[];
+  pagination: PaginationInfo;
   flash: Record<string, string>;
 }
 
-export const AdminGalleryEditPage = ({ galleries, flash }: Props) => (
+export const AdminGalleryEditPage = ({ galleries, pagination, flash }: Props) => (
   <div className="w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap">
     <AdminSideMenu activeKey="gallery" />
     <div className="w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll">
@@ -71,6 +73,12 @@ export const AdminGalleryEditPage = ({ galleries, flash }: Props) => (
           ))}
         </tbody>
       </table>
+
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        buildHref={(page) => `/admin/management/gallery?page=${page}`}
+      />
     </div>
   </div>
 );

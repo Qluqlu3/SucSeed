@@ -1,13 +1,15 @@
 class AdminEditController < ApplicationController
   before_action :session_check
+  ADMIN_LIST_PER_PAGE = 20
+
   def index
     render :admin_index
   end
 
   def user
-    @user = User.with_deleted.order(created_at: :desc)
+    pagy, users = pagy(User.with_deleted.order(created_at: :desc), limit: ADMIN_LIST_PER_PAGE)
     @page_props = {
-      users: @user.map do |u|
+      users: users.map do |u|
         {
           id: u.id,
           name: u.name,
@@ -18,15 +20,16 @@ class AdminEditController < ApplicationController
           loginTime: u.login_time&.to_s,
         }
       end,
+      pagination: pagination_props(pagy),
       flash: flash.to_h,
     }
     render :admin_user_edit
   end
 
   def diary
-    @diary = Diary.with_deleted.order(created_at: :desc)
+    pagy, diaries = pagy(Diary.with_deleted.order(created_at: :desc), limit: ADMIN_LIST_PER_PAGE)
     @page_props = {
-      diaries: @diary.map do |d|
+      diaries: diaries.map do |d|
         {
           id: d.id,
           userId: d.user_id,
@@ -35,15 +38,16 @@ class AdminEditController < ApplicationController
           deletedAt: d.deleted_at&.to_s,
         }
       end,
+      pagination: pagination_props(pagy),
       flash: flash.to_h,
     }
     render :admin_diary_edit
   end
 
   def diary_comment
-    @diary_comment = DiaryComment.with_deleted.order(created_at: :desc)
+    pagy, comments = pagy(DiaryComment.with_deleted.order(created_at: :desc), limit: ADMIN_LIST_PER_PAGE)
     @page_props = {
-      comments: @diary_comment.map do |c|
+      comments: comments.map do |c|
         {
           id: c.id,
           userId: c.user_id,
@@ -53,15 +57,16 @@ class AdminEditController < ApplicationController
           deletedAt: c.deleted_at&.to_s,
         }
       end,
+      pagination: pagination_props(pagy),
       flash: flash.to_h,
     }
     render :admin_diary_comment_edit
   end
 
   def gallery
-    @gallery = Gallery.with_deleted.order(created_at: :desc)
+    pagy, galleries = pagy(Gallery.with_deleted.order(created_at: :desc), limit: ADMIN_LIST_PER_PAGE)
     @page_props = {
-      galleries: @gallery.map do |g|
+      galleries: galleries.map do |g|
         {
           id: g.id,
           userId: g.user_id,
@@ -71,15 +76,17 @@ class AdminEditController < ApplicationController
           deletedAt: g.deleted_at&.to_s,
         }
       end,
+      pagination: pagination_props(pagy),
       flash: flash.to_h,
     }
     render :admin_gallery_edit
   end
 
   def inquiry
-    @inquiry = Inquiry.with_deleted.joins(:inquiry_category).select('inquiries.*, inquiry_categories.name AS name').order('inquiries.created_at DESC')
+    scope = Inquiry.with_deleted.joins(:inquiry_category).select('inquiries.*, inquiry_categories.name AS name').order('inquiries.created_at DESC')
+    pagy, inquiries = pagy(scope, limit: ADMIN_LIST_PER_PAGE)
     @page_props = {
-      inquiries: @inquiry.map do |q|
+      inquiries: inquiries.map do |q|
         {
           id: q.id,
           userId: q.user_id,
@@ -92,6 +99,7 @@ class AdminEditController < ApplicationController
           elapsedDays: ((Time.zone.now - q.created_at) / 86_400).to_i,
         }
       end,
+      pagination: pagination_props(pagy),
       flash: flash.to_h,
     }
     render :admin_inquiry_edit

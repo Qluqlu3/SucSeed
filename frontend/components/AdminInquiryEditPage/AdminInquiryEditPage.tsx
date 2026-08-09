@@ -8,6 +8,7 @@
 
 import { AdminSideMenu } from '../AdminSideMenu';
 import { FlashMessages } from '../FlashMessages';
+import { Pagination, type PaginationInfo } from '../Pagination';
 
 interface AdminInquiry {
   id: number;
@@ -23,10 +24,11 @@ interface AdminInquiry {
 
 interface Props {
   inquiries: AdminInquiry[];
+  pagination: PaginationInfo;
   flash: Record<string, string>;
 }
 
-export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
+export const AdminInquiryEditPage = ({ inquiries, pagination, flash }: Props) => (
   <div className="w-full m-0 p-0 overflow-x-scroll overflow-y-scroll flex flex-wrap">
     <AdminSideMenu activeKey="inquiry" />
     <div className="w-full lg:w-10/12 h-screen bg-[#EEE] overflow-x-scroll overflow-y-scroll">
@@ -84,6 +86,12 @@ export const AdminInquiryEditPage = ({ inquiries, flash }: Props) => (
           ))}
         </tbody>
       </table>
+
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        buildHref={(page) => `/admin/management/inquiry?page=${page}`}
+      />
     </div>
   </div>
 );
