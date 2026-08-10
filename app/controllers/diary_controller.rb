@@ -1,5 +1,5 @@
 class DiaryController < ApplicationController
-  before_action :require_login, except: %i[your_diary heir_user_diary comment_delete]
+  before_action :require_login, except: [:your_diary]
 
   # 投稿フォーム表示
   def regist
@@ -128,8 +128,6 @@ class DiaryController < ApplicationController
     end
   end
 
-  def comment_delete; end
-
   # 後継者側お気に入り
   def heir_favorite_diary
     @user = User.find(session[:id])
@@ -141,9 +139,6 @@ class DiaryController < ApplicationController
     }
     render :diary_heir_favorite
   end
-
-  # 後継者側個別
-  def heir_user_diary; end
 
   private
 
