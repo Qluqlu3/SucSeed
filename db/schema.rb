@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_16_000001) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_11_000001) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "user_id", null: false
@@ -158,6 +158,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_000001) do
     t.text "content", null: false
     t.timestamp "created_at", null: false
     t.index ["receive_user_id"], name: "fk_rails_75141dd80c"
+    t.index ["send_user_id", "receive_user_id", "created_at"], name: "index_messages_on_send_receive_created"
     t.index ["send_user_id"], name: "fk_rails_6613941af1"
   end
 
