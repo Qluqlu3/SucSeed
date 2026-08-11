@@ -22,6 +22,12 @@ Rails.application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
+  # デフォルトの :file_store は tmp/cache/ を環境問わず共有するため、
+  # 別プロセス（rails console や並行実行中の test プロセス等）が書き込んだ
+  # Rack::Attack のスロットルカウント等が紛れ込むことがある。
+  # プロセス内で完結する :memory_store にして他プロセスからの汚染を防ぐ。
+  config.cache_store = :memory_store
+
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
 
