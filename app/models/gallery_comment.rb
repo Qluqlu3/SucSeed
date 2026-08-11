@@ -3,5 +3,5 @@ class GalleryComment < ApplicationRecord
 
   belongs_to :gallery
   belongs_to :user
-  validates :comment, presence: true
+  validates :comment, presence: true, length: { maximum: 100 }
 end

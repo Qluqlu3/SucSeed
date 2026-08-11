@@ -140,6 +140,7 @@ export const MessagePage = ({ messageLists, messageHistory, fromUser, toUser, fl
                       name="message[content]"
                       className="flex-1 rounded border border-gray-300 px-3 py-2 focus:border-p-brand focus:outline-none"
                       placeholder="メッセージ"
+                      maxLength={1000}
                     />
                     <button
                       type="submit"
