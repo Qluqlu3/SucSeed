@@ -1,5 +1,5 @@
 class GalleryController < ApplicationController
-  before_action :require_login, only: %i[favorite_gallery my_gallery heir_favorite_gallery gallery_good gallery_comment]
+  before_action :require_login, except: %i[user_view upload selected_gallery search_user_tag]
 
   # お気に入りユーザのギャラリー
   def favorite_gallery
