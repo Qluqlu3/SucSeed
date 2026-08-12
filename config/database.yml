@@ -18,9 +18,8 @@ test:
   <<: *default
   database: <%= ENV.fetch("DB_NAME_TEST", "sucseed_test") %>
 
-# デプロイ時のメモ（今は使わない）
-# production:
-#   <<: *default
-#   database: sucseed_production
-#   # 本番では DATABASE_URL 環境変数でまるごと指定する方がシンプル
-#   # url: <%= ENV['DATABASE_URL'] %>
+# 本番は DATABASE_URL 環境変数でまるごと指定する（未設定なら起動時にエラーで気付けるようにする）
+# ERBはdatabase.yml全体を環境問わず評価するため、fetchはRAILS_ENV=productionのときだけ行う
+production:
+  url: <%= ENV.fetch("DATABASE_URL") if ENV["RAILS_ENV"] == "production" %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
