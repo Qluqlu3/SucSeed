@@ -22,6 +22,32 @@ class Rack::Attack
     req.ip if req.path.start_with?('/email/certified/') && req.post?
   end
 
+  # --- 投稿系（スパム対策） ---
+  # 日記投稿: 同一 IP から 10 分間に 10 回まで
+  throttle('diary_post/ip', limit: 10, period: 10.minutes) do |req|
+    req.ip if req.path == '/diary/post' && req.post?
+  end
+
+  # 日記コメント: 同一 IP から 5 分間に 20 回まで
+  throttle('diary_comment/ip', limit: 20, period: 5.minutes) do |req|
+    req.ip if req.post? && req.path.match?(%r{\A/diary/show/[^/]+/comment\z})
+  end
+
+  # ギャラリー投稿: 同一 IP から 10 分間に 10 回まで
+  throttle('gallery_upload/ip', limit: 10, period: 10.minutes) do |req|
+    req.ip if req.path == '/gallery/view' && req.post?
+  end
+
+  # ギャラリーコメント: 同一 IP から 5 分間に 20 回まで
+  throttle('gallery_comment/ip', limit: 20, period: 5.minutes) do |req|
+    req.ip if req.post? && req.path.match?(%r{\A/gallery/selected/comment/[^/]+\z})
+  end
+
+  # メッセージ送信: 同一 IP から 5 分間に 30 回まで
+  throttle('message_send/ip', limit: 30, period: 5.minutes) do |req|
+    req.ip if req.post? && req.path.match?(%r{\A/message/send/[^/]+\z})
+  end
+
   # --- 429 レスポンス ---
   # throttled_responder には Rack::Attack::Request(Rack::Requestのサブクラス)が渡される。
   # Accept ヘッダでの内容判定にActionDispatchのフォーマット判定を使うためenvから作り直す。
