@@ -27,6 +27,15 @@ class GalleryUploader < CarrierWave::Uploader::Base
     "#{secure_token}.#{file.extension}" if original_filename.present?
   end
 
+  def extension_allowlist
+    %w[jpg jpeg png]
+  end
+
+  # 拡張子偽装対策: マジックバイトから判定した実際のcontent_typeも検証する
+  def content_type_allowlist
+    %w[image/jpeg image/png]
+  end
+
   protected
 
   def secure_token
@@ -38,10 +47,4 @@ class GalleryUploader < CarrierWave::Uploader::Base
   # version :thumb do
   #   process resize_to_fit: [50, 50]
   # end
-
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
-  def extension_whitelist
-    %w[jpg jpeg png]
-  end
 end

@@ -30,8 +30,13 @@ class AvatarUploader < CarrierWave::Uploader::Base
     "uploads/user_avatar/#{model.id}"
   end
 
-  def extension_whitelist
+  def extension_allowlist
     %w[jpg jpeg png]
+  end
+
+  # 拡張子偽装対策: マジックバイトから判定した実際のcontent_typeも検証する
+  def content_type_allowlist
+    %w[image/jpeg image/png]
   end
 
   protected

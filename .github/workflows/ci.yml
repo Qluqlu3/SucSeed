@@ -63,6 +63,10 @@ jobs:
           ruby-version: '3.3.11'
           bundler-cache: true
 
+      # CarrierWave(AvatarUploader/GalleryUploader)のリサイズ処理・content_type検証がMiniMagick経由でconvertを呼ぶ
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
       - name: Set up database
         run: |
           bundle exec rails db:create

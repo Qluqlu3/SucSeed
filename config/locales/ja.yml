@@ -1,4 +1,11 @@
 ja:
+  errors:
+    messages:
+      extension_allowlist_error: 'アップロードできない拡張子です（%{extension}）。許可されている形式: %{allowed_types}'
+      content_type_allowlist_error: 'アップロードできないファイル形式です（%{content_type}）。許可されている形式: %{allowed_types}'
+      min_size_error: 'ファイルサイズが小さすぎます（%{min_size}以上にしてください）'
+      max_size_error: 'ファイルサイズが大きすぎます（%{max_size}以下にしてください）'
+
   flash:
     success:
       login: 'ログイン成功'

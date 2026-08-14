@@ -70,6 +70,25 @@ class UserTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
+  # ── avatar_path (CarrierWave: AvatarUploader) ──────────────────────
+
+  test '本物の画像なら valid' do
+    user = build_user(avatar_path: File.open(file_fixture('valid_image.png')))
+    assert user.valid?, user.errors.full_messages.to_s
+  end
+
+  test '拡張子だけ画像に偽装したファイルは invalid（マジックバイトによるcontent_type検証）' do
+    user = build_user(avatar_path: File.open(file_fixture('fake_image.jpg')))
+    assert user.invalid?
+    assert user.errors[:avatar_path].any? { |m| m.include?('形式') }, user.errors.full_messages.to_s
+  end
+
+  test '実体は画像でも許可されていない拡張子なら invalid（拡張子検証）' do
+    user = build_user(avatar_path: File.open(file_fixture('valid_image_wrong_ext.gif')))
+    assert user.invalid?
+    assert user.errors[:avatar_path].any? { |m| m.include?('拡張子') }, user.errors.full_messages.to_s
+  end
+
   # ── トークン期限メソッド ────────────────────────────────────────────
 
   test 'password_reset_token_expired? — 61 分前なら true' do
