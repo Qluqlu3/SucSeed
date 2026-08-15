@@ -6,7 +6,7 @@ ruby '3.3.11'
 # Rails 7.2.3.1 以上: Active Storage の DoS 脆弱性修正版を含む
 gem 'rails', '>= 7.2.3.1', '< 8.0'
 # Use mysql as the database for Active Record
-gem 'mysql2', '>= 0.4.4', '< 0.6.0'
+gem 'mysql2', '>= 0.5.0', '< 0.6.0'
 # Use Puma as the app server
 # 3.x は Ruby 3.x 系で動作しないため 6.x に上げる
 gem 'puma', '~> 7.2', '>= 7.2.1'
@@ -90,7 +90,7 @@ gem 'sprockets-rails'
 gem 'jsbundling-rails'
 
 # タグ
-gem 'acts-as-taggable-on', '>= 6.0.0'
+gem 'acts-as-taggable-on', '~> 13.0'
 
 # ページネーション(JSON propsにpage/pages/countを渡すだけなので軽量なPagyを採用)
 gem 'pagy', '~> 9.0'

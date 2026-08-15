@@ -377,7 +377,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  acts-as-taggable-on (>= 6.0.0)
+  acts-as-taggable-on (~> 13.0)
   addressable (>= 2.9.0)
   bcrypt (>= 3.1.22)
   better_errors (>= 2.5.0)
@@ -393,7 +393,7 @@ DEPENDENCIES
   jsbundling-rails
   listen (~> 3.8)
   mini_magick (>= 4.8.0)
-  mysql2 (>= 0.4.4, < 0.6.0)
+  mysql2 (>= 0.5.0, < 0.6.0)
   net-imap (>= 0.6.4.1)
   pagy (~> 9.0)
   puma (~> 7.2, >= 7.2.1)
