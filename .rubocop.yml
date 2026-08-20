@@ -1,4 +1,5 @@
-require:
+# rubocop 1.72 以降は拡張を require ではなく plugins で読み込む
+plugins:
   - rubocop-rails
   - rubocop-performance
 
@@ -89,13 +90,16 @@ Style/TrailingCommaInHashLiteral:
 Rails/FilePath:
   EnforcedStyle: slashes
 
-# update_all は意図的に使用 (is_ok など boolean 一括更新)
+# update_all / update_column は意図的に使用
+# (is_ok・is_add_list など boolean の一括更新、login_time の記録)
 Rails/SkipsModelValidations:
   Exclude:
     - 'app/controllers/match_controller.rb'
     - 'app/controllers/admin_edit_controller.rb'
     - 'app/controllers/message_controller.rb'
     - 'app/controllers/user_controller.rb'
+    - 'app/controllers/api/v1/message_threads_controller.rb'
+    - 'app/controllers/api/v1/session_controller.rb'
     - 'app/models/concerns/soft_deletable.rb'
     - 'app/models/user.rb'
     - 'test/**/*'
