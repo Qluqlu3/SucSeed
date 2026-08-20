@@ -6,10 +6,8 @@ class YourPageController < ApplicationController
     return redirect_to '/index' unless @creator
 
     @art_category = ArtCategory.find_by(id: @creator.art_category_id)
-    # @creator_image = CreatorImage.where(user_id: params[:id]).first
-    @favorite = Favorite.new
-    @fv_check = Favorite.where(user_id: session[:id]).where(favorite_user_id: params[:id]).first
-    @match = Match.where(user_id: session[:id]).where(target_user_id: params[:id]).first
+    @fv_check = Favorite.exists?(user_id: Current.user_id, favorite_user_id: params[:id])
+    @match = Match.exists?(user_id: Current.user_id, target_user_id: params[:id])
     @page_props = {
       user: {
         id: @user.id,
@@ -26,11 +24,11 @@ class YourPageController < ApplicationController
         isRecruitment: @creator.is_recruitment,
       },
       artCategoryName: @art_category.name,
-      isFavorited: @fv_check.present?,
-      loggedIn: session[:id].present?,
-      isOwnPage: session[:id] == @user.id,
-      isCreator: session[:creator].present?,
-      isMatched: @match.present?,
+      isFavorited: @fv_check,
+      loggedIn: Current.logged_in?,
+      isOwnPage: Current.user_id == @user.id,
+      isCreator: Current.creator?,
+      isMatched: @match,
       targetUserId: @user.id,
       flash: flash.to_h,
     }
@@ -43,7 +41,7 @@ class YourPageController < ApplicationController
     return redirect_to '/index' unless @user
 
     @art_name = ArtCategory.joins(:heirs).select('art_categories.name').find_by(heirs: { user_id: params[:id] })
-    @scout = Match.where(user_id: session[:id]).where(target_user_id: params[:id])
+    @scout = Match.exists?(user_id: Current.user_id, target_user_id: params[:id])
     @page_props = {
       user: {
         id: @user.id,
@@ -54,10 +52,10 @@ class YourPageController < ApplicationController
         profile: @user.profile,
       },
       artName: @art_name&.name,
-      isScouted: @scout.present?,
-      loggedIn: session[:id].present?,
-      isCreator: session[:creator].present?,
-      targetUserId: params[:id].to_i,
+      isScouted: @scout,
+      loggedIn: Current.logged_in?,
+      isCreator: Current.creator?,
+      targetUserId: @user.id,
       flash: flash.to_h,
     }
     render :heir_page

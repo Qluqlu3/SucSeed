@@ -1,21 +1,19 @@
 class HeirController < ApplicationController
-  before_action :require_login, except: [:heir_show]
+  before_action :require_login
 
   # 詳細情報入力振り分け
   def heir_show
-    if session[:id].present? && !Heir.find_by(user_id: session[:id])
-      @heir = Heir.new
+    @heir = Heir.find_by(user_id: Current.user_id)
+
+    if @heir.nil?
       @art_categories = ArtCategory.all
       @page_props = {
-        artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
-        errors: @heir.errors.full_messages,
+        artCategories: art_category_props,
+        errors: [],
         flash: flash.to_h,
       }
       render :heir
-    elsif session[:id].nil?
-      redirect_to '/index'
     else
-      @heir = Heir.find_by(user_id: session[:id])
       @interest = ArtCategory.find(@heir.art_category_id)
       @page_props = {
         heir: {
@@ -30,7 +28,7 @@ class HeirController < ApplicationController
 
   # 詳細情報入力
   def heir_create
-    @heir = Heir.new(heir_params.merge(user_id: session[:id]))
+    @heir = Heir.new(heir_params.merge(user_id: Current.user_id))
     if @heir.save
       flash[:success] = t('flash.success.saved')
     else
@@ -41,28 +39,26 @@ class HeirController < ApplicationController
 
   # 更新ページ
   def heir_edit
-    if Heir.find_by(user_id: session[:id])
-      @heir = Heir.find_by(user_id: session[:id])
-      @art_categories = ArtCategory.all
-      @page_props = {
-        heir: {
-          artCategoryId: @heir.art_category_id,
-          introduction: @heir.introduction.to_s,
-        },
-        artCategories: @art_categories.map { |c| { id: c.id, name: c.name } },
-        errors: [],
-        flash: flash.to_h,
-      }
-      render :update
-    else
-      redirect_to '/heir/show'
-    end
+    @heir = Heir.find_by(user_id: Current.user_id)
+    return redirect_to '/heir/show' if @heir.nil?
+
+    @art_categories = ArtCategory.all
+    @page_props = {
+      heir: {
+        artCategoryId: @heir.art_category_id,
+        introduction: @heir.introduction.to_s,
+      },
+      artCategories: art_category_props,
+      errors: [],
+      flash: flash.to_h,
+    }
+    render :update
   end
 
   # 更新
   def heir_update
-    @heir = Heir.find_by(user_id: session[:id])
-    if @heir.update(art_category_id: params[:heir][:art_category_id], introduction: params[:heir][:introduction])
+    @heir = Heir.find_by(user_id: Current.user_id)
+    if @heir&.update(heir_params)
       flash[:success] = t('flash.success.saved')
       redirect_to '/heir/show'
     else
@@ -72,6 +68,10 @@ class HeirController < ApplicationController
   end
 
   private
+
+  def art_category_props
+    ArtCategory.order(:id).map { |c| { id: c.id, name: c.name } }
+  end
 
   def heir_params
     params.require(:heir).permit(:art_category_id, :introduction)

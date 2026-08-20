@@ -1,13 +1,10 @@
 class UserController < ApplicationController
   def login
-    return unless session[:id].nil?
+    return if Current.logged_in?
 
     user = User.find_by(email: params[:session][:email].downcase)
     if user&.authenticate(params[:session][:password])
-      reset_session
-      session[:id] = user[:id]
-      session[:creator] = user[:id] if user[:is_creator]
-      session[:last_active_at] = Time.current
+      start_new_session_for(user)
       user.update_column(:login_time, Time.current)
       flash[:success] = t('flash.success.login')
     else
@@ -17,7 +14,7 @@ class UserController < ApplicationController
   end
 
   def logout
-    reset_session
+    terminate_session
     flash[:success] = t('flash.success.logout')
     redirect_to '/index'
   end

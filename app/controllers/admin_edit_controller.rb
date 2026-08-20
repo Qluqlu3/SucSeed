@@ -1,5 +1,7 @@
 class AdminEditController < ApplicationController
-  before_action :session_check
+  include AdminAuthentication
+
+  before_action :require_admin
   ADMIN_LIST_PER_PAGE = 20
 
   def index
@@ -190,19 +192,11 @@ class AdminEditController < ApplicationController
 
   # お問い合わせ対応
   def inquiry_detail_check
-    if Inquiry.where(id: params[:id]).update_all(is_check: params[:inquiry][:is_check], admin_id: session[:admin])
+    if Inquiry.where(id: params[:id]).update_all(is_check: params[:inquiry][:is_check], admin_id: Current.admin.id)
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.error')
     end
     redirect_to '/admin/management/inquiry'
-  end
-
-  private
-
-  def session_check
-    return unless session[:admin].nil?
-
-    redirect_to '/admin/login'
   end
 end

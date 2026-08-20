@@ -1,9 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
-
-  SESSION_TIMEOUT = 2.hours
-
-  before_action :check_session_timeout
+  include Authentication
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActiveRecord::InvalidForeignKey, with: :render_404
@@ -26,28 +23,33 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def check_session_timeout
-    return if session[:id].blank?
+  # ── Authentication のフック実装（HTML 版）─────────────────────────
+  # 既定（Authentication 側）はステータスコードのみを返す API 向けの実装なので、
+  # HTML を返すこちらでは redirect + flash に差し替える。
 
-    if session[:last_active_at].present? && session[:last_active_at] < SESSION_TIMEOUT.ago
-      reset_session
-      respond_to do |format|
-        format.html { redirect_to '/index', flash: { danger: t('flash.danger.session_expired') } }
-        format.json { head :unauthorized }
-      end
-    else
-      session[:last_active_at] = Time.current
+  def on_session_expired
+    respond_to do |format|
+      format.html { redirect_to '/index', flash: { danger: t('flash.danger.session_expired') } }
+      format.json { head :unauthorized }
     end
   end
 
-  def require_login
-    return if session[:id].present?
-
+  def on_authentication_required
     respond_to do |format|
       format.html { redirect_to '/index', flash: { danger: t('flash.danger.require_login') } }
       format.json { head :unauthorized }
     end
   end
+
+  # 権限不足はトップへ戻す（HTML では 403 の専用画面を持たないため）
+  def on_authorization_failed
+    respond_to do |format|
+      format.html { redirect_to '/index' }
+      format.json { head :forbidden }
+    end
+  end
+
+  # ── エラーレスポンス ──────────────────────────────────────────────
 
   def render_400
     respond_to do |format|
@@ -67,5 +69,10 @@ class ApplicationController < ActionController::Base
 
   def pagination_props(pagy)
     { currentPage: pagy.page, totalPages: pagy.pages, totalCount: pagy.count }
+  end
+
+  # ログイン中ユーザー。未ログインなら nil（フロント側で `currentUser && ...` の分岐に使う）
+  def current_user_props
+    CurrentUserSerializer.render(Current.user)
   end
 end

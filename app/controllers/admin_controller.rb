@@ -1,4 +1,6 @@
 class AdminController < ApplicationController
+  include AdminAuthentication
+
   before_action :require_basic_auth, only: %i[create create_user]
 
   def login
@@ -8,11 +10,11 @@ class AdminController < ApplicationController
   end
 
   def login_challenge
-    return unless session[:admin].nil?
+    return if Current.admin?
 
     admin = Admin.find_by(user_id: params[:admin][:user_id].downcase)
     if admin&.authenticate(params[:admin][:password])
-      session[:admin] = admin[:id]
+      start_new_admin_session_for(admin)
       redirect_to '/admin/index'
     else
       flash[:danger] = t('flash.danger.admin_login_failed')

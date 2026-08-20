@@ -129,11 +129,55 @@ Rails.application.routes.draw do
   post 'admin/gallery/delete/:id' => 'admin_edit#gallery_delete'
   post 'admin/inquiry/detail/check/:id' => 'admin_edit#inquiry_detail_check'
 
+  # ── JSON API (v1) ─────────────────────────────────────────────────────────
+  # 上の HTML ルーティングは「ページ全体を返す」ためのもので、こちらは React から
+  # fetch される純粋な JSON エンドポイント。同一オリジンのセッション Cookie で認証する。
   namespace :api do
     namespace :v1 do
-      get 'session' => 'session#show'
+      # 認証・セッション
+      # controller を明示するのは、単数形 resource の既定が sessions#... になるため
+      resource :session, only: %i[show create destroy], controller: 'session'
+
+      # マスタデータ
+      resources :art_categories, only: :index
+      resources :traditional_crafts, only: :index
+
+      # ユーザー / プロフィール
+      resource  :profile, only: %i[show update], controller: 'profile'
+      resources :creators, only: %i[index show]
+      resources :heirs, only: :show
+
+      # お気に入り（:id は相手ユーザーの id）
+      resources :favorites, only: %i[index create destroy]
+
+      # 日記
+      resources :diaries, only: %i[index create destroy] do
+        resource  :good, only: %i[create destroy], controller: 'diary_goods'
+        resources :comments, only: :create, controller: 'diary_comments'
+      end
+
+      # ギャラリー
+      resources :galleries, only: %i[index show] do
+        resource  :good, only: %i[create destroy], controller: 'gallery_goods'
+        resources :comments, only: :create, controller: 'gallery_comments'
+      end
+
+      # マッチング
+      # appeals: 後継者 → 職人 への応募 / scouts: 職人 → 後継者 への勧誘
+      # いずれも :id は「相手ユーザーの id」を指す
+      resources :appeals, only: %i[index create update]
+      resources :scouts, only: %i[index create update]
+      resources :matches, only: :index
+
+      # メッセージ（:id はスレッド相手のユーザー id）
+      resources :message_threads, only: %i[index show create] do
+        resources :messages, only: :create
+      end
     end
   end
+
+  # API 配下の未定義パスは HTML の 404 ページではなく JSON で返す
+  match 'api/*path', to: 'api/v1/not_found#show', via: :all
 
   get '*path', controller: 'application', action: 'render_404'
 end

@@ -21,3 +21,6 @@ module ActiveSupport
     end
   end
 end
+
+# test/support 配下の共通テストクラス（ApiTestCase など）を読み込む
+Rails.root.glob('test/support/**/*.rb').each { |file| require file }

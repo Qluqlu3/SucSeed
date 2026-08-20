@@ -1,9 +1,8 @@
 class InquiryController < ApplicationController
   def input_page
     @inquiry = Inquiry.new
-    @categories = InquiryCategory.all
     @page_props = {
-      categories: @categories.map { |c| { id: c.id, name: c.name } },
+      categories: category_props,
       errors: [],
       prevValues: { inquiryCategoryId: '', content: '' },
       flash: flash.to_h,
@@ -12,14 +11,13 @@ class InquiryController < ApplicationController
   end
 
   def send_inquiry
-    @inquiry = Inquiry.new(inquiry_params.merge(user_id: session[:id].presence))
+    @inquiry = Inquiry.new(inquiry_params.merge(user_id: Current.user_id))
     if @inquiry.save
       flash[:success] = t('flash.success.inquiry_sent')
       redirect_to '/inquiry/input'
     else
-      @categories = InquiryCategory.all
       @page_props = {
-        categories: @categories.map { |c| { id: c.id, name: c.name } },
+        categories: category_props,
         errors: @inquiry.errors.full_messages,
         prevValues: {
           inquiryCategoryId: @inquiry.inquiry_category_id || '',
@@ -32,6 +30,10 @@ class InquiryController < ApplicationController
   end
 
   private
+
+  def category_props
+    InquiryCategory.order(:id).map { |c| { id: c.id, name: c.name } }
+  end
 
   def inquiry_params
     params.require(:inquiry).permit(:inquiry_category_id, :content)

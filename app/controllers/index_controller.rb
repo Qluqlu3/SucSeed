@@ -1,33 +1,23 @@
 class IndexController < ApplicationController
-  CREATOR_COLUMNS = 'users.*, creators.title, creators.user_id, creators.prefecture_code'.freeze
   CREATORS_PER_PAGE = 12
 
   def index
-    creator_scope = if session[:creator].present?
-                      User.joins(:creator).select(CREATOR_COLUMNS).where.not(creators: { user_id: session[:id] }).where(creators: { is_recruitment: true })
-                    else
-                      User.joins(:creator).select(CREATOR_COLUMNS).where(creators: { is_recruitment: true })
-                    end
+    creator_scope = recruiting_creators
     # 地図の都道府県別件数は一覧の現在ページに依らず全体を反映させたいので、
     # ページングする前のスコープから別途集計する。
-    # count引数を省略すると.select(CREATOR_COLUMNS)の複数カラム文字列がそのまま
-    # COUNT(...)に渡ってSQLエラーになるため、明示的にCOUNT(*)を指定する
+    # count引数を省略すると複数カラムのselect文字列がそのままCOUNT(...)に
+    # 渡ってSQLエラーになるため、明示的にCOUNT(*)を指定する
     creator_count_by_prefecture = creator_scope.group('creators.prefecture_code').count(:all)
     pagy, creators = pagy(creator_scope, limit: CREATORS_PER_PAGE)
 
-    @recommend = if session[:id].present? && session[:creator].nil?
-                   interest = Heir.select('heirs.art_category_id').find_by(user_id: session[:id])
-                   User.joins(:creator).select(CREATOR_COLUMNS).where(creators: { art_category_id: interest, is_recruitment: true }).random_sample(4)
-                 end
-
     @page_props = {
-      creators: CreatorCardPresenter.build(creators),
+      creators: CreatorCardSerializer.build(creators),
       creatorCountByPrefecture: creator_count_by_prefecture,
       pagination: pagination_props(pagy),
-      recommend: @recommend&.then { |r| CreatorCardPresenter.build(r) },
-      traditionalCrafts: TraditionalCraftPresenter.build(TraditionalCraft.includes(:art_category)),
-      loggedIn: session[:id].present?,
-      isCreator: session[:creator].present?,
+      recommend: recommended_creators,
+      traditionalCrafts: TraditionalCraftSerializer.build(TraditionalCraft.includes(:art_category)),
+      loggedIn: Current.logged_in?,
+      isCreator: Current.creator?,
       flash: flash.to_h,
     }
   end
@@ -40,19 +30,36 @@ class IndexController < ApplicationController
     art_category_id = params.dig(:search, :art_category_id)
     return redirect_to '/index' if art_category_id.blank?
 
-    creator_scope = if session[:creator].present?
-                      User.joins(:creator).select(CREATOR_COLUMNS).where.not(creators: { user_id: session[:id] }).where(creators: { is_recruitment: true, art_category_id: art_category_id })
-                    else
-                      User.joins(:creator).select(CREATOR_COLUMNS).where(creators: { is_recruitment: true, art_category_id: art_category_id })
-                    end
-    pagy, creators = pagy(creator_scope, limit: CREATORS_PER_PAGE)
+    pagy, creators = pagy(recruiting_creators(art_category_id: art_category_id), limit: CREATORS_PER_PAGE)
 
     @page_props = {
-      creators: CreatorCardPresenter.build(creators),
+      creators: CreatorCardSerializer.build(creators),
       pagination: pagination_props(pagy),
       artCategoryId: art_category_id.to_i,
       flash: flash.to_h,
     }
     render :search_user
+  end
+
+  private
+
+  def recruiting_creators(art_category_id: nil)
+    RecruitingCreatorsQuery.call(
+      art_category_id: art_category_id,
+      # 職人としてログイン中なら自分自身を一覧から外す（自分に応募する導線を出さないため）
+      exclude_user_id: Current.creator? ? Current.user_id : nil,
+    )
+  end
+
+  # 後継者側ログイン時のみ「興味のある分野」からおすすめを出す。
+  # 旧実装は Heir インスタンスをそのまま where に渡していて絞り込みが効いていなかったため、
+  # art_category_id を取り出して渡すよう修正した。
+  def recommended_creators
+    return nil if !Current.logged_in? || Current.creator?
+
+    interest = Heir.find_by(user_id: Current.user_id)&.art_category_id
+    return nil if interest.blank?
+
+    CreatorCardSerializer.build(recruiting_creators(art_category_id: interest).random_sample(4))
   end
 end

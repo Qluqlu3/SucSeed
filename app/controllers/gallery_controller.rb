@@ -1,25 +1,19 @@
 class GalleryController < ApplicationController
   before_action :require_login, except: %i[user_view upload selected_gallery search_user_tag]
+  before_action :require_creator, only: [:upload]
 
   # お気に入りユーザのギャラリー
   def favorite_gallery
-    @gallery = Gallery.new
-    feed = GalleryFeedQueryService.build(target_ids: Favorite.self_and_favorite_ids(session[:id]), viewer_id: session[:id])
-    @page_props = {
-      galleries: feed[:galleries],
-      errors: @gallery.errors.full_messages,
-      flash: flash.to_h,
-    }
+    @page_props = favorite_feed_props.merge(errors: [])
     render :favorite_gallery
   end
 
   # マイギャラリー
   def my_gallery
-    @gallery = Gallery.new
-    feed = GalleryFeedQueryService.build(target_ids: session[:id], viewer_id: session[:id])
+    feed = GalleryFeedQueryService.build(target_ids: Current.user_id, viewer_id: Current.user_id)
     @page_props = {
-      galleries: feed[:galleries],
-      errors: @gallery.errors.full_messages,
+      galleries: GallerySerializer.from_feed(feed),
+      errors: [],
       flash: flash.to_h,
     }
     render :my_gallery
@@ -27,20 +21,18 @@ class GalleryController < ApplicationController
 
   # ユーザ別ギャラリー
   def user_view
-    @gallery = Gallery.new
     @user = User.find(params[:id])
-    @user_gallery = Gallery.joins(:user).includes(:taggings, :tags).select('users.name',
-                                                                           'galleries.*').where(galleries: { user_id: params[:id] }).order('galleries.created_at DESC')
+    @user_gallery = Gallery.joins(:user).includes(:taggings, :tags).select('users.name', 'galleries.*')
+                           .where(galleries: { user_id: params[:id] }).order('galleries.created_at DESC')
     gallery_ids = @user_gallery.map(&:id)
     @good_count = GalleryGood.where(gallery_id: gallery_ids).group(:gallery_id).count
-    @my_good = Gallery.joins(:gallery_goods).select('galleries.*, gallery_goods.*').where(gallery_goods: { user_id: session[:id] }).where(galleries: { user_id: params[:id] }).order('galleries.created_at DESC')
-    my_good_ids = @my_good.to_set(&:id)
+    my_good_ids = GalleryGood.where(gallery_id: gallery_ids, user_id: Current.user_id).to_set(&:gallery_id)
     @page_props = {
       userName: @user.name,
       userId: @user.id,
-      galleries: GalleryFeedPresenter.build(
-        galleries: @user_gallery, good_count: @good_count, my_good_ids: my_good_ids,
-      ),
+      galleries: GallerySerializer.new(
+        @user_gallery, params: { good_count: @good_count, my_good_ids: my_good_ids }
+      ).serializable_hash,
       flash: flash.to_h,
     }
     render :user_gallery_view
@@ -48,78 +40,40 @@ class GalleryController < ApplicationController
 
   # 投稿 post
   def upload
-    if session[:creator].present?
-      @gallery = Gallery.new(gallery_params.merge(user_id: session[:creator]))
-      if @gallery.save
-        flash[:success] = t('flash.success.saved')
-      else
-        flash[:danger] = t('flash.danger.error')
-      end
-      redirect_to '/gallery/my_gallery'
+    @gallery = Gallery.new(gallery_params.merge(user_id: Current.user_id))
+    if @gallery.save
+      flash[:success] = t('flash.success.saved')
     else
-      redirect_to '/index'
+      flash[:danger] = t('flash.danger.error')
     end
+    redirect_to '/gallery/my_gallery'
   end
 
   # 個別画像
+  # 表示内容は API の GET /api/v1/galleries/:id と完全に同じものを使う。
   def selected_gallery
     @selected_gallery = Gallery.find(params[:id])
-    @user = User.find_by(id: @selected_gallery.user_id)
-    @selected_gallery_user = User.joins(:creator).select('users.name, users.avatar_path, creators.user_id, creators.title, creators.establishment, creators.employee').find_by(users: { id: @selected_gallery.user_id })
-    @good_count = GalleryGood.where(gallery_id: @selected_gallery.id).count
-    @comment = User.joins(:gallery_comments).where(gallery_comments: { gallery_id: @selected_gallery.id }).select('gallery_comments.*, gallery_comments.created_at AS post_time, users.*').order('gallery_comments.created_at DESC')
-    @my_good = GalleryGood.exists?(gallery_id: @selected_gallery.id, user_id: session[:id])
-    @gallery_comment = GalleryComment.new
-    # タグ検索
-    @match_tag = Gallery.tagged_with([@selected_gallery.tag_list], any: true).where.not(user_id: @selected_gallery.user_id).random_sample(3)
-    # ユーザの他投稿
-    @other_gallery = Gallery.where(user_id: @selected_gallery.user_id).where.not(id: params[:id]).random_sample(2)
-    @page_props = {
-      galleryId: @selected_gallery.id,
-      dataUrl: @selected_gallery.data.to_s,
-      tags: @selected_gallery.tag_list.to_a,
-      comment: @selected_gallery.comment,
-      createdAt: @selected_gallery.created_at.strftime('%Y/%m/%d %H:%M'),
-      goodCount: @good_count,
-      myGood: @my_good,
-      comments: @comment.map do |c|
-        { name: c.name, avatarPath: c.avatar_path.to_s, comment: c.comment, postTime: c.post_time.strftime('%Y/%m/%d %H:%M') }
-      end,
-      matchTagGalleries: @match_tag.map { |g| { id: g.id, dataUrl: g.data.to_s } },
-      otherGalleries: @other_gallery.map { |g| { id: g.id, dataUrl: g.data.to_s } },
-      creator: {
-        userId: @selected_gallery_user.user_id,
-        name: @selected_gallery_user.name,
-        avatarPath: @user.avatar_path.to_s,
-        title: @selected_gallery_user.title,
-        establishment: @selected_gallery_user.establishment,
-        employee: @selected_gallery_user.employee,
-      },
-      loggedIn: session[:id].present?,
-      currentUser: session[:id] ? { id: @user.id, name: @user.name, avatarPath: @user.avatar_path.to_s } : nil,
-      flash: flash.to_h,
-    }
+    detail = GalleryDetailQueryService.build(@selected_gallery, viewer_id: Current.user_id)
+
+    @page_props = GalleryDetailSerializer.new(detail).serializable_hash.merge(
+      'loggedIn' => Current.logged_in?,
+      # 旧実装は投稿者をそのまま currentUser として渡していたため、
+      # コメント入力欄に「投稿者の名前とアバター」が出てしまっていた。
+      'currentUser' => current_user_props,
+      'flash' => flash.to_h,
+    )
   end
 
   # タグ検索
   def search_user_tag
     return unless params[:search_tag] != ''
 
-    @gallery = Gallery.new
     @user = User.find(params[:id])
     @user_gallery = Gallery.tagged_with([params[:search_tag]], any: true).includes(:taggings, :tags).where(user_id: params[:id])
     @page_props = {
       userName: @user.name,
       userId: @user.id,
-      galleries: @user_gallery.map do |g|
-        {
-          id: g.id,
-          dataUrl: g.data.to_s,
-          tags: g.tag_list.to_a,
-          goodCount: 0,
-          myGood: false,
-        }
-      end,
+      galleries: GallerySerializer.new(@user_gallery).serializable_hash,
       flash: flash.to_h,
     }
     render :gallery_search_user_tag
@@ -127,17 +81,13 @@ class GalleryController < ApplicationController
 
   # 後継者側のお気に入り
   def heir_favorite_gallery
-    feed = GalleryFeedQueryService.build(target_ids: Favorite.self_and_favorite_ids(session[:id]), viewer_id: session[:id])
-    @page_props = {
-      galleries: feed[:galleries],
-      flash: flash.to_h,
-    }
+    @page_props = favorite_feed_props
     render :heir_favorite_gallery
   end
 
   def gallery_good
-    @selected_gallery = GalleryGood.new(gallery_id: params[:id], user_id: session[:id])
-    if @selected_gallery.save
+    gallery_good = GalleryGood.new(gallery_id: params[:id], user_id: Current.user_id)
+    if gallery_good.save
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.error')
@@ -146,8 +96,8 @@ class GalleryController < ApplicationController
   end
 
   def gallery_comment
-    @selected_gallery = GalleryComment.new(gallery_comment_params.merge(gallery_id: params[:id], user_id: session[:id]))
-    if @selected_gallery.save
+    gallery_comment = GalleryComment.new(gallery_comment_params.merge(gallery_id: params[:id], user_id: Current.user_id))
+    if gallery_comment.save
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.comment_blank')
@@ -156,6 +106,14 @@ class GalleryController < ApplicationController
   end
 
   private
+
+  # お気に入りユーザー（+自分）のギャラリーフィード。
+  def favorite_feed_props
+    feed = GalleryFeedQueryService.build(
+      target_ids: Favorite.self_and_favorite_ids(Current.user_id), viewer_id: Current.user_id,
+    )
+    { galleries: GallerySerializer.from_feed(feed), flash: flash.to_h }
+  end
 
   def gallery_params
     params.require(:gallery).permit(:data, :comment, :tag_list)
