@@ -17,6 +17,9 @@
 /storage/*
 !/storage/.keep
 
+# CarrierWave のキャッシュ（アップロード中の一時ファイル）は成果物ではない
+/public/uploads/tmp/
+
 /node_modules
 /.pnpm-store
 /yarn-error.log
