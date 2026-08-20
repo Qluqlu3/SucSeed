@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_11_000001) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_20_000001) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 20, null: false
     t.string "user_id", null: false
@@ -172,9 +172,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_11_000001) do
   create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
-    t.integer "taggable_id"
+    t.string "taggable_id", limit: 32
     t.string "tagger_type"
-    t.integer "tagger_id"
+    t.string "tagger_id", limit: 32
     t.string "context", limit: 128
     t.datetime "created_at", precision: nil
     t.index ["context"], name: "index_taggings_on_context"
