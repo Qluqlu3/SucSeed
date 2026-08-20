@@ -1,0 +1,18 @@
+# Active Storage のサービス定義。
+#
+# 本アプリの画像アップロードは CarrierWave で実装しており Active Storage は使っていないが、
+# config/application.rb が `require 'rails/all'` で Active Storage を読み込むため、
+# このファイルが無いと ActiveStorage::Blob のロード時に
+#   RuntimeError: Couldn't find Active Storage configuration in config/storage.yml
+# が発生する。
+#
+# development / test では eager_load = false のため Blob に触れず表面化しないが、
+# production は eager_load = true なので起動時に落ちる。
+# Rails 標準のローカルディスク設定を置いて起動できる状態にしておく。
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
