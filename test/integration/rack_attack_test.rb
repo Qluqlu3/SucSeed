@@ -143,4 +143,96 @@ class RackAttackTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  # ── JSON API 側も同じスロットルに乗ること ────────────────────────
+  # HTML 版だけ絞っていると API 経由で素通しできてしまうため、
+  # 主要な書き込みエンドポイントについて API 側も検証する。
+
+  test 'API ログイン (POST /api/v1/session) 6 回目で 429 が返る' do
+    freeze_time do
+      6.times do
+        post '/api/v1/session', params: { session: { email: 'x@x.com', password: 'wrong' } },
+                                headers: { 'REMOTE_ADDR' => '12.12.12.12' }, as: :json
+      end
+      assert_equal 429, response.status
+    end
+  end
+
+  test 'API ログインの 429 は JSON のエラーエンベロープで返る' do
+    freeze_time do
+      6.times do
+        post '/api/v1/session', params: { session: { email: 'x@x.com', password: 'wrong' } },
+                                headers: { 'REMOTE_ADDR' => '13.13.13.13' }, as: :json
+      end
+      assert_equal 429, response.status
+      assert_equal 'too_many_requests', response.parsed_body.dig('error', 'code')
+    end
+  end
+
+  test 'HTML ログインと API ログインは同じカウンタを共有する' do
+    freeze_time do
+      3.times do
+        post '/user/login', params: { session: { email: 'x@x.com', password: 'wrong' } },
+                            headers: { 'REMOTE_ADDR' => '14.14.14.14' }
+      end
+      3.times do
+        post '/api/v1/session', params: { session: { email: 'x@x.com', password: 'wrong' } },
+                                headers: { 'REMOTE_ADDR' => '14.14.14.14' }, as: :json
+      end
+      assert_equal 429, response.status
+    end
+  end
+
+  test 'API 日記投稿 (POST /api/v1/diaries) 11 回目で 429 が返る' do
+    freeze_time do
+      11.times do
+        post '/api/v1/diaries', params: { diary: { content: 'テスト' } },
+                                headers: { 'REMOTE_ADDR' => '15.15.15.15' }, as: :json
+      end
+      assert_equal 429, response.status
+    end
+  end
+
+  test 'API 日記コメント 21 回目で 429 が返る' do
+    freeze_time do
+      21.times do
+        post '/api/v1/diaries/dummy_id/comments', params: { diary_comment: { comment: 'テスト' } },
+                                                  headers: { 'REMOTE_ADDR' => '16.16.16.16' },
+                                                  as: :json
+      end
+      assert_equal 429, response.status
+    end
+  end
+
+  test 'API ギャラリーコメント 21 回目で 429 が返る' do
+    freeze_time do
+      21.times do
+        post '/api/v1/galleries/dummy_id/comments',
+             params: { gallery_comment: { comment: 'テスト' } },
+             headers: { 'REMOTE_ADDR' => '17.17.17.17' }, as: :json
+      end
+      assert_equal 429, response.status
+    end
+  end
+
+  test 'API メッセージ送信 31 回目で 429 が返る' do
+    freeze_time do
+      31.times do
+        post '/api/v1/message_threads/dummy_id/messages',
+             params: { message: { content: 'テスト' } },
+             headers: { 'REMOTE_ADDR' => '18.18.18.18' }, as: :json
+      end
+      assert_equal 429, response.status
+    end
+  end
+
+  test 'API アピール送信 31 回目で 429 が返る' do
+    freeze_time do
+      31.times do
+        post '/api/v1/appeals', params: { creator_id: 'dummy_id' },
+                                headers: { 'REMOTE_ADDR' => '19.19.19.19' }, as: :json
+      end
+      assert_equal 429, response.status
+    end
+  end
 end
