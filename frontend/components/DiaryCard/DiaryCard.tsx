@@ -2,36 +2,23 @@
 //
 // 日記カード共通コンポーネント。
 // DiarySelectPage / MyDiaryPage / YourDiaryPage / DiaryHeirFavoritePage で使い回す。
-// いいね・コメント投稿・削除は fetch API で処理するためページ全体の再レンダリングが不要。
+// いいね・コメント投稿・削除は /api/v1 の JSON API で処理するため
+// ページ全体の再レンダリングが不要。
+//
+// entry の形は Rails の DiarySerializer と一対一で対応している
+// （GET /api/v1/diaries が返す items の要素と同じ）。
 
 import { MessageSquare, ThumbsUp, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { postJson } from '../../utils/postJson';
+import type { Comment, DiaryFeedItem, Id } from '../../api';
+import { api } from '../../api';
 
-export interface DiaryComment {
-  name: string;
-  avatarPath: string;
-  comment: string;
-  postTime: string;
-}
-
-export interface DiaryEntry {
-  diaryId: number;
-  userId: number;
-  name: string;
-  avatarPath: string;
-  content: string;
-  postTime: string;
-  goodCount: number;
-  goodAvatars: Array<{ avatarPath: string }>;
-  myGood: boolean; // 閲覧者がすでにいいね済みか
-  comments: DiaryComment[];
-  commentCount: number;
-}
+export type DiaryComment = Comment;
+export type DiaryEntry = DiaryFeedItem;
 
 interface Props {
   entry: DiaryEntry;
-  currentUserId: number | null;
+  currentUserId: Id | null;
   currentUserName: string | null;
   currentUserAvatar: string | null;
   canDelete?: boolean; // マイ日記は常に true
@@ -50,48 +37,62 @@ export const DiaryCard = ({
   const [commentText, setCommentText] = useState('');
   const [deleted, setDeleted] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (deleted) return null;
 
+  // いいね数はサーバーが返した値をそのまま採用する（クライアント側で ±1 しない）。
   const handleGood = async () => {
-    if (myGood) return;
-    const res = await postJson(`/diary/show/${entry.diaryId}/good`);
-    if (res.ok) {
-      setMyGood(true);
-      setGoodCount((c) => c + 1);
+    setErrorMessage(null);
+    const result = myGood
+      ? await api.diaries.unlike(entry.diaryId)
+      : await api.diaries.like(entry.diaryId);
+
+    if (result.ok) {
+      setMyGood(result.data.myGood);
+      setGoodCount(result.data.goodCount);
+    } else {
+      setErrorMessage(result.error.message);
     }
   };
 
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!commentText.trim()) return;
-    const res = await postJson(`/diary/show/${entry.diaryId}/comment`, {
-      diary_comment: { comment: commentText },
-    });
-    if (res.ok) {
-      setComments((prev) => [
-        ...prev,
-        {
-          name: currentUserName ?? '',
-          avatarPath: currentUserAvatar ?? '',
-          comment: commentText,
-          postTime: new Date().toLocaleString('ja-JP'),
-        },
-      ]);
+    setErrorMessage(null);
+
+    const result = await api.diaries.comment(entry.diaryId, commentText);
+    if (result.ok) {
+      // API が返した整形済みコメントをそのまま使う（日時書式がサーバーと揃う）
+      setComments((prev) => [...prev, result.data.comment]);
       setCommentText('');
+    } else {
+      setErrorMessage(result.error.details[0] ?? result.error.message);
     }
   };
 
   const handleDelete = async () => {
     if (!confirm('この日記を削除してよいですか？')) return;
-    await postJson(`/diary/post/${entry.diaryId}/delete`);
-    setDeleted(true);
+    setErrorMessage(null);
+
+    const result = await api.diaries.destroy(entry.diaryId);
+    if (result.ok) {
+      setDeleted(true);
+    } else {
+      setErrorMessage(result.error.message);
+    }
   };
 
   const isOwn = currentUserId === entry.userId;
 
   return (
     <div className="mt-[2%] border-2 border-[#D3C9E7] rounded-[5px]">
+      {errorMessage && (
+        <div className="mx-2 mt-2 rounded border border-red-400 bg-red-100 px-3 py-2 text-red-800">
+          {errorMessage}
+        </div>
+      )}
+
       {/* カードヘッダー */}
       <div className="pt-[0.5%] pl-[0.8%] pb-[0.5%] rounded-t-[5px] bg-p-light text-[25px]">
         <img
@@ -134,9 +135,10 @@ export const DiaryCard = ({
           {/* いいねボタン */}
           <button
             type="button"
-            className="rounded bg-p-gold px-3 py-1 hover:text-black"
+            className={`rounded px-3 py-1 hover:text-black ${myGood ? 'bg-p-brand' : 'bg-p-gold'}`}
             onClick={handleGood}
-            disabled={myGood}
+            aria-pressed={myGood}
+            aria-label={myGood ? 'いいねを取り消す' : 'いいねする'}
           >
             <ThumbsUp className="text-p-dark" size={21} />
             {goodCount}
@@ -167,7 +169,7 @@ export const DiaryCard = ({
         {/* コメント一覧・投稿フォーム */}
         <div className={showComments ? 'block' : 'hidden'}>
           {comments.map((c) => (
-            <div key={`${c.postTime}-${c.name}`} className="my-[1%] ml-[1%] bg-white rounded">
+            <div key={c.id} className="my-[1%] ml-[1%] bg-white rounded">
               <div className="pt-[0.3%] pl-[0.5%] pb-0 text-[18px] border-b border-gray-200">
                 <p>
                   <img

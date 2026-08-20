@@ -1,53 +1,25 @@
 // frontend/components/SelectedGalleryPage/SelectedGalleryPage.tsx
 //
 // /gallery/selected/:id ページ（ギャラリー個別表示）の React コンポーネント。
-// いいね・コメントは fetch API で処理。関連画像・職人情報をサイドバーに表示。
+// いいね・コメントは /api/v1 の JSON API で処理。関連画像・職人情報をサイドバーに表示。
+//
+// props の形は Rails の GalleryDetailSerializer と一対一で対応しており、
+// GET /api/v1/galleries/:id が返すものと同じ（HTML 側は data-props 経由で渡している）。
 
 import { MessageSquare, ThumbsUp } from 'lucide-react';
 import { useState } from 'react';
+import type { Comment, GalleryDetail, Id } from '../../api';
+import { api } from '../../api';
 import { ThreeViewer } from '../../three/ThreeViewer';
-import { postJson } from '../../utils/postJson';
 import { FlashMessages } from '../FlashMessages';
 
-interface GalleryCommentItem {
-  name: string;
-  avatarPath: string;
-  comment: string;
-  postTime: string;
-}
-
-interface Creator {
-  userId: number;
-  name: string;
-  avatarPath: string;
-  title: string;
-  establishment: number;
-  employee: number;
-}
-
-interface RelatedGallery {
-  id: number;
-  dataUrl: string;
-}
-
 interface CurrentUser {
-  id: number;
+  id: Id;
   name: string;
   avatarPath: string;
 }
 
-interface Props {
-  galleryId: number;
-  dataUrl: string;
-  tags: string[];
-  comment: string;
-  createdAt: string;
-  goodCount: number;
-  myGood: boolean;
-  comments: GalleryCommentItem[];
-  matchTagGalleries: RelatedGallery[];
-  otherGalleries: RelatedGallery[];
-  creator: Creator;
+interface Props extends GalleryDetail {
   loggedIn: boolean;
   currentUser: CurrentUser | null;
   flash: Record<string, string>;
@@ -71,40 +43,46 @@ export const SelectedGalleryPage = ({
 }: Props) => {
   const [goodCount, setGoodCount] = useState(initialGoodCount);
   const [myGood, setMyGood] = useState(initialMyGood);
-  const [comments, setComments] = useState<GalleryCommentItem[]>(initialComments);
+  const [comments, setComments] = useState<Comment[]>(initialComments);
   const [commentText, setCommentText] = useState('');
   const [showComments, setShowComments] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // いいね数・いいね済みフラグはサーバーが返した値をそのまま採用する。
+  // クライアント側で +1 していた旧実装は、他ユーザーの操作と競合するとズレていた。
   const handleGood = async () => {
-    if (myGood) return;
-    await postJson(`/gallery/selected/good/${galleryId}`);
-    setMyGood(true);
-    setGoodCount((c) => c + 1);
+    if (!loggedIn) return;
+    setErrorMessage(null);
+    const result = myGood
+      ? await api.galleries.unlike(galleryId)
+      : await api.galleries.like(galleryId);
+
+    if (result.ok) {
+      setMyGood(result.data.myGood);
+      setGoodCount(result.data.goodCount);
+    } else {
+      setErrorMessage(result.error.message);
+    }
   };
 
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!commentText.trim() || !currentUser) return;
-    const res = await postJson(`/gallery/selected/comment/${galleryId}`, {
-      gallery_comment: { comment: commentText },
-    });
-    if (res.ok || res.redirected) {
-      setComments((prev) => [
-        ...prev,
-        {
-          name: currentUser.name,
-          avatarPath: currentUser.avatarPath,
-          comment: commentText,
-          postTime: new Date().toLocaleString('ja-JP'),
-        },
-      ]);
+    setErrorMessage(null);
+
+    const result = await api.galleries.comment(galleryId, commentText);
+    if (result.ok) {
+      // 表示は API が返したコメント（サーバー側の日時書式・整形済み）をそのまま使う
+      setComments((prev) => [result.data.comment, ...prev]);
       setCommentText('');
+    } else {
+      setErrorMessage(result.error.details[0] ?? result.error.message);
     }
   };
 
   return (
     <>
-      <FlashMessages flash={flash} />
+      <FlashMessages flash={errorMessage ? { ...flash, danger: errorMessage } : flash} />
 
       <div className="flex flex-wrap w-full pl-[1.5%] mb-[13%]">
         {/* メインカラム */}
@@ -141,12 +119,14 @@ export const SelectedGalleryPage = ({
 
           {/* アクションボタン */}
           <div className="text-right">
-            {/* いいねボタン */}
+            {/* いいねボタン（API がトグルに対応したので取り消しもできる） */}
             <button
               type="button"
-              className="rounded bg-p-brand px-3 py-1 hover:opacity-80"
+              className={`rounded px-3 py-1 hover:opacity-80 ${myGood ? 'bg-p-gold' : 'bg-p-brand'}`}
               onClick={handleGood}
-              disabled={myGood || !loggedIn}
+              disabled={!loggedIn}
+              aria-pressed={myGood}
+              aria-label={myGood ? 'いいねを取り消す' : 'いいねする'}
             >
               <ThumbsUp className="text-white" size={21} />
               {goodCount}
@@ -165,10 +145,7 @@ export const SelectedGalleryPage = ({
             {/* コメント一覧・フォーム */}
             <div className={showComments ? 'block' : 'hidden'}>
               {comments.map((c) => (
-                <div
-                  key={`${c.postTime}-${c.name}`}
-                  className="my-[1%] ml-[1%] bg-white text-left rounded"
-                >
+                <div key={c.id} className="my-[1%] ml-[1%] bg-white text-left rounded">
                   <div className="pt-[0.3%] pl-[0.5%] pb-0 text-[18px] border-b border-gray-200">
                     <p>
                       <img
@@ -256,49 +233,51 @@ export const SelectedGalleryPage = ({
 
         {/* サイドバー */}
         <div className="w-full lg:w-3/12 pt-[0.5%] pr-[0.5%] pb-0 pl-[0.6%] m-0 bg-p-dark border border-p-brand rounded-[7px]">
-          {/* 職人情報 */}
-          <div className="bg-[#eee] w-full min-h-[55vh] mb-[19vh] rounded-[7px]">
-            <div className="bg-[#BAA9DA] mx-auto rounded-t-[7px] hover:opacity-80">
-              <a href={`/page/creator/${creator.userId}`}>
-                <div className="w-full text-center">
-                  <img
-                    src={creator.avatarPath}
-                    className="rounded-full"
-                    width={180}
-                    height={180}
-                    alt="アバター"
-                  />
+          {/* 職人情報（投稿者が職人プロフィール未登録なら表示しない） */}
+          {creator && (
+            <div className="bg-[#eee] w-full min-h-[55vh] mb-[19vh] rounded-[7px]">
+              <div className="bg-[#BAA9DA] mx-auto rounded-t-[7px] hover:opacity-80">
+                <a href={`/page/creator/${creator.userId}`}>
+                  <div className="w-full text-center">
+                    <img
+                      src={creator.avatarPath}
+                      className="rounded-full"
+                      width={180}
+                      height={180}
+                      alt="アバター"
+                    />
+                  </div>
+                  <div className="pt-[13px] pb-2 text-center">
+                    <h3 className="text-[33px]">{creator.name}</h3>
+                  </div>
+                </a>
+              </div>
+              <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
+                <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
+                  創作作品名
                 </div>
-                <div className="pt-[13px] pb-2 text-center">
-                  <h3 className="text-[33px]">{creator.name}</h3>
+                <div className="text-center pt-[3%] pb-[4%] px-0">
+                  <p className="text-[23px] p-0">{creator.title}</p>
                 </div>
-              </a>
-            </div>
-            <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
-              <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
-                創作作品名
               </div>
-              <div className="text-center pt-[3%] pb-[4%] px-0">
-                <p className="text-[23px] p-0">{creator.title}</p>
+              <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
+                <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
+                  創業年数
+                </div>
+                <div className="text-center pt-[3%] pb-[4%] px-0">
+                  <p className="text-[23px] p-0">{creator.establishment}年</p>
+                </div>
               </div>
-            </div>
-            <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
-              <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
-                創業年数
-              </div>
-              <div className="text-center pt-[3%] pb-[4%] px-0">
-                <p className="text-[23px] p-0">{creator.establishment}年</p>
-              </div>
-            </div>
-            <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
-              <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
-                従業員数
-              </div>
-              <div className="text-center pt-[3%] pb-[4%] px-0">
-                <p className="text-[23px] p-0">{creator.employee}人</p>
+              <div className="border-2 border-[#D7CDE9] bg-p-light mt-[7%] rounded-[5px]">
+                <div className="bg-[#BAA9DA] pt-[5%] pl-[2%] pb-0 text-[19px] rounded-t-[5px]">
+                  従業員数
+                </div>
+                <div className="text-center pt-[3%] pb-[4%] px-0">
+                  <p className="text-[23px] p-0">{creator.employee}人</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* その他の投稿 */}
           {otherGalleries.length > 0 && (

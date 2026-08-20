@@ -2,7 +2,7 @@ import { mountPage } from '../mountPage';
 import { SelectedGalleryPage } from './SelectedGalleryPage';
 
 mountPage('selected-gallery-page', SelectedGalleryPage, {
-  galleryId: 0,
+  galleryId: '',
   dataUrl: '',
   tags: [],
   comment: '',
@@ -12,7 +12,7 @@ mountPage('selected-gallery-page', SelectedGalleryPage, {
   comments: [],
   matchTagGalleries: [],
   otherGalleries: [],
-  creator: { userId: 0, name: '', avatarPath: '', title: '', establishment: 0, employee: 0 },
+  creator: null,
   loggedIn: false,
   currentUser: null,
   flash: {},

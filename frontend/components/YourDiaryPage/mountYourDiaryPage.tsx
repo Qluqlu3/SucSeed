@@ -4,7 +4,7 @@ import { YourDiaryPage } from './YourDiaryPage';
 mountPage('your-diary-page', YourDiaryPage, {
   diaries: [],
   ownerName: '',
-  targetUserId: 0,
+  targetUserId: '',
   targetIsCreator: false,
   currentUser: null,
   flash: {},

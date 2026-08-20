@@ -1,10 +1,11 @@
 // frontend/components/HeirPage/HeirPage.tsx
 //
 // /page/heir/:id ページの React コンポーネント（後継者ページ）。
-// スカウト送信は fetch API で Rails に送信する。
+// スカウト送信は /api/v1 の JSON API に送信する。
 
 import { useState } from 'react';
-import { postJson } from '../../utils/postJson';
+import type { Id } from '../../api';
+import { api } from '../../api';
 import { FlashMessages } from '../FlashMessages';
 
 function calcAge(birthday: string): number {
@@ -16,7 +17,7 @@ function calcAge(birthday: string): number {
 }
 
 interface User {
-  id: number;
+  id: Id;
   name: string;
   avatarPath: string;
   isMan: boolean;
@@ -30,7 +31,7 @@ interface Props {
   isScouted: boolean;
   loggedIn: boolean;
   isCreator: boolean;
-  targetUserId: number;
+  targetUserId: Id;
   flash: Record<string, string>;
 }
 
@@ -44,15 +45,23 @@ export const HeirPage = ({
   flash,
 }: Props) => {
   const [isScouted, setIsScouted] = useState(initialScouted);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleScout = async () => {
-    await postJson(`/scout/send/${targetUserId}`);
-    setIsScouted(true);
+    setErrorMessage(null);
+    const result = await api.scouts.create(targetUserId);
+
+    if (result.ok) {
+      setIsScouted(true);
+    } else {
+      setErrorMessage(result.error.message);
+    }
   };
 
   return (
     <div className="min-h-screen">
-      <FlashMessages flash={flash} />
+      {/* API エラーはサーバー由来の flash と同じ見た目で出す */}
+      <FlashMessages flash={errorMessage ? { ...flash, danger: errorMessage } : flash} />
 
       {/* プロフィールヘッダー */}
       <div className="w-full relative mx-auto">

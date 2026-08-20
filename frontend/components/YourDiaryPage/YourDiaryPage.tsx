@@ -3,12 +3,13 @@
 // /diary/show/:id ページ（相手ユーザーの日記一覧）の React コンポーネント。
 // 未ログインでも閲覧可能だが、いいね・コメントはログイン必須。
 
+import type { Id } from '../../api';
 import { CreatorProfileTabs } from '../CreatorProfileTabs/CreatorProfileTabs';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
 import { FlashMessages } from '../FlashMessages';
 
 interface CurrentUser {
-  id: number;
+  id: Id;
   name: string;
   avatarPath: string;
 }
@@ -16,7 +17,7 @@ interface CurrentUser {
 interface Props {
   diaries: DiaryEntry[];
   ownerName: string;
-  targetUserId: number;
+  targetUserId: Id;
   targetIsCreator: boolean;
   currentUser: CurrentUser | null;
   flash: Record<string, string>;

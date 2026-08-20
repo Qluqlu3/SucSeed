@@ -1,15 +1,16 @@
 // frontend/components/MyDiaryPage/MyDiaryPage.tsx
 //
 // /diary/my_diary ページ（マイ日記）の React コンポーネント。
-// 右コラムに投稿フォームを持ち、投稿後に fetch で日記を追加する。
+// 右コラムに投稿フォームを持ち、投稿後は API が返した日記をそのまま一覧に差し込む。
 
 import { useState } from 'react';
-import { postForm } from '../../utils/postForm';
+import type { Id } from '../../api';
+import { api } from '../../api';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
 import { FlashMessages } from '../FlashMessages';
 
 interface CurrentUser {
-  id: number;
+  id: Id;
   name: string;
   avatarPath: string;
 }
@@ -25,43 +26,34 @@ export const MyDiaryPage = ({ diaries: initialDiaries, errors, currentUser, flas
   const [diaries, setDiaries] = useState<DiaryEntry[]>(initialDiaries);
   const [content, setContent] = useState('');
   const [posting, setPosting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // 旧実装は Date.now() の仮 ID とクライアント側の日時でカードを組み立てていたため、
+  // 投稿直後だけ実データと形が違っていた（削除やいいねも仮 ID では動かない）。
+  // API が返す本物の日記をそのまま差し込む。
   const handlePost = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim() || posting) return;
+
     setPosting(true);
-    const body = new FormData();
-    body.append('diary[content]', content);
-    body.append('diary[user_id]', String(currentUser.id));
-    const res = await postForm('/diary/post', body);
-    if (res.redirected || res.ok) {
-      const tempId = Date.now();
-      setDiaries((prev) => [
-        {
-          diaryId: tempId,
-          userId: currentUser.id,
-          name: currentUser.name,
-          avatarPath: currentUser.avatarPath,
-          content,
-          postTime: new Date().toLocaleString('ja-JP'),
-          goodCount: 0,
-          goodAvatars: [],
-          myGood: false,
-          comments: [],
-          commentCount: 0,
-        },
-        ...prev,
-      ]);
-      setContent('');
-    }
+    setErrorMessage(null);
+    const result = await api.diaries.create(content);
     setPosting(false);
+
+    if (result.ok) {
+      setDiaries((prev) => [result.data, ...prev]);
+      setContent('');
+    } else {
+      setErrorMessage(result.error.details[0] ?? result.error.message);
+    }
   };
 
   return (
     <>
       <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">マイ日記</h1>
 
-      <FlashMessages flash={flash} />
+      {/* API エラーはサーバー由来の flash と同じ見た目で出す */}
+      <FlashMessages flash={errorMessage ? { ...flash, danger: errorMessage } : flash} />
 
       {errors.length > 0 && (
         <div id="error_explanation" className="error-box">

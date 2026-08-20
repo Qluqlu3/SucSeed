@@ -1,18 +1,23 @@
 // frontend/spa/sessionTypes.ts
 //
-// session に関する型定義と型ガード（純粋関数）。
-// DOM / fetch などの副作用を持たないため、単体テストが容易。
-// 副作用を伴う getCsrfToken / fetchSessionPayload は session.ts に置く。
+// session に関する型ガード（純粋関数）。
+// 型そのものは API クライアント側（frontend/api/types.ts）を唯一の定義とし、
+// ここでは re-export するだけにして二重管理を避ける。
+//
+// レイアウト（Navbar / Footer）はページ描画の土台なので、
+// レスポンスが想定と違っても落とさず 'guest' 相当にフォールバックできるよう、
+// 型だけでなく実行時の検証も持っている。
 
-export type Role = 'creator' | 'heir' | 'user' | 'guest';
-export type ArtCategory = { id: number; name: string };
-export type LayoutAssets = { logoSrc: string; titleSrc: string };
+import type { ArtCategory, LayoutAssets, Role } from '../api/types';
 
-export type SessionPayload = {
+export type { ArtCategory, LayoutAssets, Role } from '../api/types';
+
+/** fetch 結果は any 相当なので、検証前は unknown として扱う */
+export interface SessionPayloadLike {
   role?: unknown;
   artCategories?: unknown;
   layoutAssets?: unknown;
-};
+}
 
 export const EMPTY_LAYOUT_ASSETS: LayoutAssets = { logoSrc: '', titleSrc: '' };
 

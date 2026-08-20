@@ -3,11 +3,12 @@
 // /diary/heir/favorite ページ（後継者側お気に入り日記一覧）の React コンポーネント。
 // DiarySelectPage と構造は同じ。後継者ログイン時のみアクセス可能。
 
+import type { Id } from '../../api';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
 import { FlashMessages } from '../FlashMessages';
 
 interface CurrentUser {
-  id: number;
+  id: Id;
   name: string;
   avatarPath: string;
 }

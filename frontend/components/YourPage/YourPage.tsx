@@ -1,11 +1,12 @@
 // frontend/components/YourPage/YourPage.tsx
 //
 // /page/creator/:id ページの React コンポーネント（職人ページ）。
-// お気に入り追加/削除は fetch API で Rails に送信する。
+// お気に入り・アピールは /api/v1 の JSON API に送信する。
 
 import { Star } from 'lucide-react';
 import { useState } from 'react';
-import { postJson } from '../../utils/postJson';
+import type { Id } from '../../api';
+import { api } from '../../api';
 import { CreatorProfileTabs } from '../CreatorProfileTabs/CreatorProfileTabs';
 import { FlashMessages } from '../FlashMessages';
 
@@ -18,7 +19,7 @@ function calcAge(birthday: string): number {
 }
 
 interface User {
-  id: number;
+  id: Id;
   name: string;
   avatarPath: string;
   isMan: boolean;
@@ -42,7 +43,7 @@ interface Props {
   isOwnPage: boolean; // 自分自身のページかどうか
   isCreator: boolean; // 閲覧者が職人か
   isMatched: boolean; // アピール済みか
-  targetUserId: number;
+  targetUserId: Id;
   flash: Record<string, string>;
 }
 
@@ -60,21 +61,39 @@ export const YourPage = ({
 }: Props) => {
   const [isFavorited, setIsFavorited] = useState(initialFavorited);
   const [isMatched, setIsMatched] = useState(initialMatched);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // API が返した状態をそのまま反映する。
+  // 旧実装はレスポンスを見ずに state を反転していたため、
+  // 失敗しても画面上は成功したように見えてしまっていた。
   const handleFavorite = async () => {
-    const url = isFavorited ? `/favorite/${targetUserId}/delete` : `/favorite/${targetUserId}/add`;
-    await postJson(url);
-    setIsFavorited(!isFavorited);
+    setErrorMessage(null);
+    const result = isFavorited
+      ? await api.favorites.destroy(targetUserId)
+      : await api.favorites.create(targetUserId);
+
+    if (result.ok) {
+      setIsFavorited(result.data.favorited);
+    } else {
+      setErrorMessage(result.error.message);
+    }
   };
 
   const handleAppeal = async () => {
-    await postJson(`/match/send/${targetUserId}`);
-    setIsMatched(true);
+    setErrorMessage(null);
+    const result = await api.appeals.create(targetUserId);
+
+    if (result.ok) {
+      setIsMatched(true);
+    } else {
+      setErrorMessage(result.error.message);
+    }
   };
 
   return (
     <div className="w-full">
-      <FlashMessages flash={flash} />
+      {/* API エラーはサーバー由来の flash と同じ見た目で出す */}
+      <FlashMessages flash={errorMessage ? { ...flash, danger: errorMessage } : flash} />
 
       {/* プロフィールヘッダー */}
       <div>
