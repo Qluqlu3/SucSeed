@@ -8,8 +8,10 @@ gem 'rails', '>= 7.2.3.1', '< 8.0'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.5.0', '< 0.6.0'
 # Use Puma as the app server
-# 3.x は Ruby 3.x 系で動作しないため 6.x に上げる
-gem 'puma', '~> 7.2', '>= 7.2.1'
+# 8.0.2 以上: PROXY プロトコルヘッダのインジェクション/なりすまし修正版を含む。
+# 8.0 の破壊的変更は「production の既定 bind が 0.0.0.0 から :: へ」の1点のみ。
+# 本アプリは Docker の CMD で -b 0.0.0.0 を明示しているため影響しない。
+gem 'puma', '~> 8.0', '>= 8.0.2'
 # uglifier は ExecJS(Node.js)が必要で環境依存が強い。Rails 7 では不要
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
