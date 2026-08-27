@@ -14,7 +14,7 @@ gem 'mysql2', '>= 0.5.0', '< 0.6.0'
 gem 'puma', '~> 8.0', '>= 8.0.2'
 # uglifier は ExecJS(Node.js)が必要で環境依存が強い。Rails 7 では不要
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.15'
 # gem 'nokogiri', '1.10.9'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
