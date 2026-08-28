@@ -1,6 +1,9 @@
 # ローカル開発用 Dockerfile
-# Ruby 3.3.0 の slim イメージをベースにする（軽量版 Debian）
-FROM ruby:3.3.0-slim
+# ベースイメージの Ruby は .ruby-version / Gemfile の `ruby` 指定と必ず揃える。
+# ずれていると bundle install が
+#   Your Ruby version is X, but your Gemfile specified Y
+# で失敗し、イメージのビルド自体が通らなくなる。
+FROM ruby:3.3.11-slim
 
 # ネイティブ拡張 gem のビルドや画像処理に必要な OS ライブラリをインストール
 #   build-essential          … mysql2 / bcrypt などのコンパイルに必要
