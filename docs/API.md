@@ -95,7 +95,8 @@ TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/a
 | GET | `/api/v1/profile` | 自分のプロフィール |
 | PATCH | `/api/v1/profile` | 更新。body: `{ user: { name, email, profile } }` |
 
-アバター画像は multipart が必要なため、この API では扱わない（`PATCH /my_page/update` を使う）。
+アバター画像も同じ `PATCH /api/v1/profile` で更新できるが、multipart/form-data で
+`user[avatar_path]` を送る必要がある（後述の「画像のアップロードについて」を参照）。
 
 ### 職人 / 後継者
 
@@ -138,11 +139,21 @@ TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/a
 | 🔓 GET | `/api/v1/galleries?user_id=xxx` | 指定ユーザーの作品。`&tag=漆器` でタグ絞り込み |
 | GET | `/api/v1/galleries` | 自分 + お気に入り登録した相手のフィード |
 | 🔓 GET | `/api/v1/galleries/:id` | 作品詳細（コメント・関連作品・職人情報を含む） |
+| 🎨 POST | `/api/v1/galleries` | 作品投稿（**multipart/form-data**）|
 | POST | `/api/v1/galleries/:gallery_id/good` | いいね |
 | DELETE | `/api/v1/galleries/:gallery_id/good` | いいね取り消し |
 | POST | `/api/v1/galleries/:gallery_id/comments` | コメント |
 
-作品の投稿は画像アップロード（multipart）が必要なため `POST /gallery/view` のまま。
+### 画像のアップロードについて
+
+作品投稿（`POST /api/v1/galleries`）とアバター更新（`PATCH /api/v1/profile`）は
+CarrierWave が `UploadedFile` しか受け取れないため **multipart/form-data** で送る。
+JSON でファイル名の文字列を渡した場合は `not_multipart` の 400 を返す
+（そのまま CarrierWave に渡すと `CarrierWave::FormNotMultipart` で 500 になるため）。
+
+TypeScript クライアントは `api.galleries.create({ data, comment, tagList })` と
+`api.profile.updateAvatar(file)` が `FormData` を組み立てる。`Content-Type` は
+boundary 付きでブラウザに設定させる必要があるため指定していない。
 
 ### マッチング
 
@@ -196,6 +207,19 @@ if (result.ok) {
 
 ## 既知の制約
 
-- **画像アップロードは API 化していない**（アバター・ギャラリー投稿）。multipart が必要なため HTML フォームのまま。
-- HTML 版の投稿系エンドポイント（`POST /diary/show/:id/good` など）は
-  JS 無効時のフォールバックとして残してある。フロントからは API 側のみを呼んでいる。
+- **ログインフォームだけは HTML フォーム送信のまま**。ログイン後はページ全体を
+  描き直す必要があり、API 化しても結局リロードするため。
+- HTML 版の投稿系エンドポイント（`POST /diary/show/:id/good`、`POST /gallery/view` など）は
+  ルーティングとして残っているが、フロントからは呼んでいない。
+
+---
+
+## 品質チェック
+
+| 対象 | コマンド | 内容 |
+|---|---|---|
+| テスト | `bin/rails test` | API のリクエストテスト（正常系・認可・バリデーション・エラー形式）|
+| N+1 | 同上 | Bullet が `raise = true` で検出。N+1 があるとテストが落ちる |
+| 静的解析 | `bundle exec rubocop` | `Rails/StrongParametersExpect` で `params.expect` を強制 |
+| セキュリティ | `bundle exec brakeman` / `bundle exec bundler-audit check` | |
+| 型 | `pnpm exec tsc --noEmit` | `frontend/api/types.ts` とコンポーネントの整合 |

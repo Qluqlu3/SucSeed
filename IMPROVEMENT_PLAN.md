@@ -9,11 +9,10 @@
 
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
-| 🔴 高 | **Rails 8 へのアップグレード（7.2 は 2026-08-09 に EOL）** | `Gemfile` 他 | L | 未着手 |
-| 🟡 中 | 画像アップロードの API 化 | `Api::V1` / CarrierWave | M | 未着手 |
+| 🟡 中 | Sprockets → Propshaft 移行 | アセットパイプライン | M | 未着手 |
+| 🟢 低 | Three.js 遅延読み込み（Propshaft 移行とセット） | `frontend/` | M | 未着手 |
 | 🟢 低 | `to_json` → `json_escape` 明示化 | 全 ERB ビュー (45 ファイル) | S | 未着手 |
-| 🟢 低 | N+1 の継続監視（Bullet gem導入） | 開発環境 | S | 未着手 |
-| 🟢 低 | Three.js 遅延読み込み | `frontend/` | M | 未着手（要調査結果を参照） |
+| 🟢 低 | フロントから未使用になった HTML 投稿ルートの整理 | `config/routes.rb` | S | 未着手 |
 
 工数: S = 30分以内 / M = 半日程度 / L = 複数日
 
@@ -21,41 +20,40 @@
 
 ## 詳細
 
-### 🔴-1　Rails 8 へのアップグレード
+### 🟡-1　Sprockets → Propshaft 移行
 
-**現状**: Rails 7.2.3.2。Brakeman が `EOLRails` で警告している。
+**現状**: Rails 8.1 だがアセットパイプラインは Sprockets のまま
+（`sprockets-rails` + `jsbundling-rails`）。Rails 8 の新規アプリ既定は Propshaft。
 
-```
-Confidence: High
-Category: Unmaintained Dependency
-Message: Support for Rails 7.2.3.2 ended on 2026-08-09
-```
+Propshaft はダイジェスト付与だけを行い、esbuild が出力したファイルに
+二重フィンガープリントを付けない。これは下の Three.js 遅延読み込みが
+できなかった直接の原因でもある。
 
-7.2 系はサポート終了済みで、今後の脆弱性修正が提供されない。
-`Gemfile` は `gem 'rails', '>= 7.2.3.1', '< 8.0'` で 8 系を明示的に除外している。
+**確認すること**:
 
-**主な確認ポイント**:
-
-- `config.load_defaults` を 8.0 へ（現在 7.2）
-- Sprockets + jsbundling のまま行くか、Propshaft へ移行するか
-- `sprockets-rails` / `carrierwave` / `acts-as-taggable-on` / `pagy` の Rails 8 対応状況
-- `Rails/StrongParametersExpect`（`.rubocop.yml` で無効化中）を有効化できる
+- `app/assets/config/manifest.js` の廃止と `config.assets.paths` の再設定
+- `stylesheet_link_tag` / `javascript_include_tag` の解決先
+- CarrierWave の `default_url`（`/assets/default.png`）が解決できること
 
 ---
 
-### 🟡-1　画像アップロードの API 化
+### 🟢-1　Three.js 遅延読み込み
 
-**現状**: アバター・ギャラリー投稿は multipart が必要なため HTML フォームのまま
-（`PATCH /my_page/update` / `POST /gallery/view`）。
-`Api::V1::ProfileController#profile_params` は `:avatar_path` を意図的に除外している
-（文字列を CarrierWave に渡すと `CarrierWave::FormMultipart` が飛ぶため）。
+**現状**: `three@0.183.2`（`application.js` 2.7MB の主要因、`SelectedGalleryPage` が静的 import）。
 
-**対応案**: 署名付き直接アップロード、または `multipart/form-data` を受ける専用エンドポイントを
-`Api::V1` に追加する。
+**2026-08 調査結果**: `esbuild --splitting` + `React.lazy` でチャンク分割を試みたが、
+本番で 3D ビューワーが 404 になることを確認していったん見送った。
+
+原因: `app/assets/config/manifest.js` の `link_tree ../builds` により、esbuild が生成した
+チャンクファイルに対して Sprockets が**さらに独自のダイジェストを付与**する。
+esbuild がバンドル内に埋め込む動的 import の参照文字列は元のファイル名のままなので、
+ブラウザの実行時 `import()` が実在しないパスを叩いて失敗する。
+
+Propshaft へ移行すれば二重ダイジェストが起きなくなるため、🟡-1 とセットで対応する。
 
 ---
 
-### 🟢-1　`to_json` → `json_escape` 明示化
+### 🟢-2　`to_json` → `json_escape` 明示化
 
 **現状**: 全 ERB ビュー（45 ファイル）が `<%= @page_props.to_json %>` を使用。
 `<%=` の自動エスケープで現状は安全だが、将来 `<%-` に変えると即 XSS になる。
@@ -70,77 +68,68 @@ Message: Support for Rails 7.2.3.2 ended on 2026-08-09
 
 ---
 
-### 🟢-2　N+1 の継続監視（Bullet gem導入）
+### 🟢-3　未使用になった HTML 投稿ルートの整理
 
-**現状**: フィード系の複雑なクエリは `DiaryFeedQueryService` / `GalleryFeedQueryService` /
-`GalleryDetailQueryService` / `RecruitingCreatorsQuery` へ抽出し、`includes` を整理済み。
-ただし体系的な検出の仕組み（Bullet gem等）は未導入で、今後の変更でN+1が再発しても気付けない。
+フロントエンドを `/api/v1` に移行した結果、以下は React から呼ばれなくなった。
 
----
+- `POST /gallery/view`（`gallery#upload`）
+- `POST /gallery/selected/good/:id`、`POST /gallery/selected/comment/:id`
+- `POST /diary/show/:id/good`、`POST /diary/show/:id/comment`、`POST /diary/post`
+- `POST /favorite/:id/add`、`POST /favorite/:id/delete`
+- `POST /match/send/:id`、`POST /scout/send/:id`
 
-### 🟢-3　Three.js 遅延読み込み
-
-**現状**: `three@0.183.2`（`application.js` 2.7MBの主要因、`SelectedGalleryPage`が静的import）。
-
-**2026-08 調査結果**: `esbuild --splitting` + `React.lazy`でチャンク分割を試みたが、
-実際に `RAILS_ENV=production` で `assets:precompile` を実行して検証した結果、
-**本番で3Dビューワーが404になることを確認し、いったん見送った**。
-
-原因: `app/assets/config/manifest.js` の `link_tree ../builds` により、esbuildが生成した
-チャンクファイル（例: `ThreeViewer-LYE4RNF7.js`）に対してSprocketsが**さらに独自のダイジェストを
-付与**する（`ThreeViewer-LYE4RNF7-<sprockets-digest>.js`として `public/assets/` に出力）。
-esbuildがバンドル内に埋め込む動的import参照文字列は元のファイル名（Sprocketsダイジェスト無し）の
-ままのため、ブラウザの実行時 `import()` が実在しないパスを叩いて失敗する。
-
-**対応するには以下のいずれかが必要（本項目より一段大きい作業）**:
-
-- Sprocketsの二重フィンガープリントを回避する仕組み（Propshaft 移行を含む）
-- または `application.ts` 自体をページ単位のエントリーポイントに分割する設計変更
-
-Rails 8 アップグレード（🔴-1）で Propshaft へ移行するなら、そのついでに解消できる可能性が高い。
+いずれも認証・バリデーション込みで動作しテストもあるため、放置しても実害はない。
+消す場合は Rack::Attack のスロットル設定とテストも合わせて整理すること。
 
 ---
 
 ## 完了済み（参考）
+
+### 2026-08　Rails 8.1 化 / 画像アップロードの API 化
+
+- **Rails 7.2（2026-08-09 EOL）→ 8.1.3.1**。`config.load_defaults` も 8.1 へ。
+  Brakeman の警告が 1 件（EOLRails）→ 0 件になった
+- **パスワードリセット / メール認証を Rails の署名付きトークンへ移行**。
+  `has_secure_password reset_token: { expires_in: 1.hour }` と
+  `generates_token_for :email_verification`。トークンを DB に保存しなくなり、
+  パスワード変更・メールアドレス変更で発行済みリンクが自動失効するようになった
+  （不要になった 4 カラムを削除）
+- **`User.authenticate_by`** でログインのタイミング攻撃対策。
+  **`normalizes :email`** でメールアドレスの正規化を model に集約
+  （パスワード再設定で `downcase` が抜けていたのも解消）
+- **`params.require().permit()` → `params.expect()`** に全面移行。
+  `?user=foo` のような型混同で 500 になっていたのが 400 で返るようになった
+- **画像アップロードを API 化**（`POST /api/v1/galleries` / `PATCH /api/v1/profile`）。
+  投稿フォームを `GalleryUploadForm` に共通化し、投稿してもページ全体が
+  再読み込みされなくなった
+- **Bullet 導入**。test では `raise = true` で N+1 を CI で検出する
+- テスト 239 件 → 262 件
+
+### 同時に修正したバグ
+
+- `config/storage.yml` が存在せず、`eager_load = true` の本番が起動できなかった
+- Dockerfile の Ruby が 3.3.0、Gemfile が 3.3.11 で `docker build` が通らなかった
+- `GalleryUploadPage` / `GalleryViewPage` がどこからもマウントされない死にコードだった
+  （前者は必須項目の `gallery[comment]` 入力欄が無く、到達できても投稿できない状態）
 
 ### 2026-08　JSON API 化 / Rails のモダン化
 
 - **`ActiveSupport::CurrentAttributes` 導入**（`app/models/current.rb`）。
   各コントローラに散在していた `session[:id]` / `session[:creator]` の直接参照 111 箇所を撲滅し、
   セッション操作を `Authentication` / `AdminAuthentication` concern に集約
-- **`/api/v1` の JSON API を新設**（14 コントローラ）。詳細は [docs/API.md](docs/API.md)
+- **`/api/v1` の JSON API を新設**。詳細は [docs/API.md](docs/API.md)
   - 基底クラス `Api::BaseController < ActionController::API`
   - 統一エラーエンベロープ `{ error: { code, message, details } }`
   - 認証は既定で必須、公開エンドポイントのみ `allow_unauthenticated_access`
 - **シリアライザ層の導入**（Alba, `app/serializers/`）。
-  各コントローラで手書きしていた camelCase ハッシュを集約し、HTML の `@page_props` と
-  API のレスポンスが同じシリアライザを通るようにした（旧 `app/presenters/` は廃止）
-- **クエリオブジェクトの追加**: `RecruitingCreatorsQuery` / `GalleryDetailQueryService`。
-  文字列 `select` で `users.*` と別テーブルを混ぜていた壊れやすいクエリを、
-  実 ActiveRecord オブジェクト + `includes` に置き換え
-- **フロントエンドの型付き API クライアント**（`frontend/api/`）。
-  `ApiResult<T>` を判別可能ユニオンにして、レスポンスを確認せずに state を更新できないようにした
-- **Rack::Attack を API 経路にも適用**。HTML 版と同じカウンタを共有するよう matcher を共通化
-- テスト 106 件 → 239 件
-
-### 同時に修正したバグ
-
-- **`taggings.taggable_id` の型不一致**（マイグレーション `20260820000001`）。
-  integer カラムに 24 文字のトークン文字列を入れており MySQL が先頭数値に丸めていたため、
-  ギャラリーのタグが全件で共有され、タグ検索が機能していなかった
-- `gallery#selected_gallery` の `currentUser` に投稿者が入っていた（コメント欄に他人の名前が出る）
-- `gallery#user_view` の `myGood` 判定が `gallery_goods.id` と `galleries.id` を比較していた
-- `index#index` のおすすめ職人が `Heir` インスタンスをそのまま `where` に渡していて絞り込めていなかった
-- `your_page#heir_show` の `targetUserId` が `params[:id].to_i` で 0 になり、スカウト送信が失敗していた
-- `creator#edit` が職人以外のとき何もレンダリングせず例外になっていた
-- `match#*_answer` が `update_all` の戻り値（0 も truthy）で成否判定していた
-- `MyDiaryPage` が投稿直後に `Date.now()` の仮 ID でカードを組み立てていた（削除・いいねが動かない）
+  HTML の `@page_props` と API のレスポンスが同じシリアライザを通るようにした
+- **クエリオブジェクトの追加**: `RecruitingCreatorsQuery` / `GalleryDetailQueryService`
+- **フロントエンドの型付き API クライアント**（`frontend/api/`）
+- **Rack::Attack を API 経路にも適用**
+- **`taggings.taggable_id` の型不一致**を修正（タグ検索が機能していなかった）
 
 ### それ以前
 
-- `config.load_defaults` を 7.2 に更新
-- `users.email` に DB ユニーク制約追加（`index_users_on_email_unique`）
-- `matches` 複合ユニーク制約（`index_matches_on_user_id_and_target_user_id`）
-- `ORDER BY RAND()` 廃止（全5箇所をRuby側サンプリングに置き換え）
+- `users.email` / `matches` の DB ユニーク制約追加
+- `ORDER BY RAND()` 廃止
 - `deleted_at` とソフトデリートの方針統一
-- `acts-as-taggable-on` バージョン固定（`~> 13.0`）
