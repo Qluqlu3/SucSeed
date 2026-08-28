@@ -12,7 +12,7 @@ module Api
       end
 
       def show
-        partner = User.find(params[:id])
+        partner = User.find(params.expect(:id))
         messages = MessageQueryService.message_history(user_id: Current.user_id, other_id: partner.id,
                                                        direction: :asc)
 
@@ -23,7 +23,7 @@ module Api
       end
 
       def create
-        partner_id = params.require(:user_id)
+        partner_id = params.expect(:user_id)
         creator_id, heir_id = Current.creator? ? [Current.user_id, partner_id] : [partner_id, Current.user_id]
         thread = MessageList.new(creator_user_id: creator_id, heir_user_id: heir_id)
 

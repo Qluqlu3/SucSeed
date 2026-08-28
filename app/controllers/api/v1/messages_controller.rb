@@ -5,7 +5,7 @@ module Api
     #        body: { message: { content: "..." } }
     class MessagesController < BaseController
       def create
-        receiver = User.find(params[:message_thread_id])
+        receiver = User.find(params.expect(:message_thread_id))
         message = Message.new(message_params.merge(send_user_id: Current.user_id,
                                                    receive_user_id: receiver.id))
         return render_validation_failure(message) unless message.save
@@ -17,7 +17,7 @@ module Api
       private
 
       def message_params
-        params.require(:message).permit(:content)
+        params.expect(message: [:content])
       end
     end
   end

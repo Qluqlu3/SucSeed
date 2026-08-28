@@ -103,6 +103,14 @@ module Api
         assert_equal 'bad_request', error_code
       end
 
+      test 'POST /api/v1/session — session がハッシュでない場合も 500 ではなく 400' do
+        # params.expect の効果。require(:session).permit(...) だと String に
+        # permit を呼んで NoMethodError になり 500 を返していた
+        api_post '/api/v1/session', params: { session: 'not-a-hash' }
+        assert_response :bad_request
+        assert_equal 'bad_request', error_code
+      end
+
       test 'POST /api/v1/session — ログイン時にセッションIDが再生成される(セッション固定化対策)' do
         api_get '/api/v1/session'
         api_login(@user)

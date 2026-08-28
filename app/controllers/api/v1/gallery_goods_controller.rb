@@ -22,7 +22,7 @@ module Api
       private
 
       def set_gallery
-        @gallery = Gallery.find(params[:gallery_id])
+        @gallery = Gallery.find(params.expect(:gallery_id))
       end
 
       def already_liked?

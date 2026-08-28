@@ -44,7 +44,7 @@ class DiaryController < ApplicationController
   # 相手ページからの日記
   def your_diary
     feed = DiaryFeedQueryService.build(target_ids: params[:id], viewer_id: Current.user_id, sample_good_avatars: true)
-    @name = User.select('users.name').find(params[:id])
+    @name = User.select('users.name').find(params.expect(:id))
     @page_props = {
       diaries: DiarySerializer.from_feed(feed),
       ownerName: @name.name,
@@ -110,10 +110,10 @@ class DiaryController < ApplicationController
   end
 
   def diary_params
-    params.require(:diary).permit(:content, diary_media_attributes: [:media_data])
+    params.expect(diary: [:content, { diary_media_attributes: [:media_data] }])
   end
 
   def diary_comment_params
-    params.require(:diary_comment).permit(:comment)
+    params.expect(diary_comment: [:comment])
   end
 end

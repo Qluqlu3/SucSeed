@@ -25,7 +25,7 @@ module Api
       private
 
       def set_diary
-        @diary = Diary.find(params[:diary_id])
+        @diary = Diary.find(params.expect(:diary_id))
       end
 
       def already_liked?

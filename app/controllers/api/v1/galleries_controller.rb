@@ -15,7 +15,7 @@ module Api
       end
 
       def show
-        gallery = Gallery.find(params[:id])
+        gallery = Gallery.find(params.expect(:id))
         detail = GalleryDetailQueryService.build(gallery, viewer_id: Current.user_id)
 
         render json: GalleryDetailSerializer.new(detail).serializable_hash

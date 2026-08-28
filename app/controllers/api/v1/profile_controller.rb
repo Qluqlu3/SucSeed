@@ -43,7 +43,7 @@ module Api
       # CarrierWave::FormNotMultipart が飛ぶ）ため、JSON API では扱わない。
       # 画像の差し替えは従来どおり PATCH /my_page/update（フォーム送信）を使う。
       def profile_params
-        params.require(:user).permit(:name, :email, :profile)
+        params.expect(user: %i[name email profile])
       end
     end
   end

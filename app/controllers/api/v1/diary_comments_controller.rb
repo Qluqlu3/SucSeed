@@ -4,7 +4,7 @@ module Api
     #   POST /api/v1/diaries/:diary_id/comments
     class DiaryCommentsController < BaseController
       def create
-        diary = Diary.find(params[:diary_id])
+        diary = Diary.find(params.expect(:diary_id))
         comment = DiaryComment.new(comment_params.merge(diary_id: diary.id, user_id: Current.user_id))
         return render_validation_failure(comment) unless comment.save
 
@@ -18,7 +18,7 @@ module Api
       private
 
       def comment_params
-        params.require(:diary_comment).permit(:comment)
+        params.expect(diary_comment: [:comment])
       end
     end
   end

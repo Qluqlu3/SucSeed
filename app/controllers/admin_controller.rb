@@ -50,6 +50,6 @@ class AdminController < ApplicationController
   end
 
   def admin_create_params
-    params.require(:admin).permit(:name, :user_id, :password, :password_confirmation)
+    params.expect(admin: %i[name user_id password password_confirmation])
   end
 end

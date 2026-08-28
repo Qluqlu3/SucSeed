@@ -23,9 +23,10 @@ ja:
       session_expired: 'セッションの有効期限が切れました。再度ログインしてください。'
       invalid_request: '不正なリクエストです'
       invalid_link: 'リンクが無効か期限切れです。再度お試しください。'
-      email_already_certified: '認証リンクが無効か、すでに認証済みです。'
-      email_token_expired: '認証リンクの有効期限（24時間）が切れています。再度登録をお試しください。'
-      email_token_invalid: '認証リンクが無効です。再度登録をお試しください。'
+      email_already_certified: 'このメールアドレスはすでに認証済みです。'
+      # 署名付きトークンは「期限切れ」と「改竄・存在しない」を区別できない（区別しない方が
+      # 総当たりの手がかりを与えずに済む）ため、両方をこの1つのメッセージで扱う
+      email_token_invalid: '認証リンクが無効か、有効期限（24時間）が切れています。再度登録をお試しください。'
       email_certified_error: 'メールアドレス認証エラー'
       email_blank: 'メールアドレスを入力してください'
       comment_blank: 'コメントを入力してください'

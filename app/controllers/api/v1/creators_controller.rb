@@ -20,7 +20,7 @@ module Api
       end
 
       def show
-        creator = Creator.includes(:user, :art_category).find_by!(user_id: params[:id])
+        creator = Creator.includes(:user, :art_category).find_by!(user_id: params.expect(:id))
 
         render json: CreatorSerializer.new(creator, params: viewer_params(creator)).serializable_hash
       end

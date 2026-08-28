@@ -21,7 +21,7 @@ class GalleryController < ApplicationController
 
   # ユーザ別ギャラリー
   def user_view
-    @user = User.find(params[:id])
+    @user = User.find(params.expect(:id))
     @user_gallery = Gallery.joins(:user).includes(:taggings, :tags).select('users.name', 'galleries.*')
                            .where(galleries: { user_id: params[:id] }).order('galleries.created_at DESC')
     gallery_ids = @user_gallery.map(&:id)
@@ -52,7 +52,7 @@ class GalleryController < ApplicationController
   # 個別画像
   # 表示内容は API の GET /api/v1/galleries/:id と完全に同じものを使う。
   def selected_gallery
-    @selected_gallery = Gallery.find(params[:id])
+    @selected_gallery = Gallery.find(params.expect(:id))
     detail = GalleryDetailQueryService.build(@selected_gallery, viewer_id: Current.user_id)
 
     @page_props = GalleryDetailSerializer.new(detail).serializable_hash.merge(
@@ -68,7 +68,7 @@ class GalleryController < ApplicationController
   def search_user_tag
     return unless params[:search_tag] != ''
 
-    @user = User.find(params[:id])
+    @user = User.find(params.expect(:id))
     @user_gallery = Gallery.tagged_with([params[:search_tag]], any: true).includes(:taggings, :tags).where(user_id: params[:id])
     @page_props = {
       userName: @user.name,
@@ -116,10 +116,10 @@ class GalleryController < ApplicationController
   end
 
   def gallery_params
-    params.require(:gallery).permit(:data, :comment, :tag_list)
+    params.expect(gallery: %i[data comment tag_list])
   end
 
   def gallery_comment_params
-    params.require(:gallery_comment).permit(:comment)
+    params.expect(gallery_comment: [:comment])
   end
 end

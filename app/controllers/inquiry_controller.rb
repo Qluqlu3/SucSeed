@@ -36,6 +36,6 @@ class InquiryController < ApplicationController
   end
 
   def inquiry_params
-    params.require(:inquiry).permit(:inquiry_category_id, :content)
+    params.expect(inquiry: %i[inquiry_category_id content])
   end
 end

@@ -4,7 +4,7 @@ module Api
     #   POST /api/v1/galleries/:gallery_id/comments
     class GalleryCommentsController < BaseController
       def create
-        gallery = Gallery.find(params[:gallery_id])
+        gallery = Gallery.find(params.expect(:gallery_id))
         comment = GalleryComment.new(comment_params.merge(gallery_id: gallery.id, user_id: Current.user_id))
         return render_validation_failure(comment) unless comment.save
 
@@ -18,7 +18,7 @@ module Api
       private
 
       def comment_params
-        params.require(:gallery_comment).permit(:comment)
+        params.expect(gallery_comment: [:comment])
       end
     end
   end

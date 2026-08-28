@@ -89,39 +89,77 @@ class UserTest < ActiveSupport::TestCase
     assert user.errors[:avatar_path].any? { |m| m.include?('拡張子') }, user.errors.full_messages.to_s
   end
 
-  # ── トークン期限メソッド ────────────────────────────────────────────
+  # ── email の正規化 (normalizes) ─────────────────────────────────────
 
-  test 'password_reset_token_expired? — 61 分前なら true' do
-    user = build_user
-    user.password_reset_sent_at = 61.minutes.ago
-    assert user.password_reset_token_expired?
+  test 'email は前後の空白を除去して小文字に正規化される' do
+    user = build_user(email: '  MiXeD@Example.COM  ')
+    assert_equal 'mixed@example.com', user.email
   end
 
-  test 'password_reset_token_expired? — 59 分前なら false' do
-    user = build_user
-    user.password_reset_sent_at = 59.minutes.ago
-    assert_not user.password_reset_token_expired?
+  test 'find_by も正規化されたメールアドレスで引ける' do
+    assert_equal users(:alice), User.find_by(email: ' ALICE@Example.com ')
   end
 
-  test 'email_verification_token_expired? — 25 時間前なら true' do
-    user = build_user
-    user.email_verification_sent_at = 25.hours.ago
-    assert user.email_verification_token_expired?
-  end
+  # ── パスワードリセットトークン (has_secure_password reset_token) ────
 
-  test 'email_verification_token_expired? — 23 時間前なら false' do
-    user = build_user
-    user.email_verification_sent_at = 23.hours.ago
-    assert_not user.email_verification_token_expired?
-  end
-
-  # ── generate_password_reset_token! ─────────────────────────────────
-
-  test 'generate_password_reset_token! がトークンとタイムスタンプをセット' do
+  test 'password_reset_token は署名付きで find_by_password_reset_token から引ける' do
     user = users(:alice)
-    user.generate_password_reset_token!
-    user.reload
-    assert_not_nil user.password_reset_token
-    assert_in_delta Time.current.to_i, user.password_reset_sent_at.to_i, 5
+    assert_equal user, User.find_by_password_reset_token(user.password_reset_token)
+  end
+
+  test 'password_reset_token は 1 時間で失効する' do
+    token = users(:alice).password_reset_token
+
+    travel 59.minutes
+    assert_not_nil User.find_by_password_reset_token(token)
+
+    travel 2.minutes
+    assert_nil User.find_by_password_reset_token(token)
+  end
+
+  test 'password_reset_token はパスワード変更で自動的に無効になる' do
+    user = users(:alice)
+    token = user.password_reset_token
+
+    user.update!(password: 'newpass99', password_confirmation: 'newpass99')
+    assert_nil User.find_by_password_reset_token(token)
+  end
+
+  test 'password_reset_token は改竄されると引けない' do
+    assert_nil User.find_by_password_reset_token('tampered')
+  end
+
+  test '他人のトークンで別ユーザーを引くことはできない' do
+    token = users(:alice).password_reset_token
+    assert_not_equal users(:creator_bob), User.find_by_password_reset_token(token)
+  end
+
+  # ── メールアドレス認証トークン (generates_token_for) ────────────────
+
+  test 'email_verification_token は find_by_email_verification_token から引ける' do
+    user = users(:unverified)
+    assert_equal user, User.find_by_email_verification_token(user.email_verification_token)
+  end
+
+  test 'email_verification_token は 24 時間で失効する' do
+    token = users(:unverified).email_verification_token
+
+    travel 23.hours
+    assert_not_nil User.find_by_email_verification_token(token)
+
+    travel 2.hours
+    assert_nil User.find_by_email_verification_token(token)
+  end
+
+  test 'email_verification_token はメールアドレス変更で自動的に無効になる' do
+    user = users(:unverified)
+    token = user.email_verification_token
+
+    user.update!(email: 'changed@example.com')
+    assert_nil User.find_by_email_verification_token(token)
+  end
+
+  test 'email_verification_token は改竄されると引けない' do
+    assert_nil User.find_by_email_verification_token('tampered')
   end
 end

@@ -46,7 +46,7 @@ module Api
       end
 
       def accepted?
-        ActiveModel::Type::Boolean.new.cast(params.require(:accepted))
+        ActiveModel::Type::Boolean.new.cast(params.expect(:accepted))
       end
     end
   end

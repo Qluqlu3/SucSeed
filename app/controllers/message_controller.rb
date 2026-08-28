@@ -24,7 +24,7 @@ class MessageController < ApplicationController
   def get_history
     message_list    = MessageQueryService.message_list(user_id: Current.user_id, is_creator: Current.creator?)
     message_history = MessageQueryService.message_history(user_id: Current.user_id, other_id: params[:id])
-    to_user         = User.find(params[:id])
+    to_user         = User.find(params.expect(:id))
     @page_props = build_message_page_props(message_list, message_history, Current.user, to_user).merge(flash: flash.to_h)
     render :message
   end
@@ -51,6 +51,6 @@ class MessageController < ApplicationController
   end
 
   def message_params
-    params.require(:message).permit(:content)
+    params.expect(message: [:content])
   end
 end

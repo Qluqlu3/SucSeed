@@ -5,7 +5,7 @@ module Api
       allow_unauthenticated_access
 
       def show
-        heir = Heir.includes(:user, :art_category).find_by!(user_id: params[:id])
+        heir = Heir.includes(:user, :art_category).find_by!(user_id: params.expect(:id))
 
         render json: HeirSerializer.new(heir, params: viewer_params(heir)).serializable_hash
       end

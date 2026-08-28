@@ -90,11 +90,13 @@ class CreatorController < ApplicationController
   end
 
   def creator_params
-    params.require(:creator).permit(:title, :art_category_id, :establishment, :employee, :postal_code, :is_recruitment)
+    params.expect(creator: %i[title art_category_id establishment employee postal_code
+                              is_recruitment])
   end
 
   # 更新フォームは art_category というキーで送ってくる（登録フォームは creator）
   def creator_update_params
-    params.require(:art_category).permit(:title, :art_category_id, :establishment, :employee, :postal_code, :is_recruitment)
+    params.expect(art_category: %i[title art_category_id establishment employee postal_code
+                                   is_recruitment])
   end
 end

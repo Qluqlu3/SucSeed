@@ -54,7 +54,7 @@ module Api
       end
 
       def login_params
-        params.require(:session).permit(:email, :password)
+        params.expect(session: %i[email password])
       end
     end
   end

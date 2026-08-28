@@ -3,8 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.3.11'
 
-# Rails 7.2.3.1 以上: Active Storage の DoS 脆弱性修正版を含む
-gem 'rails', '>= 7.2.3.1', '< 8.0'
+# Rails 7.2 は 2026-08-09 にサポート終了(EOL)したため 8.1 系へ移行。
+# 8.1 は Ruby >= 3.2 を要求する(本アプリは 3.3.11)。
+gem 'rails', '~> 8.1', '>= 8.1.3.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.5.0', '< 0.6.0'
 # Use Puma as the app server
@@ -71,8 +72,8 @@ end
 gem 'net-imap', '>= 0.6.4.1'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-# rails-i18n 7.x が Rails 7.1 対応版
-gem 'rails-i18n', '~> 7.0'
+# rails-i18n は Rails のメジャーバージョンに追随する(7.x は railties < 8 制約)
+gem 'rails-i18n', '~> 8.0'
 
 # 暗号化
 gem 'bcrypt', '>= 3.1.22'

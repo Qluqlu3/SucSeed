@@ -45,7 +45,7 @@ module Api
       end
 
       def diary_params
-        params.require(:diary).permit(:content)
+        params.expect(diary: [:content])
       end
     end
   end

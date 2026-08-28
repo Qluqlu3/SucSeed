@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_20_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_29_000001) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", limit: 20, null: false
-    t.string "user_id", null: false
-    t.string "password_digest", null: false
     t.timestamp "created_at", null: false
-    t.timestamp "updated_at"
     t.timestamp "deleted_at"
+    t.string "name", limit: 20, null: false
+    t.string "password_digest", null: false
+    t.timestamp "updated_at"
+    t.string "user_id", null: false
   end
 
   create_table "art_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -25,103 +25,103 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_20_000001) do
   end
 
   create_table "creators", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "user_id", null: false
-    t.string "title", limit: 30, null: false
     t.bigint "art_category_id", null: false
-    t.integer "establishment", null: false
-    t.integer "employee", null: false
-    t.string "postal_code", limit: 7, null: false
-    t.boolean "is_recruitment", null: false
     t.timestamp "created_at", null: false
-    t.timestamp "updated_at"
     t.timestamp "deleted_at"
+    t.integer "employee", null: false
+    t.integer "establishment", null: false
+    t.boolean "is_recruitment", null: false
+    t.string "postal_code", limit: 7, null: false
     t.integer "prefecture_code"
+    t.string "title", limit: 30, null: false
+    t.timestamp "updated_at"
+    t.string "user_id", null: false
     t.index ["art_category_id"], name: "index_creators_on_art_category_id"
     t.index ["prefecture_code"], name: "index_creators_on_prefecture_code"
     t.index ["user_id"], name: "fk_rails_f0c5a1a18a"
   end
 
   create_table "diaries", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "user_id", null: false
     t.text "content", null: false
     t.timestamp "created_at", null: false
-    t.timestamp "updated_at"
     t.timestamp "deleted_at"
+    t.timestamp "updated_at"
+    t.string "user_id", null: false
     t.index ["user_id"], name: "fk_rails_f03fd03c63"
   end
 
   create_table "diary_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "diary_id", null: false
-    t.string "user_id", null: false
     t.string "comment", limit: 100, null: false
     t.timestamp "created_at", null: false
     t.timestamp "deleted_at"
+    t.string "diary_id", null: false
+    t.string "user_id", null: false
     t.index ["diary_id"], name: "fk_rails_0f3d78174b"
     t.index ["user_id"], name: "fk_rails_75f0ca877d"
   end
 
   create_table "diary_goods", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.timestamp "created_at", null: false
     t.string "diary_id", null: false
     t.string "user_id", null: false
-    t.timestamp "created_at", null: false
     t.index ["diary_id"], name: "fk_rails_b7c652964c"
     t.index ["user_id", "diary_id"], name: "index_diary_goods_on_user_id_and_diary_id", unique: true
   end
 
   create_table "favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "user_id", null: false
-    t.string "favorite_user_id", null: false
     t.timestamp "created_at", null: false
+    t.string "favorite_user_id", null: false
+    t.string "user_id", null: false
     t.index ["favorite_user_id"], name: "fk_rails_0bb10dcefc"
     t.index ["user_id", "favorite_user_id"], name: "index_favorites_on_user_id_and_favorite_user_id", unique: true
   end
 
   create_table "galleries", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "user_id", null: false
-    t.string "data", null: false
     t.string "comment", limit: 100, null: false
     t.timestamp "created_at", null: false
+    t.string "data", null: false
     t.timestamp "deleted_at"
+    t.string "user_id", null: false
     t.index ["user_id"], name: "fk_rails_05f824a025"
   end
 
   create_table "gallery_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "gallery_id", null: false
-    t.string "user_id", null: false
     t.string "comment", limit: 100, null: false
     t.timestamp "created_at", null: false
     t.timestamp "deleted_at"
+    t.string "gallery_id", null: false
+    t.string "user_id", null: false
     t.index ["gallery_id"], name: "fk_rails_a5a859737a"
     t.index ["user_id"], name: "fk_rails_a90bc1d938"
   end
 
   create_table "gallery_goods", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.timestamp "created_at", null: false
     t.string "gallery_id", null: false
     t.string "user_id", null: false
-    t.timestamp "created_at", null: false
     t.index ["gallery_id"], name: "fk_rails_d33d7a5d17"
     t.index ["user_id", "gallery_id"], name: "index_gallery_goods_on_user_id_and_gallery_id", unique: true
   end
 
   create_table "heirs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "user_id", null: false
     t.bigint "art_category_id", null: false
-    t.text "introduction"
     t.timestamp "created_at", null: false
+    t.text "introduction"
     t.timestamp "updated_at"
+    t.string "user_id", null: false
     t.index ["art_category_id"], name: "index_heirs_on_art_category_id"
     t.index ["user_id"], name: "fk_rails_94084789b8"
   end
 
   create_table "inquiries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "user_id"
-    t.bigint "inquiry_category_id", null: false
-    t.text "content", null: false
-    t.boolean "is_check", default: false, null: false
     t.bigint "admin_id"
+    t.text "content", null: false
     t.timestamp "created_at", null: false
-    t.timestamp "updated_at"
     t.timestamp "deleted_at"
+    t.bigint "inquiry_category_id", null: false
+    t.boolean "is_check", default: false, null: false
+    t.timestamp "updated_at"
+    t.string "user_id"
     t.index ["admin_id"], name: "index_inquiries_on_admin_id"
     t.index ["inquiry_category_id"], name: "index_inquiries_on_inquiry_category_id"
     t.index ["user_id"], name: "fk_rails_7fdff2c1ec"
@@ -132,51 +132,51 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_20_000001) do
   end
 
   create_table "matches", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "user_id", null: false
-    t.string "target_user_id", null: false
-    t.boolean "is_scout", null: false
-    t.boolean "is_ok"
-    t.boolean "is_add_list", default: false, null: false
     t.timestamp "created_at", null: false
+    t.boolean "is_add_list", default: false, null: false
+    t.boolean "is_ok"
+    t.boolean "is_scout", null: false
+    t.string "target_user_id", null: false
     t.timestamp "updated_at"
+    t.string "user_id", null: false
     t.index ["target_user_id"], name: "fk_rails_c475acfdab"
     t.index ["user_id", "target_user_id"], name: "index_matches_on_user_id_and_target_user_id", unique: true
   end
 
   create_table "message_lists", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.timestamp "created_at", null: false
     t.string "creator_user_id", null: false
     t.string "heir_user_id", null: false
-    t.timestamp "created_at", null: false
     t.timestamp "updated_at"
     t.index ["creator_user_id", "heir_user_id"], name: "index_message_lists_on_creator_user_id_and_heir_user_id", unique: true
     t.index ["heir_user_id"], name: "fk_rails_8e0dafab66"
   end
 
   create_table "messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "send_user_id", null: false
-    t.string "receive_user_id", null: false
     t.text "content", null: false
     t.timestamp "created_at", null: false
+    t.string "receive_user_id", null: false
+    t.string "send_user_id", null: false
     t.index ["receive_user_id"], name: "fk_rails_75141dd80c"
     t.index ["send_user_id", "receive_user_id", "created_at"], name: "index_messages_on_send_receive_created"
     t.index ["send_user_id"], name: "fk_rails_6613941af1"
   end
 
   create_table "news", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "user_id", null: false
     t.text "content", null: false
     t.timestamp "created_at", null: false
+    t.string "user_id", null: false
     t.index ["user_id"], name: "fk_rails_7b6cb9343d"
   end
 
   create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "tag_id"
-    t.string "taggable_type"
-    t.string "taggable_id", limit: 32
-    t.string "tagger_type"
-    t.string "tagger_id", limit: 32
     t.string "context", limit: 128
     t.datetime "created_at", precision: nil
+    t.integer "tag_id"
+    t.string "taggable_id", limit: 32
+    t.string "taggable_type"
+    t.string "tagger_id", limit: 32
+    t.string "tagger_type"
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
@@ -195,41 +195,35 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_20_000001) do
   end
 
   create_table "traditional_crafts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "art_category_id"
+    t.datetime "created_at", null: false
+    t.integer "designated_year"
+    t.text "features", null: false
+    t.string "image_path"
     t.string "name", limit: 50, null: false
     t.integer "prefecture_code", null: false
-    t.bigint "art_category_id"
-    t.text "summary", null: false
-    t.text "features", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "designated_year"
     t.string "production_area", limit: 50
-    t.string "image_path"
     t.string "source_url"
+    t.text "summary", null: false
+    t.datetime "updated_at", null: false
     t.index ["art_category_id"], name: "index_traditional_crafts_on_art_category_id"
     t.index ["prefecture_code"], name: "index_traditional_crafts_on_prefecture_code"
   end
 
   create_table "users", id: :string, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", limit: 20, null: false
-    t.string "email", limit: 256, null: false
     t.string "avatar_path"
-    t.boolean "is_creator", default: false, null: false
     t.date "birthday", null: false
+    t.timestamp "created_at", null: false
+    t.timestamp "deleted_at"
+    t.string "email", limit: 256, null: false
+    t.boolean "is_certified", default: false, null: false
+    t.boolean "is_creator", default: false, null: false
     t.boolean "is_man", null: false
+    t.timestamp "login_time"
+    t.string "name", limit: 20, null: false
     t.string "password_digest", null: false
     t.text "profile"
-    t.boolean "is_certified", default: false, null: false
-    t.timestamp "created_at", null: false
-    t.timestamp "login_time"
-    t.timestamp "deleted_at"
-    t.string "email_verification_token"
-    t.string "password_reset_token"
-    t.datetime "password_reset_sent_at"
-    t.datetime "email_verification_sent_at"
     t.index ["email"], name: "index_users_on_email_unique", unique: true
-    t.index ["email_verification_token"], name: "index_users_on_email_verification_token", unique: true
-    t.index ["password_reset_token"], name: "index_users_on_password_reset_token", unique: true
   end
 
   add_foreign_key "creators", "art_categories"

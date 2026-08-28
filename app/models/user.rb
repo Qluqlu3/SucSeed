@@ -3,8 +3,26 @@ class User < ApplicationRecord
   include RandomSampleable
 
   mount_uploader :avatar_path, AvatarUploader
-  has_secure_password
+
+  # Rails 8.1 の has_secure_password はパスワードリセット用の署名付きトークンを内蔵しており、
+  #   user.password_reset_token          -> 有効期限付きの署名済みトークンを生成
+  #   User.find_by_password_reset_token  -> 期限切れ/改竄なら nil
+  # を提供する。トークンには password_salt が埋め込まれているため、
+  # パスワードが変わった時点で発行済みトークンが自動的に無効になる。
+  # 既定の有効期限は15分だが、従来の挙動に合わせて1時間にしている。
+  has_secure_password reset_token: { expires_in: 1.hour }
   has_secure_token :id
+
+  # メールアドレス認証トークン。値に email を含めるため、
+  # 認証メール送信後にメールアドレスを変更すると古いトークンは無効になる。
+  generates_token_for :email_verification, expires_in: 24.hours do
+    email
+  end
+
+  # 大文字小文字やスペースの違いで別アカウント扱いにならないよう、
+  # 保存前と検索時(find_by)の両方でメールアドレスを正規化する。
+  normalizes :email, with: ->(email) { email.to_s.strip.downcase }
+
   validates :name, presence: true, length: { minimum: 1 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }
@@ -30,27 +48,11 @@ class User < ApplicationRecord
   has_many :heir_message_lists, class_name: 'MessageList', foreign_key: :heir_user_id
   acts_as_tagger
 
-  before_create :generate_email_verification_token
-
-  def generate_password_reset_token!
-    update_columns(
-      password_reset_token: SecureRandom.urlsafe_base64(32),
-      password_reset_sent_at: Time.current,
-    )
+  def email_verification_token
+    generate_token_for(:email_verification)
   end
 
-  def password_reset_token_expired?
-    password_reset_sent_at < 1.hour.ago
-  end
-
-  def email_verification_token_expired?
-    email_verification_sent_at < 24.hours.ago
-  end
-
-  private
-
-  def generate_email_verification_token
-    self.email_verification_token = SecureRandom.urlsafe_base64(32)
-    self.email_verification_sent_at = Time.current
+  def self.find_by_email_verification_token(token)
+    find_by_token_for(:email_verification, token)
   end
 end

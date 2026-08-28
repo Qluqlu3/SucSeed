@@ -109,7 +109,7 @@ class AdminEditController < ApplicationController
 
   # ユーザー削除
   def user_delete
-    if User.find(params[:id]).soft_delete
+    if User.find(params.expect(:id)).soft_delete
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.error')
@@ -119,7 +119,7 @@ class AdminEditController < ApplicationController
 
   # ユーザー編集
   def user_edit_show
-    @user = User.with_deleted.find(params[:id])
+    @user = User.with_deleted.find(params.expect(:id))
     @page_props = {
       user: {
         id: @user.id,
@@ -133,7 +133,7 @@ class AdminEditController < ApplicationController
 
   # patch
   def user_edit
-    user = User.with_deleted.find(params[:id])
+    user = User.with_deleted.find(params.expect(:id))
     if user.update(avatar_path: params[:user][:avatar_path], profile: params[:user][:profile])
       flash[:success] = t('flash.success.saved')
       redirect_to '/admin/management/user'
@@ -144,7 +144,7 @@ class AdminEditController < ApplicationController
 
   # ダイアリー削除
   def diary_delete
-    if Diary.find(params[:id]).soft_delete
+    if Diary.find(params.expect(:id)).soft_delete
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.error')
@@ -154,7 +154,7 @@ class AdminEditController < ApplicationController
 
   # ダイアリーコメント削除
   def diary_comment_delete
-    if DiaryComment.find(params[:id]).soft_delete
+    if DiaryComment.find(params.expect(:id)).soft_delete
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.error')
@@ -164,7 +164,7 @@ class AdminEditController < ApplicationController
 
   # ギャラリー削除
   def gallery_delete
-    if Gallery.find(params[:id]).soft_delete
+    if Gallery.find(params.expect(:id)).soft_delete
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.error')
@@ -175,7 +175,7 @@ class AdminEditController < ApplicationController
   # お問い合わせ詳細表示
   def inquiry_detail_show
     @inquiry = Inquiry.new
-    @inquiry_detail = Inquiry.find(params[:id])
+    @inquiry_detail = Inquiry.find(params.expect(:id))
     @category = InquiryCategory.find(@inquiry_detail.inquiry_category_id)
     @page_props = {
       inquiryDetail: {

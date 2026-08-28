@@ -2,8 +2,12 @@ class UserController < ApplicationController
   def login
     return if Current.logged_in?
 
-    user = User.find_by(email: params[:session][:email].downcase)
-    if user&.authenticate(params[:session][:password])
+    # authenticate_by は「メールアドレスが存在しない場合でもダミーのハッシュ計算を行う」
+    # ため、応答時間からアカウントの存在有無を推測されるのを防げる。
+    # メールアドレスの正規化(downcase)は User の normalizes が担当する。
+    user = User.authenticate_by(email: params[:session][:email], password: params[:session][:password])
+
+    if user
       start_new_session_for(user)
       user.update_column(:login_time, Time.current)
       flash[:success] = t('flash.success.login')
@@ -50,11 +54,11 @@ class UserController < ApplicationController
       return
     end
 
+    # トークンは has_secure_password が署名付きで都度生成するため、
+    # DB への保存は不要（メール本文の URL に含めるだけ）。
     user = User.find_by(email: params[:user_email][:email])
-    if user
-      user.generate_password_reset_token!
-      GmailMailer.send_password_reset(user).deliver_now
-    end
+    GmailMailer.send_password_reset(user).deliver_now if user
+
     flash[:success] = t('flash.success.password_reset_sent')
     redirect_to '/index'
   rescue StandardError
@@ -63,8 +67,9 @@ class UserController < ApplicationController
   end
 
   def password_edit
-    user = User.find_by(password_reset_token: params[:token])
-    if user.nil? || user.password_reset_token_expired?
+    # 期限切れ・改竄・存在しないユーザーはいずれも nil が返る
+    user = User.find_by_password_reset_token(params[:token])
+    if user.nil?
       flash[:danger] = t('flash.danger.invalid_link')
       redirect_to '/user/password_forgot'
       return
@@ -75,15 +80,16 @@ class UserController < ApplicationController
   end
 
   def password_reset
-    user = User.find_by(password_reset_token: params[:token])
-    if user.nil? || user.password_reset_token_expired?
+    user = User.find_by_password_reset_token(params[:token])
+    if user.nil?
       flash[:danger] = t('flash.danger.invalid_link')
       redirect_to '/user/password_forgot'
       return
     end
 
+    # パスワードが変わるとトークンに埋め込まれた password_salt も変わるため、
+    # 発行済みのリセットリンクは自動的に無効になる（明示的な後始末は不要）。
     if user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
-      user.update_columns(password_reset_token: nil, password_reset_sent_at: nil)
       flash[:success] = t('flash.success.password_changed')
       redirect_to '/index'
     else
@@ -94,26 +100,24 @@ class UserController < ApplicationController
   end
 
   def email_certified_show
-    user = User.find_by(email_verification_token: params[:token])
-    if user && !user.email_verification_token_expired?
-      @page_props = { userName: user.name, token: params[:token], flash: flash.to_h }
-      render :email_certified
-    elsif user&.email_verification_token_expired?
-      flash[:danger] = t('flash.danger.email_token_expired')
-      redirect_to '/index'
-    else
+    user = User.find_by_email_verification_token(params[:token])
+    if user.nil?
       flash[:danger] = t('flash.danger.email_token_invalid')
       redirect_to '/index'
+      return
     end
+
+    @page_props = { userName: user.name, token: params[:token], flash: flash.to_h }
+    render :email_certified
   end
 
   def email_certified
-    user = User.find_by(email_verification_token: params[:token])
-    if user.nil? || user.is_certified?
+    user = User.find_by_email_verification_token(params[:token])
+    if user.nil?
+      flash[:danger] = t('flash.danger.email_token_invalid')
+    elsif user.is_certified?
       flash[:danger] = t('flash.danger.email_already_certified')
-    elsif user.email_verification_token_expired?
-      flash[:danger] = t('flash.danger.email_token_expired')
-    elsif user.update(is_certified: true, email_verification_token: nil, email_verification_sent_at: nil)
+    elsif user.update(is_certified: true)
       flash[:success] = t('flash.success.email_certified')
     else
       flash[:danger] = t('flash.danger.email_certified_error')
@@ -124,6 +128,7 @@ class UserController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :avatar_path, :email, :birthday, :password, :password_confirmation, :is_man, :is_creator)
+    params.expect(user: %i[name avatar_path email birthday password password_confirmation
+                           is_man is_creator])
   end
 end

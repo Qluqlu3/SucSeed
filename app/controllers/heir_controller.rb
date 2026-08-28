@@ -74,6 +74,6 @@ class HeirController < ApplicationController
   end
 
   def heir_params
-    params.require(:heir).permit(:art_category_id, :introduction)
+    params.expect(heir: %i[art_category_id introduction])
   end
 end

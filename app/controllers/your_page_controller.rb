@@ -1,7 +1,7 @@
 class YourPageController < ApplicationController
   # クリエイターページ
   def creator_show
-    @user = User.find(params[:id])
+    @user = User.find(params.expect(:id))
     @creator = User.joins(:creator).select('users.*, creators.*').find_by(creators: { user_id: params[:id] })
     return redirect_to '/index' unless @creator
 

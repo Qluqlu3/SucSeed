@@ -109,22 +109,40 @@ class UserControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET /user/password_reset/:token — 期限切れトークンで /user/password_forgot へリダイレクト' do
-    @user.update_columns(
-      password_reset_token: 'expired_token_001',
-      password_reset_sent_at: 2.hours.ago,
-    )
-    get '/user/password_reset/expired_token_001'
+    token = @user.password_reset_token
+    travel 2.hours
+    get "/user/password_reset/#{token}"
     assert_redirected_to '/user/password_forgot'
   end
 
-  test 'PATCH /user/password_reset/:token — 有効トークンでパスワード変更・セッションクリア' do
-    @user.generate_password_reset_token!
-    token = @user.reload.password_reset_token
+  test 'PATCH /user/password_reset/:token — 有効トークンでパスワード変更' do
+    token = @user.password_reset_token
     patch "/user/password_reset/#{token}", params: {
       user: { password: 'newpass99', password_confirmation: 'newpass99' },
     }
     assert_redirected_to '/index'
-    assert_nil @user.reload.password_reset_token
+    assert @user.reload.authenticate('newpass99')
+  end
+
+  test 'PATCH /user/password_reset/:token — 使用済みトークンは再利用できない' do
+    token = @user.password_reset_token
+    patch "/user/password_reset/#{token}",
+          params: { user: { password: 'newpass99', password_confirmation: 'newpass99' } }
+    assert_redirected_to '/index'
+
+    # パスワードが変わると password_salt も変わるため、同じリンクは二度使えない
+    patch "/user/password_reset/#{token}",
+          params: { user: { password: 'another99', password_confirmation: 'another99' } }
+    assert_redirected_to '/user/password_forgot'
+    assert @user.reload.authenticate('newpass99')
+  end
+
+  test 'PATCH /user/password_reset/:token — 他人のトークンでは変更できない' do
+    other_token = users(:creator_bob).password_reset_token
+    patch "/user/password_reset/#{other_token}",
+          params: { user: { password: 'newpass99', password_confirmation: 'newpass99' } }
+    assert_redirected_to '/index'
+    assert @user.reload.authenticate('password123'), '別ユーザーのパスワードが変わってはいけない'
   end
 
   # ── メール認証 ─────────────────────────────────────────────────────
@@ -138,12 +156,21 @@ class UserControllerTest < ActionDispatch::IntegrationTest
 
   test 'POST /email/certified/:token — 期限切れトークンで flash danger' do
     user = users(:unverified)
-    user.update_column(:email_verification_sent_at, 25.hours.ago)
-    post "/email/certified/#{user.email_verification_token}"
+    token = user.email_verification_token
+    travel 25.hours
+    post "/email/certified/#{token}"
     assert_redirected_to '/index'
     assert_not user.reload.is_certified
     follow_redirect!
     assert flash[:danger].present?
+  end
+
+  test 'POST /email/certified/:token — 認証済みなら再認証せず flash danger' do
+    user = users(:alice) # is_certified: true
+    post "/email/certified/#{user.email_verification_token}"
+    assert_redirected_to '/index'
+    follow_redirect!
+    assert_match I18n.t('flash.danger.email_already_certified'), flash[:danger]
   end
 
   test 'POST /email/certified/:token — 無効トークンで flash danger' do
