@@ -4,14 +4,10 @@
 // UserGalleryViewPage / MyGalleryPage / FavoriteGalleryPage / HeirFavoriteGalleryPage で共用。
 
 import { ThumbsUp } from 'lucide-react';
+import type { GalleryFeedItem } from '../../api';
 
-export interface GalleryItem {
-  id: number;
-  dataUrl: string;
-  tags: string[];
-  goodCount: number;
-  myGood: boolean;
-}
+// Rails の GallerySerializer と 1:1 対応（id は has_secure_token の文字列）
+export type GalleryItem = GalleryFeedItem;
 
 export const GalleryCard = ({ gallery }: { gallery: GalleryItem }) => (
   <div className="w-1/3 h-auto py-[5px] px-[2px]">

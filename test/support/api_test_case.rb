@@ -24,6 +24,20 @@ class ApiTestCase < ActionDispatch::IntegrationTest
     delete path, params: params, as: :json
   end
 
+  # 画像を伴うエンドポイントは JSON ではなく multipart/form-data で送る
+  # （CarrierWave が UploadedFile しか受け取れないため）
+  def api_post_multipart(path, params:)
+    post path, params: params
+  end
+
+  def api_patch_multipart(path, params:)
+    patch path, params: params
+  end
+
+  def upload_fixture(name = 'valid_image.png', type = 'image/png')
+    Rack::Test::UploadedFile.new(Rails.root.join('test/fixtures/files', name), type)
+  end
+
   def json
     response.parsed_body
   end

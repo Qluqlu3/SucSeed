@@ -49,19 +49,19 @@ const isApiError = (value: unknown): value is { error: ApiError } => {
   return typeof error === 'object' && error !== null && 'code' in error;
 };
 
-const request = async <T>(method: string, path: string, body?: unknown): Promise<ApiResult<T>> => {
+const send = async <T>(method: string, path: string, init: RequestInit): Promise<ApiResult<T>> => {
   let response: Response;
 
   try {
     response = await fetch(path, {
+      ...init,
       method,
       credentials: 'same-origin',
       headers: {
         Accept: 'application/json',
-        ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
         ...(method === 'GET' ? {} : { 'X-CSRF-Token': currentCsrfToken() }),
+        ...init.headers,
       },
-      body: body === undefined ? undefined : JSON.stringify(body),
     });
   } catch {
     return { ok: false, error: NETWORK_ERROR };
@@ -81,6 +81,17 @@ const request = async <T>(method: string, path: string, body?: unknown): Promise
   return { ok: true, data: json as T };
 };
 
+const request = <T>(method: string, path: string, body?: unknown): Promise<ApiResult<T>> =>
+  send<T>(method, path, {
+    headers: body === undefined ? {} : { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+
+// 画像を伴うエンドポイント用。Content-Type はブラウザに boundary 付きで
+// 設定させる必要があるため、こちらでは指定しない。
+const requestForm = <T>(method: string, path: string, body: FormData): Promise<ApiResult<T>> =>
+  send<T>(method, path, { body });
+
 export const apiGet = <T>(path: string, query?: Record<string, string | number | undefined>) => {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(query ?? {})) {
@@ -95,3 +106,7 @@ export const apiGet = <T>(path: string, query?: Record<string, string | number |
 export const apiPost = <T>(path: string, body?: unknown) => request<T>('POST', path, body);
 export const apiPatch = <T>(path: string, body?: unknown) => request<T>('PATCH', path, body);
 export const apiDelete = <T>(path: string, body?: unknown) => request<T>('DELETE', path, body);
+
+export const apiPostForm = <T>(path: string, body: FormData) => requestForm<T>('POST', path, body);
+export const apiPatchForm = <T>(path: string, body: FormData) =>
+  requestForm<T>('PATCH', path, body);

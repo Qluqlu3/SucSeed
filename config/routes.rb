@@ -156,8 +156,8 @@ Rails.application.routes.draw do
         resources :comments, only: :create, controller: 'diary_comments'
       end
 
-      # ギャラリー
-      resources :galleries, only: %i[index show] do
+      # ギャラリー（作品投稿は画像を伴うため multipart/form-data で受ける）
+      resources :galleries, only: %i[index show create] do
         resource  :good, only: %i[create destroy], controller: 'gallery_goods'
         resources :comments, only: :create, controller: 'gallery_comments'
       end

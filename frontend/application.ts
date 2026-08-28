@@ -37,8 +37,6 @@ import './components/YourDiaryPage/mountYourDiaryPage';
 // Gallery
 import './components/FavoriteGalleryPage/mountFavoriteGalleryPage';
 import './components/GallerySearchPage/mountGallerySearchPage';
-import './components/GalleryUploadPage/mountGalleryUploadPage';
-import './components/GalleryViewPage/mountGalleryViewPage';
 import './components/HeirFavoriteGalleryPage/mountHeirFavoriteGalleryPage';
 import './components/MyGalleryPage/mountMyGalleryPage';
 import './components/SelectedGalleryPage/mountSelectedGalleryPage';

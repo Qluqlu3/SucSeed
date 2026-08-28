@@ -5,7 +5,15 @@
 //
 // 対応する Rails 側は config/routes.rb の `namespace :api do namespace :v1 do ... end end`。
 
-import { apiDelete, apiGet, apiPatch, apiPost, setCsrfToken } from './client';
+import {
+  apiDelete,
+  apiGet,
+  apiPatch,
+  apiPatchForm,
+  apiPost,
+  apiPostForm,
+  setCsrfToken,
+} from './client';
 import type {
   ArtCategory,
   Collection,
@@ -50,6 +58,12 @@ export const api = {
     show: () => apiGet<Profile>('/api/v1/profile'),
     update: (user: Partial<Pick<Profile, 'name' | 'email' | 'profile'>>) =>
       apiPatch<Profile>('/api/v1/profile', { user }),
+    /** アバター画像。CarrierWave が受け取れるよう multipart で送る */
+    updateAvatar: (file: File) => {
+      const form = new FormData();
+      form.append('user[avatar_path]', file);
+      return apiPatchForm<Profile>('/api/v1/profile', form);
+    },
   },
 
   creators: {
@@ -92,6 +106,16 @@ export const api = {
         tag: params?.tag,
       }),
     show: (galleryId: Id) => apiGet<GalleryDetail>(`/api/v1/galleries/${galleryId}`),
+    /** 作品投稿。画像を含むため multipart で送る（職人のみ） */
+    create: (input: { data: File; comment: string; tagList?: string }) => {
+      const form = new FormData();
+      form.append('gallery[data]', input.data);
+      form.append('gallery[comment]', input.comment);
+      if (input.tagList) {
+        form.append('gallery[tag_list]', input.tagList);
+      }
+      return apiPostForm<GalleryFeedItem>('/api/v1/galleries', form);
+    },
     like: (galleryId: Id) => apiPost<GalleryGoodState>(`/api/v1/galleries/${galleryId}/good`),
     unlike: (galleryId: Id) => apiDelete<GalleryGoodState>(`/api/v1/galleries/${galleryId}/good`),
     comment: (galleryId: Id, comment: string) =>
