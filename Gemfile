@@ -44,6 +44,8 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Railsアプリの静的セキュリティ解析（Mass Assignment, SQLi, XSS等の脆弱性検査）
   gem 'brakeman', require: false
+  # N+1 クエリの検出。test では例外にしてCIで落とす
+  gem 'bullet'
 end
 
 group :development do

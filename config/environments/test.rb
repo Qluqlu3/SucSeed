@@ -28,8 +28,10 @@ Rails.application.configure do
   # プロセス内で完結する :memory_store にして他プロセスからの汚染を防ぐ。
   config.cache_store = :memory_store
 
-  # Raise exceptions instead of rendering exception templates.
-  config.action_dispatch.show_exceptions = false
+  # 例外テンプレートを描画せずそのまま送出する。
+  # Rails 7.1 以降は真偽値ではなく :none / :rescuable / :all で指定する
+  # (false 相当は :none)。
+  config.action_dispatch.show_exceptions = :none
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
