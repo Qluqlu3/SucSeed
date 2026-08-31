@@ -32,7 +32,7 @@ class DiaryController < ApplicationController
 
   # マイ日記
   def my_diary
-    feed = DiaryFeedQueryService.build(target_ids: Current.user_id, viewer_id: Current.user_id, sample_good_avatars: true)
+    feed = diary_feed(Current.user_id, sample_good_avatars: true)
     @page_props = {
       diaries: DiarySerializer.from_feed(feed),
       errors: [],
@@ -43,7 +43,7 @@ class DiaryController < ApplicationController
 
   # 相手ページからの日記
   def your_diary
-    feed = DiaryFeedQueryService.build(target_ids: params[:id], viewer_id: Current.user_id, sample_good_avatars: true)
+    feed = diary_feed(params[:id], sample_good_avatars: true)
     @name = User.select('users.name').find(params.expect(:id))
     @page_props = {
       diaries: DiarySerializer.from_feed(feed),
@@ -88,12 +88,22 @@ class DiaryController < ApplicationController
 
   # お気に入りユーザー（+自分）の日記フィード。select_diary と heir_favorite_diary で共通。
   def favorite_feed_props
-    feed = DiaryFeedQueryService.build(target_ids: Favorite.self_and_favorite_ids(Current.user_id), viewer_id: Current.user_id)
+    feed = diary_feed(Favorite.self_and_favorite_ids(Current.user_id))
     {
       diaries: DiarySerializer.from_feed(feed),
       currentUser: current_user_props,
       flash: flash.to_h,
     }
+  end
+
+  # HTML 側はページネーションせず全件表示する（従来どおり）。
+  # 件数が増えたらここを pagy に置き換える。
+  def diary_feed(target_ids, sample_good_avatars: false)
+    DiaryFeedQueryService.build(
+      diaries: DiaryFeedQueryService.scope_for(target_ids),
+      viewer_id: Current.user_id,
+      sample_good_avatars: sample_good_avatars,
+    )
   end
 
   # いいね/コメントは React 側から fetch されるため JSON、

@@ -7,13 +7,19 @@ module Api
     #   GET /api/v1/galleries/:id                    作品詳細
     #   POST /api/v1/galleries                       作品投稿(multipart/form-data)
     class GalleriesController < BaseController
+      # サムネイルのグリッド表示なので日記より多めに返す
+      PER_PAGE = 24
+
       allow_unauthenticated_access only: %i[index show]
       before_action :require_creator, only: :create
 
       def index
         return on_authentication_required if params[:user_id].blank? && !Current.logged_in?
 
-        render_collection(GallerySerializer.from_feed(feed))
+        pagy, galleries = paginate(feed_scope, default_limit: PER_PAGE)
+        feed = GalleryFeedQueryService.build(galleries: galleries, viewer_id: Current.user_id)
+
+        render_collection(GallerySerializer.from_feed(feed), pagy: pagy)
       end
 
       def show
@@ -51,31 +57,15 @@ module Api
                      status: :bad_request)
       end
 
-      def feed
-        return tagged_feed if params[:tag].present?
-
+      # tag 指定はタグ検索（特定ユーザーの作品をタグで絞る）、
+      # user_id 指定はそのユーザーの作品、いずれも無ければ自分 + お気に入りのフィード
+      def feed_scope
         target_ids = params[:user_id].presence || Favorite.self_and_favorite_ids(Current.user_id)
-        GalleryFeedQueryService.build(target_ids: target_ids, viewer_id: Current.user_id)
-      end
+        if params[:tag].present?
+          return GalleryFeedQueryService.tagged_scope_for(target_ids, params[:tag])
+        end
 
-      # タグ検索は「特定ユーザーの作品をタグで絞る」用途のみ（HTML 版と同じ）
-      def tagged_feed
-        galleries = Gallery.tagged_with([params[:tag]], any: true)
-                           .includes(:taggings, :tags)
-                           .where(user_id: params[:user_id])
-        gallery_ids = galleries.map(&:id)
-
-        {
-          galleries: galleries,
-          good_count: GalleryGood.where(gallery_id: gallery_ids).group(:gallery_id).count,
-          my_good_ids: my_good_ids(gallery_ids),
-        }
-      end
-
-      def my_good_ids(gallery_ids)
-        return Set.new unless Current.logged_in?
-
-        GalleryGood.where(gallery_id: gallery_ids, user_id: Current.user_id).pluck(:gallery_id).to_set
+        GalleryFeedQueryService.scope_for(target_ids)
       end
     end
   end

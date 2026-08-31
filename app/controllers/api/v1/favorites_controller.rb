@@ -3,13 +3,16 @@ module Api
     # お気に入り（後継者が気になる職人を登録する）。
     # :id には相手ユーザーの id を渡す。
     class FavoritesController < BaseController
+      PER_PAGE = 20
+
       def index
-        favorites = Favorite.where(user_id: Current.user_id)
-                            .includes(favorite_user: :creator)
-                            .order(created_at: :desc)
+        scope = Favorite.where(user_id: Current.user_id)
+                        .includes(favorite_user: :creator)
+                        .order(created_at: :desc)
+        pagy, favorites = paginate(scope, default_limit: PER_PAGE)
 
         render_collection(
-          PublicUserSerializer.new(favorites.map(&:favorite_user)).serializable_hash,
+          PublicUserSerializer.new(favorites.map(&:favorite_user)).serializable_hash, pagy: pagy
         )
       end
 

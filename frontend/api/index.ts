@@ -42,6 +42,17 @@ export type { ApiError, ApiResult } from './client';
 export { setCsrfToken } from './client';
 export type * from './types';
 
+/** 一覧エンドポイント共通のページング指定。per_page はサーバー側で100件に打ち止め */
+export interface PageParams {
+  page?: number;
+  perPage?: number;
+}
+
+const pageQuery = (params?: PageParams) => ({
+  page: params?.page,
+  per_page: params?.perPage,
+});
+
 export const api = {
   session: {
     show: () => apiGet<SessionPayload>('/api/v1/session'),
@@ -67,9 +78,9 @@ export const api = {
   },
 
   creators: {
-    index: (params?: { page?: number; artCategoryId?: number }) =>
+    index: (params?: PageParams & { artCategoryId?: number }) =>
       apiGet<Collection<CreatorCard>>('/api/v1/creators', {
-        page: params?.page,
+        ...pageQuery(params),
         art_category_id: params?.artCategoryId,
       }),
     show: (userId: Id) => apiGet<CreatorDetail>(`/api/v1/creators/${userId}`),
@@ -80,15 +91,19 @@ export const api = {
   },
 
   favorites: {
-    index: () => apiGet<Collection<PublicUser>>('/api/v1/favorites'),
+    index: (params?: PageParams) =>
+      apiGet<Collection<PublicUser>>('/api/v1/favorites', pageQuery(params)),
     create: (userId: Id) => apiPost<FavoriteState>('/api/v1/favorites', { id: userId }),
     destroy: (userId: Id) => apiDelete<FavoriteState>(`/api/v1/favorites/${userId}`),
   },
 
   diaries: {
     /** userId 未指定なら「自分 + お気に入り登録した相手」のフィード */
-    index: (userId?: Id) =>
-      apiGet<Collection<DiaryFeedItem>>('/api/v1/diaries', { user_id: userId }),
+    index: (params?: PageParams & { userId?: Id }) =>
+      apiGet<Collection<DiaryFeedItem>>('/api/v1/diaries', {
+        ...pageQuery(params),
+        user_id: params?.userId,
+      }),
     create: (content: string) => apiPost<DiaryFeedItem>('/api/v1/diaries', { diary: { content } }),
     destroy: (diaryId: Id) => apiDelete<void>(`/api/v1/diaries/${diaryId}`),
     like: (diaryId: Id) => apiPost<DiaryGoodState>(`/api/v1/diaries/${diaryId}/good`),
@@ -100,8 +115,9 @@ export const api = {
   },
 
   galleries: {
-    index: (params?: { userId?: Id; tag?: string }) =>
+    index: (params?: PageParams & { userId?: Id; tag?: string }) =>
       apiGet<Collection<GalleryFeedItem>>('/api/v1/galleries', {
+        ...pageQuery(params),
         user_id: params?.userId,
         tag: params?.tag,
       }),
@@ -125,7 +141,7 @@ export const api = {
   },
 
   appeals: {
-    index: () => apiGet<Collection<Match>>('/api/v1/appeals'),
+    index: (params?: PageParams) => apiGet<Collection<Match>>('/api/v1/appeals', pageQuery(params)),
     /** 後継者が職人に応募する */
     create: (creatorId: Id) => apiPost<Match>('/api/v1/appeals', { creator_id: creatorId }),
     /** 職人が応募に回答する（heirId は応募してきた後継者の id） */
@@ -134,7 +150,7 @@ export const api = {
   },
 
   scouts: {
-    index: () => apiGet<Collection<Match>>('/api/v1/scouts'),
+    index: (params?: PageParams) => apiGet<Collection<Match>>('/api/v1/scouts', pageQuery(params)),
     /** 職人が後継者をスカウトする */
     create: (heirId: Id) => apiPost<Match>('/api/v1/scouts', { heir_id: heirId }),
     /** 後継者がスカウトに回答する（creatorId はスカウトしてきた職人の id） */
@@ -143,12 +159,15 @@ export const api = {
   },
 
   matches: {
-    index: () => apiGet<Collection<Match>>('/api/v1/matches'),
+    index: (params?: PageParams) => apiGet<Collection<Match>>('/api/v1/matches', pageQuery(params)),
   },
 
   messageThreads: {
-    index: () => apiGet<Collection<MessagePartner>>('/api/v1/message_threads'),
-    show: (userId: Id) => apiGet<MessageThread>(`/api/v1/message_threads/${userId}`),
+    index: (params?: PageParams) =>
+      apiGet<Collection<MessagePartner>>('/api/v1/message_threads', pageQuery(params)),
+    /** page を増やすとより古いメッセージが取れる */
+    show: (userId: Id, params?: PageParams) =>
+      apiGet<MessageThread>(`/api/v1/message_threads/${userId}`, pageQuery(params)),
     create: (userId: Id) =>
       apiPost<MessageThreadCreated>('/api/v1/message_threads', { user_id: userId }),
     sendMessage: (userId: Id, content: string) =>

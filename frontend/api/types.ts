@@ -32,7 +32,13 @@ export interface Pagination {
   totalCount: number;
 }
 
-/** コレクション系エンドポイントの共通形。pagination はページングする一覧のみ */
+/**
+ * コレクション系エンドポイントの共通形。
+ *
+ * ユーザーのデータ量に応じて増える一覧（フィード・お気に入り・マッチング・
+ * メッセージ）はすべて pagination を持つ。持たないのは件数が構造的に
+ * 増えないマスタデータ（art_categories / traditional_crafts）だけ。
+ */
 export interface Collection<T> {
   items: T[];
   pagination?: Pagination;
@@ -237,7 +243,12 @@ export interface Message {
 
 export interface MessageThread {
   partner: MessagePartner;
+  /**
+   * ページ内は古い順。page=1 が直近のページで、page を増やすと
+   * より古いメッセージが取れる。
+   */
   messages: Message[];
+  pagination: Pagination;
 }
 
 export interface MessageThreadCreated {

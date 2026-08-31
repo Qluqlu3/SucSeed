@@ -10,8 +10,13 @@ module Api
       before_action :require_creator, only: :create
       before_action :require_non_creator, only: :update
 
+      PER_PAGE = 20
+
       def index
-        render_collection(MatchSerializer.build(Current.creator? ? sent_scouts : received_scouts))
+        pagy, scouts = paginate(Current.creator? ? sent_scouts : received_scouts,
+                                default_limit: PER_PAGE)
+
+        render_collection(MatchSerializer.build(scouts), pagy: pagy)
       end
 
       def create

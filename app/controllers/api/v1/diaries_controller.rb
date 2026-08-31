@@ -6,13 +6,20 @@ module Api
     #   POST   /api/v1/diaries              投稿（職人のみ）
     #   DELETE /api/v1/diaries/:id          自分の投稿を論理削除
     class DiariesController < BaseController
+      # 1件あたりコメントといいねを含むため、ページサイズは小さめにしている
+      PER_PAGE = 10
+
       allow_unauthenticated_access only: :index
       before_action :require_creator, only: :create
 
       def index
         return on_authentication_required if params[:user_id].blank? && !Current.logged_in?
 
-        render_collection(DiarySerializer.from_feed(feed))
+        pagy, diaries = paginate(DiaryFeedQueryService.scope_for(target_ids), default_limit: PER_PAGE)
+        feed = DiaryFeedQueryService.build(diaries: diaries, viewer_id: Current.user_id,
+                                           sample_good_avatars: params[:user_id].present?)
+
+        render_collection(DiarySerializer.from_feed(feed), pagy: pagy)
       end
 
       def create
@@ -24,7 +31,7 @@ module Api
       end
 
       def destroy
-        diary = Diary.find_by(id: params[:id], user_id: Current.user_id)
+        diary = Diary.find_by(id: params.expect(:id), user_id: Current.user_id)
         # 他人の日記を消そうとした場合も「見つからない」で統一し、存在を漏らさない
         return render_not_found if diary.nil?
 
@@ -34,14 +41,9 @@ module Api
 
       private
 
-      def feed
-        if params[:user_id].present?
-          DiaryFeedQueryService.build(target_ids: params[:user_id], viewer_id: Current.user_id,
-                                      sample_good_avatars: true)
-        else
-          DiaryFeedQueryService.build(target_ids: Favorite.self_and_favorite_ids(Current.user_id),
-                                      viewer_id: Current.user_id)
-        end
+      # user_id 指定があればそのユーザー、無ければ自分 + お気に入り登録した相手
+      def target_ids
+        params[:user_id].presence || Favorite.self_and_favorite_ids(Current.user_id)
       end
 
       def diary_params

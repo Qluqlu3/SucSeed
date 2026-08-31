@@ -1,21 +1,26 @@
 # 日記フィード(一覧)表示に必要なクエリ一式をまとめて構築する。
 # select_diary/my_diary/your_diary/heir_favorite_diary と API の日記一覧で共用する。
 #
+# 「対象の日記を絞り込むスコープ」と「その日記に対する集計」を分けているのは、
+# API 側がページネーションしてから集計したいため。集計対象をページ内に限定しないと
+# 1ページ分を返すのに全件分の集計クエリが走ってしまう。
+#
+#   scope = DiaryFeedQueryService.scope_for(user_ids)
+#   pagy, diaries = pagy(scope)                       # ページを切り出してから
+#   feed = DiaryFeedQueryService.build(diaries:, ...) # そのページ分だけ集計する
+#
 # 戻り値は素の ActiveRecord オブジェクトと集計ハッシュのみで、JSON 化は
 # DiarySerializer.from_feed が受け持つ。
-#
-# 旧実装は `users.* + diaries.*` を1つの select に混ぜた行を返していたため、
-# diaries.id を diaries_id という別名で持ち回る必要があり、boolean や日時の
-# 型キャストも効かなかった。ここでは Diary / DiaryComment / DiaryGood を
-# そのまま返し、関連は includes で先読みして N+1 を防ぐ。
 class DiaryFeedQueryService
   # 「いいねした人のアバター」を並べる際の最大表示数
   GOOD_AVATAR_LIMIT = 5
 
-  def self.build(target_ids:, viewer_id:, sample_good_avatars: false)
-    diaries = Diary.where(user_id: target_ids)
-                   .includes(:user)
-                   .order(created_at: :desc)
+  # 対象ユーザーの日記スコープ。ページネーションは呼び出し側で行う。
+  def self.scope_for(target_ids)
+    Diary.where(user_id: target_ids).includes(:user).order(created_at: :desc)
+  end
+
+  def self.build(diaries:, viewer_id:, sample_good_avatars: false)
     diary_ids = diaries.map(&:id)
 
     {

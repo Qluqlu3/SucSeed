@@ -10,7 +10,7 @@ class GalleryController < ApplicationController
 
   # マイギャラリー
   def my_gallery
-    feed = GalleryFeedQueryService.build(target_ids: Current.user_id, viewer_id: Current.user_id)
+    feed = gallery_feed(Current.user_id)
     @page_props = {
       galleries: GallerySerializer.from_feed(feed),
       errors: [],
@@ -109,10 +109,16 @@ class GalleryController < ApplicationController
 
   # お気に入りユーザー（+自分）のギャラリーフィード。
   def favorite_feed_props
-    feed = GalleryFeedQueryService.build(
-      target_ids: Favorite.self_and_favorite_ids(Current.user_id), viewer_id: Current.user_id,
-    )
+    feed = gallery_feed(Favorite.self_and_favorite_ids(Current.user_id))
     { galleries: GallerySerializer.from_feed(feed), flash: flash.to_h }
+  end
+
+  # HTML 側はページネーションせず全件表示する（従来どおり）。
+  # 件数が増えたらここを pagy に置き換える。
+  def gallery_feed(target_ids)
+    GalleryFeedQueryService.build(
+      galleries: GalleryFeedQueryService.scope_for(target_ids), viewer_id: Current.user_id,
+    )
   end
 
   def gallery_params

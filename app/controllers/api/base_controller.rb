@@ -33,6 +33,9 @@ module Api
     rescue_from ActionController::InvalidAuthenticityToken, with: :render_invalid_csrf
     rescue_from Pagy::OverflowError, with: :render_page_out_of_range
 
+    # 件数の上限。クライアントが ?per_page= で増やせるが、ここで打ち止めにする。
+    MAX_PER_PAGE = 100
+
     private
 
     # ── 成功レスポンス ────────────────────────────────────────────────
@@ -46,6 +49,24 @@ module Api
 
     def pagination_payload(pagy)
       { currentPage: pagy.page, totalPages: pagy.pages, totalCount: pagy.count }
+    end
+
+    # 一覧エンドポイント共通のページネーション。
+    #
+    # 件数無制限の一覧はデータが増えるほどレスポンスが膨らみ、
+    # DB もアプリもクライアントも巻き込んで遅くなるため、
+    # 一覧を返す API は必ずこれを通す。
+    #
+    # @param default_limit [Integer] クライアントが指定しなかった場合の1ページ件数
+    def paginate(scope, default_limit:)
+      pagy(scope, limit: requested_per_page(default_limit))
+    end
+
+    def requested_per_page(default_limit)
+      requested = params[:per_page].presence&.to_i
+      return default_limit if requested.nil? || requested <= 0
+
+      [requested, MAX_PER_PAGE].min
     end
 
     # ── エラーレスポンス ──────────────────────────────────────────────
