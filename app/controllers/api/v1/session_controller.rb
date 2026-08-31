@@ -6,14 +6,23 @@ module Api
       # ログアウトは冪等に扱いたいので、未ログインでも 401 にせず現在の状態を返す
       allow_unauthenticated_access
 
+      # メールアドレス単位のログイン試行制限。
+      # Rack::Attack は IP 単位なので、多数の IP から1つのアカウントを狙う
+      # 総当たりは通ってしまう。狙われている側を基準に数えて塞ぐ。
+      rate_limit to: 10, within: 10.minutes, name: 'login-by-email', only: :create,
+                 by: -> { login_rate_limit_key }, with: -> { render_rate_limited }
+
       def show
         render json: session_payload
       end
 
       def create
-        user = User.find_by(email: login_params[:email].to_s.downcase)
+        # authenticate_by はメールアドレスが存在しない場合もダミーのハッシュ計算を行うため、
+        # 応答時間からアカウントの存在有無を推測されるのを防げる。
+        # メールアドレスの正規化(downcase)は User の normalizes が担当する。
+        user = User.authenticate_by(email: login_params[:email], password: login_params[:password])
 
-        unless user&.authenticate(login_params[:password])
+        unless user
           # メールアドレスの存在有無を漏らさないため、どちらの失敗でも同じ応答にする
           return render_error('invalid_credentials', 'メールアドレスまたはパスワードが違います',
                               status: :unauthorized)
@@ -55,6 +64,15 @@ module Api
 
       def login_params
         params.expect(session: %i[email password])
+      end
+
+      # レート制限は params の検証より前に走るため、session が Hash 以外
+      # （?session=foo のような形）で送られてくる可能性がある。
+      # その場合はメールアドレスを取り出せないので IP で数える。
+      def login_rate_limit_key
+        session_params = params[:session]
+        email = session_params.is_a?(ActionController::Parameters) ? session_params[:email] : nil
+        email.to_s.downcase.presence || request.remote_ip
       end
     end
   end

@@ -3,6 +3,8 @@ module Api
     # 日記へのコメント投稿。
     #   POST /api/v1/diaries/:diary_id/comments
     class DiaryCommentsController < BaseController
+      rate_limit_per_user to: 20, within: 5.minutes, only: :create
+
       def create
         diary = Diary.find(params.expect(:diary_id))
         comment = DiaryComment.new(comment_params.merge(diary_id: diary.id, user_id: Current.user_id))

@@ -13,6 +13,8 @@ module Api
       allow_unauthenticated_access only: %i[index show]
       before_action :require_creator, only: :create
 
+      rate_limit_per_user to: 10, within: 10.minutes, only: :create
+
       def index
         return on_authentication_required if params[:user_id].blank? && !Current.logged_in?
 

@@ -4,6 +4,8 @@ module Api
     #   POST /api/v1/message_threads/:message_thread_id/messages
     #        body: { message: { content: "..." } }
     class MessagesController < BaseController
+      rate_limit_per_user to: 30, within: 5.minutes, only: :create
+
       def create
         receiver = User.find(params.expect(:message_thread_id))
         message = Message.new(message_params.merge(send_user_id: Current.user_id,

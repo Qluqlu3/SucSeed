@@ -10,6 +10,8 @@ module Api
       before_action :require_creator, only: :create
       before_action :require_non_creator, only: :update
 
+      rate_limit_per_user to: 30, within: 10.minutes, only: :create
+
       PER_PAGE = 20
 
       def index

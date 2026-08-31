@@ -14,6 +14,7 @@ module Api
     include ActionController::Cookies
     include ActionController::RequestForgeryProtection
     include Authentication
+    include ApiRateLimiting
     include Pagy::Backend
 
     # ActionController::API は既定で CSRF 保護を入れないため明示的に有効化する。
