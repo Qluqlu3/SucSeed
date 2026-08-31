@@ -10,6 +10,8 @@
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
 | 🟡 中 | Sprockets → Propshaft 移行 | アセットパイプライン | M | 未着手 |
+| 🟡 中 | 本番の `cache_store` を明示する | `config/environments/production.rb` | S | 未着手 |
+| 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | Three.js 遅延読み込み（Propshaft 移行とセット） | `frontend/` | M | 未着手 |
 | 🟢 低 | `to_json` → `json_escape` 明示化 | 全 ERB ビュー (45 ファイル) | S | 未着手 |
 | 🟢 低 | フロントから未使用になった HTML 投稿ルートの整理 | `config/routes.rb` | S | 未着手 |
@@ -37,7 +39,37 @@ Propshaft はダイジェスト付与だけを行い、esbuild が出力した�
 
 ---
 
-### 🟢-1　Three.js 遅延読み込み
+### 🟡-2　本番の `cache_store` を明示する
+
+**現状**: `config/environments/production.rb` の `cache_store` はコメントアウトされたままで、
+Rails の既定（`:file_store` = `tmp/cache`）に落ちている。
+
+`Rails.cache` は次の2つのレート制限のカウンタ置き場になっている。
+
+- `Rack::Attack`（IP 単位）
+- Rails 8 の `rate_limit`（ユーザー単位、[docs/API.md](docs/API.md) 参照）
+
+`:file_store` はプロセスローカルなので、**複数プロセス・複数インスタンスで動かすと
+インスタンスごとに別カウントになり、実効上限が台数倍になる**。
+
+**対応案**: Rails 8 の既定である Solid Cache（DB にキャッシュを持つので Redis 等が不要）か、
+`:mem_cache_store` / `:redis_cache_store` を明示する。単一インスタンス運用なら
+現状でも動くが、暗黙の既定に頼っている点は明示しておきたい。
+
+---
+
+### 🟢-1　HTML のフィードもページネーションする
+
+**現状**: API 側（`/api/v1/diaries` `/api/v1/galleries` など）は全てページング済みだが、
+HTML のフィード（`/diary/view`、`/gallery/my_gallery` など）は全件表示のまま。
+
+`DiaryFeedQueryService` / `GalleryFeedQueryService` は `scope_for` と `build` に
+分かれているため Rails 側は `pagy` を挟むだけで済む。フロント側にページ送り UI
+（既存の `Pagination` コンポーネント）を足す作業がメイン。
+
+---
+
+### 🟢-2　Three.js 遅延読み込み
 
 **現状**: `three@0.183.2`（`application.js` 2.7MB の主要因、`SelectedGalleryPage` が静的 import）。
 
@@ -53,7 +85,7 @@ Propshaft へ移行すれば二重ダイジェストが起きなくなるため�
 
 ---
 
-### 🟢-2　`to_json` → `json_escape` 明示化
+### 🟢-3　`to_json` → `json_escape` 明示化
 
 **現状**: 全 ERB ビュー（45 ファイル）が `<%= @page_props.to_json %>` を使用。
 `<%=` の自動エスケープで現状は安全だが、将来 `<%-` に変えると即 XSS になる。
@@ -68,7 +100,7 @@ Propshaft へ移行すれば二重ダイジェストが起きなくなるため�
 
 ---
 
-### 🟢-3　未使用になった HTML 投稿ルートの整理
+### 🟢-4　未使用になった HTML 投稿ルートの整理
 
 フロントエンドを `/api/v1` に移行した結果、以下は React から呼ばれなくなった。
 
@@ -84,6 +116,26 @@ Propshaft へ移行すれば二重ダイジェストが起きなくなるため�
 ---
 
 ## 完了済み（参考）
+
+### 2026-08　API の品質改善（ページネーション / レート制限 / 型契約）
+
+- **件数無制限だった一覧 API をすべてページネーション対応**にした。
+  `creators#index` 以外の一覧が全件返す実装で、データが増えるほど
+  レスポンスが膨らむ状態だった。`?page=` `?per_page=`（上限100件）を共通化し、
+  フィード系は QueryService を `scope_for` / `build` に分割して
+  「ページを切り出してから集計する」形にした
+  （分けないと1ページ返すのに全件分の集計クエリが走る）
+- **ユーザー単位のレート制限を追加**（Rails 8 の `rate_limit`）。
+  IP 単位の Rack::Attack と軸を分けて重ねた。ログインだけは
+  メールアドレス単位で数え、多数の IP から1アカウントを狙う
+  分散総当たりを塞いだ
+- **シリアライザのキー契約テスト**を追加。`frontend/api/types.ts` は
+  手書きで、JSON は `JSON.parse` で入ってくるため Rails 側でキー名を
+  変えても TypeScript では検出できなかった。全13シリアライザの
+  キー集合・camelCase・非公開項目の非混入を固定した
+- API のログインが `find_by` + `authenticate` のままでタイミング攻撃に
+  脆弱だったのを `authenticate_by` に揃えた（HTML 側だけ直して見落としていた）
+- テスト 262 件 → 289 件
 
 ### 2026-08　Rails 8.1 化 / 画像アップロードの API 化
 

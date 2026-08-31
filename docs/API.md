@@ -16,10 +16,13 @@
 | CSRF | `protect_from_forgery with: :exception`。GET 以外は `X-CSRF-Token` ヘッダが必要 |
 | 認可 | `require_creator` / `require_non_creator`（[app/controllers/concerns/authentication.rb](../app/controllers/concerns/authentication.rb)） |
 | レスポンス整形 | `app/serializers`（Alba）。キーは `transform_keys :lower_camel` で camelCase |
-| レート制限 | `Rack::Attack`。HTML 版と同じカウンタを共有（[config/initializers/rack_attack.rb](../config/initializers/rack_attack.rb)） |
+| レート制限 | IP 単位（`Rack::Attack`）とユーザー単位（`rate_limit`）の二段構え。後述 |
 
 TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/api/) にある。
 **シリアライザを変更したら `frontend/api/types.ts` も更新すること。**
+忘れると
+[test/serializers/serializer_contract_test.rb](../test/serializers/serializer_contract_test.rb)
+が落ちる（JSON は `JSON.parse` で入ってくるので TypeScript のコンパイルでは検出できない）。
 
 ---
 
@@ -28,7 +31,7 @@ TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/a
 ### 成功
 
 - 単数リソース: オブジェクトをそのまま返す
-- コレクション: `{ "items": [...] }`、ページングがあれば `{ "items": [...], "pagination": {...} }`
+- コレクション: `{ "items": [...], "pagination": {...} }`
 - 削除: `204 No Content`
 
 ```json
@@ -37,6 +40,30 @@ TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/a
   "pagination": { "currentPage": 1, "totalPages": 3, "totalCount": 30 }
 }
 ```
+
+### ページネーション
+
+**データ量に応じて増える一覧はすべてページングされる。** `pagination` を持たないのは
+件数が構造的に増えないマスタデータ（`art_categories` / `traditional_crafts`）だけ。
+
+| パラメータ | 説明 |
+|---|---|
+| `page` | 1 始まり。範囲外を指定すると `page_out_of_range` の 404 |
+| `per_page` | 1ページの件数。**サーバー側で 100 件に打ち止め**。不正値は既定値になる |
+
+既定の件数はエンドポイントごとに異なる。
+
+| エンドポイント | 既定 | 理由 |
+|---|:---:|---|
+| `/diaries` | 10 | 1件にコメントといいねを含むため |
+| `/galleries` | 24 | サムネイルのグリッド表示 |
+| `/creators` | 12 | カードの一覧 |
+| `/favorites`, `/appeals`, `/scouts`, `/matches`, `/message_threads` | 20 | |
+| `/message_threads/:id` の履歴 | 50 | |
+
+メッセージ履歴だけは **新しい順にページを切り出し、ページ内は古い順** で返す。
+チャットは直近から見たいが、表示は時系列順が自然なため。`page` を増やすと
+より古いメッセージが取れる。
 
 ### 失敗
 
@@ -176,7 +203,7 @@ boundary 付きでブラウザに設定させる必要があるため指定し�
 | | パス | 説明 |
 |---|---|---|
 | GET | `/api/v1/message_threads` | やり取り相手の一覧 |
-| GET | `/api/v1/message_threads/:id` | `:id` の相手との履歴（古い順） |
+| GET | `/api/v1/message_threads/:id` | `:id` の相手との履歴（直近50件、ページ内は古い順） |
 | POST | `/api/v1/message_threads` | 相手をリストに追加。body: `{ user_id }` |
 | POST | `/api/v1/message_threads/:message_thread_id/messages` | 送信。body: `{ message: { content } }` |
 
@@ -205,6 +232,41 @@ if (result.ok) {
 
 ---
 
+## レート制限
+
+**IP 単位とユーザー単位の二段構え**で、どちらか一方でも超えたら `429` /
+`too_many_requests` を返す。
+
+| 軸 | 実装 | 何を防ぐか |
+|---|---|---|
+| IP 単位 | `Rack::Attack`（[config/initializers/rack_attack.rb](../config/initializers/rack_attack.rb)）| 特定のホストからの大量アクセス。HTML 版と同じカウンタを共有する |
+| ユーザー単位 | Rails 8 の `rate_limit`（[app/controllers/concerns/api_rate_limiting.rb](../app/controllers/concerns/api_rate_limiting.rb)）| IP を変えながらの投稿スパム |
+
+IP 単位だけだと「同じ NAT の裏にいる無関係な利用者と枠を共有する（誤検知）」と
+「IP を変えれば1人でいくらでも投稿できる（検知漏れ）」の両方が起きるため、
+軸を分けて重ねている。
+
+### ユーザー単位の上限
+
+| エンドポイント | 上限 |
+|---|---|
+| `POST /diaries`, `POST /galleries` | 10回 / 10分 |
+| `POST /diaries/:id/comments`, `POST /galleries/:id/comments` | 20回 / 5分 |
+| `POST /message_threads/:id/messages` | 30回 / 5分 |
+| `POST /appeals`, `POST /scouts` | 30回 / 10分 |
+| `POST /session` | 10回 / 10分（**メールアドレス単位**）|
+
+ログインだけは IP でもユーザーIDでもなく **メールアドレス単位**で数える。
+IP 単位の制限は「多数の IP から1つのアカウントを狙う」分散総当たりを
+素通りさせてしまうため、狙われている側を基準に数える必要がある。
+`normalizes` と揃えて小文字化してから数えるので、大文字小文字を変えても回避できない。
+
+> **運用上の注意**: `rate_limit` のカウンタは `Rails.cache` に載る。
+> `cache_store` がプロセスローカルな実装（`:memory_store` / `:file_store`）だと
+> 複数プロセス・複数インスタンスで別カウントになり、実効上限が台数倍になる。
+
+---
+
 ## 既知の制約
 
 - **ログインフォームだけは HTML フォーム送信のまま**。ログイン後はページ全体を
@@ -218,8 +280,9 @@ if (result.ok) {
 
 | 対象 | コマンド | 内容 |
 |---|---|---|
-| テスト | `bin/rails test` | API のリクエストテスト（正常系・認可・バリデーション・エラー形式）|
+| テスト | `bin/rails test` | API のリクエストテスト（正常系・認可・バリデーション・エラー形式・ページネーション・レート制限）|
 | N+1 | 同上 | Bullet が `raise = true` で検出。N+1 があるとテストが落ちる |
+| 型のドリフト | 同上 | シリアライザのキー集合を固定。変えると `frontend/api/types.ts` の更新を促して落ちる |
 | 静的解析 | `bundle exec rubocop` | `Rails/StrongParametersExpect` で `params.expect` を強制 |
 | セキュリティ | `bundle exec brakeman` / `bundle exec bundler-audit check` | |
 | 型 | `pnpm exec tsc --noEmit` | `frontend/api/types.ts` とコンポーネントの整合 |
