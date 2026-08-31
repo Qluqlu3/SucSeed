@@ -73,8 +73,15 @@ class SerializerContractTest < ActiveSupport::TestCase
   end
 
   test 'すべてのシリアライザについて契約を検証している' do
-    defined_serializers = ApplicationSerializer.subclasses.map(&:name).sort
-    assert_equal defined_serializers, EXPECTED_KEYS.keys.sort,
+    # ApplicationSerializer.subclasses は使えない。test 環境は eager_load = false なので
+    # 「まだオートロードされていないシリアライザ」が漏れ、先に走ったテストによって
+    # 結果が変わってしまう（実際にそれで不安定になった）。
+    # ファイル一覧から求めれば実行順に依存しない。
+    defined_serializers = Rails.root.glob('app/serializers/*.rb')
+                               .map { |path| path.basename('.rb').to_s.camelize }
+                               .excluding('ApplicationSerializer')
+
+    assert_equal defined_serializers.sort, EXPECTED_KEYS.keys.sort,
                  'シリアライザを追加/削除したら EXPECTED_KEYS と frontend/api/types.ts も更新すること'
   end
 
