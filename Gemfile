@@ -104,6 +104,6 @@ gem 'pagy', '~> 43.0'
 # 各コントローラで手書きしていた camelCase ハッシュを app/serializers に集約する。
 # ActiveModelSerializers はメンテナンス停止しているため、後継として活発な Alba を採用。
 # 依存 gem を持たず、キー変換(lower_camel)を宣言的に書けるのが選定理由。
-gem 'alba', '~> 3.11'
+gem 'alba', '~> 4.0'
 
 # trigram は app/ 内で未使用かつ2012年以降メンテされていないため削除
