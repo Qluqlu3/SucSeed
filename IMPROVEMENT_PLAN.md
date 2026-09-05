@@ -117,6 +117,36 @@ Propshaft へ移行すれば二重ダイジェストが起きなくなるため�
 
 ## 完了済み（参考）
 
+### 2026-09　Rails周辺gemのメジャーアップグレード
+
+- **pagy 9.x → 43.x**。「MAJORバージョンでのみ破壊的変更を入れる」方針のgemで、
+  9系から43系まで多数のメジャーを経た完全な再設計版。実際に必要だった変更は
+  `include Pagy::Backend` → `include Pagy::Method`、`Pagy::OverflowError` →
+  `Pagy::RangeError`、範囲外ページで例外を送出させるための
+  `Pagy::OPTIONS[:raise_range_error] = true` の3点のみ。`pagy(scope, limit: N)`
+  という呼び出し自体は互換のまま使えたため、各コントローラのページネーション
+  呼び出し箇所は無改修で済んだ
+- **alba 3.11 → 4.0**。廃止されたAPI群(`enable_inference!`、`resource_with`等)は
+  いずれも未使用であることをCHANGELOGと実装コードの両方で確認
+- **sentry-rails/sentry-ruby 6.7 → 7.0**。新機能のStructured Logging(Rails の
+  ログをSentry Logsとして自動送信)が既定で有効になったため、エラー
+  トラッキング以外の目的でイベント送信を増やさないよう明示的に無効化
+- **安全なマイナー/パッチ更新**: bootsnap, bullet, carrierwave, mini_magick,
+  rubocop, selenium-webdriver, sprockets, web-console
+
+### 同時に発見・修正したバグ
+
+- **Rails 8.1 + image_processing 2.x の非互換によるActiveStorage起動時
+  クラッシュ**。`config.load_defaults 8.1` で `active_storage.variant_processor`
+  の既定値が `:vips` に変わっており、`image_processing` gem が1.14→2.1に
+  上がった際のエラーメッセージ文言変更でRails側のrescue正規表現が
+  マッチしなくなり、例外がそのまま再送出されて起動自体が失敗する状態に
+  なっていた(`eager_load!`で再現・確認)。本アプリはActiveStorageの
+  variant機能を使っていないため `variant_processor = :disabled` を明示して解消
+- レート制限の設定ミスを未然に防止: `config.metrics.enabled = false`という
+  存在しないAPIを使いかけたが、gemソースで検証し起動時 `NoMethodError` に
+  なることを確認した上で該当コードを含めなかった
+
 ### 2026-08　API の品質改善（ページネーション / レート制限 / 型契約）
 
 - **件数無制限だった一覧 API をすべてページネーション対応**にした。
