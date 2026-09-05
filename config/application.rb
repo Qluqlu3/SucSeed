@@ -23,6 +23,25 @@ module SucSeed
 
     config.middleware.use Rack::Attack
 
+    # 本アプリは Active Storage を使わず、画像アップロードは CarrierWave + MiniMagick
+    # で行っている。config/storage.yml は eager_load 時の初期化エラーを避けるためだけに
+    # 置いてあるダミー設定であり、実際に variant(画像加工)を使うことはない。
+    #
+    # にもかかわらず、Rails 8.1 の load_defaults は active_storage.variant_processor を
+    # 既定で :vips に変更した。ActiveStorage::Engine は起動時にこの設定に基づいて
+    # ActiveStorage::Transformers::Vips を読み込もうとし、そこで image_processing gem の
+    # vips バックエンドを require する。ruby-vips (libvips のバインディング) を
+    # インストールしていないため本来は LoadError を握りつぶして警告ログに留める設計だが、
+    # image_processing 2.x でエラーメッセージの文言が変わった結果、Rails 側の
+    # rescue の正規表現(/libvips/ / /image_processing/)にマッチしなくなり、
+    # 例外がそのまま再送出されてアプリの起動自体が失敗するようになっていた
+    # (image_processing 1.14 -> 2.1 へのアップデートで顕在化。bundle update pagy 等の
+    # 副作用でロックされた)。
+    #
+    # 使っていない機能のために存在しない依存(libvips)を追加するのではなく、
+    # variant_processor 自体を明示的に無効化して読み込みを止めるのが正しい対応。
+    config.active_storage.variant_processor = :disabled
+
     config.active_record.default_timezone = :local
     config.time_zone = 'Tokyo'
 
