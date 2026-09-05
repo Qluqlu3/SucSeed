@@ -10,7 +10,6 @@
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
 | 🟡 中 | Sprockets → Propshaft 移行 | アセットパイプライン | M | 未着手 |
-| 🟡 中 | 本番の `cache_store` を明示する | `config/environments/production.rb` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | Three.js 遅延読み込み（Propshaft 移行とセット） | `frontend/` | M | 未着手 |
 | 🟢 低 | `to_json` → `json_escape` 明示化 | 全 ERB ビュー (45 ファイル) | S | 未着手 |
@@ -36,25 +35,6 @@ Propshaft はダイジェスト付与だけを行い、esbuild が出力した�
 - `app/assets/config/manifest.js` の廃止と `config.assets.paths` の再設定
 - `stylesheet_link_tag` / `javascript_include_tag` の解決先
 - CarrierWave の `default_url`（`/assets/default.png`）が解決できること
-
----
-
-### 🟡-2　本番の `cache_store` を明示する
-
-**現状**: `config/environments/production.rb` の `cache_store` はコメントアウトされたままで、
-Rails の既定（`:file_store` = `tmp/cache`）に落ちている。
-
-`Rails.cache` は次の2つのレート制限のカウンタ置き場になっている。
-
-- `Rack::Attack`（IP 単位）
-- Rails 8 の `rate_limit`（ユーザー単位、[docs/API.md](docs/API.md) 参照）
-
-`:file_store` はプロセスローカルなので、**複数プロセス・複数インスタンスで動かすと
-インスタンスごとに別カウントになり、実効上限が台数倍になる**。
-
-**対応案**: Rails 8 の既定である Solid Cache（DB にキャッシュを持つので Redis 等が不要）か、
-`:mem_cache_store` / `:redis_cache_store` を明示する。単一インスタンス運用なら
-現状でも動くが、暗黙の既定に頼っている点は明示しておきたい。
 
 ---
 
@@ -116,6 +96,28 @@ Propshaft へ移行すれば二重ダイジェストが起きなくなるため�
 ---
 
 ## 完了済み（参考）
+
+### 2026-09　本番の `cache_store` に Solid Cache を導入
+
+- **現状の課題**: `config/environments/production.rb` の `cache_store` がコメントアウトされたまま
+  Rails の既定 `:file_store`（`tmp/cache`、プロセスローカル）に落ちており、`Rails.cache` を
+  カウンタ置き場にしている `Rack::Attack`（IP単位）と Rails 8 の `rate_limit`（ユーザー単位、
+  [docs/API.md](docs/API.md) 参照）が複数プロセス・複数インスタンス運用で
+  インスタンスごとに別カウントになる状態だった
+- **Solid Cache を選択**。Redis 等の別ミドルウェアを増やさず、既存の MySQL に
+  `solid_cache_entries` テーブルを1つ持つだけで済む（Rails 8 新規アプリの既定と同じ構成）
+- **別データベース/別接続を作らなかった**。`bin/rails solid_cache:install` の既定は
+  `config/cache.yml` に `database: cache` を生成し、`config/database.yml` 側にも
+  別コネクション定義を要求するが、本アプリの本番DB接続は `DATABASE_URL` 1本のみの
+  シンプルな構成。gemのREADME記載の「`database`/`databases`/`connects_to` を
+  何も指定しなければ `ActiveRecord::Base` の接続プールをそのまま使う」という
+  仕様を利用し、主DBに同居させる形にして新しい接続文字列やDBプロビジョニングを
+  増やさずに済ませた
+- テーブル定義は通常の `db/migrate` マイグレーションとして追加（gem 既定の
+  `db:prepare` 前提の別スキーマファイル運用ではなく、既存の
+  `db:migrate` / `db/schema.rb` 運用にそのまま乗せるため）
+- `Rails.cache.write` / `read` が実際に MySQL の `solid_cache_entries` に
+  読み書きすることを `bin/rails runner` で実地確認した上でコミット
 
 ### 2026-09　Rails周辺gemのメジャーアップグレード
 
