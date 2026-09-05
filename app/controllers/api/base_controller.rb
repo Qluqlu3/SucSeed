@@ -15,7 +15,7 @@ module Api
     include ActionController::RequestForgeryProtection
     include Authentication
     include ApiRateLimiting
-    include Pagy::Backend
+    include Pagy::Method
 
     # ActionController::API は既定で CSRF 保護を入れないため明示的に有効化する。
     # Cookie セッションで認証する以上、これが無いと CSRF が成立してしまう。
@@ -32,7 +32,7 @@ module Api
     rescue_from ActiveRecord::RecordInvalid, with: :render_record_invalid
     rescue_from ActionController::ParameterMissing, with: :render_parameter_missing
     rescue_from ActionController::InvalidAuthenticityToken, with: :render_invalid_csrf
-    rescue_from Pagy::OverflowError, with: :render_page_out_of_range
+    rescue_from Pagy::RangeError, with: :render_page_out_of_range
 
     # 件数の上限。クライアントが ?per_page= で増やせるが、ここで打ち止めにする。
     MAX_PER_PAGE = 100

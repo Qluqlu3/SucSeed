@@ -98,7 +98,7 @@ gem 'jsbundling-rails'
 gem 'acts-as-taggable-on', '~> 13.0'
 
 # ページネーション(JSON propsにpage/pages/countを渡すだけなので軽量なPagyを採用)
-gem 'pagy', '~> 9.0'
+gem 'pagy', '~> 43.0'
 
 # JSON シリアライズ
 # 各コントローラで手書きしていた camelCase ハッシュを app/serializers に集約する。

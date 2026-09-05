@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
-  include Pagy::Backend
+  include Pagy::Method
   include Authentication
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   rescue_from ActiveRecord::InvalidForeignKey, with: :render_404
   rescue_from ActionController::ParameterMissing, with: :render_400
-  rescue_from Pagy::OverflowError, with: :render_pagy_overflow
+  rescue_from Pagy::RangeError, with: :render_pagy_overflow
 
   def render_404
     respond_to do |format|
