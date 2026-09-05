@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_29_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_06_000001) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.timestamp "created_at", null: false
     t.timestamp "deleted_at"
@@ -167,6 +167,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_29_000001) do
     t.timestamp "created_at", null: false
     t.string "user_id", null: false
     t.index ["user_id"], name: "fk_rails_7b6cb9343d"
+  end
+
+  create_table "solid_cache_entries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "byte_size", null: false
+    t.datetime "created_at", null: false
+    t.binary "key", limit: 1024, null: false
+    t.bigint "key_hash", null: false
+    t.binary "value", size: :long, null: false
+    t.index ["byte_size"], name: "index_solid_cache_entries_on_byte_size"
+    t.index ["key_hash", "byte_size"], name: "index_solid_cache_entries_on_key_hash_and_byte_size"
+    t.index ["key_hash"], name: "index_solid_cache_entries_on_key_hash", unique: true
   end
 
   create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

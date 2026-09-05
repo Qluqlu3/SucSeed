@@ -106,4 +106,9 @@ gem 'pagy', '~> 43.0'
 # 依存 gem を持たず、キー変換(lower_camel)を宣言的に書けるのが選定理由。
 gem 'alba', '~> 4.0'
 
+# 本番の Rails.cache 用。Redis 等の別ミドルウェアを増やさず、既存の MySQL に
+# テーブルを1つ持つだけで済む(Rails 8 新規アプリの既定と同じ選択)。
+# Rack::Attack と rate_limit のカウンタ置き場として使う。
+gem 'solid_cache'
+
 # trigram は app/ 内で未使用かつ2012年以降メンテされていないため削除

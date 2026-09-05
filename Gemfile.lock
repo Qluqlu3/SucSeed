@@ -344,6 +344,10 @@ GEM
       concurrent-ruby (~> 1.0, >= 1.0.2)
       logger
     shellany (0.0.1)
+    solid_cache (1.0.10)
+      activejob (>= 7.2)
+      activerecord (>= 7.2)
+      railties (>= 7.2)
     sprockets (4.4.1)
       concurrent-ruby (~> 1.1)
       logger
@@ -415,6 +419,7 @@ DEPENDENCIES
   selenium-webdriver
   sentry-rails
   sentry-ruby
+  solid_cache
   sprockets-rails
   tzinfo-data
   web-console (>= 3.3.0)
