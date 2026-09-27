@@ -41,7 +41,9 @@ class YourPageController < ApplicationController
     return redirect_to '/index' unless @user
 
     @art_name = ArtCategory.joins(:heirs).select('art_categories.name').find_by(heirs: { user_id: params[:id] })
-    @scout = Match.exists?(user_id: Current.user_id, target_user_id: params[:id])
+    # matches は user_id = 後継者 / target_user_id = 職人 で格納される（スカウトも同じ向き）。
+    # 閲覧者（職人）との間に既に行があれば、スカウトは一意制約で弾かれるので送信済み扱いにする
+    @scout = Match.exists?(user_id: params[:id], target_user_id: Current.user_id)
     @page_props = {
       user: {
         id: @user.id,
