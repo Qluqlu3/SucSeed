@@ -13,7 +13,7 @@ class Rack::Attack
       path.match?(%r{\A/diary/show/[^/]+/comment\z}) ||
         path.match?(%r{\A/api/v1/diaries/[^/]+/comments\z})
     },
-    gallery_upload: ->(path) { path == '/gallery/view' },
+    gallery_upload: ->(path) { ['/gallery/view', '/api/v1/galleries'].include?(path) },
     gallery_comment: lambda { |path|
       path.match?(%r{\A/gallery/selected/comment/[^/]+\z}) ||
         path.match?(%r{\A/api/v1/galleries/[^/]+/comments\z})
