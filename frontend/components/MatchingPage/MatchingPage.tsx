@@ -5,7 +5,7 @@
 //
 // 【data-props に含まれるデータ】
 //   matches : マッチング済みユーザー一覧
-//             [{ id, name, birthday, avatarPath, matchTime, isAddList }]
+//             [{ pageId, name, birthday, avatarPath, matchTime, isAddList, profilePath }]
 
 import { useState } from 'react';
 import { getCsrfToken } from '../../utils/csrf';
@@ -14,13 +14,15 @@ import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface MatchUser {
-  id: string;
+  pageId: string;
   name: string;
   birthday: string;
   avatarPath: string;
   matchTime: string;
   // is_add_list: 0 = 未追加、1 = 追加済み
   isAddList: number;
+  // 相手のプロフィールページ。閲覧者が職人なら後継者ページ、後継者なら職人ページになる
+  profilePath: string;
 }
 
 interface Props {
@@ -78,11 +80,11 @@ export const MatchingPage = ({ matches, flash }: Props) => (
           <p className="mb-[60vh] text-[39px] text-p-dark">まだありません</p>
         ) : (
           matches.map((match) => (
-            <div key={match.id} className="mb-[1%] rounded-lg border border-p-mid">
+            <div key={match.pageId} className="mb-[1%] rounded-lg border border-p-mid">
               <div className="px-4 py-2 bg-[#BAA9DA] rounded-t-lg">
                 {match.matchTime}&nbsp;{timeAgo(match.matchTime)}前
               </div>
-              <a href={`/page/heir/${match.id}`}>
+              <a href={match.profilePath}>
                 <div className="p-4 bg-white">
                   <div className="flex flex-wrap">
                     <div className="w-5/12 text-center">
@@ -105,7 +107,7 @@ export const MatchingPage = ({ matches, flash }: Props) => (
                 </div>
               </a>
               <div className="pt-[0.2%] pb-0 px-0 m-0 border-t border-p-mid rounded-b-lg">
-                {match.isAddList === 0 && <MessageForm userId={match.id} />}
+                {match.isAddList === 0 && <MessageForm userId={match.pageId} />}
               </div>
             </div>
           ))

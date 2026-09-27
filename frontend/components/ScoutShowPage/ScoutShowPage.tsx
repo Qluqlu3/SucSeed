@@ -1,12 +1,13 @@
 // frontend/components/ScoutShowPage/ScoutShowPage.tsx
 //
 // match/scout_show テンプレートの React コンポーネント（スカウト一覧）。
-// ScoutCheckPage と同構造（後継者へのスカウトを職人側が確認する画面）。
+// 職人が自分の送ったスカウトとその回答状況を確認する画面。
+// 回答するのは後継者側（ScoutCheckPage）なので、ここには OK/NG ボタンを置かない。
 //
 // 【data-props】
-//   scouts: [{ pageId, name, birthday, avatarPath, matchTime, title }]
+//   scouts: [{ pageId, name, birthday, avatarPath, matchTime, isOk }]
+//   pageId は後継者の user id
 
-import { getCsrfToken } from '../../utils/csrf';
 import { FlashMessages } from '../FlashMessages';
 
 interface ScoutUser {
@@ -15,7 +16,8 @@ interface ScoutUser {
   birthday: string;
   avatarPath: string;
   matchTime: string;
-  title: string;
+  // null = 未回答 / true = 承諾 / false = お断り
+  isOk: boolean | null;
 }
 
 interface Props {
@@ -41,6 +43,23 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(months / 12)}年`;
 }
 
+const SCOUT_STATUS = {
+  pending: { label: '返事待ち', className: 'bg-p-brand' },
+  accepted: { label: 'マッチング成立', className: 'bg-green-600' },
+  declined: { label: 'お断りされました', className: 'bg-gray-500' },
+} as const;
+
+const ScoutStatus = ({ isOk }: { isOk: boolean | null }) => {
+  const status = SCOUT_STATUS[isOk === null ? 'pending' : isOk ? 'accepted' : 'declined'];
+  return (
+    <p
+      className={`w-full m-0 py-[1%] text-[30px] text-white text-center rounded cursor-default ${status.className}`}
+    >
+      {status.label}
+    </p>
+  );
+};
+
 export const ScoutShowPage = ({ scouts, flash }: Props) => (
   <div>
     <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">スカウト一覧</h1>
@@ -56,7 +75,7 @@ export const ScoutShowPage = ({ scouts, flash }: Props) => (
               <div className="px-4 py-2 bg-[#BAA9DA] rounded-t-lg">
                 {scout.matchTime}&nbsp;{timeAgo(scout.matchTime)}前
               </div>
-              <a href={`/page/creator/${scout.pageId}`}>
+              <a href={`/page/heir/${scout.pageId}`}>
                 <div className="p-4 bg-white">
                   <div className="flex flex-wrap">
                     <div className="w-5/12 text-center">
@@ -74,36 +93,12 @@ export const ScoutShowPage = ({ scouts, flash }: Props) => (
                         {calcAge(scout.birthday)}
                         <small>歳</small>
                       </p>
-                      <p className="text-[47px] p-0 m-0">{scout.title}</p>
                     </div>
                   </div>
                 </div>
               </a>
               <div className="pt-[0.2%] pb-0 px-0 m-0 border-t border-p-mid rounded-b-lg">
-                <div className="flex">
-                  <div className="w-1/2 pr-[0.1%]">
-                    <form action={`/scout/ok/${scout.pageId}`} method="post">
-                      <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-                      <button
-                        type="submit"
-                        className="w-full m-0 py-[1%] text-[30px] bg-p-brand text-white rounded hover:opacity-80"
-                      >
-                        話してみる
-                      </button>
-                    </form>
-                  </div>
-                  <div className="w-1/2 pl-[0.1%]">
-                    <form action={`/scout/sorry/${scout.pageId}`} method="post">
-                      <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-                      <button
-                        type="submit"
-                        className="w-full m-0 py-[1%] text-[30px] bg-red-600 text-white rounded hover:opacity-80"
-                      >
-                        ごめんなさい
-                      </button>
-                    </form>
-                  </div>
-                </div>
+                <ScoutStatus isOk={scout.isOk} />
               </div>
             </div>
           ))

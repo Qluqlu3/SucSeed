@@ -7,32 +7,23 @@ class MatchController < ApplicationController
   before_action :require_non_creator, only: %i[appeal_check scouted_show
                                                scout_answer_ok scout_answer_sorry]
 
+  # 職人: 自分宛てで未回答のアピール
   def appealed_list_view
-    @match = User.joins(:sent_matches)
-                 .where(matches: { is_ok: nil })
-                 .where(users: { id: Match.where(target_user_id: Current.user_id).select('matches.user_id') })
-                 .select('users.*, users.id AS page_id, matches.created_at AS match_time')
-                 .order('matches.created_at ASC')
+    appeals = my_matches(Match.appeals.pending).order(:created_at)
     @page_props = {
-      matches: @match.map { |m| { pageId: m.page_id.to_s, name: m.name, birthday: m.birthday, avatarPath: m.avatar_path, matchTime: m.match_time } },
+      matches: appeals.map { |m| match_card(m) },
       flash: flash.to_h,
     }
     render :appealed_list
   end
 
+  # 職人・後継者: 成立したマッチング
   def matching_list_view
-    @match = User
-             .joins(:sent_matches)
-             .select('users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time')
-             .where(matches: { target_user_id: Current.user_id, is_ok: true })
-             .or(
-               User.joins(:target_matches)
-                   .select('users.id, users.name, users.birthday, users.avatar_path, matches.is_add_list, matches.created_at AS match_time')
-                   .where(matches: { user_id: Current.user_id, is_ok: true }),
-             )
-             .order('matches.created_at DESC')
+    matches = my_matches(Match.accepted).order(created_at: :desc)
     @page_props = {
-      matches: @match.map { |m| { id: m.id.to_s, name: m.name, birthday: m.birthday, avatarPath: m.avatar_path.to_s, matchTime: m.match_time, isAddList: m.is_add_list.to_i } },
+      matches: matches.map do |m|
+        match_card(m).merge(isAddList: m.is_add_list ? 1 : 0, profilePath: partner_profile_path(m))
+      end,
       flash: flash.to_h,
     }
     render :matching
@@ -47,13 +38,11 @@ class MatchController < ApplicationController
     redirect_to "/page/creator/#{params[:id]}"
   end
 
+  # 後継者: 自分が送って未回答のアピール
   def appeal_check
-    @appeal = User.joins(:target_matches, :creator)
-                  .select('users.name, users.birthday, users.id AS page_id, matches.*, matches.created_at AS match_time, creators.*')
-                  .where(matches: { user_id: Current.user_id, is_ok: nil })
-                  .order('matches.created_at ASC')
+    appeals = my_matches(Match.appeals.pending).order(:created_at)
     @page_props = {
-      appeals: @appeal.map { |a| { pageId: a.page_id.to_s, name: a.name, birthday: a.birthday, avatarPath: a.avatar_path.to_s, title: a.title, matchTime: a.match_time, isOk: a.is_ok } },
+      appeals: appeals.map { |m| match_card(m).merge(title: creator_title(m), isOk: m.is_ok) },
       flash: flash.to_h,
     }
     render :appeal_show
@@ -72,26 +61,21 @@ class MatchController < ApplicationController
   def scout_answer_ok    = handle_scout_answer(is_ok: true)
   def scout_answer_sorry = handle_scout_answer(is_ok: false)
 
+  # 後継者: 自分宛てで未回答のスカウト
   def scouted_show
-    @scout = User.joins(:target_matches, :creator)
-                 .select('users.name, users.birthday, users.id AS page_id, users.avatar_path, matches.*, matches.created_at AS match_time, creators.*')
-                 .where(users: { id: Match.where(user_id: Current.user_id).select('matches.target_user_id') })
-                 .where(matches: { is_scout: true, is_ok: nil })
-                 .order('matches.created_at ASC')
+    scouts = my_matches(Match.scouts.pending).order(:created_at)
     @page_props = {
-      scouts: @scout.map { |s| { pageId: s.page_id.to_s, name: s.name, birthday: s.birthday, avatarPath: s.avatar_path, matchTime: s.match_time, title: s.title } },
+      scouts: scouts.map { |m| match_card(m).merge(title: creator_title(m)) },
       flash: flash.to_h,
     }
     render :scout_check
   end
 
+  # 職人: 自分が送ったスカウト（回答済みも含む）
   def scout_check
-    @scout = User.joins(:sent_matches)
-                 .select('users.name, users.birthday, users.id AS page_id, matches.created_at AS match_time')
-                 .where(matches: { target_user_id: Current.user_id, is_scout: true })
-                 .order('matches.created_at ASC')
+    scouts = my_matches(Match.scouts).order(:created_at)
     @page_props = {
-      scouts: @scout.map { |s| { pageId: s.page_id.to_s, name: s.name, birthday: s.birthday, avatarPath: s.avatar_path.to_s, matchTime: s.match_time, title: '' } },
+      scouts: scouts.map { |m| match_card(m).merge(isOk: m.is_ok) },
       flash: flash.to_h,
     }
     render :scout_show
@@ -99,14 +83,54 @@ class MatchController < ApplicationController
 
   private
 
+  # matches は user_id = 後継者 / target_user_id = 職人 で向きが固定されているので、
+  # ログイン中ユーザーの役割だけで「自分の列」と「相手の関連」が決まる。
+  # 相手が退会（論理削除）済みの行は INNER JOIN で落とす（preload だけだと相手が nil になる）。
+  def my_matches(scope)
+    own_column = Current.creator? ? :target_user_id : :user_id
+    scope.where(own_column => Current.user_id)
+         .joins(partner_association)
+         .preload(Current.creator? ? :user : { target_user: :creator })
+  end
+
+  def partner_association
+    Current.creator? ? :user : :target_user
+  end
+
+  def partner_of(match)
+    match.public_send(partner_association)
+  end
+
+  def match_card(match)
+    partner = partner_of(match)
+    {
+      pageId: partner.id,
+      name: partner.name,
+      birthday: partner.birthday,
+      avatarPath: partner.avatar_path.to_s,
+      matchTime: match.created_at,
+    }
+  end
+
+  # 後継者から見た相手（職人）の屋号
+  def creator_title(match)
+    partner_of(match).creator&.title
+  end
+
+  def partner_profile_path(match)
+    Current.creator? ? "/page/heir/#{match.user_id}" : "/page/creator/#{match.target_user_id}"
+  end
+
+  # アピールとスカウトは同じ「後継者 × 職人」の組で格納されるため、is_scout で絞らないと
+  # 職人が自分の送ったスカウトをこのアクションで勝手に承認できてしまう。
   def handle_appeal_answer(is_ok:)
-    match = Match.where(user_id: params[:id], target_user_id: Current.user_id)
+    match = Match.appeals.where(user_id: params[:id], target_user_id: Current.user_id)
     set_answer_flash(match.update_all(is_ok: is_ok))
     redirect_to '/match/appealed/list'
   end
 
   def handle_scout_answer(is_ok:)
-    scout = Match.where(is_scout: true, user_id: Current.user_id, target_user_id: params[:id])
+    scout = Match.scouts.where(user_id: Current.user_id, target_user_id: params[:id])
     set_answer_flash(scout.update_all(is_ok: is_ok))
     redirect_to '/match/scouted/list'
   end
