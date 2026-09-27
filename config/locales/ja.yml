@@ -18,6 +18,7 @@ ja:
       saved: '保存しました'
     danger:
       login_failed: '『メールアドレス』もしくは『パスワード』が誤っています'
+      too_many_login_attempts: 'ログインの試行回数が多すぎます。しばらく待ってから再度お試しください。'
       admin_login_failed: 'ユーザーIDまたはパスワードが間違っています'
       require_login: 'ログインしてください'
       session_expired: 'セッションの有効期限が切れました。再度ログインしてください。'

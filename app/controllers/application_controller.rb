@@ -49,6 +49,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def on_login_rate_limited
+    redirect_to '/index', flash: { danger: t('flash.danger.too_many_login_attempts') }
+  end
+
   # ── エラーレスポンス ──────────────────────────────────────────────
 
   def render_400

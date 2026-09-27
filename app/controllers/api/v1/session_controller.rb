@@ -6,11 +6,8 @@ module Api
       # ログアウトは冪等に扱いたいので、未ログインでも 401 にせず現在の状態を返す
       allow_unauthenticated_access
 
-      # メールアドレス単位のログイン試行制限。
-      # Rack::Attack は IP 単位なので、多数の IP から1つのアカウントを狙う
-      # 総当たりは通ってしまう。狙われている側を基準に数えて塞ぐ。
-      rate_limit to: 10, within: 10.minutes, name: 'login-by-email', only: :create,
-                 by: -> { login_rate_limit_key }, with: -> { render_rate_limited }
+      # メールアドレス単位のログイン試行制限（HTML の UserController#login と共通）
+      limit_login_attempts_per_email only: :create
 
       def show
         render json: session_payload
@@ -64,15 +61,6 @@ module Api
 
       def login_params
         params.expect(session: %i[email password])
-      end
-
-      # レート制限は params の検証より前に走るため、session が Hash 以外
-      # （?session=foo のような形）で送られてくる可能性がある。
-      # その場合はメールアドレスを取り出せないので IP で数える。
-      def login_rate_limit_key
-        session_params = params[:session]
-        email = session_params.is_a?(ActionController::Parameters) ? session_params[:email] : nil
-        email.to_s.downcase.presence || request.remote_ip
       end
     end
   end

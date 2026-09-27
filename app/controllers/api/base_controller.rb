@@ -119,5 +119,9 @@ module Api
     def on_authorization_failed
       render_error('forbidden', 'この操作を行う権限がありません', status: :forbidden)
     end
+
+    def on_login_rate_limited
+      render_rate_limited
+    end
   end
 end

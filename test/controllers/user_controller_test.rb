@@ -6,6 +6,13 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     ActionMailer::Base.deliveries.clear
   end
 
+  # Rack::Attack(IP 単位)を発火させないため、呼ぶたびに別の IP を使う
+  def attempt_login(email, password: 'wrongpass')
+    @ip_counter = (@ip_counter || 0) + 1
+    post '/user/login', params: { session: { email: email, password: password } },
+                        headers: { 'REMOTE_ADDR' => "203.0.113.#{@ip_counter}" }
+  end
+
   # ── ログイン ───────────────────────────────────────────────────────
 
   test 'POST /user/login — 正しい認証情報でログイン成功・セッションセット' do
@@ -35,6 +42,43 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     logged_in_session_id = session[:id]
     post '/user/login', params: { session: { email: @user.email, password: 'password123' } }
     assert_equal logged_in_session_id, session[:id]
+  end
+
+  # API（/api/v1/session）と同じくメールアドレス単位で 10回/10分。
+  # HTML 側に掛かっていないと、IP を変えながらこちらを叩けば API 側の制限を迂回できてしまう。
+  test 'POST /user/login — IP を変えても同一メールアドレスなら11回目で止まる' do
+    11.times { attempt_login(@user.email) }
+    assert_redirected_to '/index'
+    follow_redirect!
+    assert_equal I18n.t('flash.danger.too_many_login_attempts'), flash[:danger]
+  end
+
+  test 'POST /user/login — 上限に達したら正しいパスワードでもログインできない' do
+    10.times { attempt_login(@user.email) }
+    attempt_login(@user.email, password: 'password123')
+    assert_nil session[:id]
+  end
+
+  test 'POST /user/login — 大文字小文字や前後の空白が違っても同じアカウントとして数える' do
+    10.times { attempt_login(@user.email) }
+    attempt_login(" #{@user.email.upcase} ", password: 'password123')
+    assert_nil session[:id]
+  end
+
+  test 'POST /user/login — API での失敗回数と合算して数える' do
+    10.times do |i|
+      post '/api/v1/session', params: { session: { email: @user.email, password: 'wrongpass' } },
+                              headers: { 'REMOTE_ADDR' => "198.51.100.#{i + 1}" }, as: :json
+    end
+    attempt_login(@user.email, password: 'password123')
+    assert_nil session[:id]
+  end
+
+  test 'POST /user/login — session パラメータが無くても 500 にせずトップへ戻す' do
+    post '/user/login'
+    assert_redirected_to '/index'
+    follow_redirect!
+    assert_equal I18n.t('flash.danger.invalid_request'), flash[:danger]
   end
 
   # ── ログアウト ─────────────────────────────────────────────────────

@@ -259,7 +259,11 @@ IP 単位だけだと「同じ NAT の裏にいる無関係な利用者と枠を
 ログインだけは IP でもユーザーIDでもなく **メールアドレス単位**で数える。
 IP 単位の制限は「多数の IP から1つのアカウントを狙う」分散総当たりを
 素通りさせてしまうため、狙われている側を基準に数える必要がある。
-`normalizes` と揃えて小文字化してから数えるので、大文字小文字を変えても回避できない。
+`normalizes` と揃えて前後の空白除去・小文字化をしてから数えるので、表記を変えても回避できない。
+画面のログインフォームが使う HTML の `POST /user/login` にも同じ制限を掛けており、
+カウンタは両者で共有している（`rate_limit` の `scope:` を固定。
+[app/controllers/concerns/authentication.rb](../app/controllers/concerns/authentication.rb) の
+`limit_login_attempts_per_email`）。片方にしか掛けないと、もう片方が抜け道になるため。
 
 > **運用上の注意**: `rate_limit` のカウンタは `Rails.cache` に載る。
 > `cache_store` がプロセスローカルな実装（`:memory_store` / `:file_store`）だと

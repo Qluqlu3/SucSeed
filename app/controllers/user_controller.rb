@@ -1,11 +1,14 @@
 class UserController < ApplicationController
+  limit_login_attempts_per_email only: :login
+
   def login
     return if Current.logged_in?
 
     # authenticate_by は「メールアドレスが存在しない場合でもダミーのハッシュ計算を行う」
     # ため、応答時間からアカウントの存在有無を推測されるのを防げる。
     # メールアドレスの正規化(downcase)は User の normalizes が担当する。
-    user = User.authenticate_by(email: params[:session][:email], password: params[:session][:password])
+    credentials = params.expect(session: %i[email password])
+    user = User.authenticate_by(email: credentials[:email], password: credentials[:password])
 
     if user
       start_new_session_for(user)
