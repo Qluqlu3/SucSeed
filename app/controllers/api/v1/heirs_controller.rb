@@ -15,7 +15,7 @@ module Api
       def viewer_params(heir)
         return { viewer_id: nil } unless Current.logged_in?
 
-        scouted = Match.where(user_id: heir.user_id, target_user_id: Current.user_id, is_scout: true)
+        scouted = Match.scouts.where(user_id: heir.user_id, target_user_id: Current.user_id)
                        .pluck(:user_id).to_set
         { viewer_id: Current.user_id, scouted_user_ids: scouted }
       end

@@ -29,7 +29,7 @@ module Api
       end
 
       def update
-        appeal = Match.find_by(user_id: params[:id], target_user_id: Current.user_id, is_scout: false)
+        appeal = Match.appeals.find_by(user_id: params[:id], target_user_id: Current.user_id)
         return render_not_found if appeal.nil?
 
         appeal.update!(is_ok: accepted?)
@@ -40,15 +40,15 @@ module Api
 
       # 職人から見た「自分に応募してきた、まだ回答していない後継者」
       def received_appeals
-        Match.includes(:user, :target_user)
-             .where(target_user_id: Current.user_id, is_scout: false, is_ok: nil)
+        Match.appeals.pending.includes(:user, :target_user)
+             .where(target_user_id: Current.user_id)
              .order(created_at: :asc)
       end
 
       # 後継者から見た「自分が応募した職人」
       def sent_appeals
-        Match.includes(:user, :target_user)
-             .where(user_id: Current.user_id, is_scout: false)
+        Match.appeals.includes(:user, :target_user)
+             .where(user_id: Current.user_id)
              .order(created_at: :asc)
       end
 

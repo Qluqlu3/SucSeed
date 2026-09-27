@@ -31,7 +31,7 @@ module Api
       end
 
       def update
-        scout = Match.find_by(user_id: Current.user_id, target_user_id: params[:id], is_scout: true)
+        scout = Match.scouts.find_by(user_id: Current.user_id, target_user_id: params[:id])
         return render_not_found if scout.nil?
 
         scout.update!(is_ok: accepted?)
@@ -42,15 +42,15 @@ module Api
 
       # 職人から見た「自分が声を掛けた後継者」
       def sent_scouts
-        Match.includes(:user, :target_user)
-             .where(target_user_id: Current.user_id, is_scout: true)
+        Match.scouts.includes(:user, :target_user)
+             .where(target_user_id: Current.user_id)
              .order(created_at: :asc)
       end
 
       # 後継者から見た「自分に来た、まだ回答していないスカウト」
       def received_scouts
-        Match.includes(:user, :target_user)
-             .where(user_id: Current.user_id, is_scout: true, is_ok: nil)
+        Match.scouts.pending.includes(:user, :target_user)
+             .where(user_id: Current.user_id)
              .order(created_at: :asc)
       end
 
