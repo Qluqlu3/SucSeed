@@ -180,6 +180,9 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
             <div className="flex my-[2.7%] min-h-[9vh]">
               <div className="w-1/6 shrink-0 pt-[0.7%] text-[19px] text-p-text">募集チェック</div>
               <div className="flex-1">
+                {/* チェックなし時に "0" を送信するための hidden。
+                    同名キーは後に来た値が採用されるため、必ずチェックボックスより前に置く */}
+                <input type="hidden" name="creator[is_recruitment]" value="0" />
                 <input
                   id="creator_is_recruitment"
                   type="checkbox"
@@ -189,8 +192,6 @@ export const CreatorCreatePage = ({ artCategories, errors, flash }: Props) => {
                   checked={isRecruitment}
                   onChange={(e) => setIsRecruitment(e.target.checked)}
                 />
-                {/* チェックなし時に "0" を送信するための hidden */}
-                <input type="hidden" name="creator[is_recruitment]" value="0" />
                 <label htmlFor="creator_is_recruitment" className="ml-[2%] text-[20px] text-p-text">
                   後継者を募集中
                 </label>

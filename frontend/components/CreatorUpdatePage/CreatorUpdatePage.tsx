@@ -234,6 +234,9 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
               <label htmlFor="art_category_is_recruitment">募集チェック</label>
             </div>
             <div className="text-[27px] py-[2%] bg-white pl-[5%]">
+              {/* チェックなし時に "0" を送信するための hidden。
+                  同名キーは後に来た値が採用されるため、必ずチェックボックスより前に置く */}
+              <input type="hidden" name="art_category[is_recruitment]" value="0" />
               <input
                 id="art_category_is_recruitment"
                 type="checkbox"
@@ -243,8 +246,6 @@ export const CreatorUpdatePage = ({ creator, artCategories, isCreator, errors, f
                 checked={isRecruitment}
                 onChange={(e) => setIsRecruitment(e.target.checked)}
               />
-              {/* チェックなし時に "0" を送信するための hidden */}
-              <input type="hidden" name="art_category[is_recruitment]" value="0" />
               <label htmlFor="art_category_is_recruitment" className="ml-2">
                 後継者を募集中
               </label>
