@@ -12,8 +12,11 @@ class AdminController < ApplicationController
   def login_challenge
     return if Current.admin?
 
-    admin = Admin.find_by(user_id: params[:admin][:user_id].downcase)
-    if admin&.authenticate(params[:admin][:password])
+    # find_by + authenticate だと user_id が存在しないときだけ bcrypt が走らず即座に返るため、
+    # 応答時間から管理者 ID の存在を推測できてしまう。authenticate_by はどちらでも同じ計算をする。
+    credentials = params.expect(admin: %i[user_id password])
+    admin = Admin.authenticate_by(user_id: credentials[:user_id].to_s.downcase, password: credentials[:password])
+    if admin
       start_new_admin_session_for(admin)
       redirect_to '/admin/index'
     else

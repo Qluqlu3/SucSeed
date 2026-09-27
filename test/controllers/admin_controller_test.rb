@@ -26,6 +26,18 @@ class AdminControllerTest < ActionDispatch::IntegrationTest
     assert_nil session[:admin]
   end
 
+  test 'POST /admin/login — admin パラメータが無くても 500 にならない' do
+    post '/admin/login'
+    assert_redirected_to '/index'
+    assert_nil session[:admin]
+  end
+
+  test 'POST /admin/login — user_id だけ欠けていても 500 にならない' do
+    post '/admin/login', params: { admin: { password: 'adminpass1' } }
+    assert_response :ok
+    assert_nil session[:admin]
+  end
+
   test 'POST /admin/login — 既にログイン済みなら何もしない（session 変わらない）' do
     post '/admin/login', params: { admin: { user_id: @admin.user_id, password: 'adminpass1' } }
     current_admin = session[:admin]
