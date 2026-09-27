@@ -99,4 +99,37 @@ class AdminEditControllerTest < ActionDispatch::IntegrationTest
     assert_equal 20, props['inquiries'].size
     assert_equal total, props['pagination']['totalCount']
   end
+
+  test 'GET /admin/management/inquiry — 対応済みの問い合わせは isCheck が true になる' do
+    log_in_as_admin(@admin)
+    category_id = inquiry_categories(:one).id
+    checked = Inquiry.create!(inquiry_category_id: category_id, content: 'done', is_check: true)
+    unchecked = Inquiry.create!(inquiry_category_id: category_id, content: 'todo')
+
+    get '/admin/management/inquiry'
+    flags = page_props(response.body)['inquiries'].to_h { |q| [q['id'], q['isCheck']] }
+    assert_equal({ checked.id => true, unchecked.id => false },
+                 flags.slice(checked.id, unchecked.id))
+  end
+
+  test 'POST /admin/inquiry/detail/check/:id — チェックを外して送ると未対応に戻る' do
+    log_in_as_admin(@admin)
+    inquiry = Inquiry.create!(inquiry_category_id: inquiry_categories(:one).id, content: 'done',
+                              is_check: true)
+
+    post "/admin/inquiry/detail/check/#{inquiry.id}", params: { inquiry: { is_check: '0' } }
+
+    assert_redirected_to '/admin/management/inquiry'
+    assert_not inquiry.reload.is_check
+    assert_equal @admin.id, inquiry.admin_id
+  end
+
+  test 'POST /admin/inquiry/detail/check/:id — 存在しない問い合わせなら成功扱いにしない' do
+    log_in_as_admin(@admin)
+
+    post '/admin/inquiry/detail/check/0', params: { inquiry: { is_check: '1' } }
+
+    follow_redirect!
+    assert_equal I18n.t('flash.danger.error'), flash[:danger]
+  end
 end

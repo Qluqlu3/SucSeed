@@ -94,7 +94,7 @@ class AdminEditController < ApplicationController
           userId: q.user_id,
           name: q.name,
           content: q.content.to_s,
-          isCheck: q.is_check == 1,
+          isCheck: q.is_check,
           createdAt: q.created_at.to_s,
           updatedAt: q.updated_at.to_s,
           deletedAt: q.deleted_at&.to_s,
@@ -192,7 +192,9 @@ class AdminEditController < ApplicationController
 
   # お問い合わせ対応
   def inquiry_detail_check
-    if Inquiry.where(id: params[:id]).update_all(is_check: params[:inquiry][:is_check], admin_id: Current.admin.id)
+    is_check = params.expect(inquiry: [:is_check])[:is_check]
+    # update_all は更新件数を返す。0 も truthy なので件数で判定する
+    if Inquiry.where(id: params[:id]).update_all(is_check: is_check, admin_id: Current.admin.id).positive?
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.error')

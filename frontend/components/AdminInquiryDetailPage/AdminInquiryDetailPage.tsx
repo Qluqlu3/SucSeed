@@ -45,6 +45,8 @@ export const AdminInquiryDetailPage = ({ inquiryDetail, isCheck, flash }: Props)
             <div>
               <form action={`/admin/inquiry/detail/check/${inquiryDetail.id}`} method="post">
                 <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+                {/* チェックを外したときに "0" を送るための hidden（チェックボックスより前に置く） */}
+                <input type="hidden" name="inquiry[is_check]" value="0" />
                 <input
                   type="checkbox"
                   name="inquiry[is_check]"
