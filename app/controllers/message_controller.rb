@@ -23,7 +23,9 @@ class MessageController < ApplicationController
 
   def get_history
     message_list    = MessageQueryService.message_list(user_id: Current.user_id, is_creator: Current.creator?)
-    message_history = MessageQueryService.message_history(user_id: Current.user_id, other_id: params[:id])
+    # 画面は古い順に上から並べ、最下部（最新）へスクロールした状態で開く
+    message_history = MessageQueryService.message_history(user_id: Current.user_id, other_id: params[:id],
+                                                          direction: :asc)
     to_user         = User.find(params.expect(:id))
     @page_props = build_message_page_props(message_list, message_history, Current.user, to_user).merge(flash: flash.to_h)
     render :message
@@ -41,13 +43,13 @@ class MessageController < ApplicationController
     {
       messageLists: format_message_list(message_list),
       messageHistory: message_history.map { |m| { sendUserId: m.send_user_id.to_s, content: m.content, createdAt: m.created_at } },
-      fromUser: { id: from_user.id.to_s, avatarPath: from_user.avatar_path, name: from_user.name },
-      toUser: { id: to_user.id.to_s, name: to_user.name, avatarPath: to_user.avatar_path },
+      fromUser: { id: from_user.id.to_s, avatarPath: from_user.avatar_path.to_s, name: from_user.name },
+      toUser: { id: to_user.id.to_s, name: to_user.name, avatarPath: to_user.avatar_path.to_s },
     }
   end
 
   def format_message_list(message_list)
-    message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path } }
+    message_list.map { |m| { id: m.id.to_s, name: m.name, avatarPath: m.avatar_path.to_s } }
   end
 
   def message_params

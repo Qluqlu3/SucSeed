@@ -57,6 +57,26 @@ class MessageControllerTest < ActionDispatch::IntegrationTest
 
   # ── last_active_at の更新 ──────────────────────────────────────────
 
+  # ── メッセージ送信 ───────────────────────────────────────────────────
+
+  test 'POST /message/send/:id — 送信後の履歴ページが表示され、古い順に並ぶ' do
+    partner = users(:creator_bob)
+    MessageList.create!(creator_user_id: partner.id, heir_user_id: @user.id)
+    Message.create!(send_user_id: partner.id, receive_user_id: @user.id, content: 'first',
+                    created_at: 1.hour.ago)
+    log_in_as(@user)
+
+    post "/message/send/#{partner.id}", params: { message: { content: 'second' } }
+    assert_redirected_to "/message/history/#{partner.id}"
+    follow_redirect!
+
+    assert_response :success
+    props = JSON.parse(response.parsed_body.at_css('[data-props]')['data-props'])
+    assert_equal %w[first second], props['messageHistory'].pluck('content')
+    assert_equal '/assets/default.png', props['toUser']['avatarPath']
+    assert_equal '/assets/default.png', props['messageLists'].first['avatarPath']
+  end
+
   test 'リクエストのたびに session[:last_active_at] が更新される' do
     log_in_as(@user)
     first_active_at = session[:last_active_at]

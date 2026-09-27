@@ -29,6 +29,8 @@ Rails.application.routes.draw do
 
   # メッセージ
   get 'message/list' => 'message#view'
+  # 送信後のリダイレクト先。一覧からの遷移は POST フォームなので POST も残している
+  get 'message/history/:id' => 'message#get_history'
 
   # ギャラリー
   get 'gallery/view/:id' => 'gallery#user_view'
