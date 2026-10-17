@@ -6,15 +6,8 @@
 import { useState } from 'react';
 import type { Id } from '../../api';
 import { api } from '../../api';
+import { calcAge } from '../../utils/date';
 import { FlashMessages } from '../FlashMessages';
-
-function calcAge(birthday: string): number {
-  const today = new Date();
-  const birth = new Date(birthday);
-  const todayNum = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-  const birthNum = birth.getFullYear() * 10000 + (birth.getMonth() + 1) * 100 + birth.getDate();
-  return Math.floor((todayNum - birthNum) / 10000);
-}
 
 interface User {
   id: Id;

@@ -8,14 +8,9 @@
 //   scouts: [{ pageId, name, birthday, avatarPath, matchTime, isOk }]
 //   pageId は後継者の user id
 
-import { FlashMessages } from '../FlashMessages';
+import { type MatchListUser, MatchUserList } from '../MatchUserList';
 
-interface ScoutUser {
-  pageId: string;
-  name: string;
-  birthday: string;
-  avatarPath: string;
-  matchTime: string;
+interface ScoutUser extends MatchListUser {
   // null = 未回答 / true = 承諾 / false = お断り
   isOk: boolean | null;
 }
@@ -23,24 +18,6 @@ interface ScoutUser {
 interface Props {
   scouts: ScoutUser[];
   flash: Record<string, string>;
-}
-
-function calcAge(birthday: string): number {
-  const fmt = (d: Date) => d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
-  return Math.floor((fmt(new Date()) - fmt(new Date(birthday))) / 10000);
-}
-
-function timeAgo(dateStr: string): string {
-  const diffMs = Date.now() - new Date(dateStr).getTime();
-  const minutes = Math.floor(diffMs / 60000);
-  if (minutes < 60) return `${minutes}分`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}時間`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}日`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return `${months}ヶ月`;
-  return `${Math.floor(months / 12)}年`;
 }
 
 const SCOUT_STATUS = {
@@ -61,49 +38,11 @@ const ScoutStatus = ({ isOk }: { isOk: boolean | null }) => {
 };
 
 export const ScoutShowPage = ({ scouts, flash }: Props) => (
-  <div>
-    <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">スカウト一覧</h1>
-
-    <FlashMessages flash={flash} />
-    <div className="min-h-screen">
-      <div className="w-[93%] mx-auto mb-[5%] p-[3%] bg-p-light border border-p-mid rounded-[7px]">
-        {scouts.length === 0 ? (
-          <p className="mb-[60vh] text-[39px] text-p-dark">まだありません</p>
-        ) : (
-          scouts.map((scout) => (
-            <div key={scout.pageId} className="mb-[1%] rounded-lg border border-p-mid">
-              <div className="px-4 py-2 bg-[#BAA9DA] rounded-t-lg">
-                {scout.matchTime}&nbsp;{timeAgo(scout.matchTime)}前
-              </div>
-              <a href={`/page/heir/${scout.pageId}`}>
-                <div className="p-4 bg-white">
-                  <div className="flex flex-wrap">
-                    <div className="w-5/12 text-center">
-                      <img
-                        src={scout.avatarPath}
-                        className="rounded-full"
-                        width={230}
-                        height={230}
-                        alt={scout.name}
-                      />
-                    </div>
-                    <div className="w-7/12 text-left">
-                      <p className="text-[61px] p-0 m-0">{scout.name}</p>
-                      <p className="text-[35px] p-0 my-[1%] ml-[71px]">
-                        {calcAge(scout.birthday)}
-                        <small>歳</small>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-              <div className="pt-[0.2%] pb-0 px-0 m-0 border-t border-p-mid rounded-b-lg">
-                <ScoutStatus isOk={scout.isOk} />
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  </div>
+  <MatchUserList
+    heading="スカウト一覧"
+    users={scouts}
+    flash={flash}
+    profilePath={(scout) => `/page/heir/${scout.pageId}`}
+    renderActions={(scout) => <ScoutStatus isOk={scout.isOk} />}
+  />
 );

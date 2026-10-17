@@ -18,7 +18,7 @@
 | 🟢 低 | `to_json` → `json_escape` 明示化 | 全 ERB ビュー (45 ファイル) | S | 未着手 |
 | 🟢 低 | フロントから未使用になった HTML 投稿ルートの整理 | `config/routes.rb` | S | 未着手 |
 | 🟢 低 | コメント投稿の二重送信防止 | `DiaryCard` / `SelectedGalleryPage` | S | 未着手 |
-| 🟢 低 | フロントの重複（`calcAge` ×7・`timeAgo` ×5 など）と未使用の `api.*` の整理 | `frontend/` | M | 未着手 |
+| 🟢 低 | フロントの未使用の `api.*` の整理（`calcAge`/`timeAgo` の重複は解消済み） | `frontend/api/` | S | 未着手 |
 
 工数: S = 30分以内 / M = 半日程度 / L = 複数日
 
