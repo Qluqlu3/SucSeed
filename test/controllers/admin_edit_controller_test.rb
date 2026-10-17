@@ -112,6 +112,45 @@ class AdminEditControllerTest < ActionDispatch::IntegrationTest
                  flags.slice(checked.id, unchecked.id))
   end
 
+  test '一覧は管理者ログインが無いと見られない' do
+    get '/admin/management/user'
+    assert_redirected_to '/admin/login'
+  end
+
+  test 'POST /admin/{user,diary,diary_comment,gallery}/delete/:id — 論理削除して一覧へ戻る' do
+    log_in_as_admin(@admin)
+    user = create_user('DeleteTarget')
+    diary = Diary.create!(user_id: user.id, content: 'to be deleted')
+    comment = DiaryComment.create!(user_id: user.id, diary_id: diary.id, comment: 'to be deleted')
+    gallery = Gallery.new(user_id: user.id, comment: 'to be deleted')
+    gallery.write_attribute(:data, "#{SecureRandom.hex(4)}.jpg")
+    gallery.save!(validate: false)
+
+    {
+      "/admin/diary_comment/delete/#{comment.id}" => ['/admin/management/diary_comment', comment],
+      "/admin/diary/delete/#{diary.id}" => ['/admin/management/diary', diary],
+      "/admin/gallery/delete/#{gallery.id}" => ['/admin/management/gallery', gallery],
+      "/admin/user/delete/#{user.id}" => ['/admin/management/user', user],
+    }.each do |path, (redirect_path, record)|
+      post path
+      assert_redirected_to redirect_path
+      assert_equal I18n.t('flash.success.saved'), flash[:success]
+      assert_not_nil record.class.with_deleted.find(record.id).deleted_at, path
+    end
+  end
+
+  test 'POST /admin/diary/delete/:id — 削除済み・存在しない ID は 404' do
+    log_in_as_admin(@admin)
+    diary = Diary.create!(user_id: create_user('Deleted').id, content: 'already deleted')
+    diary.soft_delete
+
+    post "/admin/diary/delete/#{diary.id}"
+    assert_response :not_found
+
+    post '/admin/diary/delete/0'
+    assert_response :not_found
+  end
+
   test 'POST /admin/inquiry/detail/check/:id — チェックを外して送ると未対応に戻る' do
     log_in_as_admin(@admin)
     inquiry = Inquiry.create!(inquiry_category_id: inquiry_categories(:one).id, content: 'done',
