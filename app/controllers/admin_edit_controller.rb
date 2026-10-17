@@ -84,26 +84,19 @@ class AdminEditController < ApplicationController
 
   # ユーザー編集
   def user_edit_show
-    @user = User.with_deleted.find(params.expect(:id))
-    @page_props = {
-      user: {
-        id: @user.id,
-        avatarPath: @user.avatar_path.to_s,
-        profile: @user.profile.to_s,
-      },
-      flash: flash.to_h,
-    }
-    render :selected_user_edit
+    render_user_edit(User.with_deleted.find(params.expect(:id)))
   end
 
   # patch
   def user_edit
     user = User.with_deleted.find(params.expect(:id))
-    if user.update(avatar_path: params[:user][:avatar_path], profile: params[:user][:profile])
+    if user.update(params.expect(user: %i[avatar_path profile]))
       flash[:success] = t('flash.success.saved')
       redirect_to '/admin/management/user'
     else
       flash.now[:danger] = t('flash.danger.error')
+      # 失敗した値ではなく保存済みの内容で編集画面を出し直す
+      render_user_edit(user.reload, status: :unprocessable_content)
     end
   end
 
@@ -160,6 +153,18 @@ class AdminEditController < ApplicationController
       flash: flash.to_h,
     }
     render template
+  end
+
+  def render_user_edit(user, status: :ok)
+    @page_props = {
+      user: {
+        id: user.id,
+        avatarPath: user.avatar_path.to_s,
+        profile: user.profile.to_s,
+      },
+      flash: flash.to_h,
+    }
+    render :selected_user_edit, status: status
   end
 
   # 削除済みのレコードは model.find で見つからず 404 になる（二重削除はしない）

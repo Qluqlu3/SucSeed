@@ -151,6 +151,41 @@ class AdminEditControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test 'PATCH /admin/user/edit/:id — プロフィールを更新して一覧へ戻る' do
+    log_in_as_admin(@admin)
+    user = create_user('EditTarget')
+
+    patch "/admin/user/edit/#{user.id}", params: { user: { profile: '管理者が編集' } }
+
+    assert_redirected_to '/admin/management/user'
+    assert_equal '管理者が編集', user.reload.profile
+  end
+
+  test 'PATCH /admin/user/edit/:id — 保存に失敗したら編集画面をエラー付きで再表示する' do
+    log_in_as_admin(@admin)
+    user = create_user('EditInvalid')
+
+    patch "/admin/user/edit/#{user.id}", params: {
+      user: { profile: '保存されない', avatar_path: fixture_file_upload('fake_image.jpg', 'image/jpeg') },
+    }
+
+    assert_response :unprocessable_content
+    props = page_props(response.body)
+    assert_equal user.id, props['user']['id']
+    assert_equal I18n.t('flash.danger.error'), props['flash']['danger']
+    assert_nil user.reload.profile
+  end
+
+  test 'PATCH /admin/user/edit/:id — user パラメータが無ければ 400 相当で弾く' do
+    log_in_as_admin(@admin)
+    user = create_user('EditNoParams')
+
+    patch "/admin/user/edit/#{user.id}"
+
+    assert_redirected_to '/index'
+    assert_equal I18n.t('flash.danger.invalid_request'), flash[:danger]
+  end
+
   test 'POST /admin/inquiry/detail/check/:id — チェックを外して送ると未対応に戻る' do
     log_in_as_admin(@admin)
     inquiry = Inquiry.create!(inquiry_category_id: inquiry_categories(:one).id, content: 'done',
