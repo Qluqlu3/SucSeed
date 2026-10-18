@@ -52,4 +52,13 @@ class MatchTest < ActiveSupport::TestCase
     answered = Match.answer_scout(heir_id: @heir.id, creator_id: @creator.id, accepted: false)
     assert_equal false, answered.reload.is_ok
   end
+
+  test '作成時は user が後継者・target_user が職人でなければ無効（自分自身も不可）' do
+    other_heir = build_heir('OtherRoleHeir')
+
+    assert_not Match.appeal(heir_id: @heir.id, creator_id: other_heir.id).valid?
+    assert_not Match.appeal(heir_id: @heir.id, creator_id: @heir.id).valid?
+    assert_not Match.scout(creator_id: @creator.id, heir_id: @creator.id).valid?
+    assert Match.appeal(heir_id: @heir.id, creator_id: @creator.id).valid?
+  end
 end

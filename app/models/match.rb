@@ -8,6 +8,9 @@ class Match < ApplicationRecord
   belongs_to :user, class_name: 'User'
   belongs_to :target_user, class_name: 'User'
   validates :user_id, uniqueness: { scope: :target_user_id }
+  # 向きの前提（user = 後継者 / target_user = 職人）を作成時に守らせる。役割が違うので自分自身も弾かれる。
+  # 既存の行は職人登録の切り替えなどで崩れうるため、回答（更新）時には見ない
+  validate :parties_have_expected_roles, on: :create
 
   scope :appeals,  -> { where(is_scout: false) }
   scope :scouts,   -> { where(is_scout: true) }
@@ -53,5 +56,12 @@ class Match < ApplicationRecord
   # viewer（当事者の一方）から見た相手
   def partner_for(viewer)
     viewer.id == user_id ? target_user : user
+  end
+
+  private
+
+  def parties_have_expected_roles
+    errors.add(:user, 'は後継者である必要があります') if user&.is_creator?
+    errors.add(:target_user, 'は職人である必要があります') if target_user && !target_user.is_creator?
   end
 end

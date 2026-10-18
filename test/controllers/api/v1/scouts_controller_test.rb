@@ -19,6 +19,17 @@ module Api
         assert Match.exists?(user_id: @heir.id, target_user_id: @creator.id, is_scout: true)
       end
 
+      test 'POST /api/v1/scouts — 後継者でない相手（他の職人・自分自身）はスカウトできず 422' do
+        other_creator = build_creator('OtherScoutCr')
+
+        api_login(@creator)
+        [other_creator.id, @creator.id].each do |target_id|
+          api_post '/api/v1/scouts', params: { heir_id: target_id }
+          assert_response :unprocessable_content
+        end
+        assert_not Match.exists?(target_user_id: @creator.id)
+      end
+
       test 'POST /api/v1/scouts — 後継者はスカウトできず 403' do
         api_login(@heir)
         api_post '/api/v1/scouts', params: { heir_id: @heir.id }

@@ -29,6 +29,17 @@ module Api
         assert_response :forbidden
       end
 
+      test 'POST /api/v1/appeals — 職人でない相手（他の後継者・自分自身）には応募できず 422' do
+        other_heir = build_heir('OtherAppealHeir')
+
+        api_login(@heir)
+        [other_heir.id, @heir.id].each do |target_id|
+          api_post '/api/v1/appeals', params: { creator_id: target_id }
+          assert_response :unprocessable_content
+        end
+        assert_not Match.exists?(user_id: @heir.id)
+      end
+
       test 'POST /api/v1/appeals — 同じ相手への二重応募は 422' do
         Match.create!(user_id: @heir.id, target_user_id: @creator.id, is_scout: false)
 
