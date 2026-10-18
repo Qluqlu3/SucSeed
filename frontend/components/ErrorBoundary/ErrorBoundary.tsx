@@ -2,6 +2,8 @@ import { Component, type ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
+  // 指定するとページ全体のエラー画面の代わりにこれを出す（部分的な失敗をその場で扱う用）
+  fallback?: ReactNode;
 }
 
 interface State {
@@ -17,6 +19,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
+      if (this.props.fallback !== undefined) return this.props.fallback;
       return (
         <div>
           <h1 className="error-title error-page-title">エラーが発生しました</h1>

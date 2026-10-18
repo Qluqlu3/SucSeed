@@ -7,11 +7,28 @@
 // GET /api/v1/galleries/:id が返すものと同じ（HTML 側は data-props 経由で渡している）。
 
 import { MessageSquare, ThumbsUp } from 'lucide-react';
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import type { Comment, GalleryDetail, Id } from '../../api';
 import { api } from '../../api';
-import { ThreeViewer } from '../../three/ThreeViewer';
+import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary';
 import { FlashMessages } from '../FlashMessages';
+
+// Three.js（バンドルの大半を占める）はこの画面でしか使わないので、
+// 別チャンクに分けて 3D プレビューを描くときに初めて読み込む。
+const ThreeViewer = lazy(() =>
+  import('../../three/ThreeViewer').then((m) => ({ default: m.ThreeViewer })),
+);
+
+const VIEWER_HEIGHT = 400;
+
+const ViewerPlaceholder = ({ message }: { message: string }) => (
+  <div
+    className="flex items-center justify-center bg-[#f5f0eb] text-p-text text-[19px]"
+    style={{ height: VIEWER_HEIGHT }}
+  >
+    {message}
+  </div>
+);
 
 interface CurrentUser {
   id: Id;
@@ -102,7 +119,13 @@ export const SelectedGalleryPage = ({
             <div className="bg-p-light px-[1%] py-[0.5%] text-[19px] text-p-text">
               3D プレビュー（ドラッグで回転）
             </div>
-            <ThreeViewer height={400} />
+            <ErrorBoundary
+              fallback={<ViewerPlaceholder message="3D プレビューを読み込めませんでした" />}
+            >
+              <Suspense fallback={<ViewerPlaceholder message="3D プレビューを読み込み中…" />}>
+                <ThreeViewer height={VIEWER_HEIGHT} />
+              </Suspense>
+            </ErrorBoundary>
           </div>
 
           {/* タグ一覧 */}
