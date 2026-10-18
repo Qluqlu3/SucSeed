@@ -22,7 +22,7 @@ class MatchController < ApplicationController
     matches = my_matches(Match.accepted).order(created_at: :desc)
     @page_props = {
       matches: matches.map do |m|
-        match_card(m).merge(isAddList: m.is_add_list ? 1 : 0, profilePath: partner_profile_path(m))
+        match_card(m).merge(isAddList: m.is_add_list, profilePath: partner_profile_path(m))
       end,
       flash: flash.to_h,
     }

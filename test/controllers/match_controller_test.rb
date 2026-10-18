@@ -143,6 +143,19 @@ class MatchControllerTest < ActionDispatch::IntegrationTest
     assert_equal [[@creator.id, "/page/creator/#{@creator.id}"]], matching_rows
   end
 
+  test 'GET /match/matching/list — メッセージ一覧に追加済みかを boolean で返す' do
+    Match.create!(user_id: @heir.id, target_user_id: @creator.id, is_scout: false, is_ok: true,
+                  is_add_list: true)
+    other_heir = build_heir('NotAddedHeir')
+    Match.create!(user_id: other_heir.id, target_user_id: @creator.id, is_scout: false, is_ok: true)
+    log_in_as(@creator)
+
+    get '/match/matching/list'
+
+    flags = page_props['matches'].to_h { |m| [m['pageId'], m['isAddList']] }
+    assert_equal({ @heir.id => true, other_heir.id => false }, flags)
+  end
+
   test 'GET /match/matching/list — 退会済みの相手は一覧に出ない' do
     Match.create!(user_id: @heir.id, target_user_id: @creator.id, is_scout: false, is_ok: true)
     @heir.soft_delete

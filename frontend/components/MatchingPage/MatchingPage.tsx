@@ -13,8 +13,8 @@ import { type MatchListUser, MatchUserList } from '../MatchUserList';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface MatchUser extends MatchListUser {
-  // is_add_list: 0 = 未追加、1 = 追加済み
-  isAddList: number;
+  // メッセージ一覧に追加済みか（API の Match.isAddList と同じ意味）
+  isAddList: boolean;
   // 相手のプロフィールページ。閲覧者が職人なら後継者ページ、後継者なら職人ページになる
   profilePath: string;
 }
@@ -48,6 +48,6 @@ export const MatchingPage = ({ matches, flash }: Props) => (
     users={matches}
     flash={flash}
     profilePath={(match) => match.profilePath}
-    renderActions={(match) => match.isAddList === 0 && <MessageForm userId={match.pageId} />}
+    renderActions={(match) => !match.isAddList && <MessageForm userId={match.pageId} />}
   />
 );
