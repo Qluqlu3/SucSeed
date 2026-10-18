@@ -32,6 +32,35 @@ class MatchControllerTest < ActionDispatch::IntegrationTest
     assert appeal.reload.is_ok
   end
 
+  test 'POST /match/sorry/:id — 職人がアピールを断ると is_ok が false になる' do
+    Match.create!(user_id: @heir.id, target_user_id: @creator.id, is_scout: false)
+    log_in_as(@creator)
+
+    post "/match/sorry/#{@heir.id}"
+
+    assert_redirected_to '/match/appealed/list'
+    assert_equal false, Match.find_by(user_id: @heir.id, target_user_id: @creator.id).is_ok
+  end
+
+  test 'POST /scout/sorry/:id — 後継者がスカウトを断ると is_ok が false になる' do
+    Match.create!(user_id: @heir.id, target_user_id: @creator.id, is_scout: true)
+    log_in_as(@heir)
+
+    post "/scout/sorry/#{@creator.id}"
+
+    assert_redirected_to '/match/scouted/list'
+    assert_equal false, Match.find_by(user_id: @heir.id, target_user_id: @creator.id).is_ok
+  end
+
+  test 'POST /match/ok/:id — 存在しないアピールへの回答は失敗扱い' do
+    log_in_as(@creator)
+
+    post "/match/ok/#{@heir.id}"
+
+    assert_redirected_to '/match/appealed/list'
+    assert_equal I18n.t('flash.danger.error'), flash[:danger]
+  end
+
   test 'POST /match/ok/:id — 職人は自分が送ったスカウトを承認できない' do
     scout = Match.create!(user_id: @heir.id, target_user_id: @creator.id, is_scout: true)
     log_in_as(@creator)

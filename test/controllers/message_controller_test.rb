@@ -85,4 +85,31 @@ class MessageControllerTest < ActionDispatch::IntegrationTest
       assert session[:last_active_at] > first_active_at
     end
   end
+
+  # ── メッセージ相手の追加 ──────────────────────────────────────────
+  # message_lists は「creator_user_id = 職人 / heir_user_id = 後継者」の向きで格納する
+
+  test 'POST /message/add/:id — 後継者から追加しても職人/後継者の向きで登録され、マッチに追加済みが立つ' do
+    creator = users(:creator_bob)
+    Match.create!(user_id: @user.id, target_user_id: creator.id, is_scout: false, is_ok: true)
+    log_in_as(@user)
+
+    post "/message/add/#{creator.id}"
+
+    assert_redirected_to '/message/list'
+    assert MessageList.exists?(creator_user_id: creator.id, heir_user_id: @user.id)
+    assert Match.find_by(user_id: @user.id, target_user_id: creator.id).is_add_list
+  end
+
+  test 'POST /message/add/:id — 追加済みの相手なら「追加済み」と知らせて二重登録しない' do
+    creator = users(:creator_bob)
+    MessageList.create!(creator_user_id: creator.id, heir_user_id: @user.id)
+    log_in_as(@user)
+
+    post "/message/add/#{creator.id}"
+
+    assert_redirected_to '/message/list'
+    assert_equal I18n.t('flash.information.added'), flash[:information]
+    assert_equal 1, MessageList.where(creator_user_id: creator.id, heir_user_id: @user.id).count
+  end
 end
