@@ -17,8 +17,9 @@ class GalleryDetailQueryService
       good_count: GalleryGood.where(gallery_id: gallery.id).count,
       my_good: viewer_id.present? && GalleryGood.exists?(gallery_id: gallery.id,
                                                          user_id: viewer_id),
+      # 退会（論理削除）したユーザーのコメントは INNER JOIN で落とす（user が nil になるため）
       comments: GalleryComment.where(gallery_id: gallery.id)
-                              .includes(:user).order(created_at: :desc),
+                              .joins(:user).preload(:user).order(created_at: :desc),
       match_tag_galleries: related_by_tag(gallery),
       other_galleries: Gallery.where(user_id: gallery.user_id)
                               .where.not(id: gallery.id)

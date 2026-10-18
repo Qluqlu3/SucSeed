@@ -86,4 +86,27 @@ class DiaryControllerTest < ActionDispatch::IntegrationTest
     ids = diaries_props(response.body).pluck('diaryId')
     assert_equal [mine.id, favorited.id].sort, ids.sort
   end
+
+  # 退会（論理削除）したユーザーは default_scope で引けず user が nil になる。
+  # その人のコメント・いいね・日記がフィードに残っていても 500 にしない
+  test 'GET /diary/view — 退会したユーザーのコメント・いいね・日記はフィードに出さない' do
+    mine = Diary.create!(user_id: @alice.id, content: '自分の日記')
+    left = create_user('LeftUser')
+    DiaryComment.create!(diary_id: mine.id, user_id: left.id, comment: '退会した人のコメント')
+    DiaryComment.create!(diary_id: mine.id, user_id: @bob.id, comment: '残っている人のコメント')
+    DiaryGood.create!(diary_id: mine.id, user_id: left.id)
+    Favorite.create!(user_id: @alice.id, favorite_user_id: left.id)
+    Diary.create!(user_id: left.id, content: '退会した人の日記')
+    left.soft_delete
+
+    log_in_as(@alice)
+    get '/diary/view'
+
+    assert_response :success
+    diaries = diaries_props(response.body)
+    assert_equal [mine.id], diaries.pluck('diaryId')
+    assert_equal ['残っている人のコメント'], diaries.first['comments'].pluck('comment')
+    assert_equal 1, diaries.first['commentCount']
+    assert_empty diaries.first['goodAvatars']
+  end
 end

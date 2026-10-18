@@ -84,4 +84,18 @@ class GalleryControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, gallery['goodCount']
     assert_equal true, gallery['myGood']
   end
+
+  test 'GET /gallery/selected/:id — 退会したユーザーのコメントは出さない' do
+    gallery = create_gallery(user_id: @bob.id)
+    left = create_user('LeftCommenter')
+    GalleryComment.create!(gallery_id: gallery.id, user_id: left.id, comment: '退会した人のコメント')
+    GalleryComment.create!(gallery_id: gallery.id, user_id: @alice.id, comment: '残っている人のコメント')
+    left.soft_delete
+
+    get "/gallery/selected/#{gallery.id}"
+
+    assert_response :success
+    props = JSON.parse(response.parsed_body.at_css('[data-props]')['data-props'])
+    assert_equal ['残っている人のコメント'], props['comments'].pluck('comment')
+  end
 end

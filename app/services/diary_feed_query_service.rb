@@ -16,8 +16,11 @@ class DiaryFeedQueryService
   GOOD_AVATAR_LIMIT = 5
 
   # 対象ユーザーの日記スコープ。ページネーションは呼び出し側で行う。
+  #
+  # 日記・コメント・いいねは joins(:user) で投稿者を INNER JOIN し、退会（論理削除）した
+  # ユーザーの行を落とす。preload だけだと user が nil になりシリアライザで落ちる。
   def self.scope_for(target_ids)
-    Diary.where(user_id: target_ids).includes(:user).order(created_at: :desc)
+    Diary.where(user_id: target_ids).joins(:user).preload(:user).order(created_at: :desc)
   end
 
   def self.build(diaries:, viewer_id:, sample_good_avatars: false)
@@ -25,10 +28,10 @@ class DiaryFeedQueryService
 
     {
       diaries: diaries,
-      comments: DiaryComment.where(diary_id: diary_ids).includes(:user),
-      comment_count: DiaryComment.where(diary_id: diary_ids).group(:diary_id).count,
+      comments: DiaryComment.where(diary_id: diary_ids).joins(:user).preload(:user),
+      comment_count: DiaryComment.where(diary_id: diary_ids).joins(:user).group(:diary_id).count,
       good_count: DiaryGood.where(diary_id: diary_ids).group(:diary_id).count,
-      good_avatars: DiaryGood.where(diary_id: diary_ids).includes(:user),
+      good_avatars: DiaryGood.where(diary_id: diary_ids).joins(:user).preload(:user),
       my_good_ids: my_good_ids(diary_ids, viewer_id),
       good_avatar_limit: sample_good_avatars ? GOOD_AVATAR_LIMIT : nil,
     }
