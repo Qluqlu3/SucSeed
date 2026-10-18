@@ -1,6 +1,5 @@
 class GalleryController < ApplicationController
-  before_action :require_login, except: %i[user_view upload selected_gallery search_user_tag]
-  before_action :require_creator, only: [:upload]
+  before_action :require_login, except: %i[user_view selected_gallery search_user_tag]
 
   # お気に入りユーザのギャラリー
   def favorite_gallery
@@ -36,17 +35,6 @@ class GalleryController < ApplicationController
       flash: flash.to_h,
     }
     render :user_gallery_view
-  end
-
-  # 投稿 post
-  def upload
-    @gallery = Gallery.new(gallery_params.merge(user_id: Current.user_id))
-    if @gallery.save
-      flash[:success] = t('flash.success.saved')
-    else
-      flash[:danger] = t('flash.danger.error')
-    end
-    redirect_to '/gallery/my_gallery'
   end
 
   # 個別画像
@@ -85,26 +73,6 @@ class GalleryController < ApplicationController
     render :heir_favorite_gallery
   end
 
-  def gallery_good
-    gallery_good = GalleryGood.new(gallery_id: params[:id], user_id: Current.user_id)
-    if gallery_good.save
-      flash[:success] = t('flash.success.saved')
-    else
-      flash[:danger] = t('flash.danger.error')
-    end
-    redirect_to "/gallery/selected/#{params[:id]}"
-  end
-
-  def gallery_comment
-    gallery_comment = GalleryComment.new(gallery_comment_params.merge(gallery_id: params[:id], user_id: Current.user_id))
-    if gallery_comment.save
-      flash[:success] = t('flash.success.saved')
-    else
-      flash[:danger] = t('flash.danger.comment_blank')
-    end
-    redirect_to "/gallery/selected/#{params[:id]}"
-  end
-
   private
 
   # お気に入りユーザー（+自分）のギャラリーフィード。
@@ -119,13 +87,5 @@ class GalleryController < ApplicationController
     GalleryFeedQueryService.build(
       galleries: GalleryFeedQueryService.scope_for(target_ids), viewer_id: Current.user_id,
     )
-  end
-
-  def gallery_params
-    params.expect(gallery: %i[data comment tag_list])
-  end
-
-  def gallery_comment_params
-    params.expect(gallery_comment: [:comment])
   end
 end

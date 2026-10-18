@@ -1,6 +1,7 @@
 class Rack::Attack
   # HTML(フォーム送信)と JSON API は同じ操作に対して別々のパスを持つ。
   # 片方だけ絞ってももう片方から素通しできてしまうので、必ず両方をマッチさせる。
+  # （日記コメント・ギャラリー投稿/コメント・アピール/スカウト送信は API にしか経路が無い）
   #
   # 例: ログインは /user/login (HTML) と /api/v1/session (JSON) の2経路がある。
   MATCHERS = {
@@ -9,24 +10,15 @@ class Rack::Attack
     password_reset: ->(path) { path == '/user/password_forgot' },
     email_certified: ->(path) { path.start_with?('/email/certified/') },
     diary_post: ->(path) { ['/diary/post', '/api/v1/diaries'].include?(path) },
-    diary_comment: lambda { |path|
-      path.match?(%r{\A/diary/show/[^/]+/comment\z}) ||
-        path.match?(%r{\A/api/v1/diaries/[^/]+/comments\z})
-    },
-    gallery_upload: ->(path) { ['/gallery/view', '/api/v1/galleries'].include?(path) },
-    gallery_comment: lambda { |path|
-      path.match?(%r{\A/gallery/selected/comment/[^/]+\z}) ||
-        path.match?(%r{\A/api/v1/galleries/[^/]+/comments\z})
-    },
+    diary_comment: ->(path) { path.match?(%r{\A/api/v1/diaries/[^/]+/comments\z}) },
+    gallery_upload: ->(path) { path == '/api/v1/galleries' },
+    gallery_comment: ->(path) { path.match?(%r{\A/api/v1/galleries/[^/]+/comments\z}) },
     message_send: lambda { |path|
       path.match?(%r{\A/message/send/[^/]+\z}) ||
         path.match?(%r{\A/api/v1/message_threads/[^/]+/messages\z})
     },
-    # マッチング操作（アピール/スカウトの送信）。HTML 版は未スロットルだった
-    match_send: lambda { |path|
-      path.match?(%r{\A/(match|scout)/send/[^/]+\z}) ||
-        ['/api/v1/appeals', '/api/v1/scouts'].include?(path)
-    },
+    # マッチング操作（アピール/スカウトの送信）
+    match_send: ->(path) { ['/api/v1/appeals', '/api/v1/scouts'].include?(path) },
   }.freeze
 
   def self.throttle_post(name, limit:, period:)

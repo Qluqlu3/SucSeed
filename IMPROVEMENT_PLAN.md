@@ -16,7 +16,6 @@
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | Three.js 遅延読み込み（Propshaft 移行とセット） | `frontend/` | M | 未着手 |
 | 🟢 低 | `to_json` → `json_escape` 明示化 | 全 ERB ビュー (45 ファイル) | S | 未着手 |
-| 🟢 低 | フロントから未使用になった HTML 投稿ルートの整理 | `config/routes.rb` | S | 未着手 |
 | 🟢 低 | コメント投稿の二重送信防止 | `DiaryCard` / `SelectedGalleryPage` | S | 未着手 |
 | 🟢 低 | フロントの未使用の `api.*` の整理（`calcAge`/`timeAgo` の重複は解消済み） | `frontend/api/` | S | 未着手 |
 
@@ -104,22 +103,22 @@ Propshaft へ移行すれば二重ダイジェストが起きなくなるため�
 
 ---
 
-### 🟢-4　未使用になった HTML 投稿ルートの整理
+## 完了済み（参考）
 
-フロントエンドを `/api/v1` に移行した結果、以下は React から呼ばれなくなった。
+### 2026-10　フロントから未使用になった HTML 投稿ルートを削除
 
-- `POST /gallery/view`（`gallery#upload`）
-- `POST /gallery/selected/good/:id`、`POST /gallery/selected/comment/:id`
-- `POST /diary/show/:id/good`、`POST /diary/show/:id/comment`、`POST /diary/post`
+API 移行後どこからも呼ばれていなかった次のルートと、対応するアクションを削除した。
+`FavoriteController` はアクションがすべて無くなったのでファイルごと消した。
+
+- `POST /gallery/view`、`POST /gallery/selected/good/:id`、`POST /gallery/selected/comment/:id`
+- `POST /diary/show/:id/good`、`POST /diary/show/:id/comment`
 - `POST /favorite/:id/add`、`POST /favorite/:id/delete`
 - `POST /match/send/:id`、`POST /scout/send/:id`
 
-いずれも認証・バリデーション込みで動作しテストもあるため、放置しても実害はない。
-消す場合は Rack::Attack のスロットル設定とテストも合わせて整理すること。
-
----
-
-## 完了済み（参考）
+この一覧の当初の記載にあった `POST /diary/post` は、`/diary/post` の投稿フォーム
+（`DiaryPostPage`）の送信先として今も使われていたため残した。
+Rack::Attack の HTML 側のパス指定と、それを叩いていたスロットルテストも整理した
+（ギャラリー投稿だけは API 側のテストが無かったため API パスに付け替えた）。
 
 ### 2026-09　HTML 画面のマッチング・メッセージ周りのバグ修正
 

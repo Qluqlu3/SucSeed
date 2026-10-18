@@ -66,18 +66,6 @@ class DiaryController < ApplicationController
     redirect_to '/diary/my_diary'
   end
 
-  # いいねボタン
-  def good
-    diary_good = DiaryGood.new(diary_id: params[:id], user_id: Current.user_id)
-    respond_with_save(diary_good.save)
-  end
-
-  # コメント
-  def comment
-    diary_comment = DiaryComment.new(diary_comment_params.merge(user_id: Current.user_id, diary_id: params[:id]))
-    respond_with_save(diary_comment.save)
-  end
-
   # 後継者側お気に入り
   def heir_favorite_diary
     @page_props = favorite_feed_props
@@ -106,24 +94,7 @@ class DiaryController < ApplicationController
     )
   end
 
-  # いいね/コメントは React 側から fetch されるため JSON、
-  # JS 無効時のフォーム送信にも備えて HTML リダイレクトの両方を返す。
-  def respond_with_save(saved)
-    fallback = Current.creator? ? '/diary/view' : '/diary/heir/favorite'
-    respond_to do |format|
-      format.html do
-        flash[saved ? :success : :danger] = t(saved ? 'flash.success.saved' : 'flash.danger.error')
-        redirect_to fallback
-      end
-      format.json { head saved ? :ok : :unprocessable_content }
-    end
-  end
-
   def diary_params
     params.expect(diary: [:content, { diary_media_attributes: [:media_data] }])
-  end
-
-  def diary_comment_params
-    params.expect(diary_comment: [:comment])
   end
 end

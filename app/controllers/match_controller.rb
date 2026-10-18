@@ -1,9 +1,9 @@
 class MatchController < ApplicationController
   before_action :require_login
-  # アピール(応募)を受ける側 = 職人 / スカウトを出す側 = 職人
-  before_action :require_creator, only: %i[appealed_list_view scout_send scout_check
-                                           appeal_answer_ok appeal_answer_sorry]
-  # アピールを出す側 = 後継者 / スカウトを受ける側 = 後継者
+  # アピール/スカウトの送信は API（/api/v1/appeals・scouts）のみ。ここでは一覧と回答を扱う。
+  # アピールを受けて回答する側・スカウトを送った側 = 職人
+  before_action :require_creator, only: %i[appealed_list_view scout_check appeal_answer_ok appeal_answer_sorry]
+  # アピールを送った側・スカウトを受けて回答する側 = 後継者
   before_action :require_non_creator, only: %i[appeal_check scouted_show
                                                scout_answer_ok scout_answer_sorry]
 
@@ -32,12 +32,6 @@ class MatchController < ApplicationController
   def appeal_answer_ok    = handle_appeal_answer(is_ok: true)
   def appeal_answer_sorry = handle_appeal_answer(is_ok: false)
 
-  def appeal_send
-    @match = Match.new(user_id: Current.user_id, target_user_id: params[:id], is_scout: false)
-    flash[:success] = t('flash.success.saved') if @match.save
-    redirect_to "/page/creator/#{params[:id]}"
-  end
-
   # 後継者: 自分が送って未回答のアピール
   def appeal_check
     appeals = my_matches(Match.appeals.pending).order(:created_at)
@@ -46,16 +40,6 @@ class MatchController < ApplicationController
       flash: flash.to_h,
     }
     render :appeal_show
-  end
-
-  def scout_send
-    scout = Match.new(user_id: params[:id], target_user_id: Current.user_id, is_scout: true)
-    if scout.save
-      flash[:success] = t('flash.success.saved')
-    else
-      flash[:danger] = t('flash.danger.error')
-    end
-    redirect_to "/page/heir/#{params[:id]}"
   end
 
   def scout_answer_ok    = handle_scout_answer(is_ok: true)
