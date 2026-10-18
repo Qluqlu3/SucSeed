@@ -104,11 +104,9 @@ Rails/FilePath:
 # (is_ok・is_add_list など boolean の一括更新、login_time の記録)
 Rails/SkipsModelValidations:
   Exclude:
-    - 'app/controllers/match_controller.rb'
     - 'app/controllers/admin_edit_controller.rb'
-    - 'app/controllers/message_controller.rb'
     - 'app/controllers/user_controller.rb'
-    - 'app/controllers/api/v1/message_threads_controller.rb'
+    - 'app/models/message_list.rb'
     - 'app/controllers/api/v1/session_controller.rb'
     - 'app/models/concerns/soft_deletable.rb'
     - 'app/models/user.rb'

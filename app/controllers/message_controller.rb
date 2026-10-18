@@ -8,14 +8,7 @@ class MessageController < ApplicationController
   end
 
   def message_list_add
-    creator_id, heir_id = Current.creator? ? [Current.user_id, params[:id]] : [params[:id], Current.user_id]
-    message_list = MessageList.new(creator_user_id: creator_id, heir_user_id: heir_id)
-
-    if message_list.save
-      # 双方向どちらの向きで成立したマッチかは分からないので両方を更新する
-      Match.where(target_user_id: Current.user_id, user_id: params[:id]).update_all(is_add_list: true)
-      Match.where(user_id: Current.user_id, target_user_id: params[:id]).update_all(is_add_list: true)
-    else
+    unless MessageList.open_between(Current.user, params[:id])
       flash[:information] = t('flash.information.added')
     end
     redirect_to '/message/list'

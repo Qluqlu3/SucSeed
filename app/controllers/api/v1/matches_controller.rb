@@ -5,10 +5,7 @@ module Api
       PER_PAGE = 20
 
       def index
-        column = Current.creator? ? :target_user_id : :user_id
-        scope = Match.accepted.joins(:user, :target_user).preload(:user, :target_user)
-                     .where(column => Current.user_id)
-                     .order(created_at: :desc)
+        scope = Match.accepted.involving(Current.user).with_active_parties.order(created_at: :desc)
         pagy, matches = paginate(scope, default_limit: PER_PAGE)
 
         render_collection(MatchSerializer.build(matches), pagy: pagy)

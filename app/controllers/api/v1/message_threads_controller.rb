@@ -34,22 +34,13 @@ module Api
 
       def create
         partner_id = params.expect(:user_id)
-        creator_id, heir_id = Current.creator? ? [Current.user_id, partner_id] : [partner_id, Current.user_id]
-        thread = MessageList.new(creator_user_id: creator_id, heir_user_id: heir_id)
 
         # 既にスレッドがある場合は検証で弾かれる。冪等に「ある」ことを返す。
-        return render json: { userId: partner_id, alreadyExists: true } unless thread.save
+        unless MessageList.open_between(Current.user, partner_id)
+          return render json: { userId: partner_id, alreadyExists: true }
+        end
 
-        mark_match_as_listed(partner_id)
         render json: { userId: partner_id, alreadyExists: false }, status: :created
-      end
-
-      private
-
-      # マッチのどちら向きで成立したか分からないので両方向を更新する
-      def mark_match_as_listed(partner_id)
-        Match.where(user_id: Current.user_id, target_user_id: partner_id).update_all(is_add_list: true)
-        Match.where(user_id: partner_id, target_user_id: Current.user_id).update_all(is_add_list: true)
       end
     end
   end

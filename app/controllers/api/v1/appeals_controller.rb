@@ -14,43 +14,30 @@ module Api
 
       PER_PAGE = 20
 
+      # 職人: 自分に応募してきた、まだ回答していない後継者 / 後継者: 自分が応募した職人
       def index
-        pagy, appeals = paginate(Current.creator? ? received_appeals : sent_appeals,
-                                 default_limit: PER_PAGE)
+        scope = Match.appeals.involving(Current.user).with_active_parties.order(created_at: :asc)
+        scope = scope.pending if Current.creator?
+        pagy, appeals = paginate(scope, default_limit: PER_PAGE)
 
         render_collection(MatchSerializer.build(appeals), pagy: pagy)
       end
 
       def create
-        appeal = Match.new(user_id: Current.user_id, target_user_id: params[:creator_id], is_scout: false)
+        appeal = Match.appeal(heir_id: Current.user_id, creator_id: params[:creator_id])
         return render_validation_failure(appeal) unless appeal.save
 
         render json: MatchSerializer.build([appeal]).first, status: :created
       end
 
       def update
-        appeal = Match.appeals.find_by(user_id: params[:id], target_user_id: Current.user_id)
+        appeal = Match.answer_appeal(creator_id: Current.user_id, heir_id: params[:id], accepted: accepted?)
         return render_not_found if appeal.nil?
 
-        appeal.update!(is_ok: accepted?)
         render json: MatchSerializer.build([appeal]).first
       end
 
       private
-
-      # 職人から見た「自分に応募してきた、まだ回答していない後継者」
-      def received_appeals
-        Match.appeals.pending.joins(:user, :target_user).preload(:user, :target_user)
-             .where(target_user_id: Current.user_id)
-             .order(created_at: :asc)
-      end
-
-      # 後継者から見た「自分が応募した職人」
-      def sent_appeals
-        Match.appeals.joins(:user, :target_user).preload(:user, :target_user)
-             .where(user_id: Current.user_id)
-             .order(created_at: :asc)
-      end
 
       def accepted?
         ActiveModel::Type::Boolean.new.cast(params.expect(:accepted))

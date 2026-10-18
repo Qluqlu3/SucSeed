@@ -67,22 +67,15 @@ class MatchController < ApplicationController
 
   private
 
-  # matches は user_id = 後継者 / target_user_id = 職人 で向きが固定されているので、
-  # ログイン中ユーザーの役割だけで「自分の列」と「相手の関連」が決まる。
-  # 相手が退会（論理削除）済みの行は INNER JOIN で落とす（preload だけだと相手が nil になる）。
+  # ログイン中ユーザーが当事者のマッチ（退会した相手の行は除く）
   def my_matches(scope)
-    own_column = Current.creator? ? :target_user_id : :user_id
-    scope.where(own_column => Current.user_id)
-         .joins(partner_association)
-         .preload(Current.creator? ? :user : { target_user: :creator })
-  end
-
-  def partner_association
-    Current.creator? ? :user : :target_user
+    scope = scope.involving(Current.user).with_active_parties
+    # 後継者から見た一覧には相手（職人）の屋号を出す
+    Current.creator? ? scope : scope.preload(target_user: :creator)
   end
 
   def partner_of(match)
-    match.public_send(partner_association)
+    match.partner_for(Current.user)
   end
 
   def match_card(match)
@@ -105,22 +98,22 @@ class MatchController < ApplicationController
     Current.creator? ? "/page/heir/#{match.user_id}" : "/page/creator/#{match.target_user_id}"
   end
 
-  # アピールとスカウトは同じ「後継者 × 職人」の組で格納されるため、is_scout で絞らないと
-  # 職人が自分の送ったスカウトをこのアクションで勝手に承認できてしまう。
+  # アピールとスカウトは同じ「後継者 × 職人」の組で格納されるため、Match.answer_appeal /
+  # answer_scout が is_scout で絞る。絞らないと職人が自分の送ったスカウトを承認できてしまう。
   def handle_appeal_answer(is_ok:)
-    match = Match.appeals.where(user_id: params[:id], target_user_id: Current.user_id)
-    set_answer_flash(match.update_all(is_ok: is_ok))
+    answered = Match.answer_appeal(creator_id: Current.user_id, heir_id: params[:id], accepted: is_ok)
+    set_answer_flash(answered)
     redirect_to '/match/appealed/list'
   end
 
   def handle_scout_answer(is_ok:)
-    scout = Match.scouts.where(user_id: Current.user_id, target_user_id: params[:id])
-    set_answer_flash(scout.update_all(is_ok: is_ok))
+    answered = Match.answer_scout(heir_id: Current.user_id, creator_id: params[:id], accepted: is_ok)
+    set_answer_flash(answered)
     redirect_to '/match/scouted/list'
   end
 
-  def set_answer_flash(updated_rows)
-    if updated_rows.positive?
+  def set_answer_flash(answered)
+    if answered
       flash[:success] = t('flash.success.saved')
     else
       flash[:danger] = t('flash.danger.error')

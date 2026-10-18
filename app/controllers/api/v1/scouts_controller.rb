@@ -14,45 +14,30 @@ module Api
 
       PER_PAGE = 20
 
+      # 職人: 自分が声を掛けた後継者 / 後継者: 自分に来た、まだ回答していないスカウト
       def index
-        pagy, scouts = paginate(Current.creator? ? sent_scouts : received_scouts,
-                                default_limit: PER_PAGE)
+        scope = Match.scouts.involving(Current.user).with_active_parties.order(created_at: :asc)
+        scope = scope.pending unless Current.creator?
+        pagy, scouts = paginate(scope, default_limit: PER_PAGE)
 
         render_collection(MatchSerializer.build(scouts), pagy: pagy)
       end
 
       def create
-        # matches は「user_id = 後継者 / target_user_id = 職人」で向きが固定されている。
-        # スカウトは職人発だが、格納する向きはアピールと同じになる点に注意。
-        scout = Match.new(user_id: params[:heir_id], target_user_id: Current.user_id, is_scout: true)
+        scout = Match.scout(creator_id: Current.user_id, heir_id: params[:heir_id])
         return render_validation_failure(scout) unless scout.save
 
         render json: MatchSerializer.build([scout]).first, status: :created
       end
 
       def update
-        scout = Match.scouts.find_by(user_id: Current.user_id, target_user_id: params[:id])
+        scout = Match.answer_scout(heir_id: Current.user_id, creator_id: params[:id], accepted: accepted?)
         return render_not_found if scout.nil?
 
-        scout.update!(is_ok: accepted?)
         render json: MatchSerializer.build([scout]).first
       end
 
       private
-
-      # 職人から見た「自分が声を掛けた後継者」
-      def sent_scouts
-        Match.scouts.joins(:user, :target_user).preload(:user, :target_user)
-             .where(target_user_id: Current.user_id)
-             .order(created_at: :asc)
-      end
-
-      # 後継者から見た「自分に来た、まだ回答していないスカウト」
-      def received_scouts
-        Match.scouts.pending.joins(:user, :target_user).preload(:user, :target_user)
-             .where(user_id: Current.user_id)
-             .order(created_at: :asc)
-      end
 
       def accepted?
         ActiveModel::Type::Boolean.new.cast(params.expect(:accepted))
