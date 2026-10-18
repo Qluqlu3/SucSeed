@@ -10,7 +10,6 @@
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
-| 🟡 中 | アピール/スカウト作成時に相手のロールを検証していない | `Match` / `appeals`・`scouts` | S | 未着手 |
 | 🟡 中 | 管理者セッションにタイムアウトとログアウトが無い | `AdminAuthentication` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | `to_json` → `json_escape` 明示化 | 全 ERB ビュー (45 ファイル) | S | 未着手 |
@@ -30,11 +29,10 @@
 「マッチング成立（`Match.accepted`）した相手とだけやり取りできる」のが仕様なら、
 送信前に成立済みマッチの存在を確認する。仕様の確認が先。
 
-### 🟡-B　アピール/スカウトの相手のロール未検証
-
-`Match` にはユニーク制約しか無く、後継者が職人でないユーザー（他の後継者・自分自身）に
-アピールしたり、職人が職人をスカウトしたりできる。`Match` に
-「user は後継者、target_user は職人、かつ別人」のバリデーションを足すのが素直。
+実装する場合、スレッド作成は `MessageList.open_between` に集約済みなのでそこに1か所足せば
+HTML・API の両方に効く（`Match.accepted.between(heir_id:, creator_id:).exists?`）。
+メッセージ送信（`MessageController#send_message`・`Api::V1::MessagesController#create`）は
+まだ別々なので、同じように `Message` 側へ寄せてから足す。
 
 ### 🟡-C　管理者セッションにタイムアウトとログアウトが無い
 
@@ -69,6 +67,22 @@ HTML のフィード（`/diary/view`、`/gallery/my_gallery` など）は全件�
 ---
 
 ## 完了済み（参考）
+
+### 2026-10　マッチング・メッセージのドメイン操作を集約
+
+matches・message_lists は「後継者 / 職人」で向きが固定されたテーブルで、作成・回答・
+当事者での絞り込み・メッセージ相手の追加を HTML と API がそれぞれ個別に書いていた。
+片方だけ直して片方が漏れる不具合（`is_scout` の絞り忘れ、退会者の除外漏れなど）が
+繰り返し出ていたため、`Match`（`appeal` / `scout` / `answer_appeal` / `answer_scout` /
+`between` / `involving` / `with_active_parties` / `#partner_for`）と
+`MessageList.open_between` に寄せ、両方から使うようにした。
+
+- **アピール/スカウトの相手のロールを検証**（旧 🟡-B）。作成時に
+  「user は後継者、target_user は職人」をモデルで検証する。集約したので1か所で HTML・API の両方に効く
+- **退会した相手がいると API のアピール/スカウト/マッチング一覧が 500** だったのを修正
+  （HTML 側だけ直っていた）
+- テストの無かった HTML 側の回答（お断り・対象なし）とメッセージ相手の追加に、
+  集約前にテストを追加。テスト 328 件 → 344 件
 
 ### 2026-10　Sprockets → Propshaft 移行 / Three.js の遅延読み込み
 
