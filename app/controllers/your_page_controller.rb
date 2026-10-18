@@ -1,35 +1,32 @@
 class YourPageController < ApplicationController
   # クリエイターページ
   def creator_show
-    @user = User.find(params.expect(:id))
-    @creator = User.joins(:creator).select('users.*, creators.*').find_by(creators: { user_id: params[:id] })
-    return redirect_to '/index' unless @creator
+    user = User.find(params.expect(:id))
+    creator = user.creator
+    return redirect_to '/index' unless creator
 
-    @art_category = ArtCategory.find_by(id: @creator.art_category_id)
-    @fv_check = Favorite.exists?(user_id: Current.user_id, favorite_user_id: params[:id])
-    @match = Match.exists?(user_id: Current.user_id, target_user_id: params[:id])
     @page_props = {
       user: {
-        id: @user.id,
-        name: @user.name,
-        avatarPath: @user.avatar_path.to_s,
-        isMan: @user.is_man,
-        birthday: @user.birthday.to_s,
+        id: user.id,
+        name: user.name,
+        avatarPath: user.avatar_path.to_s,
+        isMan: user.is_man,
+        birthday: user.birthday.to_s,
       },
       creator: {
-        title: @creator.title,
-        establishment: @creator.establishment,
-        employee: @creator.employee,
-        profile: @creator.profile,
-        isRecruitment: @creator.is_recruitment,
+        title: creator.title,
+        establishment: creator.establishment,
+        employee: creator.employee,
+        profile: user.profile,
+        isRecruitment: creator.is_recruitment,
       },
-      artCategoryName: @art_category.name,
-      isFavorited: @fv_check,
+      artCategoryName: creator.art_category.name,
+      isFavorited: Favorite.exists?(user_id: Current.user_id, favorite_user_id: user.id),
       loggedIn: Current.logged_in?,
-      isOwnPage: Current.user_id == @user.id,
+      isOwnPage: Current.user_id == user.id,
       isCreator: Current.creator?,
-      isMatched: @match,
-      targetUserId: @user.id,
+      isMatched: Match.exists?(user_id: Current.user_id, target_user_id: user.id),
+      targetUserId: user.id,
       flash: flash.to_h,
     }
     render :your_page
@@ -37,27 +34,25 @@ class YourPageController < ApplicationController
 
   # 後継者ページ
   def heir_show
-    @user = User.find_by(id: params[:id])
-    return redirect_to '/index' unless @user
+    user = User.find_by(id: params[:id])
+    return redirect_to '/index' unless user
 
-    @art_name = ArtCategory.joins(:heirs).select('art_categories.name').find_by(heirs: { user_id: params[:id] })
-    # matches は user_id = 後継者 / target_user_id = 職人 で格納される（スカウトも同じ向き）。
-    # 閲覧者（職人）との間に既に行があれば、スカウトは一意制約で弾かれるので送信済み扱いにする
-    @scout = Match.exists?(user_id: params[:id], target_user_id: Current.user_id)
     @page_props = {
       user: {
-        id: @user.id,
-        name: @user.name,
-        avatarPath: @user.avatar_path.to_s,
-        isMan: @user.is_man,
-        birthday: @user.birthday.to_s,
-        profile: @user.profile,
+        id: user.id,
+        name: user.name,
+        avatarPath: user.avatar_path.to_s,
+        isMan: user.is_man,
+        birthday: user.birthday.to_s,
+        profile: user.profile,
       },
-      artName: @art_name&.name,
-      isScouted: @scout,
+      artName: user.heir&.art_category&.name,
+      # matches は user_id = 後継者 / target_user_id = 職人 で格納される（スカウトも同じ向き）。
+      # 閲覧者（職人）との間に既に行があれば、スカウトは一意制約で弾かれるので送信済み扱いにする
+      isScouted: Match.exists?(user_id: user.id, target_user_id: Current.user_id),
       loggedIn: Current.logged_in?,
       isCreator: Current.creator?,
-      targetUserId: @user.id,
+      targetUserId: user.id,
       flash: flash.to_h,
     }
     render :heir_page

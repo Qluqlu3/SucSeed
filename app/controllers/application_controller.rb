@@ -75,6 +75,11 @@ class ApplicationController < ActionController::Base
     { currentPage: pagy.page, totalPages: pagy.pages, totalCount: pagy.count }
   end
 
+  # 職人/後継者の登録・編集フォームの「分野」セレクトボックスの選択肢
+  def art_category_options
+    ArtCategorySerializer.new(ArtCategory.order(:id)).serializable_hash
+  end
+
   # ログイン中ユーザー。未ログインなら nil（フロント側で `currentUser && ...` の分岐に使う）
   def current_user_props
     CurrentUserSerializer.render(Current.user)
