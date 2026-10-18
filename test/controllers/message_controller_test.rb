@@ -73,8 +73,8 @@ class MessageControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     props = JSON.parse(response.parsed_body.at_css('[data-props]')['data-props'])
     assert_equal %w[first second], props['messageHistory'].pluck('content')
-    assert_equal '/assets/default.png', props['toUser']['avatarPath']
-    assert_equal '/assets/default.png', props['messageLists'].first['avatarPath']
+    assert_equal default_avatar_path, props['toUser']['avatarPath']
+    assert_equal default_avatar_path, props['messageLists'].first['avatarPath']
   end
 
   test 'リクエストのたびに session[:last_active_at] が更新される' do

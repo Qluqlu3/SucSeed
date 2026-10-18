@@ -82,7 +82,7 @@ class MatchControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     matches = page_props['matches']
     assert_equal [@heir.id], matches.pluck('pageId')
-    assert_equal '/assets/default.png', matches.first['avatarPath']
+    assert_equal default_avatar_path, matches.first['avatarPath']
   end
 
   test 'GET /match/scouted/list — 他の後継者宛てのスカウトが混ざらない' do
@@ -97,7 +97,7 @@ class MatchControllerTest < ActionDispatch::IntegrationTest
     scouts = page_props['scouts']
     assert_equal [@creator.id], scouts.pluck('pageId')
     assert_equal 'Crafter工房', scouts.first['title']
-    assert_equal '/assets/default.png', scouts.first['avatarPath']
+    assert_equal default_avatar_path, scouts.first['avatarPath']
   end
 
   test 'GET /match/scout/list_check — 職人は送ったスカウトを回答状況付きで見られる' do

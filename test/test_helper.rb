@@ -15,6 +15,12 @@ module ActiveSupport
       Rails.cache.clear
     end
 
+    # アバター未設定時の画像（AvatarUploader#default_url）。Propshaft がダイジェストを付けるので
+    # '/assets/default.png' と直書きせずヘルパーで解決する
+    def default_avatar_path
+      ActionController::Base.helpers.image_path('default.png')
+    end
+
     # ログイン済みセッションを作るヘルパー
     def log_in_as(user, password: 'password123')
       post '/user/login', params: { session: { email: user.email, password: password } }

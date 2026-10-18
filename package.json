@@ -23,7 +23,7 @@
     ]
   },
   "scripts": {
-    "build": "esbuild frontend/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts",
+    "build": "esbuild frontend/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.tsx=tsx --loader:.ts=ts --loader:.png=file --loader:.jpg=file --asset-names=[name]-[hash].digested",
     "build:watch": "pnpm build --watch=forever",
     "build:css": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --minify",
     "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always",

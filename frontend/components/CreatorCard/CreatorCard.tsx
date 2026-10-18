@@ -1,4 +1,5 @@
 import { ChevronRight, Image as ImageIcon } from 'lucide-react';
+import cardBackgroundImage from '../../../app/assets/images/card-background.jpg';
 
 export interface Creator {
   userId: string;
@@ -18,7 +19,10 @@ const isNew = (createdAt: string): boolean => {
 
 export const CreatorCard = ({ creator }: { creator: Creator }) => (
   <div className="w-1/2 sm:w-1/3 lg:w-1/4 mt-[1.5%] px-1 new-box">
-    <div className="overflow-hidden relative bg-[url('/assets/card-background.jpg')] transition duration-300 hover:shadow-[0_8px_16px_0_rgba(0,0,0,0.2)]">
+    <div
+      className="overflow-hidden relative transition duration-300 hover:shadow-[0_8px_16px_0_rgba(0,0,0,0.2)]"
+      style={{ backgroundImage: `url(${cardBackgroundImage})` }}
+    >
       {isNew(creator.createdAt) && (
         <span className="inline-block absolute top-[-1%] right-0 m-0 pt-[2.3%] pb-[1.3%] px-0 z-2 w-[17%] text-center text-white text-[1.3vw] bg-p-gold rounded-[7px]">
           NEW

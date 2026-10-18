@@ -5,6 +5,7 @@
 
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
+import defaultAvatarImage from '../../../app/assets/images/default.png';
 import { FlashMessages } from '../FlashMessages';
 
 interface User {
@@ -99,7 +100,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
               </div>
               <div className="text-[2.3em] py-[2%] bg-white text-center [&_p]:pl-[1%]">
                 <img
-                  src={user.avatarPath || '/assets/default.png'}
+                  src={user.avatarPath || defaultAvatarImage}
                   className="rounded-full"
                   width={300}
                   height={300}

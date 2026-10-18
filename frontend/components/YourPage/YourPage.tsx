@@ -5,6 +5,7 @@
 
 import { Star } from 'lucide-react';
 import { useState } from 'react';
+import heroImage from '../../../app/assets/images/main1.jpg';
 import type { Id } from '../../api';
 import { api } from '../../api';
 import { calcAge } from '../../utils/date';
@@ -91,7 +92,7 @@ export const YourPage = ({
       {/* プロフィールヘッダー */}
       <div>
         <div className="w-full relative mx-auto">
-          <img src="/assets/main1.jpg" height="850px" width="100%" alt="背景画像" />
+          <img src={heroImage} height="850px" width="100%" alt="背景画像" />
           <div>
             <div className="absolute top-[2%] left-[1%]">
               <h1 className="bg-p-light rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]">

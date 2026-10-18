@@ -9,8 +9,9 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   # 保存形式をJPGにする
   # process :convert => "png"
+  # Propshaft はダイジェスト付きのファイルしか配信しないので、パスは直書きせずヘルパーで解決する
   def default_url
-    '/assets/default.png'
+    ActionController::Base.helpers.image_path('default.png')
   end
 
   def size_range

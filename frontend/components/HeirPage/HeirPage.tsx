@@ -4,6 +4,7 @@
 // スカウト送信は /api/v1 の JSON API に送信する。
 
 import { useState } from 'react';
+import heroImage from '../../../app/assets/images/main1.jpg';
 import type { Id } from '../../api';
 import { api } from '../../api';
 import { calcAge } from '../../utils/date';
@@ -58,7 +59,7 @@ export const HeirPage = ({
 
       {/* プロフィールヘッダー */}
       <div className="w-full relative mx-auto">
-        <img src="/assets/main1.jpg" height="800px" width="100%" alt="背景画像" />
+        <img src={heroImage} height="800px" width="100%" alt="背景画像" />
         <div className="absolute top-[2%] left-[1%]">
           <h1 className="bg-p-light rounded-[30px] py-[6px] px-[15px] inline-block text-[67px]">
             {user.name}

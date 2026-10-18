@@ -90,7 +90,7 @@ module Api
         api_patch_multipart '/api/v1/profile', params: { user: { avatar_path: upload_fixture } }
         assert_response :success
         assert json['avatarPath'].present?
-        assert_not_equal '/assets/default.png', json['avatarPath']
+        assert_not_equal default_avatar_path, json['avatarPath']
       end
 
       test 'PATCH /api/v1/profile — 画像と一緒に名前も更新できる' do

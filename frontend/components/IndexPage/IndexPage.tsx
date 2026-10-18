@@ -15,6 +15,9 @@
 
 import { Handshake, Info, Map as MapIcon, UserPlus } from 'lucide-react';
 import { useState } from 'react';
+import heroImage from '../../../app/assets/images/main1.jpg';
+import mainBackgroundImage from '../../../app/assets/images/main3.jpg';
+import titleImage from '../../../app/assets/images/title.png';
 import type { Creator } from '../CreatorCard';
 import { CreatorCard } from '../CreatorCard';
 import { FlashMessages } from '../FlashMessages';
@@ -48,7 +51,10 @@ interface Props {
 const ServiceDescription = () => (
   <>
     <div className="bg-p-brand text-center w-full h-15.25" />
-    <div className="w-full text-center min-h-[53vh] max-h-[310vh] bg-[url('/assets/main3.jpg')] bg-cover">
+    <div
+      className="w-full text-center min-h-[53vh] max-h-[310vh] bg-cover"
+      style={{ backgroundImage: `url(${mainBackgroundImage})` }}
+    >
       <h3 className="text-[47px] text-white">どんなシステム？</h3>
       <div className="flex flex-col sm:flex-row justify-around w-full m-0 gap-4 sm:gap-0 px-[3%] sm:px-0">
         <div className="w-full sm:w-1/3">
@@ -113,13 +119,13 @@ export const IndexPage = ({
       {/* メインビジュアル */}
       <div className="text-center relative">
         <img
-          src="/assets/main1.jpg"
+          src={heroImage}
           className="block w-full h-[57em] object-cover"
           alt="メインヴィジュアル"
           width="100%"
         />
         <h1 className="absolute top-[48%] left-[45%] -translate-x-1/2 -translate-y-1/2 m-0 p-0 text-[170px] font-bold text-white">
-          <img src="/assets/title.png" width="115%" height="115%" alt="SucSeed" />
+          <img src={titleImage} width="115%" height="115%" alt="SucSeed" />
         </h1>
       </div>
 
