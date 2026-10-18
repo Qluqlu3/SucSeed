@@ -66,6 +66,17 @@ module Api
         assert_equal 'AppealCreator工房', json['items'].first['creatorTitle']
       end
 
+      test 'GET /api/v1/appeals — 退会した相手は一覧に出ない' do
+        left_heir = build_heir('LeftAppealHeir')
+        Match.create!(user_id: left_heir.id, target_user_id: @creator.id, is_scout: false)
+        left_heir.soft_delete
+
+        api_login(@creator)
+        api_get '/api/v1/appeals'
+        assert_response :success
+        assert_empty json['items']
+      end
+
       test 'GET /api/v1/appeals — スカウトは含まれない' do
         Match.create!(user_id: @heir.id, target_user_id: @creator.id, is_scout: true)
 

@@ -6,7 +6,7 @@ module Api
 
       def index
         column = Current.creator? ? :target_user_id : :user_id
-        scope = Match.accepted.includes(:user, :target_user)
+        scope = Match.accepted.joins(:user, :target_user).preload(:user, :target_user)
                      .where(column => Current.user_id)
                      .order(created_at: :desc)
         pagy, matches = paginate(scope, default_limit: PER_PAGE)

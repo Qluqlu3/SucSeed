@@ -94,6 +94,24 @@ module Api
         assert_equal [@creator.id], json['items'].pluck('creatorUserId')
       end
 
+      # 退会（論理削除）した相手は default_scope で引けず nil になる。HTML の一覧と同じく出さない
+      test 'GET /api/v1/matches・scouts — 退会した相手は一覧に出ない' do
+        Match.create!(user_id: @heir.id, target_user_id: @creator.id, is_scout: true, is_ok: true)
+        left_heir = build_heir('LeftHeir')
+        Match.create!(user_id: left_heir.id, target_user_id: @creator.id, is_scout: true,
+                      is_ok: true)
+        left_heir.soft_delete
+
+        api_login(@creator)
+        api_get '/api/v1/matches'
+        assert_response :success
+        assert_equal [@heir.id], json['items'].pluck('heirUserId')
+
+        api_get '/api/v1/scouts'
+        assert_response :success
+        assert_equal [@heir.id], json['items'].pluck('heirUserId')
+      end
+
       test 'GET /api/v1/matches — 未ログインは 401' do
         api_get '/api/v1/matches'
         assert_response :unauthorized
