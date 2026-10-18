@@ -12,9 +12,7 @@
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
 | 🟡 中 | アピール/スカウト作成時に相手のロールを検証していない | `Match` / `appeals`・`scouts` | S | 未着手 |
 | 🟡 中 | 管理者セッションにタイムアウトとログアウトが無い | `AdminAuthentication` | S | 未着手 |
-| 🟡 中 | Sprockets → Propshaft 移行 | アセットパイプライン | M | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
-| 🟢 低 | Three.js 遅延読み込み（Propshaft 移行とセット） | `frontend/` | M | 未着手 |
 | 🟢 低 | `to_json` → `json_escape` 明示化 | 全 ERB ビュー (45 ファイル) | S | 未着手 |
 | 🟢 低 | コメント投稿の二重送信防止 | `DiaryCard` / `SelectedGalleryPage` | S | 未着手 |
 | 🟢 低 | フロントの未使用の `api.*` の整理（`calcAge`/`timeAgo` の重複は解消済み） | `frontend/api/` | S | 未着手 |
@@ -44,23 +42,6 @@
 `AdminAuthentication#resume_admin_session` には期限が無く、ログアウトのルートも無い。
 共用端末で管理画面を開くとブラウザを閉じるまで残る。
 
-### 🟡-1　Sprockets → Propshaft 移行
-
-**現状**: Rails 8.1 だがアセットパイプラインは Sprockets のまま
-（`sprockets-rails` + `jsbundling-rails`）。Rails 8 の新規アプリ既定は Propshaft。
-
-Propshaft はダイジェスト付与だけを行い、esbuild が出力したファイルに
-二重フィンガープリントを付けない。これは下の Three.js 遅延読み込みが
-できなかった直接の原因でもある。
-
-**確認すること**:
-
-- `app/assets/config/manifest.js` の廃止と `config.assets.paths` の再設定
-- `stylesheet_link_tag` / `javascript_include_tag` の解決先
-- CarrierWave の `default_url`（`/assets/default.png`）が解決できること
-
----
-
 ### 🟢-1　HTML のフィードもページネーションする
 
 **現状**: API 側（`/api/v1/diaries` `/api/v1/galleries` など）は全てページング済みだが、
@@ -69,22 +50,6 @@ HTML のフィード（`/diary/view`、`/gallery/my_gallery` など）は全件�
 `DiaryFeedQueryService` / `GalleryFeedQueryService` は `scope_for` と `build` に
 分かれているため Rails 側は `pagy` を挟むだけで済む。フロント側にページ送り UI
 （既存の `Pagination` コンポーネント）を足す作業がメイン。
-
----
-
-### 🟢-2　Three.js 遅延読み込み
-
-**現状**: `three@0.183.2`（`application.js` 2.7MB の主要因、`SelectedGalleryPage` が静的 import）。
-
-**2026-08 調査結果**: `esbuild --splitting` + `React.lazy` でチャンク分割を試みたが、
-本番で 3D ビューワーが 404 になることを確認していったん見送った。
-
-原因: `app/assets/config/manifest.js` の `link_tree ../builds` により、esbuild が生成した
-チャンクファイルに対して Sprockets が**さらに独自のダイジェストを付与**する。
-esbuild がバンドル内に埋め込む動的 import の参照文字列は元のファイル名のままなので、
-ブラウザの実行時 `import()` が実在しないパスを叩いて失敗する。
-
-Propshaft へ移行すれば二重ダイジェストが起きなくなるため、🟡-1 とセットで対応する。
 
 ---
 
@@ -104,6 +69,28 @@ Propshaft へ移行すれば二重ダイジェストが起きなくなるため�
 ---
 
 ## 完了済み（参考）
+
+### 2026-10　Sprockets → Propshaft 移行 / Three.js の遅延読み込み
+
+- **アセットパイプラインを Propshaft に移行**（`sprockets-rails` → `propshaft`、`manifest.js` 削除）
+- **Three.js を別チャンクに分離**。`esbuild --splitting` + `React.lazy` で、ギャラリー詳細の
+  3D プレビューを描くときにだけ読み込む。`application.js` 2.6MB → 1.5MB
+  - 2026-08 に見送った原因（Sprockets がチャンクに独自のダイジェストを付け、動的 import の
+    参照先が実在しなくなる）は、チャンクを `*-[hash].digested.js` で出力して解消。
+    Propshaft は `.digested` 付きのファイルに二重のダイジェストを付けない
+  - チャンクの取得に失敗しても 3D プレビュー枠内だけで扱う（`ErrorBoundary` の `fallback`）
+- **画像の直書きパスを廃止**。Propshaft はダイジェスト付きのファイルしか出力しないため、
+  フロントの `/assets/main1.jpg` のような参照は本番で 404 になる。esbuild の file loader で
+  `import` する形にした（Tailwind の `bg-[url('/assets/...')]` は Propshaft の CSS 書き換えで
+  解決できないので style 指定に）。CarrierWave の既定画像は `image_path` で解決
+- 本番モードで `assets:precompile` → サーバー起動し、全アセットが 200 で返ること、
+  ヘッドレス Chrome で 3D ビューワーが描画されトップの画像が表示されることを確認
+
+### 同時に発見・修正したバグ
+
+- **退会したユーザーのコメント・いいねがあると日記フィードとギャラリー詳細が 500**。
+  `includes(:user)` だけで、投稿者が論理削除されていると `user` が nil になっていた。
+  `joins(:user)` で退会者の行を落とすようにした（HTML・API 共通のサービスで修正）
 
 ### 2026-10　フロントから未使用になった HTML 投稿ルートを削除
 
