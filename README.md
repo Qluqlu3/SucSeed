@@ -110,6 +110,7 @@ docker compose run --rm web rails db:create db:migrate
 ```
 frontend/
 ├── application.ts          # esbuild エントリーポイント
+├── pages.ts                # 画面 id とページコンポーネントの登録表
 ├── components/
 │   ├── mountPage.tsx       # 全ページ共通のマウントロジック
 │   ├── ErrorBoundary/
@@ -117,8 +118,7 @@ frontend/
 │   ├── FlashMessages/
 │   ├── IndexPage/          # ページごとに 1 ディレクトリ
 │   │   ├── IndexPage.tsx       # コンポーネント本体
-│   │   ├── index.ts            # re-export
-│   │   └── mountIndexPage.tsx  # このページ専用のマウント処理
+│   │   └── index.ts            # re-export
 │   └── ...
 ├── spa/                    # Navbar・LoginModal など全ページ共通の island
 ├── three/                  # Three.js 3D ビューワー
@@ -130,28 +130,24 @@ frontend/
 
 ### ERB ページに React コンポーネントを埋め込む
 
-**1. ERB に `id` と `data-props` を持つ div を置く**
+**1. テンプレートで `react_root` を呼ぶ**
 
 ```erb
-<div id="my-page" data-props="<%= @page_props.to_json %>"></div>
+<%= react_root 'my-page', @page_props %>
 ```
 
-**2. `mountMyPage.tsx` でマウントする**
+`@page_props` は JSON にして `data-props` 属性に入ります（エスケープはヘルパーが行うので、
+JSON を手で ERB に埋め込まないこと）。props を取らない画面は `react_root 'my-page'` だけでよい。
 
-```tsx
-import { mountPage } from '../mountPage';
-import { MyPage } from './MyPage';
-
-mountPage('my-page', MyPage, { /* fallback props */ });
-```
-
-`mountPage` は `data-props` の JSON を自動でパースしてコンポーネントに渡します。
-
-**3. `application.ts` に import を追加する**
+**2. `frontend/pages.ts` に1行足す**
 
 ```ts
-import '../components/MyPage/mountMyPage';
+import { MyPage } from './components/MyPage';
+
+mountPage('my-page', MyPage);
 ```
+
+`mountPage` は `data-props` の JSON をパースしてコンポーネントの props として渡します。
 
 ### Lint / Format コマンド
 

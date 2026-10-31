@@ -12,7 +12,7 @@
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
 | 🟡 中 | 管理者セッションにタイムアウトとログアウトが無い | `AdminAuthentication` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
-| 🟢 低 | `to_json` → `json_escape` 明示化 | 全 ERB ビュー (45 ファイル) | S | 未着手 |
+| 🟢 低 | 使われていない 500 画面（`render_500`・`errors/error_500`）の整理 | `ApplicationController` | S | 未着手 |
 | 🟢 低 | コメント投稿の二重送信防止 | `DiaryCard` / `SelectedGalleryPage` | S | 未着手 |
 | 🟢 低 | フロントの未使用の `api.*` の整理（`calcAge`/`timeAgo` の重複は解消済み） | `frontend/api/` | S | 未着手 |
 
@@ -51,22 +51,28 @@ HTML のフィード（`/diary/view`、`/gallery/my_gallery` など）は全件�
 
 ---
 
-### 🟢-3　`to_json` → `json_escape` 明示化
+### 🟢-3　使われていない 500 画面の整理
 
-**現状**: 全 ERB ビュー（45 ファイル）が `<%= @page_props.to_json %>` を使用。
-`<%=` の自動エスケープで現状は安全だが、将来 `<%-` に変えると即 XSS になる。
-
-```erb
-<%# 現状（暗黙的エスケープ） %>
-<div data-props="<%= @page_props.to_json %>"></div>
-
-<%# 改善（明示的） %>
-<div data-props="<%= json_escape @page_props.to_json %>"></div>
-```
+`ApplicationController#render_500` と `errors/error_500` テンプレート（`Error500Page`）は
+どこからも呼ばれておらず、表示される経路が無い（本番の 500 は `public/500.html`）。
+React 版の 500 画面を出したいなら `rescue_from StandardError` か `config.exceptions_app` で
+繋ぐ、不要なら3点を削除する。
 
 ---
 
 ## 完了済み（参考）
+
+### 2026-10　画面マウントの定型コードを一本化
+
+画面ごとに「1行の ERB」「`mountXxx.tsx`」「`application.ts` の import」の3点が必要で、
+`mountXxx.tsx` の予備 props は一度も使われない死にコードなのに型とは別に手書きされていた。
+
+- **ERB は `react_root` ヘルパー1行に**（48 ファイル）。props の JSON は tag ヘルパーが
+  属性値としてエスケープする（旧 🟢-3「`to_json` → `json_escape` 明示化」はこれで解消。
+  `<%=` の自動エスケープに暗黙に頼る書き方が無くなった）
+- **48 個の `mountXxx.tsx` を `frontend/pages.ts` の登録表に置き換え**、予備 props を削除
+- 変更前後のテンプレート出力がバイト単位で一致すること、development / production の
+  サーバーで 47 画面がマウントされることをヘッドレス Chrome で確認
 
 ### 2026-10　マッチング・メッセージのドメイン操作を集約
 
