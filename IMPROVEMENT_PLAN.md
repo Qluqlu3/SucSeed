@@ -62,6 +62,16 @@ React 版の 500 画面を出したいなら `rescue_from StandardError` か `co
 
 ## 完了済み（参考）
 
+### 2026-10　自分のプロフィールの表現を HTML / API で共通化
+
+- **`ProfileSerializer` を追加**し、API の `GET/PATCH /api/v1/profile` と HTML のマイページ・
+  プロフィール編集画面で共用。フロントのマイページも API と同じ `Profile` 型で受け取る
+- 「職人/後継者の詳細プロフィールを登録済みか」の判定（HTML と API で裏返しに二重実装されていた）と
+  ロールの判定を `User#detail_profile_registered?`・`User#role` に集約
+- **パラメータが欠けると 500 になっていた**マイページ更新・パスワード再設定を `params.expect` に
+  （`params[:user][:xxx]` の生参照が HTML 側に残っていた）
+- テストの無かったマイページに HTML 側のテストを追加。テスト 347 件 → 357 件
+
 ### 2026-10　画面マウントの定型コードを一本化
 
 画面ごとに「1行の ERB」「`mountXxx.tsx`」「`application.ts` の import」の3点が必要で、
