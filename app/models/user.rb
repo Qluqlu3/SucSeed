@@ -48,6 +48,19 @@ class User < ApplicationRecord
   has_many :heir_message_lists, class_name: 'MessageList', foreign_key: :heir_user_id
   acts_as_tagger
 
+  # フロントの Role 型（frontend/api/types.ts）と対応する。未ログインの 'guest' は Current.role が返す
+  def role
+    return 'creator' if is_creator?
+    return 'heir' if heir.present?
+
+    'user'
+  end
+
+  # 職人なら creators、それ以外なら heirs の詳細プロフィールを登録済みか
+  def detail_profile_registered?
+    is_creator? ? Creator.exists?(user_id: id) : Heir.exists?(user_id: id)
+  end
+
   def email_verification_token
     generate_token_for(:email_verification)
   end

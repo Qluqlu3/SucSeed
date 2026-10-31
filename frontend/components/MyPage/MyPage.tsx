@@ -6,25 +6,17 @@
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import defaultAvatarImage from '../../../app/assets/images/default.png';
+import type { Profile } from '../../api';
 import { FlashMessages } from '../FlashMessages';
 
-interface User {
-  name: string;
-  avatarPath: string;
-  isMan: boolean;
-  email: string;
-  birthday: string; // "YYYY-MM-DD"
-  profile: string | null;
-}
-
 interface Props {
-  user: User;
-  profileIncomplete: boolean; // true = 詳細情報未登録
+  // API の GET /api/v1/profile と同じ表現（Rails 側も同じ ProfileSerializer）
+  user: Profile;
   isCreator: boolean;
   flash: Record<string, string>;
 }
 
-export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => {
+export const MyPage = ({ user, isCreator, flash }: Props) => {
   const birthday = new Date(user.birthday);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -86,7 +78,7 @@ export const MyPage = ({ user, profileIncomplete, isCreator, flash }: Props) => 
           </div>
 
           {/* 詳細情報未登録アラート */}
-          {profileIncomplete && (
+          {!user.detailRegistered && (
             <div className="px-4 py-3 rounded mb-2 text-xl bg-yellow-100 border border-yellow-400 text-yellow-800">
               ユーザーの詳細情報登録お願いします。
             </div>

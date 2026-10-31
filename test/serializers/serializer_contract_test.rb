@@ -25,6 +25,7 @@ require 'test_helper'
 #   TraditionalCraftSerializer -> TraditionalCraft
 #   ArtCategorySerializer      -> ArtCategory
 #   CurrentUserSerializer      -> MessagePartner / 各ページの currentUser
+#   ProfileSerializer          -> Profile（本人用。email を含む）
 class SerializerContractTest < ActiveSupport::TestCase
   # frontend/api/types.ts と 1:1 で対応するキー（camelCase・ソート済み）
   EXPECTED_KEYS = {
@@ -46,6 +47,8 @@ class SerializerContractTest < ActiveSupport::TestCase
     'MatchSerializer' => %w[createdAt creator creatorTitle creatorUserId heir heirUserId isAddList
                             isOk isScout],
     'MessageSerializer' => %w[content createdAt id mine receiveUserId sendUserId],
+    'ProfileSerializer' => %w[avatarPath birthday detailRegistered email id isCertified isMan name
+                              profile role],
     'TraditionalCraftSerializer' => %w[categoryName designatedYear features id imagePath name
                                        prefectureCode productionArea relatedCreatorsCount
                                        sourceUrl summary],
@@ -128,6 +131,7 @@ class SerializerContractTest < ActiveSupport::TestCase
       'GalleryDetailSerializer' => GalleryDetailSerializer.new(gallery_detail).serializable_hash,
       'MatchSerializer' => MatchSerializer.build([@match]).first,
       'MessageSerializer' => message_serializer_sample,
+      'ProfileSerializer' => ProfileSerializer.new(@heir_user).serializable_hash,
       'TraditionalCraftSerializer' => TraditionalCraftSerializer.build([@craft]).first,
     }
   end

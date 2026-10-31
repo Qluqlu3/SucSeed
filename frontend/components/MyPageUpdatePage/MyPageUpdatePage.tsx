@@ -5,19 +5,14 @@
 
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
+import type { Profile } from '../../api';
 import { getCsrfToken } from '../../utils/csrf';
 
 import { FlashMessages } from '../FlashMessages';
 
-interface User {
-  name: string;
-  email: string;
-  profile: string | null;
-  avatarPath: string;
-}
-
 interface Props {
-  user: User;
+  // API の GET /api/v1/profile と同じ表現（Rails 側も同じ ProfileSerializer）
+  user: Profile;
   errors: string[];
   isCreator: boolean;
   flash: Record<string, string>;

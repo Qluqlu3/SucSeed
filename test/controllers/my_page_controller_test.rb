@@ -38,13 +38,13 @@ class MyPageControllerTest < ActionDispatch::IntegrationTest
   test 'GET /my_page/my_page — 職人/後継者の詳細プロフィールが未登録かどうかで登録導線を出し分ける' do
     log_in_as(@user)
     get '/my_page/my_page'
-    assert_equal true, page_props['profileIncomplete']
+    assert_equal false, page_props['user']['detailRegistered']
 
     post '/user/logout'
     heir = build_heir('MyPageHeir')
     log_in_as(heir)
     get '/my_page/my_page'
-    assert_equal false, page_props['profileIncomplete']
+    assert_equal true, page_props['user']['detailRegistered']
   end
 
   test 'GET /my_page/update — 編集フォームに現在の値を入れる' do

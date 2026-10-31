@@ -39,10 +39,6 @@ class Current < ActiveSupport::CurrentAttributes
 
   # フロントの Role 型（frontend/spa/sessionTypes.ts）と 1:1 で対応する。
   def role
-    return 'guest'   if user.nil?
-    return 'creator' if user.is_creator?
-    return 'heir'    if user.heir.present?
-
-    'user'
+    user&.role || 'guest'
   end
 end

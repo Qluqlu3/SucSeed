@@ -162,4 +162,29 @@ class UserTest < ActiveSupport::TestCase
   test 'email_verification_token は改竄されると引けない' do
     assert_nil User.find_by_email_verification_token('tampered')
   end
+
+  # ── ロールと詳細プロフィール ─────────────────────────────────────────
+
+  test 'role は職人なら creator、後継者情報があれば heir、どちらでもなければ user' do
+    creator = build_user(is_creator: true).tap(&:save!)
+    heir = build_user.tap(&:save!)
+    Heir.create!(user_id: heir.id, art_category_id: art_categories(:one).id)
+    plain = build_user.tap(&:save!)
+
+    assert_equal %w[creator heir user], [creator, heir, plain].map(&:role)
+  end
+
+  test 'detail_profile_registered? は職人なら creators、それ以外は heirs の登録で判定する' do
+    creator = build_user(is_creator: true).tap(&:save!)
+    assert_not creator.detail_profile_registered?
+
+    Creator.create!(user_id: creator.id, title: '工房', art_category_id: art_categories(:one).id,
+                    establishment: 1, employee: 1, postal_code: '1000001', is_recruitment: true)
+    assert creator.detail_profile_registered?
+
+    heir = build_user.tap(&:save!)
+    assert_not heir.detail_profile_registered?
+    Heir.create!(user_id: heir.id, art_category_id: art_categories(:one).id)
+    assert heir.detail_profile_registered?
+  end
 end
