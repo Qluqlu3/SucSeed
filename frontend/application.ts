@@ -12,63 +12,8 @@
 // DSN が meta タグにセットされている場合のみ（＝本番環境）初期化される
 import './spa/sentry';
 
-// ── ページマウント（各ページの専用 mountXxxPage.tsx）────────────────
-// Admin
-import './components/AdminCreatePage/mountAdminCreatePage';
-import './components/AdminDiaryCommentEditPage/mountAdminDiaryCommentEditPage';
-import './components/AdminDiaryEditPage/mountAdminDiaryEditPage';
-import './components/AdminGalleryEditPage/mountAdminGalleryEditPage';
-import './components/AdminIndexPage/mountAdminIndexPage';
-import './components/AdminInquiryDetailPage/mountAdminInquiryDetailPage';
-import './components/AdminInquiryEditPage/mountAdminInquiryEditPage';
-import './components/AdminLoginPage/mountAdminLoginPage';
-import './components/AdminSelectedUserEditPage/mountAdminSelectedUserEditPage';
-import './components/AdminUserEditPage/mountAdminUserEditPage';
-// Creator
-import './components/CreatorCreatePage/mountCreatorCreatePage';
-import './components/CreatorShowPage/mountCreatorShowPage';
-import './components/CreatorUpdatePage/mountCreatorUpdatePage';
-// Diary
-import './components/DiaryHeirFavoritePage/mountDiaryHeirFavoritePage';
-import './components/DiaryPostPage/mountDiaryPostPage';
-import './components/DiarySelectPage/mountDiarySelectPage';
-import './components/MyDiaryPage/mountMyDiaryPage';
-import './components/YourDiaryPage/mountYourDiaryPage';
-// Gallery
-import './components/FavoriteGalleryPage/mountFavoriteGalleryPage';
-import './components/GallerySearchPage/mountGallerySearchPage';
-import './components/HeirFavoriteGalleryPage/mountHeirFavoriteGalleryPage';
-import './components/MyGalleryPage/mountMyGalleryPage';
-import './components/SelectedGalleryPage/mountSelectedGalleryPage';
-import './components/UserGalleryViewPage/mountUserGalleryViewPage';
-// Heir
-import './components/HeirCreatePage/mountHeirCreatePage';
-import './components/HeirPage/mountHeirPage';
-import './components/HeirShowPage/mountHeirShowPage';
-import './components/HeirUpdatePage/mountHeirUpdatePage';
-// Match
-import './components/AppealShowPage/mountAppealShowPage';
-import './components/AppealedListPage/mountAppealedListPage';
-import './components/MatchingPage/mountMatchingPage';
-import './components/ScoutCheckPage/mountScoutCheckPage';
-import './components/ScoutShowPage/mountScoutShowPage';
-// Message
-import './components/MessageListPage/mountMessageListPage';
-import './components/MessagePage/mountMessagePage';
-// User
-import './components/EmailCertifiedPage/mountEmailCertifiedPage';
-import './components/Error404Page/mountError404Page';
-import './components/Error500Page/mountError500Page';
-import './components/IndexPage/mountIndexPage';
-import './components/InquiryInputPage/mountInquiryInputPage';
-import './components/MapPage/mountMapPage';
-import './components/MyPage/mountMyPage';
-import './components/MyPageUpdatePage/mountMyPageUpdatePage';
-import './components/PasswordForgotPage/mountPasswordForgotPage';
-import './components/PasswordResetPage/mountPasswordResetPage';
-import './components/SearchUserPage/mountSearchUserPage';
-import './components/UserRegistPage/mountUserRegistPage';
-import './components/YourPage/mountYourPage';
+// ── ページマウント（画面 id とコンポーネントの対応は pages.ts）──────────
+import './pages';
 
 // ── SPA アイランド（レイアウト共通 UI）───────────────────────────────
 // Navbar / Footer / LoginModal を全ページに island としてマウントする
