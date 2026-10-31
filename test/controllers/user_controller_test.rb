@@ -168,6 +168,20 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     assert @user.reload.authenticate('newpass99')
   end
 
+  test 'PATCH /user/password_reset/:token — user パラメータが無くても 500 にせず 400 相当で弾く' do
+    patch "/user/password_reset/#{@user.password_reset_token}"
+
+    assert_redirected_to '/index'
+    assert_equal I18n.t('flash.danger.invalid_request'), flash[:danger]
+  end
+
+  test 'POST /user/password_forgot — user_email パラメータが無くても 500 にしない' do
+    post '/user/password_forgot'
+
+    assert_response :success
+    assert_select '#password-forgot-page'
+  end
+
   test 'PATCH /user/password_reset/:token — 使用済みトークンは再利用できない' do
     token = @user.password_reset_token
     patch "/user/password_reset/#{token}",

@@ -37,8 +37,7 @@ class MyPageController < ApplicationController
   # アップデート実行
   def update
     @user = Current.user
-    if @user.update(avatar_path: params[:user][:avatar_path], name: params[:user][:name], email: params[:user][:email],
-                    profile: params[:user][:profile])
+    if @user.update(params.expect(user: %i[avatar_path name email profile]))
       flash[:success] = t('flash.success.saved')
       redirect_to '/my_page/my_page'
     else

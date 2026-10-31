@@ -50,7 +50,8 @@ class UserController < ApplicationController
   end
 
   def email_exist
-    if params[:user_email][:email] == ''
+    email = params.expect(user_email: [:email])[:email]
+    if email.blank?
       flash.now[:danger] = t('flash.danger.email_blank')
       @page_props = { flash: flash.to_h }
       render :password_forgot
@@ -59,7 +60,7 @@ class UserController < ApplicationController
 
     # トークンは has_secure_password が署名付きで都度生成するため、
     # DB への保存は不要（メール本文の URL に含めるだけ）。
-    user = User.find_by(email: params[:user_email][:email])
+    user = User.find_by(email: email)
     GmailMailer.send_password_reset(user).deliver_now if user
 
     flash[:success] = t('flash.success.password_reset_sent')
@@ -92,7 +93,7 @@ class UserController < ApplicationController
 
     # パスワードが変わるとトークンに埋め込まれた password_salt も変わるため、
     # 発行済みのリセットリンクは自動的に無効になる（明示的な後始末は不要）。
-    if user.update(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
+    if user.update(params.expect(user: %i[password password_confirmation]))
       flash[:success] = t('flash.success.password_changed')
       redirect_to '/index'
     else
