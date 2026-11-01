@@ -1,6 +1,9 @@
-# packages フィールド: pnpm 9 のワークスペース必須フィールド（'.' = プロジェクトルートのみ）
+# packages フィールド: pnpm 9 のワークスペース必須フィールド
+#   '.'   = Rails に同梱している既存のフロント（frontend/）
+#   'web' = 移行先の Next.js アプリ
 packages:
   - '.'
+  - 'web'
 
 # allowBuilds: pnpm 11 のビルドスクリプト承認設定（pnpm 9 は無視する）
 allowBuilds:

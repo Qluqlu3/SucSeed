@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.7/schema.json",
   "files": {
-    "includes": ["frontend/**/*.ts", "frontend/**/*.tsx"],
+    "includes": ["frontend/**/*.ts", "frontend/**/*.tsx", "web/**/*.ts", "web/**/*.tsx", "!web/.next", "!web/next-env.d.ts"],
     "ignoreUnknown": true
   },
   "formatter": {

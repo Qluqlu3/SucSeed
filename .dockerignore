@@ -18,6 +18,10 @@
 
 # Node.js 依存パッケージ (コンテナ内でインストールするので不要)
 node_modules/
+web/node_modules/
+
+# Next.js のビルド成果物（web/ は Rails のイメージとは別に配置する）
+web/.next/
 
 # ログファイル
 log/

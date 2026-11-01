@@ -12,7 +12,7 @@
     "typescript": "^5.9.3"
   },
   "lint-staged": {
-    "frontend/**/*.{ts,tsx}": [
+    "{frontend,web}/**/*.{ts,tsx}": [
       "biome check --write"
     ],
     "**/*.rb": [
@@ -27,8 +27,8 @@
     "build:watch": "pnpm build --watch=forever",
     "build:css": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --minify",
     "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always",
-    "lint": "biome check frontend/",
-    "lint:fix": "biome check --write frontend/",
+    "lint": "biome check frontend/ web/",
+    "lint:fix": "biome check --write frontend/ web/",
     "format": "biome format --write frontend/",
     "prepare": "husky"
   },

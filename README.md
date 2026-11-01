@@ -167,3 +167,19 @@ Biome の設定は [biome.json](biome.json) を参照してください。
 pnpm run build       # JS（esbuild）
 pnpm run build:css   # CSS（Tailwind）
 ```
+
+### Next.js への移行（web/）
+
+画面を Rails の ERB + React から Next.js（`web/`）へ1画面ずつ移している途中です。
+ブラウザが見るのは Next の1オリジンだけで、Next にまだ無い画面と `/api/*` は
+[web/next.config.ts](web/next.config.ts) の `rewrites` で Rails に中継します。
+同一オリジンなので、ログインのセッション Cookie と CSRF トークンは今のまま使えます。
+
+今のところ Next に移した画面はまだ無く、開発時の入口も Rails（localhost:3000）のままです。
+中継の動作を見るときは、Rails を起動したうえで別のターミナルで次を実行し、localhost:3100 を開きます。
+
+```sh
+pnpm --filter sucseed-web dev        # 中継先は RAILS_ORIGIN（既定 http://localhost:3000）
+pnpm --filter sucseed-web typecheck
+pnpm --filter sucseed-web build
+```

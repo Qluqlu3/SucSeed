@@ -101,6 +101,13 @@ jobs:
       - name: TypeScript type check
         run: pnpm exec tsc --noEmit
 
+      # 移行先の Next.js アプリ（web/）。型チェックとビルドが通ることだけを見る
+      - name: Next.js type check
+        run: pnpm --filter sucseed-web typecheck
+
+      - name: Next.js build
+        run: pnpm --filter sucseed-web build
+
   # ── RuboCop ────────────────────────────────────────────────────
   rubocop:
     name: RuboCop
