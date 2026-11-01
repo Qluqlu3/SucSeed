@@ -9,18 +9,52 @@
 
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
+| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 0-1 完了 |
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
 | 🟡 中 | 管理者セッションにタイムアウトとログアウトが無い | `AdminAuthentication` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | 使われていない 500 画面（`render_500`・`errors/error_500`）の整理 | `ApplicationController` | S | 未着手 |
 | 🟢 低 | コメント投稿の二重送信防止 | `DiaryCard` / `SelectedGalleryPage` | S | 未着手 |
 | 🟢 低 | フロントの未使用の `api.*` の整理（`calcAge`/`timeAgo` の重複は解消済み） | `frontend/api/` | S | 未着手 |
+| 🟢 低 | API で CSRF の Origin 検査が効いていない | `Api::BaseController` | S | 未着手 |
 
 工数: S = 30分以内 / M = 半日程度 / L = 複数日
 
 ---
 
 ## 詳細
+
+### 🔵　Next.js への移行
+
+**方針**（2026-11 決定）: Next.js を同一ドメインで配信し、`/api/*` と未移行の画面は
+`rewrites` で Rails に中継する。URL のパスは今と同じに保つ（メールのリンク・`/uploads/...`・
+画面内リンクを変えずに済む）。管理画面も移す。検索エンジン対策・OGP は最後に足す。
+
+| 段階 | 内容 | 状態 |
+|---|---|:---:|
+| 0-1 | `web/` の骨組みと Rails への中継。Lint・型チェック・ビルドを CI に載せる | 完了 |
+| 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を別ポートへ） | |
+| 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | |
+| 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
+| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | |
+| 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | |
+| 3 | 管理画面（`/api/v1/admin/*` を作ってから） | |
+| 4 | Rails の HTML 側（ビュー・レイアウト・Propshaft・jsbundling・Tailwind・HTML 側コントローラ）を撤去し `api_only` に | |
+| 5 | 公開ページをサーバー側で描画し `generateMetadata` を付ける | |
+
+`flash`・未ログイン時のリダイレクト・404 は、段階1の最初の画面で Next 側の仕組みを作る。
+
+0-1 で Next（3100）経由の次の動作を確認済み: Rails のリダイレクト先が Next のホストになる
+（`X-Forwarded-Host`）、アセット・アップロード画像の配信、API のログインと multipart の画像アップロード、
+HTML フォームの CSRF（正しい Origin は通り、別オリジンは 422）、未定義の API は JSON の 404。
+
+### 🟢　API で CSRF の Origin 検査が効いていない
+
+`config.action_controller.forgery_protection_origin_check` は `ActionController::Base` にしか
+適用されず、`Api::BaseController`（`ActionController::API`）では `false` のまま。
+別オリジンの `Origin` ヘッダでも、CSRF トークンさえ正しければ API の更新系が通る
+（トークンの検査は効いているので直ちに破られるわけではない）。
+`allow_forgery_protection` と同じく `ActionController::Base` の値を引き継げば揃う。
 
 ### 🟡-A　メッセージにマッチング成立の確認が無い
 
