@@ -25,6 +25,8 @@ module Api
     # 適用されない（API は RequestForgeryProtection を持たないため設定がスキップされる）。
     # テスト環境で CSRF を無効化する設定などを取りこぼさないよう、HTML 側と同じ値を引き継ぐ。
     self.allow_forgery_protection = ActionController::Base.allow_forgery_protection
+    # Origin ヘッダの検査（load_defaults で有効）も同じ理由で引き継がれないため揃える
+    self.forgery_protection_origin_check = ActionController::Base.forgery_protection_origin_check
 
     before_action :require_login
 
