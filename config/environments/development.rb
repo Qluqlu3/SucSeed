@@ -42,6 +42,10 @@ Rails.application.configure do
     host: ENV.fetch('APP_HOST', 'localhost:3000'),
   }
 
+  # docker compose では Next（next サービス）が http://web:3001 宛てに中継してくるため、
+  # サービス名のホストも受け付ける（ブラウザ側のホストは X-Forwarded-Host で届く）
+  config.hosts << 'web'
+
   # config.force_ssl = true
 
   config.action_mailer.perform_caching = false

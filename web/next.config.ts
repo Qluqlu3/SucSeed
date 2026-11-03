@@ -3,7 +3,7 @@ import type { NextConfig } from 'next';
 // 移行中は、Next にまだ無い画面と API をすべて Rails に中継する。
 // ブラウザから見えるオリジンは Next の1つだけなので、Rails のセッション Cookie と
 // CSRF トークンは今のまま使える（Rails 側は X-Forwarded-Host で元のホストを知る）。
-const railsOrigin = process.env.RAILS_ORIGIN ?? 'http://localhost:3000';
+const railsOrigin = process.env.RAILS_ORIGIN ?? 'http://localhost:3001';
 
 const nextConfig: NextConfig = {
   // Rails のルーティングは末尾スラッシュ無しで揃っているので、Next 側で付け外しのリダイレクトをしない

@@ -49,9 +49,10 @@ services:
       CI: 'true'   # pnpm の非対話モード（node_modules 再構築時の TTY 確認をスキップ）
 
   # ── Rails アプリ ─────────────────────────────────────────
+  # ブラウザからは下の next サービス経由で使う
   web:
     build: .
-    command: bundle exec rails server -b 0.0.0.0
+    command: bundle exec rails server -b 0.0.0.0 -p 3001
     environment:
       DB_HOST:        db            # docker-compose のサービス名がそのままホスト名になる
       DB_PORT:        3306
@@ -62,7 +63,7 @@ services:
       SECRET_KEY_BASE: devsecret_local_only   # ローカル限定なので固定値で OK
       SENTRY_DSN:     ''            # 本番では Sentry DSN を設定する（空なら無効）
     ports:
-      - "3000:3000"   # localhost:3000 でブラウザからアクセス
+      - "3001:3001"   # 中継を通さずに Rails を直接見たいとき用
     volumes:
       - .:/app                            # ホストのコードをマウント → コード変更が即反映
       - bundle_cache:/usr/local/bundle    # gem をボリュームに逃がしてマウントで消えないようにする
@@ -75,6 +76,27 @@ services:
         condition: service_completed_successfully
     stdin_open: true   # byebug / binding.pry をコンテナ内で使えるようにする
     tty: true
+
+  # ── Next.js（web/）──────────────────────────────────────
+  # ブラウザの入口。移行済みの画面は Next が返し、それ以外と /api/* は web（Rails）へ中継する
+  next:
+    build: .
+    command: pnpm --filter sucseed-web dev --hostname 0.0.0.0
+    environment:
+      RAILS_ORIGIN: http://web:3001
+    ports:
+      - "3000:3000"   # localhost:3000 でブラウザからアクセス
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - web_node_modules:/app/web/node_modules
+      - web_next:/app/web/.next   # Next のビルドキャッシュもホスト（macOS）と混ぜない
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      web:
+        condition: service_started
 
   # ── esbuild watch（JS/TSX）──────────────────────────────
   # frontend/ 以下の JS/TSX ファイルを監視して app/assets/builds/application.js へ再バンドル
@@ -116,6 +138,7 @@ volumes:
   bundle_cache:
   node_modules:    # コンテナ用 node_modules（ホストの macOS バイナリと分離）
   web_node_modules:
+  web_next:
   pnpm_store:      # pnpm のパッケージダウンロードキャッシュ（再起動時の高速化）
   uploads:
 

@@ -1,3 +1,5 @@
-web: env RUBY_DEBUG_OPEN=true bin/rails server
+# ブラウザの入口は Next（localhost:3000）。Next に無い画面と /api/* は Rails（3001）へ中継される
+next: pnpm --filter sucseed-web dev
+web: env RUBY_DEBUG_OPEN=true bin/rails server -p 3001
 js: pnpm build:watch
 css: pnpm build:css:watch
