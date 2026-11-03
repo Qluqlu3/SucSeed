@@ -29,6 +29,25 @@ services:
       timeout: 5s
       retries: 10
 
+  # ── 依存のインストール（起動のたびに1回走って終わる）─────────
+  # web / js / css は gem と node_modules のボリュームを共有している。
+  # 各サービスが起動時に bundle install / pnpm install すると、同じボリュームへ同時に
+  # 書き込んで壊し合う（ボリュームが古いときに LoadError や ENOTEMPTY で落ちる）。
+  # インストールはここ（entrypoint.sh の bundle install と下の pnpm install）に集め、
+  # ほかのサービスは完了を待ってから起動する。
+  deps:
+    build: .
+    command: pnpm install --frozen-lockfile
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+      - node_modules:/app/node_modules
+      # ワークスペースの web/（Next.js）にも入るので、ホストの web/node_modules と分ける
+      - web_node_modules:/app/web/node_modules
+      - pnpm_store:/root/.local/share/pnpm/store   # ダウンロード済みパッケージをキャッシュ
+    environment:
+      CI: 'true'   # pnpm の非対話モード（node_modules 再構築時の TTY 確認をスキップ）
+
   # ── Rails アプリ ─────────────────────────────────────────
   web:
     build: .
@@ -52,38 +71,42 @@ services:
     depends_on:
       db:
         condition: service_healthy   # MySQL が Ready になってから Rails を起動
+      deps:
+        condition: service_completed_successfully
     stdin_open: true   # byebug / binding.pry をコンテナ内で使えるようにする
     tty: true
 
   # ── esbuild watch（JS/TSX）──────────────────────────────
   # frontend/ 以下の JS/TSX ファイルを監視して app/assets/builds/application.js へ再バンドル
-  # pnpm install を毎回実行することで Linux 用バイナリが確実に揃う
+  # （Linux 用の node_modules は deps サービスが揃える）
   js:
     build: .
-    command: sh -c "pnpm install --frozen-lockfile && pnpm run build:watch"
+    command: pnpm run build:watch
     volumes:
       - .:/app
       - bundle_cache:/usr/local/bundle
       - node_modules:/app/node_modules    # web / css サービスと共有
-      - pnpm_store:/root/.local/share/pnpm/store   # ダウンロード済みパッケージをキャッシュ
     environment:
       RAILS_ENV: development
-      CI: 'true'   # pnpm の非対話モード（node_modules 再構築時の TTY 確認をスキップ）
+    depends_on:
+      deps:
+        condition: service_completed_successfully
 
   # ── Tailwind CSS watch（CSS）────────────────────────────
   # frontend/styles/tailwind.css を監視して app/assets/builds/tailwind.css を再生成
   # ERB・TSX に書いた Tailwind クラスのツリーシェイキングもここで行われる
   css:
     build: .
-    command: sh -c "pnpm install --frozen-lockfile && pnpm run build:css:watch"
+    command: pnpm run build:css:watch
     volumes:
       - .:/app
       - bundle_cache:/usr/local/bundle
       - node_modules:/app/node_modules
-      - pnpm_store:/root/.local/share/pnpm/store
     environment:
       RAILS_ENV: development
-      CI: 'true'
+    depends_on:
+      deps:
+        condition: service_completed_successfully
     stdin_open: true
     tty: true
 
@@ -92,6 +115,7 @@ volumes:
   db_data:
   bundle_cache:
   node_modules:    # コンテナ用 node_modules（ホストの macOS バイナリと分離）
+  web_node_modules:
   pnpm_store:      # pnpm のパッケージダウンロードキャッシュ（再起動時の高速化）
   uploads:
 
