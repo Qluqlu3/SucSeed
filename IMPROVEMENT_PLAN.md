@@ -9,14 +9,13 @@
 
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
-| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 0-1 完了 |
+| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 0-2 完了 |
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
 | 🟡 中 | 管理者セッションにタイムアウトとログアウトが無い | `AdminAuthentication` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | 使われていない 500 画面（`render_500`・`errors/error_500`）の整理 | `ApplicationController` | S | 未着手 |
 | 🟢 低 | コメント投稿の二重送信防止 | `DiaryCard` / `SelectedGalleryPage` | S | 未着手 |
 | 🟢 低 | フロントの未使用の `api.*` の整理（`calcAge`/`timeAgo` の重複は解消済み） | `frontend/api/` | S | 未着手 |
-| 🟢 低 | API で CSRF の Origin 検査が効いていない | `Api::BaseController` | S | 未着手 |
 
 工数: S = 30分以内 / M = 半日程度 / L = 複数日
 
@@ -33,7 +32,7 @@
 | 段階 | 内容 | 状態 |
 |---|---|:---:|
 | 0-1 | `web/` の骨組みと Rails への中継。Lint・型チェック・ビルドを CI に載せる | 完了 |
-| 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を別ポートへ） | |
+| 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を 3001 へ） | 完了 |
 | 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
 | 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | |
@@ -47,14 +46,10 @@
 0-1 で Next（3100）経由の次の動作を確認済み: Rails のリダイレクト先が Next のホストになる
 （`X-Forwarded-Host`）、アセット・アップロード画像の配信、API のログインと multipart の画像アップロード、
 HTML フォームの CSRF（正しい Origin は通り、別オリジンは 422）、未定義の API は JSON の 404。
+0-2 では同じ確認を docker compose（Next → `http://web:3001`）と `bin/dev` で行った。
 
-### 🟢　API で CSRF の Origin 検査が効いていない
-
-`config.action_controller.forgery_protection_origin_check` は `ActionController::Base` にしか
-適用されず、`Api::BaseController`（`ActionController::API`）では `false` のまま。
-別オリジンの `Origin` ヘッダでも、CSRF トークンさえ正しければ API の更新系が通る
-（トークンの検査は効いているので直ちに破られるわけではない）。
-`allow_forgery_protection` と同じく `ActionController::Base` の値を引き継げば揃う。
+`next dev` は AI のコーディングエージェントの環境で起動されると `web/AGENTS.md` を書き出す
+（`next.config` の `agentRules: false` で止まる）。コミットするかは未決。
 
 ### 🟡-A　メッセージにマッチング成立の確認が無い
 
@@ -95,6 +90,17 @@ React 版の 500 画面を出したいなら `rescue_from StandardError` か `co
 ---
 
 ## 完了済み（参考）
+
+### 2026-11　Next.js 移行の土台（段階 0-1・0-2）
+
+- `web/`（Next 16.4.2）を追加し、未移行の画面と `/api/*` を `rewrites` で Rails に中継
+- 開発時の入口を Next（3000）にし、Rails を 3001 へ。docker compose・`bin/dev` の両方
+- **API で CSRF の Origin 検査が効いていなかった**のを修正。`forgery_protection_origin_check` が
+  `ActionController::API` に引き継がれず、別オリジンでもトークンが正しければ更新系が通っていた
+- **docker compose の各サービスが依存を同時にインストールして壊し合う**問題を修正。
+  インストールを `deps` サービスに集め、ほかはその完了を待つ。ワークスペースに `web/` を加えて以降、
+  コンテナの `pnpm install` がホストの `web/node_modules` を書き換えていたのも、ボリュームに分けて解消
+- テスト 357 件 → 360 件
 
 ### 2026-10　自分のプロフィールの表現を HTML / API で共通化
 
