@@ -6,10 +6,10 @@
 // props の形は Rails の GalleryDetailSerializer と一対一で対応しており、
 // GET /api/v1/galleries/:id が返すものと同じ（HTML 側は data-props 経由で渡している）。
 
+import type { Comment, GalleryDetail, Id } from '@sucseed/api';
+import { api } from '@sucseed/api';
 import { MessageSquare, ThumbsUp } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
-import type { Comment, GalleryDetail, Id } from '../../api';
-import { api } from '../../api';
 import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary';
 import { FlashMessages } from '../FlashMessages';
 

@@ -1,4 +1,4 @@
-// frontend/api/client.ts
+// packages/api/client.ts
 //
 // /api/v1 を叩くための薄いクライアント。
 //
@@ -7,8 +7,9 @@
 // を返すので、その形を前提に「成功か失敗か」を型で表現する。
 // 呼び出し側が result.ok を見ないと data に触れないため、
 // 「レスポンスを確認せずに楽観的に state を更新してしまう」事故を防げる。
-
-import { getCsrfToken } from '../utils/csrf';
+//
+// Rails に同梱している画面（frontend/）と Next.js（web/）の両方から使う共有パッケージ。
+// どちらもブラウザから同一オリジンの /api/v1 を叩く前提で、相対パスで fetch する。
 
 export interface ApiError {
   /** Rails 側の error.code。'network_error' はクライアント側で付与する */
@@ -39,7 +40,14 @@ export const setCsrfToken = (token: string): void => {
   overriddenCsrfToken = token;
 };
 
-const currentCsrfToken = (): string => overriddenCsrfToken ?? getCsrfToken();
+// Rails のレイアウトが出す meta タグ。Next の画面には無いので、そちらでは
+// 最初の更新系リクエストの前に refreshSession() でトークンを取得しておく。
+const csrfTokenFromMeta = (): string =>
+  typeof document === 'undefined'
+    ? ''
+    : (document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '');
+
+const currentCsrfToken = (): string => overriddenCsrfToken ?? csrfTokenFromMeta();
 
 const isApiError = (value: unknown): value is { error: ApiError } => {
   if (typeof value !== 'object' || value === null) {

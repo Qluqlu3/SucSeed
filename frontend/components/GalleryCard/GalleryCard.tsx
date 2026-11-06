@@ -3,8 +3,8 @@
 // ギャラリーサムネイルカード共通コンポーネント。
 // UserGalleryViewPage / MyGalleryPage / FavoriteGalleryPage / HeirFavoriteGalleryPage で共用。
 
+import type { GalleryFeedItem } from '@sucseed/api';
 import { ThumbsUp } from 'lucide-react';
-import type { GalleryFeedItem } from '../../api';
 
 // Rails の GallerySerializer と 1:1 対応（id は has_secure_token の文字列）
 export type GalleryItem = GalleryFeedItem;

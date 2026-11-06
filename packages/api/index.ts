@@ -1,4 +1,4 @@
-// frontend/api/index.ts
+// packages/api/index.ts
 //
 // /api/v1 のエンドポイント定義。URL とリクエストボディの形をここだけに閉じ込め、
 // コンポーネントからは api.favorites.create(userId) のように呼ぶ。

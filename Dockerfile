@@ -41,7 +41,11 @@ RUN bundle install --jobs 4 --retry 3
 # package.json + pnpm-lock.yaml を先にコピーして pnpm install する
 # → package.json が変わっていなければこのレイヤーもキャッシュが効く
 # → node_modules を Linux 用バイナリで構築する（macOS バイナリの混入を防ぐ）
-COPY package.json pnpm-lock.yaml ./
+# → ワークスペース（web/・packages/*）の package.json も要る。共有パッケージを
+#   workspace:* で参照しているため、ワークスペースの定義が無いと解決できない
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY web/package.json web/
+COPY packages/api/package.json packages/api/
 RUN pnpm install --frozen-lockfile
 
 # アプリ全体をコンテナにコピー（.dockerignore で node_modules 等は除外済み）

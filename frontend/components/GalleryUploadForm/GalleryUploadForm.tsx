@@ -6,9 +6,9 @@
 // 従来はプレーンな HTML フォーム送信だったため、投稿のたびにページ全体が
 // 再読み込みされ、バリデーションエラーは flash 経由でしか分からなかった。
 
+import type { GalleryFeedItem } from '@sucseed/api';
+import { api } from '@sucseed/api';
 import { type FormEvent, useId, useState } from 'react';
-import type { GalleryFeedItem } from '../../api';
-import { api } from '../../api';
 
 interface Props {
   /** 投稿成功時に呼ばれる。呼び出し側が一覧の先頭に差し込む */

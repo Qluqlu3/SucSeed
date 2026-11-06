@@ -8,9 +8,9 @@
 // レスポンスが想定と違っても落とさず 'guest' 相当にフォールバックできるよう、
 // 型だけでなく実行時の検証も持っている。
 
-import type { ArtCategory, LayoutAssets, Role } from '../api/types';
+import type { ArtCategory, LayoutAssets, Role } from '@sucseed/api';
 
-export type { ArtCategory, LayoutAssets, Role } from '../api/types';
+export type { ArtCategory, LayoutAssets, Role } from '@sucseed/api';
 
 /** fetch 結果は any 相当なので、検証前は unknown として扱う */
 export interface SessionPayloadLike {

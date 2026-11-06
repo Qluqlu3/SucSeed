@@ -3,10 +3,10 @@
 // /my_page/my_page ページの React コンポーネント。
 // ログインユーザー自身のプロフィール表示。
 
+import type { Profile } from '@sucseed/api';
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import defaultAvatarImage from '../../../app/assets/images/default.png';
-import type { Profile } from '../../api';
 import { FlashMessages } from '../FlashMessages';
 
 interface Props {

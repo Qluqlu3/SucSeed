@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   // Rails のルーティングは末尾スラッシュ無しで揃っているので、Next 側で付け外しのリダイレクトをしない
   skipTrailingSlashRedirect: true,
 
+  // 共有パッケージ（packages/*）はビルド済みの JS ではなく TS のまま公開しているので Next 側で変換する
+  transpilePackages: ['@sucseed/api'],
+
   async rewrites() {
     return {
       // API は Next に同名のページがあっても必ず Rails へ流す

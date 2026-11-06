@@ -6,7 +6,7 @@
 //
 // 型定義・型ガード（純粋関数）は sessionTypes.ts に分離している。
 
-import { refreshSession } from '../api';
+import { refreshSession } from '@sucseed/api';
 import {
   type ArtCategory,
   EMPTY_LAYOUT_ASSETS,

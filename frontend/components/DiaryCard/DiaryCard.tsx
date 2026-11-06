@@ -8,10 +8,10 @@
 // entry の形は Rails の DiarySerializer と一対一で対応している
 // （GET /api/v1/diaries が返す items の要素と同じ）。
 
+import type { Comment, DiaryFeedItem, Id } from '@sucseed/api';
+import { api } from '@sucseed/api';
 import { MessageSquare, ThumbsUp, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import type { Comment, DiaryFeedItem, Id } from '../../api';
-import { api } from '../../api';
 
 export type DiaryComment = Comment;
 export type DiaryEntry = DiaryFeedItem;

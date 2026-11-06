@@ -3,9 +3,9 @@
 // /my_page/update ページの React コンポーネント。
 // プロフィール更新フォーム。PATCH /my_page/update へ multipart/form-data で送信。
 
+import type { Profile } from '@sucseed/api';
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
-import type { Profile } from '../../api';
 import { getCsrfToken } from '../../utils/csrf';
 
 import { FlashMessages } from '../FlashMessages';

@@ -12,7 +12,7 @@
     "typescript": "^5.9.3"
   },
   "lint-staged": {
-    "{frontend,web}/**/*.{ts,tsx}": [
+    "{frontend,web,packages}/**/*.{ts,tsx}": [
       "biome check --write"
     ],
     "**/*.rb": [
@@ -27,12 +27,13 @@
     "build:watch": "pnpm build --watch=forever",
     "build:css": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --minify",
     "build:css:watch": "tailwindcss -i ./frontend/styles/tailwind.css -o ./app/assets/builds/tailwind.css --watch=always",
-    "lint": "biome check frontend/ web/",
-    "lint:fix": "biome check --write frontend/ web/",
+    "lint": "biome check frontend/ web/ packages/",
+    "lint:fix": "biome check --write frontend/ web/ packages/",
     "format": "biome format --write frontend/",
     "prepare": "husky"
   },
   "dependencies": {
+    "@sucseed/api": "workspace:*",
     "@sentry/react": "^10.62.0",
     "@tailwindcss/cli": "^4.2.1",
     "lucide-react": "^1.22.0",

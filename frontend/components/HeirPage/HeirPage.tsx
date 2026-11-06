@@ -3,10 +3,10 @@
 // /page/heir/:id ページの React コンポーネント（後継者ページ）。
 // スカウト送信は /api/v1 の JSON API に送信する。
 
+import type { Id } from '@sucseed/api';
+import { api } from '@sucseed/api';
 import { useState } from 'react';
 import heroImage from '../../../app/assets/images/main1.jpg';
-import type { Id } from '../../api';
-import { api } from '../../api';
 import { calcAge } from '../../utils/date';
 import { FlashMessages } from '../FlashMessages';
 

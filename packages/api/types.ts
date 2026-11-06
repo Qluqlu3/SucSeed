@@ -1,4 +1,4 @@
-// frontend/api/types.ts
+// packages/api/types.ts
 //
 // Rails の app/serializers が返す JSON の型定義。
 // シリアライザ側が transform_keys :lower_camel でキーを camelCase に変換しているため、

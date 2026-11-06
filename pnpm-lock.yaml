@@ -11,6 +11,9 @@ importers:
       '@sentry/react':
         specifier: ^10.62.0
         version: 10.62.0(react@19.2.6)
+      '@sucseed/api':
+        specifier: workspace:*
+        version: link:packages/api
       '@tailwindcss/cli':
         specifier: ^4.2.1
         version: 4.3.0
@@ -55,8 +58,13 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  packages/api: {}
+
   web:
     dependencies:
+      '@sucseed/api':
+        specifier: workspace:*
+        version: link:../packages/api
       next:
         specifier: 16.4.2
         version: 16.4.2(@types/node@22.20.5)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)

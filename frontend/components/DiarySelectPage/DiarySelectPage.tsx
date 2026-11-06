@@ -2,7 +2,7 @@
 //
 // /diary/view ページ（お気に入りユーザーの日記一覧）の React コンポーネント。
 
-import type { Id } from '../../api';
+import type { Id } from '@sucseed/api';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
 import { FlashMessages } from '../FlashMessages';
 

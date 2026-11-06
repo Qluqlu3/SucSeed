@@ -3,9 +3,9 @@
 // /diary/my_diary ページ（マイ日記）の React コンポーネント。
 // 右コラムに投稿フォームを持ち、投稿後は API が返した日記をそのまま一覧に差し込む。
 
+import type { Id } from '@sucseed/api';
+import { api } from '@sucseed/api';
 import { useState } from 'react';
-import type { Id } from '../../api';
-import { api } from '../../api';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
 import { FlashMessages } from '../FlashMessages';
 

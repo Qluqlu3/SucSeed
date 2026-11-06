@@ -3,11 +3,11 @@
 // /page/creator/:id ページの React コンポーネント（職人ページ）。
 // お気に入り・アピールは /api/v1 の JSON API に送信する。
 
+import type { Id } from '@sucseed/api';
+import { api } from '@sucseed/api';
 import { Star } from 'lucide-react';
 import { useState } from 'react';
 import heroImage from '../../../app/assets/images/main1.jpg';
-import type { Id } from '../../api';
-import { api } from '../../api';
 import { calcAge } from '../../utils/date';
 import { CreatorProfileTabs } from '../CreatorProfileTabs/CreatorProfileTabs';
 import { FlashMessages } from '../FlashMessages';
