@@ -126,6 +126,10 @@ frontend/
 └── styles/
     ├── tailwind.css        # Tailwind CSS v4 エントリーポイント
     └── fontawesome.css
+
+packages/
+└── api/                    # @sucseed/api: /api/v1 の型（types.ts）とクライアント（client.ts / index.ts）。
+                            # frontend/ と web/ の両方から import { api } from '@sucseed/api' で使う
 ```
 
 ### ERB ページに React コンポーネントを埋め込む
@@ -178,6 +182,9 @@ pnpm run build:css   # CSS（Tailwind）
 開発時の入口は Next（http://localhost:3000）で、Rails は 3001 番で動きます。
 `docker compose up` でも `bin/dev` でも同じ構成になります。中継を通さずに Rails を直接見たいときは
 http://localhost:3001 を開きます（docker compose では Next の中継先は `RAILS_ORIGIN=http://web:3001`）。
+
+API の呼び出しは `frontend/` と同じ `@sucseed/api` を使います。Next の画面には Rails の
+`csrf-token` meta タグが無いため、更新系を呼ぶ前に `refreshSession()` で CSRF トークンを取得しておきます。
 
 ```sh
 pnpm --filter sucseed-web typecheck

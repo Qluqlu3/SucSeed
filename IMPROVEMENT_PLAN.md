@@ -9,13 +9,13 @@
 
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
-| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 0-2 完了 |
+| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 0-3 完了 |
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
 | 🟡 中 | 管理者セッションにタイムアウトとログアウトが無い | `AdminAuthentication` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | 使われていない 500 画面（`render_500`・`errors/error_500`）の整理 | `ApplicationController` | S | 未着手 |
 | 🟢 低 | コメント投稿の二重送信防止 | `DiaryCard` / `SelectedGalleryPage` | S | 未着手 |
-| 🟢 低 | フロントの未使用の `api.*` の整理（`calcAge`/`timeAgo` の重複は解消済み） | `frontend/api/` | S | 未着手 |
+| 🟢 低 | フロントの未使用の `api.*` の整理（`calcAge`/`timeAgo` の重複は解消済み） | `packages/api/` | S | 未着手 |
 
 工数: S = 30分以内 / M = 半日程度 / L = 複数日
 
@@ -33,7 +33,7 @@
 |---|---|:---:|
 | 0-1 | `web/` の骨組みと Rails への中継。Lint・型チェック・ビルドを CI に載せる | 完了 |
 | 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を 3001 へ） | 完了 |
-| 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | |
+| 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | 完了 |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
 | 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | |
 | 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | |
@@ -50,6 +50,11 @@ HTML フォームの CSRF（正しい Origin は通り、別オリジンは 422�
 
 `next dev` は AI のコーディングエージェントの環境で起動されると `web/AGENTS.md` を書き出す
 （`next.config` の `agentRules: false` で止まる）。コミットするかは未決。
+
+0-3 で型とクライアントは `packages/api`（`@sucseed/api`、ビルドせず TS のまま公開し Next は
+`transpilePackages` で変換）に移した。Next の画面は Rails の `csrf-token` meta タグを持たないので、
+更新系の前に `refreshSession()` でトークンを取る。サーバー側（RSC）からの呼び出しは相対パスの
+`fetch` と Cookie の受け渡しが要るため未対応で、段階1で必要になったら足す。
 
 ### 🟡-A　メッセージにマッチング成立の確認が無い
 
@@ -91,10 +96,12 @@ React 版の 500 画面を出したいなら `rescue_from StandardError` か `co
 
 ## 完了済み（参考）
 
-### 2026-11　Next.js 移行の土台（段階 0-1・0-2）
+### 2026-11　Next.js 移行の土台（段階 0-1〜0-3）
 
 - `web/`（Next 16.4.2）を追加し、未移行の画面と `/api/*` を `rewrites` で Rails に中継
 - 開発時の入口を Next（3000）にし、Rails を 3001 へ。docker compose・`bin/dev` の両方
+- `frontend/api` を共有パッケージ `packages/api`（`@sucseed/api`）にし、`frontend/` と `web/` から
+  `workspace:*` で参照。Docker イメージの `pnpm install` 用にワークスペースの定義も先にコピーする
 - **API で CSRF の Origin 検査が効いていなかった**のを修正。`forgery_protection_origin_check` が
   `ActionController::API` に引き継がれず、別オリジンでもトークンが正しければ更新系が通っていた
 - **docker compose の各サービスが依存を同時にインストールして壊し合う**問題を修正。
