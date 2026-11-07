@@ -26,6 +26,12 @@ class AdminController < ApplicationController
     end
   end
 
+  def logout
+    terminate_admin_session
+    flash[:success] = t('flash.success.logout')
+    redirect_to '/admin/login'
+  end
+
   def create
     @admin = Admin.new
     @page_props = { errors: [], flash: flash.to_h }

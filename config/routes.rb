@@ -111,6 +111,7 @@ Rails.application.routes.draw do
   post 'inquiry/input' => 'inquiry#send_inquiry'
 
   post 'admin/login' => 'admin#login_challenge'
+  post 'admin/logout' => 'admin#logout'
   post 'admin/create/user' => 'admin#create_user'
 
   post 'admin/user/delete/:id' => 'admin_edit#user_delete'

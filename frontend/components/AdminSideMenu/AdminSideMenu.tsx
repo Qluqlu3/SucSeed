@@ -1,6 +1,9 @@
 // frontend/components/AdminSideMenu/AdminSideMenu.tsx
 //
 // 管理画面共通サイドメニュー。アクティブページを activeKey で指定する。
+// 末尾のログアウトは POST /admin/logout（管理者のセッションだけを消す）。
+
+import { PostForm } from '../PostForm';
 
 interface Props {
   activeKey?: string;
@@ -42,6 +45,13 @@ export const AdminSideMenu = ({ activeKey }: Props) => (
           </li>
         );
       })}
+      <li className="mt-6">
+        <PostForm action="/admin/logout">
+          <button type="submit" className="py-1 text-gray-700 hover:text-p-brand">
+            ログアウト
+          </button>
+        </PostForm>
+      </li>
     </ul>
   </div>
 );
