@@ -11,7 +11,6 @@
 |:------:|------|----------------|:----:|:----:|
 | 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 0-3 完了 |
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
-| 🟡 中 | 管理者セッションにタイムアウトとログアウトが無い | `AdminAuthentication` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | 使われていない 500 画面（`render_500`・`errors/error_500`）の整理 | `ApplicationController` | S | 未着手 |
 | 🟢 低 | コメント投稿の二重送信防止 | `DiaryCard` / `SelectedGalleryPage` | S | 未着手 |
@@ -68,12 +67,6 @@ HTML・API の両方に効く（`Match.accepted.between(heir_id:, creator_id:).e
 メッセージ送信（`MessageController#send_message`・`Api::V1::MessagesController#create`）は
 まだ別々なので、同じように `Message` 側へ寄せてから足す。
 
-### 🟡-C　管理者セッションにタイムアウトとログアウトが無い
-
-一般ユーザーは `Authentication::SESSION_TIMEOUT`（2時間）で切れるが、
-`AdminAuthentication#resume_admin_session` には期限が無く、ログアウトのルートも無い。
-共用端末で管理画面を開くとブラウザを閉じるまで残る。
-
 ### 🟢-1　HTML のフィードもページネーションする
 
 **現状**: API 側（`/api/v1/diaries` `/api/v1/galleries` など）は全てページング済みだが、
@@ -95,6 +88,15 @@ React 版の 500 画面を出したいなら `rescue_from StandardError` か `co
 ---
 
 ## 完了済み（参考）
+
+### 2026-11　管理者セッションにタイムアウトとログアウト（旧 🟡-C）
+
+- 最終操作から 30 分（`AdminAuthentication::ADMIN_SESSION_TIMEOUT`）で切れるようにした。
+  一般ユーザーの 2 時間より短い。最終操作時刻を持たない既存のセッションも期限切れとして扱う
+- `POST /admin/logout` とサイドメニューのログアウトを追加。消すのは管理者のキーだけで、
+  同じブラウザの一般ユーザーとしてのログインは残す
+- 管理者トップが手書きで複製していたサイドメニューを `AdminSideMenu` に置き換えた
+- テスト 360 件 → 364 件
 
 ### 2026-11　Next.js 移行の土台（段階 0-1〜0-3）
 
