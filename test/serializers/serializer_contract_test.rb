@@ -13,6 +13,7 @@ require 'test_helper'
 #
 # 対応表:
 #   PublicUserSerializer       -> PublicUser
+#   PublicUserPageSerializer   -> PublicUserPage（GET /api/v1/users/:id）
 #   CreatorCardSerializer      -> CreatorCard
 #   CreatorSerializer          -> CreatorDetail
 #   HeirSerializer             -> HeirDetail
@@ -32,6 +33,7 @@ class SerializerContractTest < ActiveSupport::TestCase
     'ArtCategorySerializer' => %w[id name],
     'CurrentUserSerializer' => %w[avatarPath id name],
     'PublicUserSerializer' => %w[avatarPath birthday id isMan name profile],
+    'PublicUserPageSerializer' => %w[avatarPath birthday hasCreatorProfile id isMan name profile],
     'CreatorCardSerializer' => %w[avatarPath createdAt galleryCount galleryPreviewPath name
                                   prefectureCode title userId],
     'CreatorSerializer' => %w[artCategoryId artCategoryName employee establishment isAppealed
@@ -105,7 +107,7 @@ class SerializerContractTest < ActiveSupport::TestCase
   test '公開ユーザー情報に非公開のカラムが混ざっていない' do
     forbidden = %w[email passwordDigest password_digest deletedAt deleted_at loginTime login_time]
 
-    %w[PublicUserSerializer CurrentUserSerializer].each do |name|
+    %w[PublicUserSerializer PublicUserPageSerializer CurrentUserSerializer].each do |name|
       leaked = actual_keys.fetch(name) & forbidden
       assert_empty leaked, "#{name} が非公開の項目を返している: #{leaked.inspect}"
     end
@@ -122,6 +124,7 @@ class SerializerContractTest < ActiveSupport::TestCase
       'ArtCategorySerializer' => ArtCategorySerializer.new(@category).serializable_hash,
       'CurrentUserSerializer' => CurrentUserSerializer.new(@creator_user).serializable_hash,
       'PublicUserSerializer' => PublicUserSerializer.new(@creator_user).serializable_hash,
+      'PublicUserPageSerializer' => PublicUserPageSerializer.new(@creator_user).serializable_hash,
       'CreatorCardSerializer' => CreatorCardSerializer.build([creator_card_row]).first,
       'CreatorSerializer' => CreatorSerializer.new(@creator).serializable_hash,
       'HeirSerializer' => HeirSerializer.new(@heir).serializable_hash,

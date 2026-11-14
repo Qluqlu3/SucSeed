@@ -35,6 +35,7 @@ import type {
   MessageThreadCreated,
   Profile,
   PublicUser,
+  PublicUserPage,
   SessionPayload,
 } from './types';
 
@@ -88,6 +89,11 @@ export const api = {
 
   heirs: {
     show: (userId: Id) => apiGet<HeirDetail>(`/api/v1/heirs/${userId}`),
+  },
+
+  users: {
+    /** 任意のユーザーの公開情報（未ログインでも取れる） */
+    show: (userId: Id) => apiGet<PublicUserPage>(`/api/v1/users/${userId}`),
   },
 
   favorites: {

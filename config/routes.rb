@@ -138,6 +138,7 @@ Rails.application.routes.draw do
       resource  :profile, only: %i[show update], controller: 'profile'
       resources :creators, only: %i[index show]
       resources :heirs, only: :show
+      resources :users, only: :show
 
       # お気に入り（:id は相手ユーザーの id）
       resources :favorites, only: %i[index create destroy]

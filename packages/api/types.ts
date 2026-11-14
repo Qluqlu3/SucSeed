@@ -76,6 +76,12 @@ export interface PublicUser {
   birthday: string;
 }
 
+/** GET /api/v1/users/:id。:id の人の日記・作品ギャラリーなどの見出しに使う */
+export interface PublicUserPage extends PublicUser {
+  /** 職人の詳細プロフィールを登録済みか（/page/creator/:id を開けるか） */
+  hasCreatorProfile: boolean;
+}
+
 export interface Profile {
   id: Id;
   name: string;
