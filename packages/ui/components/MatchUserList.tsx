@@ -85,36 +85,66 @@ export const MatchUserList = <T extends MatchListUser>({
   </div>
 );
 
+const OK_BUTTON_CLASS =
+  'w-full m-0 py-[1%] text-[30px] bg-p-brand text-white rounded hover:opacity-80';
+const SORRY_BUTTON_CLASS =
+  'w-full m-0 py-[1%] text-[30px] bg-red-600 text-white rounded hover:opacity-80';
+
+type AnswerButtonsProps =
+  // Rails の画面: 回答先へフォームで POST する
+  | { okAction: string; sorryAction: string }
+  // Next の画面: API で回答する。送信中は disabled で押せなくする
+  | { onAnswer: (accepted: boolean) => void; disabled?: boolean };
+
 // 受け取ったアピール/スカウトに回答する「話してみる」「ごめんなさい」の2ボタン。
-export const AnswerButtons = ({
-  okAction,
-  sorryAction,
-}: {
-  okAction: string;
-  sorryAction: string;
-}) => (
-  <div className="flex">
-    <div className="w-1/2 pr-[0.1%]">
-      <form action={okAction} method="post">
-        <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-        <button
-          type="submit"
-          className="w-full m-0 py-[1%] text-[30px] bg-p-brand text-white rounded hover:opacity-80"
-        >
-          話してみる
-        </button>
-      </form>
+export const AnswerButtons = (props: AnswerButtonsProps) => {
+  if ('onAnswer' in props) {
+    const { onAnswer, disabled } = props;
+    return (
+      <div className="flex">
+        <div className="w-1/2 pr-[0.1%]">
+          <button
+            type="button"
+            className={OK_BUTTON_CLASS}
+            disabled={disabled}
+            onClick={() => onAnswer(true)}
+          >
+            話してみる
+          </button>
+        </div>
+        <div className="w-1/2 pl-[0.1%]">
+          <button
+            type="button"
+            className={SORRY_BUTTON_CLASS}
+            disabled={disabled}
+            onClick={() => onAnswer(false)}
+          >
+            ごめんなさい
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const { okAction, sorryAction } = props;
+  return (
+    <div className="flex">
+      <div className="w-1/2 pr-[0.1%]">
+        <form action={okAction} method="post">
+          <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+          <button type="submit" className={OK_BUTTON_CLASS}>
+            話してみる
+          </button>
+        </form>
+      </div>
+      <div className="w-1/2 pl-[0.1%]">
+        <form action={sorryAction} method="post">
+          <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
+          <button type="submit" className={SORRY_BUTTON_CLASS}>
+            ごめんなさい
+          </button>
+        </form>
+      </div>
     </div>
-    <div className="w-1/2 pl-[0.1%]">
-      <form action={sorryAction} method="post">
-        <input type="hidden" name="authenticity_token" value={getCsrfToken()} />
-        <button
-          type="submit"
-          className="w-full m-0 py-[1%] text-[30px] bg-red-600 text-white rounded hover:opacity-80"
-        >
-          ごめんなさい
-        </button>
-      </form>
-    </div>
-  </div>
-);
+  );
+};

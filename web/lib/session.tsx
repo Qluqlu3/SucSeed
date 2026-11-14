@@ -6,7 +6,7 @@
 // 各画面は useSession / useRequireLogin で受け取る。
 // セッション API の呼び出しは CSRF トークンの取得も兼ねるので、画面の更新系はこの後に行える。
 
-import { fetchSessionPayload, pushFlash, type SessionState } from '@sucseed/ui';
+import { fetchSessionPayload, pushFlash, type Role, type SessionState } from '@sucseed/ui';
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 
 // 取得前は null
@@ -50,6 +50,28 @@ export const useRequireLogin = (): SessionState | null => {
 
   return session && !isGuest ? session : null;
 };
+
+/**
+ * 職人だけ・後継者だけの画面で使う。ロールが合わなければ Rails の HTML 側
+ * （ApplicationController#on_authorization_failed）と同じく、メッセージ無しでトップへ移す。
+ * 未ログインは useRequireLogin と同じ扱い。ロールが合うときだけセッションを返す。
+ */
+export const useRequireRole = (allowed: (role: Role) => boolean): SessionState | null => {
+  const session = useRequireLogin();
+  const forbidden = session !== null && !allowed(session.role);
+
+  useEffect(() => {
+    if (forbidden) {
+      window.location.replace('/index');
+    }
+  }, [forbidden]);
+
+  return session && !forbidden ? session : null;
+};
+
+export const isCreator = (role: Role) => role === 'creator';
+// Rails の require_non_creator と同じ（ログイン済みで職人でない = 後継者・一般ユーザー）
+export const isNonCreator = (role: Role) => role !== 'creator' && role !== 'guest';
 
 /** 未ログイン・セッション切れのときの遷移。API が 401 を返したときにも使う */
 export const redirectToLogin = (): void => {
