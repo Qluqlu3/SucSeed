@@ -1,0 +1,13 @@
+/*
+ * web/app/globals.css
+ *
+ * Next の画面の Tailwind CSS。テーマとプロジェクト固有のスタイルは Rails 側と共用の
+ * @sucseed/ui から読み込み、見た目を揃える。
+ */
+
+@import 'tailwindcss';
+
+/* 共用の UI 部品（packages/ui）は node_modules 経由で入るため自動では走査されない */
+@source "../../packages/ui";
+
+@import '@sucseed/ui/styles.css';

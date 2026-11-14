@@ -13,6 +13,7 @@
 //   既存の index.scss / application.scss / Bootstrap を引き続き使う。
 //   Tailwind は今後新規コンポーネントから段階的に導入する。
 
+import { FlashMessages } from '@sucseed/ui';
 import { Handshake, Info, Map as MapIcon, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 import heroImage from '../../../app/assets/images/main1.jpg';
@@ -20,7 +21,6 @@ import mainBackgroundImage from '../../../app/assets/images/main3.jpg';
 import titleImage from '../../../app/assets/images/title.png';
 import type { Creator } from '../CreatorCard';
 import { CreatorCard } from '../CreatorCard';
-import { FlashMessages } from '../FlashMessages';
 import { JapanMap } from '../MapPage/JapanMap';
 import { PREFECTURE_SHAPES } from '../MapPage/japanPrefectureShapes';
 import { type TraditionalCraft, TraditionalCraftCard } from '../MapPage/TraditionalCraftCard';

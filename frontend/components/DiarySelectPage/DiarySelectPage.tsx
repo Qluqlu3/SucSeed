@@ -3,8 +3,8 @@
 // /diary/view ページ（お気に入りユーザーの日記一覧）の React コンポーネント。
 
 import type { Id } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
-import { FlashMessages } from '../FlashMessages';
 
 interface CurrentUser {
   id: Id;

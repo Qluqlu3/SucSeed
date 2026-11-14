@@ -8,10 +8,10 @@
 //   artCategories: ArtCategory 一覧 [{ id, name }]
 //   errors       : バリデーションエラー文字列の配列
 
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
-import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface ArtCategory {

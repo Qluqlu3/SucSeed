@@ -1,0 +1,17 @@
+{
+  "name": "@sucseed/ui",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./styles.css": "./styles/sucseed.css"
+  },
+  "dependencies": {
+    "@sucseed/api": "workspace:*",
+    "lucide-react": "^1.22.0"
+  },
+  "peerDependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}

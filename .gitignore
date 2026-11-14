@@ -21,6 +21,7 @@
 /public/uploads/tmp/
 
 /node_modules
+/packages/*/node_modules
 /.pnpm-store
 /yarn-error.log
 

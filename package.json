@@ -33,8 +33,9 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@sucseed/api": "workspace:*",
     "@sentry/react": "^10.62.0",
+    "@sucseed/api": "workspace:*",
+    "@sucseed/ui": "workspace:*",
     "@tailwindcss/cli": "^4.2.1",
     "lucide-react": "^1.22.0",
     "react": "^19.2.4",

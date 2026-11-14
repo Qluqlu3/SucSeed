@@ -1,7 +1,8 @@
 # packages フィールド: pnpm 9 のワークスペース必須フィールド
 #   '.'   = Rails に同梱している既存のフロント（frontend/）
 #   'web' = 移行先の Next.js アプリ
-#   'packages/*' = 両方から使う共有パッケージ（packages/api = /api/v1 の型とクライアント）
+#   'packages/*' = 両方から使う共有パッケージ（packages/api = /api/v1 の型とクライアント、
+#                  packages/ui = レイアウトなどの UI 部品とスタイル）
 packages:
   - '.'
   - 'web'

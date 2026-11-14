@@ -4,11 +4,10 @@
 // プロフィール更新フォーム。PATCH /my_page/update へ multipart/form-data で送信。
 
 import type { Profile } from '@sucseed/api';
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
-
-import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   // API の GET /api/v1/profile と同じ表現（Rails 側も同じ ProfileSerializer）

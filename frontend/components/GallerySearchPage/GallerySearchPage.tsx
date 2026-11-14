@@ -1,6 +1,6 @@
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { Search } from 'lucide-react';
-import { getCsrfToken } from '../../utils/csrf';
-import { FlashMessages } from '../FlashMessages';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
 
 interface Props {

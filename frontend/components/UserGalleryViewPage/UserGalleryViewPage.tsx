@@ -3,10 +3,10 @@
 // /gallery/view/:id ページ（特定ユーザーのギャラリー一覧）の React コンポーネント。
 // タグ検索フォームは POST /gallery/user/search/tag/:userId へ送信。
 
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { Search } from 'lucide-react';
-import { getCsrfToken } from '../../utils/csrf';
 import { CreatorProfileTabs } from '../CreatorProfileTabs/CreatorProfileTabs';
-import { FlashMessages } from '../FlashMessages';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
 
 interface Props {

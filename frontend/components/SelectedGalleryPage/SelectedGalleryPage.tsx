@@ -8,10 +8,10 @@
 
 import type { Comment, GalleryDetail, Id } from '@sucseed/api';
 import { api } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { MessageSquare, ThumbsUp } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
 import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary';
-import { FlashMessages } from '../FlashMessages';
 
 // Three.js（バンドルの大半を占める）はこの画面でしか使わないので、
 // 別チャンクに分けて 3D プレビューを描くときに初めて読み込む。

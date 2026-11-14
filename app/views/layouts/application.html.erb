@@ -15,11 +15,13 @@
 
   <body>
   <% is_admin_page = controller_name.in?(["admin", "admin_edit"]) %>
-  <!-- Login Modal (React island: frontend/spa/LoginModal.tsx) -->
+  <!-- Login Modal (React island: packages/ui/layout/LoginModal.tsx) -->
   <div id="spa-login-modal"></div>
+  <!-- Next の画面で積んだ flash (React island: packages/ui/components/PendingFlash.tsx) -->
+  <div id="spa-flash"></div>
   <% unless is_admin_page %>
     <header>
-      <%# Navbar (React island: frontend/spa/Navbar.tsx) %>
+      <%# Navbar (React island: packages/ui/layout/Navbar.tsx) %>
       <div id="spa-navbar"></div>
     </header>
   <% end %>
@@ -30,7 +32,7 @@
     <% unless is_admin_page %>
     <!-- ログイン時のスペーサー (React island: islands.tsx が role に応じて class を付与) -->
     <div id="spa-margin-box"></div>
-    <!-- Footer (React island: frontend/spa/Footer.tsx) -->
+    <!-- Footer (React island: packages/ui/layout/Footer.tsx) -->
     <div id="spa-footer"></div>
     <% end %>
   </body>

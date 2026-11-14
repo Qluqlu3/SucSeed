@@ -6,9 +6,9 @@
 // 【data-props に含まれるデータ】
 //   heir : { artCategoryName, introduction }
 
+import { FlashMessages } from '@sucseed/ui';
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
-import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Props {

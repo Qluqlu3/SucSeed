@@ -3,7 +3,7 @@
 // 管理画面共通サイドメニュー。アクティブページを activeKey で指定する。
 // 末尾のログアウトは POST /admin/logout（管理者のセッションだけを消す）。
 
-import { PostForm } from '../PostForm';
+import { PostForm } from '@sucseed/ui';
 
 interface Props {
   activeKey?: string;

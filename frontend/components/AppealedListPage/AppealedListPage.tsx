@@ -5,7 +5,7 @@
 //
 // 【data-props に含まれるデータ】
 //   matches : [{ pageId, name, birthday, avatarPath, matchTime }]
-import { AnswerButtons, type MatchListUser, MatchUserList } from '../MatchUserList';
+import { AnswerButtons, type MatchListUser, MatchUserList } from '@sucseed/ui';
 
 interface Props {
   matches: MatchListUser[];

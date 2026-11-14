@@ -1,6 +1,6 @@
-import { getCsrfToken } from '../../utils/csrf';
+import { getCsrfToken } from '@sucseed/api';
 
-import { FlashMessages } from '../FlashMessages';
+import { FlashMessages } from '@sucseed/ui';
 
 interface Props {
   token: string;

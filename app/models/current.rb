@@ -37,7 +37,7 @@ class Current < ActiveSupport::CurrentAttributes
     admin.present?
   end
 
-  # フロントの Role 型（frontend/spa/sessionTypes.ts）と 1:1 で対応する。
+  # フロントの Role 型（packages/api/types.ts）と 1:1 で対応する。
   def role
     user&.role || 'guest'
   end

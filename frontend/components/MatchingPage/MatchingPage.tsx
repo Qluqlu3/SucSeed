@@ -3,13 +3,16 @@
 // /match/matching/list ページの React コンポーネント。
 // ERB の data-props から Rails が組み立てた JSON を受け取って描画する。
 //
+// Next に移行済み（web/app/match/matching/list/page.tsx）。本番が Next で配信されるまで
+// （段階 0-4）の Rails 側の表示として残しており、段階4で撤去する。
+//
 // 【data-props に含まれるデータ】
 //   matches : マッチング済みユーザー一覧
 //             [{ pageId, name, birthday, avatarPath, matchTime, isAddList, profilePath }]
 
+import { getCsrfToken } from '@sucseed/api';
+import { type MatchListUser, MatchUserList } from '@sucseed/ui';
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
-import { type MatchListUser, MatchUserList } from '../MatchUserList';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface MatchUser extends MatchListUser {

@@ -4,13 +4,15 @@
 // マウントする。application.ts からインポートされる。
 // 新しい island は mountIsland('xxx', <Component />) の
 // パターンで追加していく。
+// Navbar / Footer / LoginModal などの中身は Next と共用の @sucseed/ui にある。
 
-import { Footer } from './Footer';
-import { LoginModal } from './LoginModal';
+import { Footer, LoginModal, PendingFlash } from '@sucseed/ui';
 import { mountIsland } from './mountIsland';
 import { mountNavbarIsland } from './mountNavbarIsland';
 
 mountIsland('spa-footer', <Footer />);
 mountIsland('spa-login-modal', <LoginModal />);
+// Next の画面から遷移してきたときに、そちらで積んだメッセージを出す
+mountIsland('spa-flash', <PendingFlash />);
 
 void mountNavbarIsland();

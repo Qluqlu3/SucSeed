@@ -9,10 +9,10 @@
 //   fromUser        : { id, avatarPath }
 //   toUser          : { id, name, avatarPath }
 
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { Send } from 'lucide-react';
 import { useEffect, useRef } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
-import { FlashMessages } from '../FlashMessages';
 
 interface MessageListItem {
   id: string;

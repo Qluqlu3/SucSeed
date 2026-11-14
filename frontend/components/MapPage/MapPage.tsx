@@ -5,9 +5,9 @@
 // からも同じ操作ができるようにして、スマホでの誤タップやホバー不可環境でも
 // 迷わず使えるようにしている。
 
+import { FlashMessages } from '@sucseed/ui';
 import { useMemo, useState } from 'react';
 import { type Creator, CreatorCard } from '../CreatorCard';
-import { FlashMessages } from '../FlashMessages';
 import { JapanMap } from './JapanMap';
 import { PREFECTURE_SHAPES } from './japanPrefectureShapes';
 import { colorForCount } from './prefectureColorScale';

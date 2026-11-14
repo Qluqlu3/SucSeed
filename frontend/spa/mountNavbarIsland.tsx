@@ -1,6 +1,5 @@
+import { fetchSessionPayload, Navbar } from '@sucseed/ui';
 import { mountIsland } from './mountIsland';
-import { Navbar } from './Navbar';
-import { fetchSessionPayload } from './session';
 import { updateMarginBox } from './updateMarginBox';
 
 export const mountNavbarIsland = async (): Promise<void> => {

@@ -6,8 +6,8 @@
 // 【data-props に含まれるデータ】
 //   appeals : [{ pageId, name, birthday, avatarPath, title, matchTime, isOk }]
 
-import { getCsrfToken } from '../../utils/csrf';
-import { MatchUserList } from '../MatchUserList';
+import { getCsrfToken } from '@sucseed/api';
+import { MatchUserList } from '@sucseed/ui';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface AppealUser {

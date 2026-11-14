@@ -6,8 +6,8 @@
 // 【data-props】
 //   inquiries: [{ id, userId, name, content, isCheck, createdAt, updatedAt, deletedAt }]
 
+import { FlashMessages } from '@sucseed/ui';
 import { AdminSideMenu } from '../AdminSideMenu';
-import { FlashMessages } from '../FlashMessages';
 import { Pagination, type PaginationInfo } from '../Pagination';
 
 interface AdminInquiry {

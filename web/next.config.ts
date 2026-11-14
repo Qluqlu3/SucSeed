@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 
   // 共有パッケージ（packages/*）はビルド済みの JS ではなく TS のまま公開しているので Next 側で変換する
-  transpilePackages: ['@sucseed/api'],
+  transpilePackages: ['@sucseed/api', '@sucseed/ui'],
 
   async rewrites() {
     return {

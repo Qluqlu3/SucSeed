@@ -3,8 +3,8 @@
 // /diary/post ページ（日記投稿フォーム単体）の React コンポーネント。
 // POST /diary/post へ送信。
 
-import { getCsrfToken } from '../../utils/csrf';
-import { FlashMessages } from '../FlashMessages';
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 
 interface Props {
   errors: string[];

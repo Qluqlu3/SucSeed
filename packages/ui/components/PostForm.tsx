@@ -1,5 +1,5 @@
+import { getCsrfToken } from '@sucseed/api';
 import type { FC, FormHTMLAttributes, ReactNode } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
 
 type PostFormProps = Omit<FormHTMLAttributes<HTMLFormElement>, 'children' | 'method'> & {
   children: ReactNode;

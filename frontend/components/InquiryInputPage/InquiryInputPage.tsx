@@ -8,9 +8,9 @@
 //   errors      : バリデーションエラー文字列の配列（再レンダリング時）
 //   prevValues  : 送信失敗時の入力値の復元用 { inquiryCategoryId, content }
 
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
-import { FlashMessages } from '../FlashMessages';
 
 // ── 型定義 ──────────────────────────────────────────────────────────
 interface Category {

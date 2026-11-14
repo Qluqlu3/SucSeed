@@ -46,6 +46,7 @@ RUN bundle install --jobs 4 --retry 3
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY web/package.json web/
 COPY packages/api/package.json packages/api/
+COPY packages/ui/package.json packages/ui/
 RUN pnpm install --frozen-lockfile
 
 # アプリ全体をコンテナにコピー（.dockerignore で node_modules 等は除外済み）

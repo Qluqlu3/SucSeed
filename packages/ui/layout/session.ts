@@ -1,7 +1,7 @@
-// frontend/spa/session.ts
+// packages/ui/layout/session.ts
 //
 // レイアウト（Navbar / Footer）の起動に必要なセッション情報を取得する。
-// HTTP アクセスは frontend/api の型付きクライアントに委譲し、
+// HTTP アクセスは @sucseed/api の型付きクライアントに委譲し、
 // ここは「取得できなかったときに guest として描画する」フォールバックに専念する。
 //
 // 型定義・型ガード（純粋関数）は sessionTypes.ts に分離している。
@@ -17,11 +17,13 @@ import {
   type Role,
 } from './sessionTypes';
 
-export const fetchSessionPayload = async (): Promise<{
+export interface SessionState {
   role: Role;
   artCategories: ArtCategory[];
   layoutAssets: LayoutAssets;
-}> => {
+}
+
+export const fetchSessionPayload = async (): Promise<SessionState> => {
   // refreshSession はセッション取得に加えて CSRF トークンを API クライアントへ反映する
   const result = await refreshSession();
 

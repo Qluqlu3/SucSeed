@@ -3,8 +3,8 @@
 // /user/password_forgot ページ（メールアドレス確認）の React コンポーネント。
 // フォームは POST /user/password_forgot へ送信する。
 
-import { getCsrfToken } from '../../utils/csrf';
-import { FlashMessages } from '../FlashMessages';
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 
 type Props = { flash: Record<string, string> };
 

@@ -7,10 +7,10 @@
 //   inquiryDetail: { id, categoryName, content, createdAt }
 //   isCheck: boolean
 
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
 import { AdminSideMenu } from '../AdminSideMenu';
-import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   inquiryDetail: {

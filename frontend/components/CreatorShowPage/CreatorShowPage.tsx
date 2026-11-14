@@ -8,10 +8,10 @@
 //               postalCode, isRecruitment }
 //   isCreator : 職人セッションかどうか（設定ドロップダウンの出し分けに使用）
 
+import { FlashMessages } from '@sucseed/ui';
 // ── 型定義 ──────────────────────────────────────────────────────────
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
-import { FlashMessages } from '../FlashMessages';
 
 interface CreatorDetail {
   title: string;

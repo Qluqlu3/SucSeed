@@ -3,8 +3,8 @@
 // /gallery/favorite ページ（自分 + お気に入り登録した相手のギャラリー）。
 // 投稿フォームは MyGalleryPage と共通の GalleryUploadForm を使う。
 
+import { FlashMessages } from '@sucseed/ui';
 import { useState } from 'react';
-import { FlashMessages } from '../FlashMessages';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
 import { GalleryUploadForm } from '../GalleryUploadForm';
 

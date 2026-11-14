@@ -8,7 +8,7 @@
 //   scouts: [{ pageId, name, birthday, avatarPath, matchTime, isOk }]
 //   pageId は後継者の user id
 
-import { type MatchListUser, MatchUserList } from '../MatchUserList';
+import { type MatchListUser, MatchUserList } from '@sucseed/ui';
 
 interface ScoutUser extends MatchListUser {
   // null = 未回答 / true = 承諾 / false = お断り

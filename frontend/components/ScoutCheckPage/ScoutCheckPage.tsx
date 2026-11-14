@@ -5,7 +5,7 @@
 //
 // 【data-props に含まれるデータ】
 //   scouts : [{ pageId, name, birthday, avatarPath, matchTime, title }]
-import { AnswerButtons, type MatchListUser, MatchUserList } from '../MatchUserList';
+import { AnswerButtons, type MatchListUser, MatchUserList } from '@sucseed/ui';
 
 interface ScoutUser extends MatchListUser {
   title: string;

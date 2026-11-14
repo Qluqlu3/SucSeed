@@ -47,7 +47,11 @@ const csrfTokenFromMeta = (): string =>
     ? ''
     : (document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '');
 
-const currentCsrfToken = (): string => overriddenCsrfToken ?? csrfTokenFromMeta();
+/**
+ * 今の CSRF トークン。API の X-CSRF-Token と、Rails の HTML フォームへ POST する
+ * authenticity_token の両方に使う（Next の画面には meta タグが無いため、ここを経由する）。
+ */
+export const getCsrfToken = (): string => overriddenCsrfToken ?? csrfTokenFromMeta();
 
 const isApiError = (value: unknown): value is { error: ApiError } => {
   if (typeof value !== 'object' || value === null) {
@@ -67,7 +71,7 @@ const send = async <T>(method: string, path: string, init: RequestInit): Promise
       credentials: 'same-origin',
       headers: {
         Accept: 'application/json',
-        ...(method === 'GET' ? {} : { 'X-CSRF-Token': currentCsrfToken() }),
+        ...(method === 'GET' ? {} : { 'X-CSRF-Token': getCsrfToken() }),
         ...init.headers,
       },
     });

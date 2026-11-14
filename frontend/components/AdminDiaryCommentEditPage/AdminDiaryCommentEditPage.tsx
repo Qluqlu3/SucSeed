@@ -6,9 +6,9 @@
 // 【data-props】
 //   comments: [{ id, userId, diaryId, comment, createdAt, deletedAt }]
 
-import { getCsrfToken } from '../../utils/csrf';
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { AdminSideMenu } from '../AdminSideMenu';
-import { FlashMessages } from '../FlashMessages';
 import { Pagination, type PaginationInfo } from '../Pagination';
 
 interface AdminDiaryComment {

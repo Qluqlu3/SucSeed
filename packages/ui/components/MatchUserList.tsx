@@ -1,13 +1,13 @@
-// frontend/components/MatchUserList/MatchUserList.tsx
+// packages/ui/components/MatchUserList.tsx
 //
 // アピール/スカウト/マッチングの一覧ページで共通の枠。
 // 見出し・空状態・相手ユーザーのカードを描画し、
 // カードのリンク先と下部のボタン類だけを各ページから受け取る。
 
+import { getCsrfToken } from '@sucseed/api';
 import type { ReactNode } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
-import { calcAge, timeAgo } from '../../utils/date';
-import { FlashMessages } from '../FlashMessages';
+import { calcAge, timeAgo } from '../date';
+import { FlashMessages } from './FlashMessages';
 
 export interface MatchListUser {
   pageId: string;

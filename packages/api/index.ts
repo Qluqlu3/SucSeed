@@ -39,7 +39,7 @@ import type {
 } from './types';
 
 export type { ApiError, ApiResult } from './client';
-export { setCsrfToken } from './client';
+export { getCsrfToken, setCsrfToken } from './client';
 export type * from './types';
 
 /** 一覧エンドポイント共通のページング指定。per_page はサーバー側で100件に打ち止め */

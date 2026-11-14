@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 
-type Flash = Record<string, string>;
+// Rails の flash.to_h と、ブラウザ側の flash（../flash.ts）のどちらも受け取る
+type Flash = Partial<Record<string, string>>;
 
 interface Props {
   flash: Flash;
@@ -15,7 +16,9 @@ const FLASH_STYLES: Record<string, string> = {
 const DEFAULT_STYLE = 'bg-gray-100 border border-gray-400 text-gray-800';
 
 export const FlashMessages: FC<Props> = ({ flash }) => {
-  const entries = Object.entries(flash);
+  const entries = Object.entries(flash).filter(
+    (entry): entry is [string, string] => typeof entry[1] === 'string',
+  );
   if (entries.length === 0) return null;
 
   return (

@@ -4,10 +4,10 @@
 // ログインユーザー自身のプロフィール表示。
 
 import type { Profile } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { Settings } from 'lucide-react';
 import { useState } from 'react';
 import defaultAvatarImage from '../../../app/assets/images/default.png';
-import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   // API の GET /api/v1/profile と同じ表現（Rails 側も同じ ProfileSerializer）

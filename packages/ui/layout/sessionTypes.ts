@@ -1,7 +1,7 @@
-// frontend/spa/sessionTypes.ts
+// packages/ui/layout/sessionTypes.ts
 //
 // session に関する型ガード（純粋関数）。
-// 型そのものは API クライアント側（frontend/api/types.ts）を唯一の定義とし、
+// 型そのものは API クライアント側（@sucseed/api の types.ts）を唯一の定義とし、
 // ここでは re-export するだけにして二重管理を避ける。
 //
 // レイアウト（Navbar / Footer）はページ描画の土台なので、

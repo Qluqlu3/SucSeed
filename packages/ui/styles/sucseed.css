@@ -1,0 +1,417 @@
+/*
+ * packages/ui/styles/sucseed.css
+ *
+ * SucSeed のデザイントークン（@theme）と、プロジェクト固有のベース・コンポーネントのスタイル。
+ * Rails 側（frontend/styles/tailwind.css）と Next 側（web/app/globals.css）の両方が
+ * `@import 'tailwindcss'` の後にこのファイルを読み込む。
+ * 移行中は両方の画面で見た目を揃えるため、ここに1つだけ置く。
+ */
+
+/* ─────────────────────────────────────────────────────────────
+ * @theme — プロジェクト固有のデザイントークン
+ *
+ * Tailwind v4 では @theme に定義した CSS 変数が
+ * bg-p-brand / text-p-dark / font-mincho 等のユーティリティクラスとして
+ * 自動的に使えるようになる。
+ * ───────────────────────────────────────────────────────────── */
+@theme {
+  /* ── ブランドカラー ───────────────────────────────────────── */
+  --color-p-brand: #6846a5; /* メインパープル（タイトル帯・カードヘッダー・ボタン） */
+  --color-p-dark: #503780; /* ダークパープル（Navbar 背景） */
+  --color-p-light: #ede8f5; /* 薄ラベンダー（ラッパー背景） */
+  --color-p-pale: #f7f5fb; /* 極薄パープル（ページ本文背景） */
+  --color-p-muted: #9b87c8; /* ミュートパープル（補助テキスト・ヒント） */
+  --color-p-mid: #c8bcdf; /* ミドルラベンダー（ボーダー） */
+  --color-p-text: #3b2a5b; /* ダークパープル（フォームラベル等） */
+  --color-p-nav: #cbb5ff; /* Navbar リンク hover 色 */
+  --color-p-list: #baa9da; /* リストカードヘッダー背景 */
+  --color-p-msg: #d3c9e7; /* メッセージリストボタン背景 */
+  --color-p-gold: #d1a441; /* アクセントゴールド（いいね・NEWバッジ・タグ等、紫と合わせる差し色） */
+  --color-p-danger: #e5484d; /* 削除・エラー等の警告色（統一前は赤系が複数混在していた） */
+
+  /* ── フォント ──────────────────────────────────────────────── */
+  --font-mincho:
+    'ヒラギノ明朝 ProN W6', 'HiraMinProN-W6', 'HG明朝E', 'ＭＳ Ｐ明朝', 'MS PMincho', 'MS 明朝',
+    serif;
+  --font-gothic:
+    'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', Meiryo, メイリオ, Osaka, 'MS PGothic',
+    sans-serif;
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * @layer base — グローバルリセット
+ *
+ * Tailwind の Preflight（base リセット）に追加するプロジェクト固有のリセット。
+ * application.scss の移行が完了したらそちらの同等スタイルを削除する。
+ * ───────────────────────────────────────────────────────────── */
+@layer base {
+  body {
+    background-color: var(--color-p-pale);
+    color: #000;
+    font-family: var(--font-mincho);
+    line-height: 1.8;
+  }
+
+  a:link,
+  a:visited {
+    color: #000;
+  }
+
+  a:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+
+  button:hover {
+    opacity: 0.8;
+  }
+
+  /* Rails が自動付与するバリデーションエラーラッパー */
+  .field_with_errors {
+    background-color: var(--color-p-danger);
+    padding: 2px;
+    display: inline;
+  }
+
+  /* ログインモーダル内アバター画像 */
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+
+  /* パスワード忘れリンク */
+  span.psw {
+    float: right;
+    padding-top: 16px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * @layer components — application.scss から移行したコンポーネントスタイル
+ *
+ * Phase 3 で Navbar / LoginModal が React+Tailwind 実装に置き換わったら
+ * 対応するクラスをここから削除する。
+ * ───────────────────────────────────────────────────────────── */
+@layer components {
+  /* ── レイアウト ───────────────────────────────────────────── */
+  /* Bootstrap の container-fluid のデフォルト padding を打ち消す */
+  .container-fluid {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  /* ── Navbar ─────────────────────────────────────────────── */
+  .navbar {
+    border-radius: 0;
+    background-color: var(--color-p-dark);
+    color: #fff;
+  }
+
+  .navbar-toggler {
+    background-color: var(--color-p-brand);
+    opacity: 0.9;
+  }
+
+  .my_nav {
+    width: 100%;
+    height: 63px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    padding-top: 7px;
+    padding-right: 1%;
+
+    a:link {
+      color: #fff;
+    }
+    a:visited {
+      color: #fff;
+    }
+    a:hover {
+      color: var(--color-p-nav);
+    }
+  }
+
+  .dropdown-menu {
+    z-index: 5000;
+
+    a:link {
+      color: #000;
+    }
+    a:visited {
+      color: #000;
+    }
+    a:hover {
+      color: var(--color-p-brand);
+    }
+  }
+
+  /* ── 認証 UI（Navbar 内） ────────────────────────────────── */
+  .login_btn {
+    text-align: right;
+  }
+
+  .dropdown-right {
+    text-align: right;
+    margin-bottom: 20px;
+  }
+
+  .login-ul {
+    margin-top: 9%;
+  }
+
+  /* ── ログインモーダル ─────────────────────────────────────── */
+  .popup-login {
+    width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .login-form-btn {
+    background-color: var(--color-p-brand);
+    color: #fff;
+    padding: 3px 7px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: var(--color-p-muted);
+  }
+
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+  }
+
+  /* LoginModal の modal-content に付与するアニメーション */
+  .my-modal {
+    animation: animatezoom 0.6s;
+  }
+
+  .cont {
+    padding: 16px;
+  }
+
+  /* ── Navbar ブランド・ボタン ─────────────────────────────── */
+  .my-brand {
+    padding-left: 1%;
+  }
+
+  .my-dropdown {
+    background-color: var(--color-p-dark);
+    border-radius: 10px;
+  }
+
+  /* Bootstrap の nav ホバー背景を除去 */
+  .nav > li > a:hover,
+  .nav .open > a:hover,
+  .nav .open > a:focus {
+    background-color: transparent;
+  }
+
+  /* モバイル展開時に他要素より前面に出す */
+  .navbar-collapse {
+    z-index: 1600;
+  }
+
+  /* ── 認証ボタン ──────────────────────────────────────────── */
+  .my-login-btn {
+    margin-bottom: 12%;
+    background-color: var(--color-p-brand);
+    color: #fff;
+    border: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .create-user-btn {
+    font-size: 19px;
+    background-color: var(--color-p-brand);
+    color: #fff;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  /* ── ログインモーダル（追加分） ──────────────────────────── */
+  .modal-login-btn-box {
+    margin-top: 5%;
+    margin-bottom: 3%;
+    text-align: right;
+  }
+
+  .modal-login-btn {
+    font-size: 19px;
+    background-color: var(--color-p-brand);
+    color: #fff;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .modal-small {
+    color: var(--color-p-danger);
+    padding: 0 0 0 2px;
+    margin: 0;
+  }
+
+  .modal-password-box {
+    margin-top: 3%;
+  }
+
+  .modal-footer {
+    background-color: var(--color-p-light);
+    border-radius: 0 0 5px 5px;
+  }
+
+  /* ── 検索 ────────────────────────────────────────────────── */
+  .search-form-box {
+    width: 300px;
+    display: inline-block;
+  }
+
+  .search_btn {
+    background-color: var(--color-p-brand);
+    color: #fff;
+  }
+
+  .search_icon {
+    padding: 0;
+    font-size: 20px;
+    color: var(--color-p-dark);
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .original-footer {
+    width: 100%;
+    height: 70px;
+    color: #fff;
+    background-color: var(--color-p-brand);
+    text-align: right;
+
+    p {
+      line-height: 70px;
+      display: inline-block;
+    }
+  }
+
+  .inquiry-link {
+    &:link {
+      color: #fff;
+    }
+    &:visited {
+      color: #fff;
+    }
+    &:hover {
+      color: var(--color-p-nav);
+    }
+  }
+
+  .copy-right {
+    padding-left: 1%;
+    padding-right: 1%;
+  }
+
+  /* ── ロゴ・アイコン ──────────────────────────────────────── */
+  .logo {
+    margin-left: 0.6%;
+  }
+
+  .mini-list {
+    padding: 0;
+    color: #fff;
+    font-size: 26px;
+  }
+
+  /* ── エラー表示 ──────────────────────────────────────────── */
+  .error-page-box {
+    min-height: 100vh;
+    height: 67vh;
+  }
+
+  .error-box {
+    font-size: 19px;
+    background-color: #fff;
+    color: var(--color-p-danger);
+  }
+
+  .error-title {
+    padding: 1%;
+    font-size: 25px;
+    color: #fff;
+    background-color: var(--color-p-danger);
+  }
+
+  .error-index {
+    padding: 0.8% 0 0.8% 3.9%;
+  }
+
+  .error-content {
+    padding: 0.2% 0;
+  }
+
+  .error-page-title {
+    width: 80%;
+    margin: 3% auto 0;
+    border-radius: 5px;
+  }
+
+  .error-btn-box {
+    width: 20%;
+    margin: 3% auto 0;
+
+    button {
+      background-color: var(--color-p-brand);
+      color: #fff;
+    }
+  }
+
+  /* ── その他ユーティリティ ────────────────────────────────── */
+  .none-margin-box {
+    width: 100%;
+    height: 5%;
+  }
+
+  .my-alert {
+    margin: 0;
+  }
+}
+
+/* @keyframes は @layer 外に置く（layer 内だと一部ブラウザで動作しない） */
+@keyframes animatezoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ── レスポンシブ（@media は @layer 外のほうが確実） ─────────── */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+
+  .cancelbtn {
+    width: 100%;
+  }
+}

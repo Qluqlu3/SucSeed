@@ -5,10 +5,9 @@
 
 import type { Id } from '@sucseed/api';
 import { api } from '@sucseed/api';
+import { calcAge, FlashMessages } from '@sucseed/ui';
 import { useState } from 'react';
 import heroImage from '../../../app/assets/images/main1.jpg';
-import { calcAge } from '../../utils/date';
-import { FlashMessages } from '../FlashMessages';
 
 interface User {
   id: Id;

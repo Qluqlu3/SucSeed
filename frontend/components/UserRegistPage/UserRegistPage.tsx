@@ -4,9 +4,9 @@
 // Rails の @user.errors.full_messages を errors プロップで受け取って表示する。
 // フォームは POST /user/create へ multipart/form-data で送信する。
 
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { useState } from 'react';
-import { getCsrfToken } from '../../utils/csrf';
-import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   errors: string[];

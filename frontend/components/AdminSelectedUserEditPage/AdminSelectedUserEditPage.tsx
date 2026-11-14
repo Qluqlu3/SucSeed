@@ -6,9 +6,9 @@
 // 【data-props】
 //   user: { id, avatarPath, profile }
 
-import { getCsrfToken } from '../../utils/csrf';
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 import { AdminSideMenu } from '../AdminSideMenu';
-import { FlashMessages } from '../FlashMessages';
 
 interface Props {
   user: {

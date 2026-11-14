@@ -44,6 +44,8 @@ services:
       - node_modules:/app/node_modules
       # ワークスペースの web/（Next.js）にも入るので、ホストの web/node_modules と分ける
       - web_node_modules:/app/web/node_modules
+      # 共有パッケージ（packages/ui）も依存を持つので同じく分ける
+      - ui_node_modules:/app/packages/ui/node_modules
       - pnpm_store:/root/.local/share/pnpm/store   # ダウンロード済みパッケージをキャッシュ
     environment:
       CI: 'true'   # pnpm の非対話モード（node_modules 再構築時の TTY 確認をスキップ）
@@ -91,6 +93,7 @@ services:
       - bundle_cache:/usr/local/bundle
       - node_modules:/app/node_modules
       - web_node_modules:/app/web/node_modules
+      - ui_node_modules:/app/packages/ui/node_modules
       - web_next:/app/web/.next   # Next のビルドキャッシュもホスト（macOS）と混ぜない
     depends_on:
       deps:
@@ -108,6 +111,7 @@ services:
       - .:/app
       - bundle_cache:/usr/local/bundle
       - node_modules:/app/node_modules    # web / css サービスと共有
+      - ui_node_modules:/app/packages/ui/node_modules   # packages/ui の画面部品もバンドルする
     environment:
       RAILS_ENV: development
     depends_on:
@@ -138,6 +142,7 @@ volumes:
   bundle_cache:
   node_modules:    # コンテナ用 node_modules（ホストの macOS バイナリと分離）
   web_node_modules:
+  ui_node_modules:
   web_next:
   pnpm_store:      # pnpm のパッケージダウンロードキャッシュ（再起動時の高速化）
   uploads:

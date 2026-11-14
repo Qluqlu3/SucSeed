@@ -6,9 +6,9 @@
 // 【data-props に含まれるデータ】
 //   creators : 検索結果の職人一覧
 
+import { FlashMessages } from '@sucseed/ui';
 import type { Creator } from '../CreatorCard';
 import { CreatorCard } from '../CreatorCard';
-import { FlashMessages } from '../FlashMessages';
 import { Pagination, type PaginationInfo } from '../Pagination';
 
 // ── 型定義 ──────────────────────────────────────────────────────────

@@ -5,8 +5,8 @@
 //
 // 【data-props】なし（props なし）
 
-import { getCsrfToken } from '../../utils/csrf';
-import { FlashMessages } from '../FlashMessages';
+import { getCsrfToken } from '@sucseed/api';
+import { FlashMessages } from '@sucseed/ui';
 
 interface Props {
   flash: Record<string, string>;

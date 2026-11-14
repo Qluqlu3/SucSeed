@@ -1,4 +1,4 @@
-import { FlashMessages } from '../FlashMessages';
+import { FlashMessages } from '@sucseed/ui';
 import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
 
 interface Props {
