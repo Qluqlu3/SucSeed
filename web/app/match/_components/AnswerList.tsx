@@ -18,13 +18,8 @@ import {
   type Role,
 } from '@sucseed/ui';
 import { useState } from 'react';
-import {
-  isAuthError,
-  partnerProfilePath,
-  toPartnerCard,
-  useAllMatches,
-} from '../../../lib/matches';
-import { redirectToLogin, useRequireRole } from '../../../lib/session';
+import { partnerProfilePath, toPartnerCard, useAllMatches } from '../../../lib/matches';
+import { isAuthError, redirectToLogin, useRequireRole } from '../../../lib/session';
 
 interface Props {
   heading: string;

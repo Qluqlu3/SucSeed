@@ -6,6 +6,7 @@
 // 各画面は useSession / useRequireLogin で受け取る。
 // セッション API の呼び出しは CSRF トークンの取得も兼ねるので、画面の更新系はこの後に行える。
 
+import type { ApiError } from '@sucseed/api';
 import { fetchSessionPayload, pushFlash, type Role, type SessionState } from '@sucseed/ui';
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 
@@ -72,6 +73,10 @@ export const useRequireRole = (allowed: (role: Role) => boolean): SessionState |
 export const isCreator = (role: Role) => role === 'creator';
 // Rails の require_non_creator と同じ（ログイン済みで職人でない = 後継者・一般ユーザー）
 export const isNonCreator = (role: Role) => role !== 'creator' && role !== 'guest';
+
+/** API がログインし直しを求めるエラー（未ログイン・セッション切れ）か */
+export const isAuthError = (error: ApiError): boolean =>
+  error.code === 'unauthorized' || error.code === 'session_expired';
 
 /** 未ログイン・セッション切れのときの遷移。API が 401 を返したときにも使う */
 export const redirectToLogin = (): void => {

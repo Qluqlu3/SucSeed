@@ -3,37 +3,14 @@
 // web/lib/matches.ts
 //
 // アピール/スカウト/マッチングの一覧画面（web/app/match/**）で共通の取得と変換。
-// Rails の MatchController と同じく、一覧は全件を出す（API は全ページを読んで揃える）。
 
-import type { ApiError, ApiResult, Collection, Match, PageParams } from '@sucseed/api';
+import type { ApiResult, Collection, Match, PageParams } from '@sucseed/api';
 import type { MatchListUser, Role } from '@sucseed/ui';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
-import { redirectToLogin } from './session';
-
-// API の1ページの上限
-const PER_PAGE = 100;
-
-export const isAuthError = (error: ApiError) =>
-  error.code === 'unauthorized' || error.code === 'session_expired';
+import { fetchAllPages } from './pagination';
+import { isAuthError, redirectToLogin } from './session';
 
 type FetchPage = (params: PageParams) => Promise<ApiResult<Collection<Match>>>;
-
-const fetchAllPages = async (
-  fetchPage: FetchPage,
-): Promise<{ ok: true; matches: Match[] } | { ok: false; error: ApiError }> => {
-  const matches: Match[] = [];
-  for (let page = 1; ; page++) {
-    const result = await fetchPage({ page, perPage: PER_PAGE });
-    if (!result.ok) {
-      return result;
-    }
-    matches.push(...result.data.items);
-    const totalPages = result.data.pagination?.totalPages ?? 1;
-    if (page >= totalPages) {
-      return { ok: true, matches };
-    }
-  }
-};
 
 /**
  * 一覧を全件取得する。role が決まる（ログインを確認できる）まで取得しない。
@@ -63,7 +40,7 @@ export const useAllMatches = (
         return;
       }
       if (result.ok) {
-        setMatches(result.matches);
+        setMatches(result.data);
       } else if (isAuthError(result.error)) {
         redirectToLogin();
       } else {

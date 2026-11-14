@@ -11,13 +11,8 @@
 import { api, type Match } from '@sucseed/api';
 import { FlashMessages, MatchUserList, pushFlash, type Role } from '@sucseed/ui';
 import { useState } from 'react';
-import {
-  isAuthError,
-  partnerProfilePath,
-  toPartnerCard,
-  useAllMatches,
-} from '../../../../lib/matches';
-import { redirectToLogin, useRequireLogin } from '../../../../lib/session';
+import { partnerProfilePath, toPartnerCard, useAllMatches } from '../../../../lib/matches';
+import { isAuthError, redirectToLogin, useRequireLogin } from '../../../../lib/session';
 
 const toMatchUser = (match: Match, role: Role) => ({
   ...toPartnerCard(match, role),
