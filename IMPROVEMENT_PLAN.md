@@ -34,7 +34,7 @@
 | 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を 3001 へ） | 完了 |
 | 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | 完了 |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
-| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-1 完了 |
+| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-2 完了 |
 | 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | |
 | 3 | 管理画面（`/api/v1/admin/*` を作ってから） | |
 | 4 | Rails の HTML 側（ビュー・レイアウト・Propshaft・jsbundling・Tailwind・HTML 側コントローラ）を撤去し `api_only` に | |
@@ -47,7 +47,7 @@
 | 画面 | Rails | 状態 |
 |---|---|:---:|
 | マッチング一覧 `/match/matching/list` | `MatchController#matching_list_view` | 1-1 完了 |
-| アピール/スカウトの一覧（4画面） | `MatchController` | |
+| アピール/スカウトの一覧（4画面） | `MatchController` | 1-2 完了 |
 | メッセージ一覧・メッセージ | `MessageController` | |
 | 日記・ギャラリー | `DiaryController` / `GalleryController` | |
 | 職人/後継者のページ・マイページ | `YourPageController` ほか | |
@@ -78,6 +78,29 @@
 未ログインで開くと `/index` に移りメッセージが出る、モーダルからログイン、一覧の表示が Rails 版と
 見た目まで一致、「メッセージ」で相手に追加して `/message/list` へ、画面を開いた後に追加済みになった相手では
 Rails の画面に「追加済み」が1回だけ出る、Next の画面からログアウト。
+
+1-2 で移した画面と、Rails との違い:
+
+| 画面 | 誰が | API |
+|---|---|---|
+| `/match/appealed/list` アピールリスト | 職人 | `GET /api/v1/appeals`、回答は `PATCH /api/v1/appeals/:heirId` |
+| `/match/appeal/list_check` アピール確認 | 後継者 | `GET /api/v1/appeals` |
+| `/match/scouted/list` スカウト確認 | 後継者 | `GET /api/v1/scouts`、回答は `PATCH /api/v1/scouts/:creatorId` |
+| `/match/scout/list_check` スカウト一覧 | 職人 | `GET /api/v1/scouts` |
+
+- 一覧の取得・相手への変換は `web/lib/matches.ts` に寄せ、マッチング一覧（1-1）もこれを使うようにした
+- ロールの制限は `useRequireRole()`。Rails の `require_creator` / `require_non_creator` と同じく、
+  合わなければメッセージ無しで `/index` へ
+- 回答（「話してみる」「ごめんなさい」）は Rails では POST → 同じ画面へリダイレクトして flash だったが、
+  Next では API で回答し、回答した行を一覧から外して見出しの下に「保存しました」を出す（失敗は「エラーが発生しました」）。
+  ボタンは `@sucseed/ui` の `AnswerButtons` を `onAnswer` を渡す形でも使えるようにして見た目を共用した
+- `GET /api/v1/appeals` は後継者には回答済みも返すが、Rails の「アピール確認」は未回答だけを出していたので
+  画面側で `isOk === null` に絞った（API は変えていない）
+
+確認済み（1-1 と同じ e2e 用の別 DB と Next 3000 + Rails 3001、ヘッドレス Chromium）: 未ログイン・ロール違いで
+`/index` へ、後継者のアピール確認に回答済みが出ない、職人がアピールに「話してみる」「ごめんなさい」で行が消え
+マッチング一覧に反映、後継者がスカウトに回答すると職人のスカウト一覧が「マッチング成立」になる、
+スカウト一覧の見た目が Rails 版と一致。
 
 残り: Next の画面に favicon が無い（Rails はダイジェスト付きのアセットを `favicon_link_tag` で出している）。
 Sentry も Next 側は未設定。一覧は API を全ページ読んで全件出している（Rails の画面と同じ。🟢-1 と合わせて

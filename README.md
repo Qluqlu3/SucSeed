@@ -195,7 +195,11 @@ API の呼び出しは `frontend/` と同じ `@sucseed/api` を使います。Ne
 - **レイアウト**: [web/app/AppShell.tsx](web/app/AppShell.tsx) が Rails と同じ Navbar・Footer・ログインモーダルを
   `@sucseed/ui` から出す。スタイルも Rails と同じ `@sucseed/ui/styles.css` を読み込む
 - **ログイン必須**: 画面で `useRequireLogin()`（[web/lib/session.tsx](web/lib/session.tsx)）を呼ぶ。
-  未ログインならトップへ移し「ログインしてください」を出す。API が 401 を返したときは `redirectToLogin()`
+  未ログインならトップへ移し「ログインしてください」を出す。API が 401 を返したときは `redirectToLogin()`。
+  職人だけ・後継者だけの画面は `useRequireRole(isCreator)` / `useRequireRole(isNonCreator)`
+  （ロールが合わなければ Rails と同じくメッセージ無しでトップへ）
+- **アピール/スカウト/マッチングの一覧**: 全件取得と相手ユーザーへの変換は
+  [web/lib/matches.ts](web/lib/matches.ts)（`useAllMatches`・`toPartnerCard`）にまとめてある
 - **flash**: Rails の flash は Next から読み書きできないので、遷移先に伝えるメッセージは
   `pushFlash()`（`@sucseed/ui`）で積む。遷移先が Next でも Rails でも、`PendingFlash` が1回だけ出す
 - **Rails 側の画面は残す**: 本番はまだ Rails だけで配信しているため、移した画面の Rails 側
