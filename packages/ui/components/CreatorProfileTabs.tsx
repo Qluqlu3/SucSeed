@@ -1,7 +1,7 @@
-// frontend/components/CreatorProfileTabs/CreatorProfileTabs.tsx
+// packages/ui/components/CreatorProfileTabs.tsx
 //
 // 職人ページ(プロフィール/日記/作品ギャラリー)を行き来するための共通タブナビゲーション。
-// YourPage / YourDiaryPage / UserGalleryViewPage の3ページ間で使い回す。
+// 職人ページ・日記・作品ギャラリーの3画面で使い回す（Rails 側と Next 側の両方）。
 // どのページからでも他の2ページへ迷わず移動できるようにする。
 
 import { BookOpen, Image as ImageIcon, User } from 'lucide-react';

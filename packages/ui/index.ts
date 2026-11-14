@@ -8,6 +8,11 @@
 // styles/sucseed.css（'@sucseed/ui/styles.css'）にある。使う側の Tailwind で読み込み、
 // このパッケージのファイルを @source に含めること。
 
+export {
+  type CreatorProfileTabKey,
+  CreatorProfileTabs,
+} from './components/CreatorProfileTabs';
+export { DiaryCard, type DiaryComment, type DiaryEntry } from './components/DiaryCard';
 export { FlashMessages } from './components/FlashMessages';
 export { AnswerButtons, type MatchListUser, MatchUserList } from './components/MatchUserList';
 export { PendingFlash } from './components/PendingFlash';

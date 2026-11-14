@@ -5,9 +5,8 @@
 
 import type { Id } from '@sucseed/api';
 import { api } from '@sucseed/api';
-import { FlashMessages } from '@sucseed/ui';
+import { DiaryCard, type DiaryEntry, FlashMessages } from '@sucseed/ui';
 import { useState } from 'react';
-import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
 
 interface CurrentUser {
   id: Id;

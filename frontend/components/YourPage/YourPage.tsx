@@ -5,11 +5,10 @@
 
 import type { Id } from '@sucseed/api';
 import { api } from '@sucseed/api';
-import { calcAge, FlashMessages } from '@sucseed/ui';
+import { CreatorProfileTabs, calcAge, FlashMessages } from '@sucseed/ui';
 import { Star } from 'lucide-react';
 import { useState } from 'react';
 import heroImage from '../../../app/assets/images/main1.jpg';
-import { CreatorProfileTabs } from '../CreatorProfileTabs/CreatorProfileTabs';
 
 interface User {
   id: Id;

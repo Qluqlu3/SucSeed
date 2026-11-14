@@ -4,8 +4,7 @@
 // DiarySelectPage と構造は同じ。後継者ログイン時のみアクセス可能。
 
 import type { Id } from '@sucseed/api';
-import { FlashMessages } from '@sucseed/ui';
-import { DiaryCard, type DiaryEntry } from '../DiaryCard/DiaryCard';
+import { DiaryCard, type DiaryEntry, FlashMessages } from '@sucseed/ui';
 
 interface CurrentUser {
   id: Id;

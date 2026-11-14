@@ -1,7 +1,7 @@
-// frontend/components/DiaryCard/DiaryCard.tsx
+// packages/ui/components/DiaryCard.tsx
 //
 // 日記カード共通コンポーネント。
-// DiarySelectPage / MyDiaryPage / YourDiaryPage / DiaryHeirFavoritePage で使い回す。
+// 日記の各画面（Rails 側の frontend/components/*Diary*Page と、Next 側の web/app/diary/**）で使い回す。
 // いいね・コメント投稿・削除は /api/v1 の JSON API で処理するため
 // ページ全体の再レンダリングが不要。
 //
@@ -120,9 +120,12 @@ export const DiaryCard = ({
         <div className="text-right">
           {/* いいねアバター */}
           <div className="inline">
-            {entry.goodAvatars.map((ga) => (
+            {/* 既定のアバターの人が複数いると avatarPath が重なるため、並び順で key を付ける
+                （表示専用で、並べ替えも個別の更新もしない） */}
+            {entry.goodAvatars.map((ga, index) => (
               <img
-                key={ga.avatarPath}
+                // biome-ignore lint/suspicious/noArrayIndexKey: 上記の通り、ほかに一意な値が無い
+                key={index}
                 src={ga.avatarPath}
                 className="rounded-full"
                 width={30}
