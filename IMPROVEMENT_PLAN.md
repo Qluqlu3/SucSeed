@@ -9,7 +9,7 @@
 
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
-| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 0-3 完了 |
+| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 段階1 着手 |
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | 使われていない 500 画面（`render_500`・`errors/error_500`）の整理 | `ApplicationController` | S | 未着手 |
@@ -34,13 +34,54 @@
 | 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を 3001 へ） | 完了 |
 | 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | 完了 |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
-| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | |
+| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-1 完了 |
 | 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | |
 | 3 | 管理画面（`/api/v1/admin/*` を作ってから） | |
 | 4 | Rails の HTML 側（ビュー・レイアウト・Propshaft・jsbundling・Tailwind・HTML 側コントローラ）を撤去し `api_only` に | |
 | 5 | 公開ページをサーバー側で描画し `generateMetadata` を付ける | |
 
-`flash`・未ログイン時のリダイレクト・404 は、段階1の最初の画面で Next 側の仕組みを作る。
+`flash`・未ログイン時のリダイレクトは 1-1 で作った（下記）。404 は ID を取る画面を移すときに作る。
+
+**段階1の進み具合**
+
+| 画面 | Rails | 状態 |
+|---|---|:---:|
+| マッチング一覧 `/match/matching/list` | `MatchController#matching_list_view` | 1-1 完了 |
+| アピール/スカウトの一覧（4画面） | `MatchController` | |
+| メッセージ一覧・メッセージ | `MessageController` | |
+| 日記・ギャラリー | `DiaryController` / `GalleryController` | |
+| 職人/後継者のページ・マイページ | `YourPageController` ほか | |
+
+移した画面の Rails 側（コントローラ・テンプレート・`frontend/` のコンポーネント・HTML のテスト）は、
+本番がまだ Rails だけで配信しているので消さずに残し、段階4でまとめて撤去する。
+開発時は Next のページが優先され、Rails 側には届かない。
+
+1-1 で作った仕組み:
+
+- **共有パッケージ `packages/ui`（`@sucseed/ui`）**: Navbar・Footer・ログインモーダル・セッション取得・
+  `FlashMessages`・`MatchUserList`・`PostForm`・日付の関数を `frontend/` から移し、Rails と Next の
+  両方で同じ部品を使う。Tailwind のテーマとプロジェクト固有のクラスも `styles/sucseed.css` に移し、
+  両方の Tailwind が読み込む（Next は `@tailwindcss/postcss`、Tailwind は Rails と同じ 4.3.0）
+- **CSRF トークン**: `getCsrfToken()` を `@sucseed/api` に寄せた。meta タグがあればそれ、
+  `refreshSession()` 後はセッション API のトークンを返すので、Next の画面からも Rails の
+  HTML フォーム（ログイン・ログアウト）へ POST できる
+- **レイアウト**: `web/app/AppShell.tsx`。セッションを1回取得して `useSession()` で配る
+- **ログイン必須**: `useRequireLogin()`。未ログインなら Rails と同じく `/index` へ移し
+  「ログインしてください」を出す。API が 401 を返したときも同じ（`redirectToLogin()`）
+- **flash**: Rails の flash は Rails のセッションにあり Next から読み書きできないため、
+  ブラウザ側（`sessionStorage`）に積む `pushFlash()` を作った。表示は `PendingFlash` がナビバーの下に重ねて
+  1回だけ出し、Next のレイアウトと Rails のレイアウト（`spa-flash` の island）の両方に置いた。
+  逆向き（Rails が flash を積んで Next の画面へリダイレクトする）は今は無い。必要になったら
+  セッション API で flash を返すなどを考える
+
+確認済み（e2e 用の別 DB で Rails 3001 + Next 3000 を立て、ヘッドレス Chromium で操作）:
+未ログインで開くと `/index` に移りメッセージが出る、モーダルからログイン、一覧の表示が Rails 版と
+見た目まで一致、「メッセージ」で相手に追加して `/message/list` へ、画面を開いた後に追加済みになった相手では
+Rails の画面に「追加済み」が1回だけ出る、Next の画面からログアウト。
+
+残り: Next の画面に favicon が無い（Rails はダイジェスト付きのアセットを `favicon_link_tag` で出している）。
+Sentry も Next 側は未設定。一覧は API を全ページ読んで全件出している（Rails の画面と同じ。🟢-1 と合わせて
+ページ送りにするか決める）。
 
 0-1 で Next（3100）経由の次の動作を確認済み: Rails のリダイレクト先が Next のホストになる
 （`X-Forwarded-Host`）、アセット・アップロード画像の配信、API のログインと multipart の画像アップロード、

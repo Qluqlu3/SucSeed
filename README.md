@@ -115,21 +115,24 @@ frontend/
 │   ├── mountPage.tsx       # 全ページ共通のマウントロジック
 │   ├── ErrorBoundary/
 │   ├── CreatorCard/        # 複数ページで共用する共通コンポーネント
-│   ├── FlashMessages/
 │   ├── IndexPage/          # ページごとに 1 ディレクトリ
 │   │   ├── IndexPage.tsx       # コンポーネント本体
 │   │   └── index.ts            # re-export
 │   └── ...
-├── spa/                    # Navbar・LoginModal など全ページ共通の island
+├── spa/                    # Navbar・LoginModal などを Rails のレイアウトに island としてマウントする
 ├── three/                  # Three.js 3D ビューワー
-├── utils/                  # csrf.ts / postJson.ts など汎用ユーティリティ
 └── styles/
     ├── tailwind.css        # Tailwind CSS v4 エントリーポイント
     └── fontawesome.css
 
 packages/
-└── api/                    # @sucseed/api: /api/v1 の型（types.ts）とクライアント（client.ts / index.ts）。
-                            # frontend/ と web/ の両方から import { api } from '@sucseed/api' で使う
+├── api/                    # @sucseed/api: /api/v1 の型（types.ts）とクライアント（client.ts / index.ts）。
+│                           # frontend/ と web/ の両方から import { api } from '@sucseed/api' で使う
+└── ui/                     # @sucseed/ui: frontend/ と web/ で共用する UI 部品
+    ├── layout/             #   Navbar・Footer・LoginModal とセッション取得
+    ├── components/         #   FlashMessages・PendingFlash・MatchUserList・PostForm
+    ├── flash.ts            #   画面をまたぐ1回だけのメッセージ（ブラウザ側の flash）
+    └── styles/sucseed.css  #   Tailwind のテーマとプロジェクト固有のスタイル（両方の Tailwind が読み込む）
 ```
 
 ### ERB ページに React コンポーネントを埋め込む
@@ -184,7 +187,20 @@ pnpm run build:css   # CSS（Tailwind）
 http://localhost:3001 を開きます（docker compose では Next の中継先は `RAILS_ORIGIN=http://web:3001`）。
 
 API の呼び出しは `frontend/` と同じ `@sucseed/api` を使います。Next の画面には Rails の
-`csrf-token` meta タグが無いため、更新系を呼ぶ前に `refreshSession()` で CSRF トークンを取得しておきます。
+`csrf-token` meta タグが無いため、更新系を呼ぶ前に `refreshSession()` で CSRF トークンを取得しておきます
+（レイアウトが起動時に行うので、画面からは気にしなくてよい）。
+
+移した画面の書き方（例: [web/app/match/matching/list/page.tsx](web/app/match/matching/list/page.tsx)）:
+
+- **レイアウト**: [web/app/AppShell.tsx](web/app/AppShell.tsx) が Rails と同じ Navbar・Footer・ログインモーダルを
+  `@sucseed/ui` から出す。スタイルも Rails と同じ `@sucseed/ui/styles.css` を読み込む
+- **ログイン必須**: 画面で `useRequireLogin()`（[web/lib/session.tsx](web/lib/session.tsx)）を呼ぶ。
+  未ログインならトップへ移し「ログインしてください」を出す。API が 401 を返したときは `redirectToLogin()`
+- **flash**: Rails の flash は Next から読み書きできないので、遷移先に伝えるメッセージは
+  `pushFlash()`（`@sucseed/ui`）で積む。遷移先が Next でも Rails でも、`PendingFlash` が1回だけ出す
+- **Rails 側の画面は残す**: 本番はまだ Rails だけで配信しているため、移した画面の Rails 側
+  （コントローラ・テンプレート・`frontend/` のコンポーネント）は段階4で撤去するまで消さない。
+  開発時は Next のページが優先され、Rails 側には届かない
 
 ```sh
 pnpm --filter sucseed-web typecheck
