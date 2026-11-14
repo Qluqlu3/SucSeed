@@ -130,7 +130,7 @@ packages/
 │                           # frontend/ と web/ の両方から import { api } from '@sucseed/api' で使う
 └── ui/                     # @sucseed/ui: frontend/ と web/ で共用する UI 部品
     ├── layout/             #   Navbar・Footer・LoginModal とセッション取得
-    ├── components/         #   FlashMessages・PendingFlash・MatchUserList・PostForm
+    ├── components/         #   FlashMessages・PendingFlash・MatchUserList・PostForm・DiaryCard・CreatorProfileTabs
     ├── flash.ts            #   画面をまたぐ1回だけのメッセージ（ブラウザ側の flash）
     └── styles/sucseed.css  #   Tailwind のテーマとプロジェクト固有のスタイル（両方の Tailwind が読み込む）
 ```

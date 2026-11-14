@@ -34,7 +34,7 @@
 | 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を 3001 へ） | 完了 |
 | 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | 完了 |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
-| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-3 完了 |
+| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-4 完了 |
 | 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | |
 | 3 | 管理画面（`/api/v1/admin/*` を作ってから） | |
 | 4 | Rails の HTML 側（ビュー・レイアウト・Propshaft・jsbundling・Tailwind・HTML 側コントローラ）を撤去し `api_only` に | |
@@ -49,7 +49,8 @@
 | マッチング一覧 `/match/matching/list` | `MatchController#matching_list_view` | 1-1 完了 |
 | アピール/スカウトの一覧（4画面） | `MatchController` | 1-2 完了 |
 | メッセージ一覧・メッセージ | `MessageController` | 1-3 完了 |
-| 日記・ギャラリー | `DiaryController` / `GalleryController` | |
+| 日記（5画面） | `DiaryController` | 1-4 完了 |
+| ギャラリー（5画面） | `GalleryController` | |
 | 職人/後継者のページ・マイページ | `YourPageController` ほか | |
 
 移した画面の Rails 側（コントローラ・テンプレート・`frontend/` のコンポーネント・HTML のテスト）は、
@@ -124,6 +125,33 @@ Rails の画面に「追加済み」が1回だけ出る、Next の画面から�
 またいで古い順に並び最下部までスクロールされる、送信して末尾に出て再読み込み後も残る、空送信でエラー、
 左の一覧から別の相手へ移る、存在しない ID で 404 の画面、マッチング一覧の「メッセージ」から Next の
 `/message/list` に相手が増えて出る、メッセージ画面と 404 の見た目が Rails 版と一致。
+
+1-4 で移した画面と、Rails との違い:
+
+| 画面 | 誰が | API |
+|---|---|---|
+| `/diary/view` 日記（自分 + お気に入り） | ログイン中 | `GET /api/v1/diaries` |
+| `/diary/heir/favorite` 同上（後継者メニューから） | ログイン中 | `GET /api/v1/diaries` |
+| `/diary/my_diary` マイ日記 | ログイン中 | `GET /api/v1/diaries?user_id=自分`、投稿は `POST /api/v1/diaries` |
+| `/diary/post` 日記投稿 | 職人 | `POST /api/v1/diaries` |
+| `/diary/show/:id` :id の人の日記 | 誰でも | `GET /api/v1/users/:id`（新規）・`GET /api/v1/diaries?user_id=:id` |
+
+- **API を1つ足した**: `GET /api/v1/users/:id`（`Api::V1::UsersController`・`PublicUserPageSerializer`）。
+  :id の人の名前と、職人の詳細プロフィールを登録済みか（`hasCreatorProfile`。Rails の `Creator.exists?` と同じ判定で、
+  職人ページへのタブを出すかに使う）を返す。creators / heirs は詳細プロフィールを登録した人しか引けないため。
+  ギャラリーの `/gallery/view/:id` でも使う予定
+- 日記カード `DiaryCard` と職人ページのタブ `CreatorProfileTabs` を `@sucseed/ui` へ移し、Rails と Next で共用する
+- ログイン中の自分（コメント欄のアバター・名前、自分の投稿かの判定）は `GET /api/v1/profile` から取る（`web/lib/diaries.ts` の `useCurrentUser`）
+- 日記投稿（`/diary/post`）は Rails では失敗してもマイ日記へ移っていたが、Next では入力を残したまま画面にエラーを出す。
+  成功時は Rails と同じく「保存しました」を出してマイ日記へ移る
+- `DiaryCard` のいいねした人のアバターが画像パスを key にしていて、既定のアバターの人が2人いると key が重複していた
+  （Rails 版にもあった）。並び順で key を付けるよう直した
+
+確認済み（同じ e2e 用の別 DB とヘッドレス Chromium、職人の日記 15 件で API の2ページをまたぐ）: 未ログインで
+フィードは `/index` へ、未ログインでも `/diary/show/:id` は見られタブが出る、存在しない ID で 404、
+後継者のフィードに自分 + お気に入りの 16 件、いいね・コメント、後継者の日記にはタブが出ない、後継者が `/diary/post` を開くと `/index` へ、
+空投稿でエラー、投稿してマイ日記へ移り「保存しました」、マイ日記の右のフォームから投稿・削除（再読み込み後も消えている）、
+`/diary/show/:id` の見た目が Rails 版と一致。
 
 残り: Next の画面に favicon が無い（Rails はダイジェスト付きのアセットを `favicon_link_tag` で出している）。
 Sentry も Next 側は未設定。一覧は API を全ページ読んで全件出している（Rails の画面と同じ。🟢-1 と合わせて
