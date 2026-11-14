@@ -34,13 +34,13 @@
 | 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を 3001 へ） | 完了 |
 | 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | 完了 |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
-| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-2 完了 |
+| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-3 完了 |
 | 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | |
 | 3 | 管理画面（`/api/v1/admin/*` を作ってから） | |
 | 4 | Rails の HTML 側（ビュー・レイアウト・Propshaft・jsbundling・Tailwind・HTML 側コントローラ）を撤去し `api_only` に | |
 | 5 | 公開ページをサーバー側で描画し `generateMetadata` を付ける | |
 
-`flash`・未ログイン時のリダイレクトは 1-1 で作った（下記）。404 は ID を取る画面を移すときに作る。
+`flash`・未ログイン時のリダイレクトは 1-1、404 は 1-3 で作った（下記）。
 
 **段階1の進み具合**
 
@@ -48,7 +48,7 @@
 |---|---|:---:|
 | マッチング一覧 `/match/matching/list` | `MatchController#matching_list_view` | 1-1 完了 |
 | アピール/スカウトの一覧（4画面） | `MatchController` | 1-2 完了 |
-| メッセージ一覧・メッセージ | `MessageController` | |
+| メッセージ一覧・メッセージ | `MessageController` | 1-3 完了 |
 | 日記・ギャラリー | `DiaryController` / `GalleryController` | |
 | 職人/後継者のページ・マイページ | `YourPageController` ほか | |
 
@@ -101,6 +101,29 @@ Rails の画面に「追加済み」が1回だけ出る、Next の画面から�
 `/index` へ、後継者のアピール確認に回答済みが出ない、職人がアピールに「話してみる」「ごめんなさい」で行が消え
 マッチング一覧に反映、後継者がスカウトに回答すると職人のスカウト一覧が「マッチング成立」になる、
 スカウト一覧の見た目が Rails 版と一致。
+
+1-3 で移した画面と、Rails との違い:
+
+| 画面 | API |
+|---|---|
+| `/message/list` メッセージ一覧 | `GET /api/v1/message_threads` |
+| `/message/history/:id` メッセージ | `GET /api/v1/message_threads/:id`、送信は `POST /api/v1/message_threads/:id/messages`、自分のアバターは `GET /api/v1/profile` |
+
+- 左の相手一覧と枠は `web/app/message/_components/MessageFrame.tsx` で2画面共用。Rails は相手を選ぶと
+  フォームで `POST /message/history/:id` していたが、Next ではリンク（クライアント側の遷移）にした
+- 履歴は Rails と同じく全件を古い順に出す。API は直近から 100 件ずつのページなので、全ページを読んで
+  並べ直す（`web/lib/messages.ts` の `fetchWholeThread`）。一覧の全ページ取得は `web/lib/pagination.ts` に一般化し、
+  マッチ系の一覧もこれを使う
+- 送信は Rails ではリダイレクトで画面ごと読み直していたが、Next では送ったメッセージを末尾に足す。
+  失敗（空文字など）は「エラーが発生しました」を出し、入力は消さない
+- **404**: `web/app/not-found.tsx` を Rails の `errors/error_404` と同じ見た目で作った。API が `not_found` を返したら
+  画面から `notFound()` を呼ぶ。ただしクライアント側で判定するので HTTP のステータスは 200 のまま
+  （Rails は 404）。公開ページをサーバー側で描画する段階5で、ステータスも 404 にする
+
+確認済み（同じ e2e 用の別 DB とヘッドレス Chromium）: 未ログインで `/index` へ、120 件の履歴が2ページを
+またいで古い順に並び最下部までスクロールされる、送信して末尾に出て再読み込み後も残る、空送信でエラー、
+左の一覧から別の相手へ移る、存在しない ID で 404 の画面、マッチング一覧の「メッセージ」から Next の
+`/message/list` に相手が増えて出る、メッセージ画面と 404 の見た目が Rails 版と一致。
 
 残り: Next の画面に favicon が無い（Rails はダイジェスト付きのアセットを `favicon_link_tag` で出している）。
 Sentry も Next 側は未設定。一覧は API を全ページ読んで全件出している（Rails の画面と同じ。🟢-1 と合わせて

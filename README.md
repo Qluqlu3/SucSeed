@@ -200,6 +200,12 @@ API の呼び出しは `frontend/` と同じ `@sucseed/api` を使います。Ne
   （ロールが合わなければ Rails と同じくメッセージ無しでトップへ）
 - **アピール/スカウト/マッチングの一覧**: 全件取得と相手ユーザーへの変換は
   [web/lib/matches.ts](web/lib/matches.ts)（`useAllMatches`・`toPartnerCard`）にまとめてある
+- **一覧の全件取得**: Rails の画面は一覧を全件出していたので、API の全ページを読む
+  `fetchAllPages()`（[web/lib/pagination.ts](web/lib/pagination.ts)）を使う
+- **404**: API が `not_found` を返したら `next/navigation` の `notFound()` を呼ぶ。
+  [web/app/not-found.tsx](web/app/not-found.tsx) が Rails と同じエラー画面を出す
+- **画像**: アップロード画像は Rails から中継して配るので `next/image` を使わず `<img>` にし、
+  Biome の `noImgElement` は理由を書いて抑止する
 - **flash**: Rails の flash は Next から読み書きできないので、遷移先に伝えるメッセージは
   `pushFlash()`（`@sucseed/ui`）で積む。遷移先が Next でも Rails でも、`PendingFlash` が1回だけ出す
 - **Rails 側の画面は残す**: 本番はまだ Rails だけで配信しているため、移した画面の Rails 側
