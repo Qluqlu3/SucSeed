@@ -9,8 +9,9 @@
 import { api, type DiaryFeedItem } from '@sucseed/api';
 import { FlashMessages } from '@sucseed/ui';
 import { type FormEvent, useEffect, useState } from 'react';
-import { useAllDiaries, useCurrentUser } from '../../../lib/diaries';
+import { useAllDiaries } from '../../../lib/diaries';
 import { isAuthError, redirectToLogin, useRequireLogin } from '../../../lib/session';
+import { useCurrentUser } from '../../../lib/users';
 import { DiaryCards } from '../_components/DiaryCards';
 
 export default function MyDiaryPage() {

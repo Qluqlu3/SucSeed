@@ -9,8 +9,8 @@
 import { api } from '@sucseed/api';
 import { type Flash, FlashMessages, pushFlash } from '@sucseed/ui';
 import { type FormEvent, useState } from 'react';
-import { useCurrentUser } from '../../../lib/diaries';
 import { isAuthError, isCreator, redirectToLogin, useRequireRole } from '../../../lib/session';
+import { useCurrentUser } from '../../../lib/users';
 
 // Rails の flash（t('flash.success.saved') / t('flash.danger.error')）と同じ文言
 const SAVED = '保存しました';

@@ -6,8 +6,9 @@
 // データは GET /api/v1/diaries（user_id 無し）。
 
 import { FlashMessages } from '@sucseed/ui';
-import { useAllDiaries, useCurrentUser } from '../../../lib/diaries';
+import { useAllDiaries } from '../../../lib/diaries';
 import { useRequireLogin } from '../../../lib/session';
+import { useCurrentUser } from '../../../lib/users';
 import { DiaryCards } from '../_components/DiaryCards';
 
 export default function DiaryViewPage() {
