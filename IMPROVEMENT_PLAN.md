@@ -34,7 +34,7 @@
 | 0-2 | 開発の入口を Next にする（`bin/dev`・docker compose で Next を 3000、Rails を 3001 へ） | 完了 |
 | 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | 完了 |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
-| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-4 完了 |
+| 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 1-5 完了 |
 | 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | |
 | 3 | 管理画面（`/api/v1/admin/*` を作ってから） | |
 | 4 | Rails の HTML 側（ビュー・レイアウト・Propshaft・jsbundling・Tailwind・HTML 側コントローラ）を撤去し `api_only` に | |
@@ -50,7 +50,7 @@
 | アピール/スカウトの一覧（4画面） | `MatchController` | 1-2 完了 |
 | メッセージ一覧・メッセージ | `MessageController` | 1-3 完了 |
 | 日記（5画面） | `DiaryController` | 1-4 完了 |
-| ギャラリー（5画面） | `GalleryController` | |
+| ギャラリー（5画面 + タグ検索） | `GalleryController` | 1-5 完了 |
 | 職人/後継者のページ・マイページ | `YourPageController` ほか | |
 
 移した画面の Rails 側（コントローラ・テンプレート・`frontend/` のコンポーネント・HTML のテスト）は、
@@ -141,7 +141,7 @@ Rails の画面に「追加済み」が1回だけ出る、Next の画面から�
   職人ページへのタブを出すかに使う）を返す。creators / heirs は詳細プロフィールを登録した人しか引けないため。
   ギャラリーの `/gallery/view/:id` でも使う予定
 - 日記カード `DiaryCard` と職人ページのタブ `CreatorProfileTabs` を `@sucseed/ui` へ移し、Rails と Next で共用する
-- ログイン中の自分（コメント欄のアバター・名前、自分の投稿かの判定）は `GET /api/v1/profile` から取る（`web/lib/diaries.ts` の `useCurrentUser`）
+- ログイン中の自分（コメント欄のアバター・名前、自分の投稿かの判定）は `GET /api/v1/profile` から取る（`useCurrentUser`。1-5 で `web/lib/users.ts` へ移した）
 - 日記投稿（`/diary/post`）は Rails では失敗してもマイ日記へ移っていたが、Next では入力を残したまま画面にエラーを出す。
   成功時は Rails と同じく「保存しました」を出してマイ日記へ移る
 - `DiaryCard` のいいねした人のアバターが画像パスを key にしていて、既定のアバターの人が2人いると key が重複していた
@@ -152,6 +152,39 @@ Rails の画面に「追加済み」が1回だけ出る、Next の画面から�
 後継者のフィードに自分 + お気に入りの 16 件、いいね・コメント、後継者の日記にはタブが出ない、後継者が `/diary/post` を開くと `/index` へ、
 空投稿でエラー、投稿してマイ日記へ移り「保存しました」、マイ日記の右のフォームから投稿・削除（再読み込み後も消えている）、
 `/diary/show/:id` の見た目が Rails 版と一致。
+
+1-5 で移した画面と、Rails との違い:
+
+| 画面 | 誰が | API |
+|---|---|---|
+| `/gallery/view/:id` :id の人のギャラリー | 誰でも | `GET /api/v1/users/:id`・`GET /api/v1/galleries?user_id=:id` |
+| `/gallery/user/search/tag/:id?search_tag=` タグ検索の結果 | 誰でも | `GET /api/v1/galleries?user_id=:id&tag=` |
+| `/gallery/selected/:id` 作品の詳細 | 誰でも | `GET /api/v1/galleries/:id`、いいね・コメントは既存の API |
+| `/gallery/my_gallery` マイギャラリー | ログイン中 | `GET /api/v1/galleries?user_id=自分`、投稿は `POST /api/v1/galleries` |
+| `/gallery/favorite` ギャラリー（自分 + お気に入り、投稿フォーム付き） | ログイン中 | `GET /api/v1/galleries`・`POST /api/v1/galleries` |
+| `/gallery/heir/favorite` 同上（後継者メニューから、投稿フォーム無し） | ログイン中 | `GET /api/v1/galleries` |
+
+- API は足していない（1-4 の `GET /api/v1/users/:id` を見出しの名前に使った）
+- サムネイル `GalleryCard`・投稿フォーム `GalleryUploadForm`・作品詳細 `SelectedGalleryPage`・`ErrorBoundary` と
+  Three.js の 3D ビューワー（`frontend/three` → `packages/ui/three`）を `@sucseed/ui` へ移し、Rails と Next で共用する。
+  `three` と `@types/three` の依存もルートから `packages/ui` へ移した。Rails 側のバンドルでも Three.js は別チャンクのまま
+- 全件取得のフックを `useAllPages()`（`web/lib/pagination.ts`）に一般化し、日記の `useAllDiaries` もこれを使う。
+  `useCurrentUser` と、:id の人を引く `usePublicUser` は `web/lib/users.ts` にまとめた
+- **タグ検索**: Rails はフォームの `POST /gallery/user/search/tag/:id` で結果の画面を返していたが、Next のページは GET でしか
+  開けないので、同じパスに `?search_tag=` を付けて移る。空のまま送ると何もしない（Rails も 204 で画面が変わらなかった）。
+  クエリが無いまま開いたらその人のギャラリーへ移す
+- タグ検索の結果は Rails ではいいね数を数えておらず 0 と出ていた。API は数えるので正しい数が出る。
+  並びも Rails は順不同だったが、API は新しい順
+- `/gallery/view/:id` の職人ページへのタブは Rails と同じく常に出す（日記の画面と違い、詳細プロフィールの有無を見ていなかった）
+- 存在しないユーザー・作品は 404 の画面（1-3 と同じく HTTP のステータスは 200）
+
+確認済み（同じ e2e 用の別 DB とヘッドレス Chromium、職人の作品 30 件で API の2ページをまたぐ）: 未ログインでマイギャラリー・
+フィード2画面は `/index` へ、未ログインでも `/gallery/view/:id` は 30 件とタブが出る、タグ検索で 15 件・該当なしで「検索結果なし」・
+クエリ無しでその人のギャラリーへ、作品の無い人は「まだありません」で検索欄が出ない、存在しない ID で 404（ユーザー・作品とも）、
+作品詳細で職人情報・その他の投稿・3D プレビューの canvas が出て、未ログインはいいねが押せずコメント欄に「ログインしてください」、
+後継者のフィードに 30 件、後継者が投稿すると「この操作を行う権限がありません」、後継者のいいね（1→2）とコメントが再読み込み後も残る、
+職人が画像無しで投稿すると「画像を選択してください」、画像とタグ付きで投稿すると先頭に出て再読み込み後も 31 件、
+`/gallery/view/:id`・`/gallery/selected/:id` の見た目が Rails 版と一致。
 
 残り: Next の画面に favicon が無い（Rails はダイジェスト付きのアセットを `favicon_link_tag` で出している）。
 Sentry も Next 側は未設定。一覧は API を全ページ読んで全件出している（Rails の画面と同じ。🟢-1 と合わせて

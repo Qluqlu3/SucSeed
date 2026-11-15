@@ -113,14 +113,12 @@ frontend/
 ├── pages.ts                # 画面 id とページコンポーネントの登録表
 ├── components/
 │   ├── mountPage.tsx       # 全ページ共通のマウントロジック
-│   ├── ErrorBoundary/
 │   ├── CreatorCard/        # 複数ページで共用する共通コンポーネント
 │   ├── IndexPage/          # ページごとに 1 ディレクトリ
 │   │   ├── IndexPage.tsx       # コンポーネント本体
 │   │   └── index.ts            # re-export
 │   └── ...
 ├── spa/                    # Navbar・LoginModal などを Rails のレイアウトに island としてマウントする
-├── three/                  # Three.js 3D ビューワー
 └── styles/
     ├── tailwind.css        # Tailwind CSS v4 エントリーポイント
     └── fontawesome.css
@@ -130,7 +128,9 @@ packages/
 │                           # frontend/ と web/ の両方から import { api } from '@sucseed/api' で使う
 └── ui/                     # @sucseed/ui: frontend/ と web/ で共用する UI 部品
     ├── layout/             #   Navbar・Footer・LoginModal とセッション取得
-    ├── components/         #   FlashMessages・PendingFlash・MatchUserList・PostForm・DiaryCard・CreatorProfileTabs
+    ├── components/         #   FlashMessages・PendingFlash・ErrorBoundary・MatchUserList・PostForm・DiaryCard・
+    │                       #   CreatorProfileTabs・GalleryCard・GalleryUploadForm・SelectedGalleryPage
+    ├── three/              #   Three.js の 3D ビューワー（作品詳細から遅延読み込みする）
     ├── flash.ts            #   画面をまたぐ1回だけのメッセージ（ブラウザ側の flash）
     └── styles/sucseed.css  #   Tailwind のテーマとプロジェクト固有のスタイル（両方の Tailwind が読み込む）
 ```
@@ -201,7 +201,11 @@ API の呼び出しは `frontend/` と同じ `@sucseed/api` を使います。Ne
 - **アピール/スカウト/マッチングの一覧**: 全件取得と相手ユーザーへの変換は
   [web/lib/matches.ts](web/lib/matches.ts)（`useAllMatches`・`toPartnerCard`）にまとめてある
 - **一覧の全件取得**: Rails の画面は一覧を全件出していたので、API の全ページを読む
-  `fetchAllPages()`（[web/lib/pagination.ts](web/lib/pagination.ts)）を使う
+  `fetchAllPages()` / フックの `useAllPages()`（[web/lib/pagination.ts](web/lib/pagination.ts)）を使う
+- **自分と相手の情報**: ログイン中の自分は `useCurrentUser()`、:id の人の名前などは `usePublicUser()`
+  （[web/lib/users.ts](web/lib/users.ts)）
+- **クエリ付きの画面**: `useSearchParams()` を使う部分は `<Suspense>` の内側に置く（Next のビルドが求める）。
+  例: [web/app/gallery/user/search/tag/[id]/page.tsx](web/app/gallery/user/search/tag/[id]/page.tsx)
 - **404**: API が `not_found` を返したら `next/navigation` の `notFound()` を呼ぶ。
   [web/app/not-found.tsx](web/app/not-found.tsx) が Rails と同じエラー画面を出す
 - **画像**: アップロード画像は Rails から中継して配るので `next/image` を使わず `<img>` にし、
