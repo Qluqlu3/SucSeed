@@ -1,4 +1,4 @@
-// frontend/three/ThreeViewer/buildPotteryGroup.ts
+// packages/ui/three/ThreeViewer/buildPotteryGroup.ts
 //
 // 陶器メッシュ（本体＋台座）を Three.js Group として組み立てる純粋なファクトリ関数。
 // React ライフサイクルに依存しないため、このファイル単独でテスト・差し替えが可能。

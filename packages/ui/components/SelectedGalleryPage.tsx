@@ -1,22 +1,23 @@
-// frontend/components/SelectedGalleryPage/SelectedGalleryPage.tsx
+// packages/ui/components/SelectedGalleryPage.tsx
 //
 // /gallery/selected/:id ページ（ギャラリー個別表示）の React コンポーネント。
+// Rails 側（frontend/pages.ts）と Next 側（web/app/gallery/selected/[id]）で共用する。
 // いいね・コメントは /api/v1 の JSON API で処理。関連画像・職人情報をサイドバーに表示。
 //
 // props の形は Rails の GalleryDetailSerializer と一対一で対応しており、
-// GET /api/v1/galleries/:id が返すものと同じ（HTML 側は data-props 経由で渡している）。
+// GET /api/v1/galleries/:id が返すものと同じ（Rails の HTML 側は data-props 経由、Next は API から取得して渡す）。
 
 import type { Comment, GalleryDetail, Id } from '@sucseed/api';
 import { api } from '@sucseed/api';
 import { FlashMessages } from '@sucseed/ui';
 import { MessageSquare, ThumbsUp } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
-import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary';
+import { ErrorBoundary } from './ErrorBoundary';
 
 // Three.js（バンドルの大半を占める）はこの画面でしか使わないので、
 // 別チャンクに分けて 3D プレビューを描くときに初めて読み込む。
 const ThreeViewer = lazy(() =>
-  import('../../three/ThreeViewer').then((m) => ({ default: m.ThreeViewer })),
+  import('../three/ThreeViewer').then((m) => ({ default: m.ThreeViewer })),
 );
 
 const VIEWER_HEIGHT = 400;
@@ -30,7 +31,7 @@ const ViewerPlaceholder = ({ message }: { message: string }) => (
   </div>
 );
 
-interface CurrentUser {
+export interface SelectedGalleryCurrentUser {
   id: Id;
   name: string;
   avatarPath: string;
@@ -38,7 +39,7 @@ interface CurrentUser {
 
 interface Props extends GalleryDetail {
   loggedIn: boolean;
-  currentUser: CurrentUser | null;
+  currentUser: SelectedGalleryCurrentUser | null;
   flash: Record<string, string>;
 }
 

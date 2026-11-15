@@ -1,4 +1,4 @@
-// frontend/three/ThreeViewer/ThreeViewer.tsx
+// packages/ui/three/ThreeViewer/ThreeViewer.tsx
 //
 // Three.js を使った 3D ビューワーコンポーネント。
 // 陶器メッシュ組み立て → buildPotteryGroup.ts

@@ -5,6 +5,7 @@
 // 対応するコンポーネントを data-props の JSON を props としてマウントする。
 // 画面を追加するときは、ここに1行足してテンプレートで同じ id を使う。
 
+import { SelectedGalleryPage } from '@sucseed/ui';
 import { AdminCreatePage } from './components/AdminCreatePage';
 import { AdminDiaryCommentEditPage } from './components/AdminDiaryCommentEditPage';
 import { AdminDiaryEditPage } from './components/AdminDiaryEditPage';
@@ -49,7 +50,6 @@ import { PasswordResetPage } from './components/PasswordResetPage';
 import { ScoutCheckPage } from './components/ScoutCheckPage';
 import { ScoutShowPage } from './components/ScoutShowPage';
 import { SearchUserPage } from './components/SearchUserPage';
-import { SelectedGalleryPage } from './components/SelectedGalleryPage';
 import { UserGalleryViewPage } from './components/UserGalleryViewPage';
 import { UserRegistPage } from './components/UserRegistPage';
 import { YourDiaryPage } from './components/YourDiaryPage';

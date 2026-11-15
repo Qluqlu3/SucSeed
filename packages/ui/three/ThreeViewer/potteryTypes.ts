@@ -1,4 +1,4 @@
-// frontend/three/ThreeViewer/potteryTypes.ts
+// packages/ui/three/ThreeViewer/potteryTypes.ts
 //
 // ThreeViewer に渡す陶器データの型定義。
 // 副作用なし・React / Three.js に非依存なため、単独でテスト可能。

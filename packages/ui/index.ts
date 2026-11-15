@@ -13,10 +13,17 @@ export {
   CreatorProfileTabs,
 } from './components/CreatorProfileTabs';
 export { DiaryCard, type DiaryComment, type DiaryEntry } from './components/DiaryCard';
+export { ErrorBoundary } from './components/ErrorBoundary';
 export { FlashMessages } from './components/FlashMessages';
+export { GalleryCard, type GalleryItem } from './components/GalleryCard';
+export { GalleryUploadForm } from './components/GalleryUploadForm';
 export { AnswerButtons, type MatchListUser, MatchUserList } from './components/MatchUserList';
 export { PendingFlash } from './components/PendingFlash';
 export { PostForm } from './components/PostForm';
+export {
+  type SelectedGalleryCurrentUser,
+  SelectedGalleryPage,
+} from './components/SelectedGalleryPage';
 export { calcAge, timeAgo } from './date';
 export { type Flash, type FlashKind, pushFlash, takeFlash } from './flash';
 export { Footer } from './layout/Footer';

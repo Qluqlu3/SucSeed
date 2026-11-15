@@ -1,4 +1,4 @@
-// frontend/three/ThreeViewer/setupDragRotation.ts
+// packages/ui/three/ThreeViewer/setupDragRotation.ts
 //
 // canvas 要素へのマウス / タッチイベントを登録し、Three.js Group の回転を管理する。
 // - tick()    : アニメーションループ内で毎フレーム呼ぶ（ドラッグ外は自動回転）

@@ -4,10 +4,8 @@
 // 右カラムの投稿フォームは POST /api/v1/galleries を叩き、
 // 成功したら API が返した作品をそのまま一覧の先頭に差し込む（再読み込み不要）。
 
-import { FlashMessages } from '@sucseed/ui';
+import { FlashMessages, GalleryCard, type GalleryItem, GalleryUploadForm } from '@sucseed/ui';
 import { useState } from 'react';
-import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
-import { GalleryUploadForm } from '../GalleryUploadForm';
 
 interface Props {
   galleries: GalleryItem[];

@@ -1,6 +1,6 @@
+import { ErrorBoundary } from '@sucseed/ui';
 import { type ComponentType, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 
 // Rails の react_root が出力した要素（id）に Component をマウントする。
 // props は data-props 属性の JSON。props を取らない画面（エラー画面など）は属性ごと無い。

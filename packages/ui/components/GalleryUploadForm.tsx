@@ -1,7 +1,7 @@
-// frontend/components/GalleryUploadForm/GalleryUploadForm.tsx
+// packages/ui/components/GalleryUploadForm.tsx
 //
-// 作品投稿フォーム。MyGalleryPage と FavoriteGalleryPage で同じフォームが
-// 重複していたのを共通化し、あわせて POST /api/v1/galleries へ移行した。
+// 作品投稿フォーム。マイギャラリーとギャラリー（自分 + お気に入り）の右カラムで使う
+// （Rails 側と Next 側の両方）。投稿は POST /api/v1/galleries。
 //
 // 従来はプレーンな HTML フォーム送信だったため、投稿のたびにページ全体が
 // 再読み込みされ、バリデーションエラーは flash 経由でしか分からなかった。

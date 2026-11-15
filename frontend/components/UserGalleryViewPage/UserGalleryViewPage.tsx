@@ -4,9 +4,8 @@
 // タグ検索フォームは POST /gallery/user/search/tag/:userId へ送信。
 
 import { getCsrfToken } from '@sucseed/api';
-import { CreatorProfileTabs, FlashMessages } from '@sucseed/ui';
+import { CreatorProfileTabs, FlashMessages, GalleryCard, type GalleryItem } from '@sucseed/ui';
 import { Search } from 'lucide-react';
-import { GalleryCard, type GalleryItem } from '../GalleryCard/GalleryCard';
 
 interface Props {
   userName: string;

@@ -1,4 +1,4 @@
-// frontend/three/ThreeViewer/dummyPotteryData.ts
+// packages/ui/three/ThreeViewer/dummyPotteryData.ts
 //
 // ThreeViewer で表示するダミー陶器データ。
 // 実際の作品データに差し替える際はこのファイルだけ編集すればよい。

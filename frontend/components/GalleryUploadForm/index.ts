@@ -1,1 +1,0 @@
-export { GalleryUploadForm } from './GalleryUploadForm';

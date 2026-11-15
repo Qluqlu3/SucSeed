@@ -1,7 +1,7 @@
-// frontend/components/GalleryCard/GalleryCard.tsx
+// packages/ui/components/GalleryCard.tsx
 //
 // ギャラリーサムネイルカード共通コンポーネント。
-// UserGalleryViewPage / MyGalleryPage / FavoriteGalleryPage / HeirFavoriteGalleryPage で共用。
+// ギャラリーの一覧画面（Rails 側の frontend/components/*Gallery*Page と、Next 側の web/app/gallery/**）で共用。
 
 import type { GalleryFeedItem } from '@sucseed/api';
 import { ThumbsUp } from 'lucide-react';
