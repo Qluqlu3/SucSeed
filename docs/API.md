@@ -136,6 +136,11 @@ TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/a
 職人としてログイン中は一覧から自分自身が除外される。
 詳細には閲覧者から見た `isFavorited` / `isAppealed` / `isScouted` / `isOwn` が含まれる。
 
+後継者は「職人でないユーザー」なので、`/api/v1/heirs/:id` は詳細プロフィール（heirs）が未登録の人も返す
+（`artCategoryId` / `artCategoryName` / `introduction` が `null`）。職人の user_id なら 404。
+`isAppealed` / `isScouted` は、相手との間にアピール・スカウトのどちらかが既にあれば true
+（matches は2人の組で一意なので、もう送れない）。
+
 ### お気に入り
 
 | | パス | 説明 |

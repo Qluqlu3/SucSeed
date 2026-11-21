@@ -125,12 +125,17 @@ export interface CreatorDetail {
   isOwn: boolean;
 }
 
+/**
+ * GET /api/v1/heirs/:id（後継者のページ）。後継者は詳細プロフィールが未登録でも引けるので、
+ * その場合 artCategoryId / artCategoryName / introduction は null
+ */
 export interface HeirDetail {
   userId: Id;
-  artCategoryId: number;
-  introduction: string;
+  artCategoryId: number | null;
+  introduction: string | null;
   artCategoryName: string | null;
   user: PublicUser;
+  /** 閲覧者（職人）との間に既にアピール/スカウトがある（新しくスカウトできない） */
   isScouted: boolean;
   isOwn: boolean;
 }

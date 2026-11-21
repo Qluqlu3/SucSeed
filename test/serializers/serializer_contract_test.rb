@@ -127,7 +127,7 @@ class SerializerContractTest < ActiveSupport::TestCase
       'PublicUserPageSerializer' => PublicUserPageSerializer.new(@creator_user).serializable_hash,
       'CreatorCardSerializer' => CreatorCardSerializer.build([creator_card_row]).first,
       'CreatorSerializer' => CreatorSerializer.new(@creator).serializable_hash,
-      'HeirSerializer' => HeirSerializer.new(@heir).serializable_hash,
+      'HeirSerializer' => HeirSerializer.new(@heir_user).serializable_hash,
       'CommentSerializer' => CommentSerializer.new(@diary_comment).serializable_hash,
       'DiarySerializer' => DiarySerializer.from_feed(diary_feed).first,
       'GallerySerializer' => GallerySerializer.from_feed(gallery_feed).first,
