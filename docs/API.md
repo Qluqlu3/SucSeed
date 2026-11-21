@@ -125,6 +125,19 @@ TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/a
 アバター画像も同じ `PATCH /api/v1/profile` で更新できるが、multipart/form-data で
 `user[avatar_path]` を送る必要がある（後述の「画像のアップロードについて」を参照）。
 
+| | パス | 説明 |
+|---|---|---|
+| GET | `/api/v1/profile/creator` | 自分の職人の詳細プロフィール（職人のみ）。未登録なら 404 |
+| POST | `/api/v1/profile/creator` | 登録。body: `{ creator: { title, art_category_id, establishment, employee, postal_code, is_recruitment } }` |
+| PATCH | `/api/v1/profile/creator` | 更新（body は登録と同じ、一部だけでもよい）。未登録なら 404 |
+| GET | `/api/v1/profile/heir` | 自分の後継者の詳細プロフィール（職人以外）。未登録なら 404 |
+| POST | `/api/v1/profile/heir` | 登録。body: `{ heir: { art_category_id, introduction } }`。登録するとロールが `user` から `heir` になる |
+| PATCH | `/api/v1/profile/heir` | 更新。未登録なら 404 |
+
+返す形は職人/後継者のページ（`/api/v1/creators/:id`・`/api/v1/heirs/:id`）と同じで、`isOwn` が true。
+登録済みで POST すると 409（`already_registered`）。creators / heirs に user_id の一意制約が無いため、
+二重送信で2行目ができないよう API で弾いている。ロールが合わなければ 403。
+
 ### 職人 / 後継者
 
 | | パス | 説明 |

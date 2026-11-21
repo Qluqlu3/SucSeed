@@ -135,7 +135,11 @@ Rails.application.routes.draw do
       resources :traditional_crafts, only: :index
 
       # ユーザー / プロフィール
-      resource  :profile, only: %i[show update], controller: 'profile'
+      resource  :profile, only: %i[show update], controller: 'profile' do
+        # 自分の職人/後継者としての詳細プロフィール（/api/v1/profile/creator・/api/v1/profile/heir）
+        resource :creator, only: %i[show create update], controller: 'profile_creators'
+        resource :heir, only: %i[show create update], controller: 'profile_heirs'
+      end
       resources :creators, only: %i[index show]
       resources :heirs, only: :show
       resources :users, only: :show
