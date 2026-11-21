@@ -8,8 +8,8 @@
 import { FlashMessages } from '@sucseed/ui';
 import { useRequireLogin } from '../../../lib/session';
 import { useCurrentUser } from '../../../lib/users';
+import { ProfileMenu } from '../../_components/ProfileMenu';
 import { ProfileField } from '../_components/ProfileField';
-import { ProfileMenu } from '../_components/ProfileMenu';
 
 export default function MyPage() {
   const loggedIn = useRequireLogin() !== null;

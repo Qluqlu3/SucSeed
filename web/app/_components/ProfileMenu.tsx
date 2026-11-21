@@ -1,9 +1,10 @@
 'use client';
 
-// web/app/my_page/_components/ProfileMenu.tsx
+// web/app/_components/ProfileMenu.tsx
 //
-// マイページ・プロフィール変更の右上の歯車メニュー。Rails 版と同じ項目を出す。
-// 詳細プロフィール（/creator/show・/heir/show・/heir/edit）はまだ Rails の画面なので通常のリンク。
+// マイページ・プロフィール変更・詳細プロフィールの画面の右上にある歯車メニュー。
+// Rails 版は画面ごとに項目が少しずつ違っていた（マイページでは職人に「詳細変更」が無い、
+// 後継者の詳細画面だけ「プロフィール詳細一覧」など）ので、どの画面でも同じ項目に揃えた。
 
 import { Settings } from 'lucide-react';
 import Link from 'next/link';
@@ -46,26 +47,16 @@ export const ProfileMenu = ({
             プロフィール変更
           </Link>
         </li>
-        {isCreator ? (
-          <li>
-            <a href="/creator/show" className={itemClass}>
-              プロフィール詳細
-            </a>
-          </li>
-        ) : (
-          <>
-            <li>
-              <a href="/heir/show" className={itemClass}>
-                プロフィール詳細
-              </a>
-            </li>
-            <li>
-              <a href="/heir/edit" className={itemClass}>
-                プロフィール詳細変更
-              </a>
-            </li>
-          </>
-        )}
+        <li>
+          <Link href={isCreator ? '/creator/show' : '/heir/show'} className={itemClass}>
+            プロフィール詳細
+          </Link>
+        </li>
+        <li>
+          <Link href={isCreator ? '/creator/edit' : '/heir/edit'} className={itemClass}>
+            プロフィール詳細変更
+          </Link>
+        </li>
       </ul>
     </div>
   );

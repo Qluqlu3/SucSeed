@@ -16,15 +16,20 @@ export type ResourceState<T> =
 
 /**
  * key が変わるたびに load(key) を呼び直す。load には api.users.show のような
- * 変わらない関数を渡す（描画のたびに作る関数を渡すと取り直し続ける）
+ * 変わらない関数を渡す（描画のたびに作る関数を渡すと取り直し続ける）。
+ * enabled が false の間は取得せず loading のまま（ログイン・ロールの確認を待つときに使う）
  */
 export const useResource = <T>(
   key: string,
   load: (key: string) => Promise<ApiResult<T>>,
+  enabled = true,
 ): ResourceState<T> => {
   const [state, setState] = useState<ResourceState<T>>({ status: 'loading' });
 
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
     let active = true;
     setState({ status: 'loading' });
     void load(key).then((result) => {
@@ -42,7 +47,7 @@ export const useResource = <T>(
     return () => {
       active = false;
     };
-  }, [key, load]);
+  }, [key, load, enabled]);
 
   return state;
 };

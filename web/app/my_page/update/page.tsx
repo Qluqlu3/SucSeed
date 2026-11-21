@@ -12,8 +12,9 @@ import { type Flash, FlashMessages, pushFlash } from '@sucseed/ui';
 import { type FormEvent, useState } from 'react';
 import { isAuthError, redirectToLogin, useRequireLogin } from '../../../lib/session';
 import { useCurrentUser } from '../../../lib/users';
+import { FormErrors } from '../../_components/FormErrors';
+import { ProfileMenu } from '../../_components/ProfileMenu';
 import { ProfileField } from '../_components/ProfileField';
-import { ProfileMenu } from '../_components/ProfileMenu';
 
 // Rails の flash（t('flash.success.saved') / t('flash.danger.error')）と同じ文言
 const SAVED = '保存しました';
@@ -54,18 +55,7 @@ const ProfileForm = ({ user, onSaved }: { user: Profile; onSaved: () => void }) 
     <>
       <FlashMessages flash={flash} />
 
-      {errors.length > 0 && (
-        <div id="error_explanation" className="error-box">
-          <p className="error-title">入力内容にエラーが{errors.length}件あります</p>
-          <ul>
-            {errors.map((message) => (
-              <li key={message} className="error-content">
-                {message}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <FormErrors errors={errors} />
 
       <div className="w-[93%] mx-auto bg-p-light border border-p-mid rounded-[7px] mb-[5%]">
         <ProfileMenu isCreator={user.role === 'creator'} />

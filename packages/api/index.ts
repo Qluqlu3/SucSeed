@@ -54,6 +54,36 @@ const pageQuery = (params?: PageParams) => ({
   per_page: params?.perPage,
 });
 
+/** 職人の詳細プロフィールの入力（登録・変更フォーム）。数値欄は未入力なら null */
+export interface CreatorProfileInput {
+  title: string;
+  artCategoryId: number | null;
+  establishment: number | null;
+  employee: number | null;
+  postalCode: string;
+  isRecruitment: boolean;
+}
+
+/** 後継者の詳細プロフィールの入力。分野は未選択なら null */
+export interface HeirProfileInput {
+  artCategoryId: number | null;
+  introduction: string;
+}
+
+const toCreatorParams = (creator: CreatorProfileInput) => ({
+  title: creator.title,
+  art_category_id: creator.artCategoryId,
+  establishment: creator.establishment,
+  employee: creator.employee,
+  postal_code: creator.postalCode,
+  is_recruitment: creator.isRecruitment,
+});
+
+const toHeirParams = (heir: HeirProfileInput) => ({
+  art_category_id: heir.artCategoryId,
+  introduction: heir.introduction,
+});
+
 export const api = {
   session: {
     show: () => apiGet<SessionPayload>('/api/v1/session'),
@@ -92,6 +122,22 @@ export const api = {
         form.append('user[avatar_path]', avatar);
       }
       return apiPatchForm<Profile>('/api/v1/profile', form);
+    },
+    /** 自分の職人としての詳細プロフィール（職人だけ）。未登録なら not_found */
+    creator: {
+      show: () => apiGet<CreatorDetail>('/api/v1/profile/creator'),
+      create: (creator: CreatorProfileInput) =>
+        apiPost<CreatorDetail>('/api/v1/profile/creator', { creator: toCreatorParams(creator) }),
+      update: (creator: CreatorProfileInput) =>
+        apiPatch<CreatorDetail>('/api/v1/profile/creator', { creator: toCreatorParams(creator) }),
+    },
+    /** 自分の後継者としての詳細プロフィール（職人以外）。未登録なら not_found */
+    heir: {
+      show: () => apiGet<HeirDetail>('/api/v1/profile/heir'),
+      create: (heir: HeirProfileInput) =>
+        apiPost<HeirDetail>('/api/v1/profile/heir', { heir: toHeirParams(heir) }),
+      update: (heir: HeirProfileInput) =>
+        apiPatch<HeirDetail>('/api/v1/profile/heir', { heir: toHeirParams(heir) }),
     },
   },
 
