@@ -209,7 +209,10 @@ API の呼び出しは `frontend/` と同じ `@sucseed/api` を使います。Ne
 - **404**: API が `not_found` を返したら `next/navigation` の `notFound()` を呼ぶ。
   [web/app/not-found.tsx](web/app/not-found.tsx) が Rails と同じエラー画面を出す。
   :id で1件を取る画面は `useResource(id, api.xxx.show)`（[web/lib/resource.ts](web/lib/resource.ts)）が
-  `loading` / `loaded` / `not_found` / `error` を返す
+  `loading` / `loaded` / `not_found` / `error` を返す。ログイン・ロールの確認を待ってから取るときは
+  3つ目の引数 `enabled` を渡す
+- **フォーム**: 422 の `error.details` は `FormErrors`（[web/app/_components/FormErrors.tsx](web/app/_components/FormErrors.tsx)）で
+  Rails と同じ見た目の一覧にする。失敗しても入力は残す
 - **画像**: アップロード画像は Rails から中継して配るので `next/image` を使わず `<img>` にし、
   Biome の `noImgElement` は理由を書いて抑止する。Rails 版と共通の静的画像（背景など）は
   `app/assets/images/` から import して `.src` を使う（例: [web/app/page/_components/ProfileHero.tsx](web/app/page/_components/ProfileHero.tsx)）

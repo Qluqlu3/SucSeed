@@ -9,7 +9,7 @@
 
 | 優先度 | 項目 | ファイル / 対象 | 工数 | 状態 |
 |:------:|------|----------------|:----:|:----:|
-| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 段階1 完了 |
+| 🔵 計画 | フロントを Next.js（`web/`）へ移し、Rails を API 専用にする | 全画面 | L | 段階2 着手 |
 | 🟡 中 | メッセージ送信・スレッド作成にマッチング成立の確認が無い | `MessageController` / `Api::V1::Message*` | S | 未着手 |
 | 🟢 低 | HTML のフィードもページネーションする | 日記/ギャラリーの各ページ | M | 未着手 |
 | 🟢 低 | 使われていない 500 画面（`render_500`・`errors/error_500`）の整理 | `ApplicationController` | S | 未着手 |
@@ -35,7 +35,7 @@
 | 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | 完了 |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
 | 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 完了 |
-| 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | |
+| 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | 2-1 完了 |
 | 3 | 管理画面（`/api/v1/admin/*` を作ってから） | |
 | 4 | Rails の HTML 側（ビュー・レイアウト・Propshaft・jsbundling・Tailwind・HTML 側コントローラ）を撤去し `api_only` に | |
 | 5 | 公開ページをサーバー側で描画し `generateMetadata` を付ける | |
@@ -222,6 +222,47 @@ Rails の画面に「追加済み」が1回だけ出る、Next の画面から�
 残り: Next の画面に favicon が無い（Rails はダイジェスト付きのアセットを `favicon_link_tag` で出している）。
 Sentry も Next 側は未設定。一覧は API を全ページ読んで全件出している（Rails の画面と同じ。🟢-1 と合わせて
 ページ送りにするか決める）。
+
+**段階2の進み具合**
+
+| 画面 | Rails | 状態 |
+|---|---|:---:|
+| 職人/後継者の詳細プロフィール（参照・登録・変更） | `CreatorController`・`HeirController` | 2-1 完了 |
+| 会員登録・メール認証・パスワード再設定 | `UserController` | |
+| お問い合わせ | `InquiryController` | |
+| トップ・マップ・検索 | `IndexController`・`MapController` | |
+| お気に入りフィード | | |
+
+2-1 で足した API と移した画面:
+
+| 画面 | 誰が | API |
+|---|---|---|
+| `/creator/show` 制作者情報（未登録なら登録フォーム） | 職人 | `GET /api/v1/profile/creator`（新規）、登録は `POST /api/v1/profile/creator`（新規） |
+| `/creator/edit` 制作者情報の変更 | 職人 | `GET`・`PATCH /api/v1/profile/creator`（新規） |
+| `/heir/show` 後継者情報（未登録なら登録フォーム） | 職人以外 | `GET /api/v1/profile/heir`（新規）、登録は `POST /api/v1/profile/heir`（新規） |
+| `/heir/edit` 後継者情報の変更 | 職人以外 | `GET`・`PATCH /api/v1/profile/heir`（新規） |
+
+- **API**: `Api::V1::ProfileCreatorsController`・`ProfileHeirsController`。表現は職人/後継者のページと同じ
+  `CreatorSerializer`・`HeirSerializer` を使う。テスト 374 件 → 388 件
+- **二重登録を弾く**: creators / heirs には user_id の一意制約が無く、Rails の登録は二重送信で2行目を作れた。
+  API は登録済みなら 409。DB に一意制約を足すかは、既存データに重複が無いかを本番で確かめてから決める
+- **後継者の詳細プロフィールは職人以外だけ**: Rails の `/heir/show` は `require_login` だけで、職人でも登録フォームが出て登録できた
+  （職人のロールは `is_creator` で決まるので画面上は何も変わらず、heirs に行だけが残る）。API・画面とも職人は弾く
+- 失敗時は入力を残してエラーの一覧を出す。Rails は変更の失敗で入力を捨てて変更画面へ戻し、後継者の登録の失敗は
+  「エラーが発生しました」だけで理由を出していなかった
+- 後継者が登録するとロールが `user` → `heir` に変わりナビバーのメニューも変わるので、成功後は画面を読み込み直す
+- 歯車メニューを `web/app/_components/ProfileMenu.tsx` に移し、マイページ・プロフィール変更と同じ項目に揃えた
+  （Rails はマイページで職人に「プロフィール詳細変更」が無く、後継者の詳細画面だけ「プロフィール詳細一覧」だった）
+- 文言の誤字を直した: 「兴味のある分野」→「興味のある分野」、「半角数字ハイフンなび7文字」→「ハイフンなし」
+- `GET /creator/create`（Rails は GET でも `create` を呼び、パラメータが無いので 400）は移していない。どこからもリンクされていない
+- 残り: 分野を選ばないと「Art categoryを入力してください」「Art categoryを選択してください」の2件が出る（Rails 版も同じ）。
+  `belongs_to :art_category` の必須エラーの属性名が翻訳されていないのと、`Heir` は自前の presence と二重になっているため
+
+確認済み（同じ e2e 用の別 DB とヘッドレス Chromium）: 未ログインで4画面とも `/index` へ、職人が `/heir/show`・後継者が
+`/creator/show` を開くとトップへ、職人の参照・歯車メニューから変更画面・不正な入力でエラー3件と入力が残る・変更して
+「保存しました」と反映（募集停止中・都道府県の変わる郵便番号）、未登録の職人が `/creator/edit` を開くと登録フォームへ・
+空で登録してエラー・登録して参照画面とマイページの「詳細情報登録」の案内が消える、後継者の参照・変更・分野未選択でエラー、
+未登録の後継者が登録してロールが `user` → `heir`、`/heir/show` の見た目が Rails 版と一致。
 
 0-1 で Next（3100）経由の次の動作を確認済み: Rails のリダイレクト先が Next のホストになる
 （`X-Forwarded-Host`）、アセット・アップロード画像の配信、API のログインと multipart の画像アップロード、
