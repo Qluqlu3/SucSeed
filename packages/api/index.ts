@@ -76,6 +76,23 @@ export const api = {
       form.append('user[avatar_path]', file);
       return apiPatchForm<Profile>('/api/v1/profile', form);
     },
+    /**
+     * 名前・メール・紹介文とアバター画像を1回の multipart でまとめて更新する（プロフィール変更画面）。
+     * avatar を省くと画像は変えない
+     */
+    updateWithAvatar: (
+      user: Pick<Profile, 'name' | 'email'> & { profile: string },
+      avatar?: File | null,
+    ) => {
+      const form = new FormData();
+      form.append('user[name]', user.name);
+      form.append('user[email]', user.email);
+      form.append('user[profile]', user.profile);
+      if (avatar) {
+        form.append('user[avatar_path]', avatar);
+      }
+      return apiPatchForm<Profile>('/api/v1/profile', form);
+    },
   },
 
   creators: {
