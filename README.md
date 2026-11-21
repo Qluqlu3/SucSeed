@@ -207,9 +207,12 @@ API の呼び出しは `frontend/` と同じ `@sucseed/api` を使います。Ne
 - **クエリ付きの画面**: `useSearchParams()` を使う部分は `<Suspense>` の内側に置く（Next のビルドが求める）。
   例: [web/app/gallery/user/search/tag/[id]/page.tsx](web/app/gallery/user/search/tag/[id]/page.tsx)
 - **404**: API が `not_found` を返したら `next/navigation` の `notFound()` を呼ぶ。
-  [web/app/not-found.tsx](web/app/not-found.tsx) が Rails と同じエラー画面を出す
+  [web/app/not-found.tsx](web/app/not-found.tsx) が Rails と同じエラー画面を出す。
+  :id で1件を取る画面は `useResource(id, api.xxx.show)`（[web/lib/resource.ts](web/lib/resource.ts)）が
+  `loading` / `loaded` / `not_found` / `error` を返す
 - **画像**: アップロード画像は Rails から中継して配るので `next/image` を使わず `<img>` にし、
-  Biome の `noImgElement` は理由を書いて抑止する
+  Biome の `noImgElement` は理由を書いて抑止する。Rails 版と共通の静的画像（背景など）は
+  `app/assets/images/` から import して `.src` を使う（例: [web/app/page/_components/ProfileHero.tsx](web/app/page/_components/ProfileHero.tsx)）
 - **flash**: Rails の flash は Next から読み書きできないので、遷移先に伝えるメッセージは
   `pushFlash()`（`@sucseed/ui`）で積む。遷移先が Next でも Rails でも、`PendingFlash` が1回だけ出す
 - **Rails 側の画面は残す**: 本番はまだ Rails だけで配信しているため、移した画面の Rails 側
