@@ -7,44 +7,18 @@
 // SelectedGalleryPage（@sucseed/ui）。コメント欄に出す自分は GET /api/v1/profile から取る。
 // 作品が存在しなければ 404 の画面を出す。
 
-import { api, type GalleryDetail } from '@sucseed/api';
+import { api } from '@sucseed/api';
 import { FlashMessages, SelectedGalleryPage } from '@sucseed/ui';
 import { notFound, useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useResource } from '../../../../lib/resource';
 import { useSession } from '../../../../lib/session';
 import { useCurrentUser } from '../../../../lib/users';
-
-type DetailState =
-  | { status: 'loading' }
-  | { status: 'loaded'; detail: GalleryDetail }
-  | { status: 'not_found' }
-  | { status: 'error'; message: string };
 
 export default function SelectedGalleryRoute() {
   const { id } = useParams<{ id: string }>();
   const session = useSession();
   const currentUser = useCurrentUser(session !== null);
-  const [state, setState] = useState<DetailState>({ status: 'loading' });
-
-  useEffect(() => {
-    let active = true;
-    setState({ status: 'loading' });
-    void api.galleries.show(id).then((result) => {
-      if (!active) {
-        return;
-      }
-      if (result.ok) {
-        setState({ status: 'loaded', detail: result.data });
-      } else if (result.error.code === 'not_found') {
-        setState({ status: 'not_found' });
-      } else {
-        setState({ status: 'error', message: result.error.message });
-      }
-    });
-    return () => {
-      active = false;
-    };
-  }, [id]);
+  const state = useResource(id, api.galleries.show);
 
   if (state.status === 'not_found') {
     notFound();
@@ -60,8 +34,8 @@ export default function SelectedGalleryRoute() {
 
   return (
     <SelectedGalleryPage
-      key={state.detail.galleryId}
-      {...state.detail}
+      key={state.data.galleryId}
+      {...state.data}
       loggedIn={session.role !== 'guest'}
       currentUser={currentUser}
       flash={{}}

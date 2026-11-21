@@ -36,7 +36,7 @@ export default function UserGalleryViewPage() {
   return (
     <>
       <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">
-        {owner.user.name}さんのギャラリー
+        {owner.data.name}さんのギャラリー
       </h1>
 
       <CreatorProfileTabs targetUserId={id} active="gallery" />

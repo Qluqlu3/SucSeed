@@ -40,10 +40,10 @@ export default function YourDiaryPage() {
   return (
     <>
       <h1 className="mt-[2%] mb-[3%] pl-[2%] text-[71px] text-white bg-p-brand">
-        {owner.user.name}さんの日記
+        {owner.data.name}さんの日記
       </h1>
 
-      {owner.user.hasCreatorProfile && <CreatorProfileTabs targetUserId={id} active="diary" />}
+      {owner.data.hasCreatorProfile && <CreatorProfileTabs targetUserId={id} active="diary" />}
 
       <FlashMessages flash={error ? { danger: error } : {}} />
 
