@@ -22,6 +22,7 @@ import type {
   CreatorDetail,
   DiaryFeedItem,
   DiaryGoodState,
+  EmailVerificationTarget,
   FavoriteState,
   GalleryDetail,
   GalleryFeedItem,
@@ -36,6 +37,7 @@ import type {
   Profile,
   PublicUser,
   PublicUserPage,
+  RegistrationCreated,
   SessionPayload,
 } from './types';
 
@@ -70,6 +72,17 @@ export interface HeirProfileInput {
   introduction: string;
 }
 
+/** 会員登録の入力。生年月日は "YYYY-MM-DD" */
+export interface RegistrationInput {
+  name: string;
+  email: string;
+  birthday: string;
+  isMan: boolean;
+  isCreator: boolean;
+  password: string;
+  passwordConfirmation: string;
+}
+
 const toCreatorParams = (creator: CreatorProfileInput) => ({
   title: creator.title,
   art_category_id: creator.artCategoryId,
@@ -90,6 +103,48 @@ export const api = {
     create: (email: string, password: string) =>
       apiPost<SessionPayload>('/api/v1/session', { session: { email, password } }),
     destroy: () => apiDelete<SessionPayload>('/api/v1/session'),
+  },
+
+  /**
+   * 会員登録。登録するとメールアドレス認証のメールが届く（ログインはしない）。
+   * アバター画像を付けられるよう、常に multipart で送る
+   */
+  registration: {
+    create: (input: RegistrationInput, avatar?: File | null) => {
+      const form = new FormData();
+      form.append('user[name]', input.name);
+      form.append('user[email]', input.email);
+      form.append('user[birthday]', input.birthday);
+      form.append('user[is_man]', input.isMan ? '1' : '0');
+      form.append('user[is_creator]', input.isCreator ? '1' : '0');
+      form.append('user[password]', input.password);
+      form.append('user[password_confirmation]', input.passwordConfirmation);
+      if (avatar) {
+        form.append('user[avatar_path]', avatar);
+      }
+      return apiPostForm<RegistrationCreated>('/api/v1/registration', form);
+    },
+  },
+
+  /** パスワード再設定。token はメールのリンクに載った署名付きトークン（無効なら invalid_token） */
+  passwordResets: {
+    /** 登録の有無にかかわらず成功を返す */
+    create: (email: string) => apiPost<void>('/api/v1/password_resets', { email }),
+    /** リンクが有効かを確かめる */
+    show: (token: string) => apiGet<void>(`/api/v1/password_resets/${encodeURIComponent(token)}`),
+    update: (token: string, password: string, passwordConfirmation: string) =>
+      apiPatch<void>(`/api/v1/password_resets/${encodeURIComponent(token)}`, {
+        user: { password, password_confirmation: passwordConfirmation },
+      }),
+  },
+
+  /** メールアドレス認証。token は認証メールのリンクに載った署名付きトークン（無効なら invalid_token） */
+  emailVerifications: {
+    show: (token: string) =>
+      apiGet<EmailVerificationTarget>(`/api/v1/email_verifications/${encodeURIComponent(token)}`),
+    /** 認証済みなら already_certified */
+    verify: (token: string) =>
+      apiPatch<void>(`/api/v1/email_verifications/${encodeURIComponent(token)}`),
   },
 
   artCategories: {

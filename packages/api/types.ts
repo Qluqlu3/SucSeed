@@ -65,6 +65,17 @@ export interface SessionPayload {
   artCategories: ArtCategory[];
 }
 
+// ── 会員登録・パスワード再設定・メールアドレス認証 ──────────────────
+
+export interface RegistrationCreated {
+  email: string;
+}
+
+/** メールアドレス認証の画面に出す、リンクの持ち主 */
+export interface EmailVerificationTarget {
+  userName: string;
+}
+
 // ── ユーザー / プロフィール ────────────────────────────────────────
 
 export interface PublicUser {

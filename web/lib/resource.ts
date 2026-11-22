@@ -12,7 +12,7 @@ export type ResourceState<T> =
   | { status: 'loading' }
   | { status: 'loaded'; data: T }
   | { status: 'not_found' }
-  | { status: 'error'; message: string };
+  | { status: 'error'; code: string; message: string };
 
 /**
  * key が変わるたびに load(key) を呼び直す。load には api.users.show のような
@@ -41,7 +41,7 @@ export const useResource = <T>(
       } else if (result.error.code === 'not_found') {
         setState({ status: 'not_found' });
       } else {
-        setState({ status: 'error', message: result.error.message });
+        setState({ status: 'error', code: result.error.code, message: result.error.message });
       }
     });
     return () => {
