@@ -94,6 +94,16 @@ module Api
                    status: :unprocessable_content, details: record.errors.full_messages)
     end
 
+    # CarrierWave は multipart で送られた UploadedFile しか受け取れず、文字列を渡すと
+    # CarrierWave::FormNotMultipart で 500 になる。画像を受けるエンドポイントはこれで先に弾く
+    def uploaded_file?(value)
+      value.respond_to?(:tempfile)
+    end
+
+    def render_not_multipart
+      render_error('not_multipart', '画像は multipart/form-data で送信してください', status: :bad_request)
+    end
+
     def render_parameter_missing(exception)
       render_error('bad_request', "必須パラメータが不足しています: #{exception.param}",
                    status: :bad_request)

@@ -49,16 +49,6 @@ module Api
         params.expect(gallery: %i[data comment tag_list])
       end
 
-      def uploaded_file?(value)
-        value.respond_to?(:tempfile)
-      end
-
-      def render_not_multipart
-        render_error('not_multipart',
-                     '画像は multipart/form-data で送信してください',
-                     status: :bad_request)
-      end
-
       # tag 指定はタグ検索（特定ユーザーの作品をタグで絞る）、
       # user_id 指定はそのユーザーの作品、いずれも無ければ自分 + お気に入りのフィード
       def feed_scope
