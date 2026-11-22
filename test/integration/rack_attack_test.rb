@@ -58,6 +58,45 @@ class RackAttackTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'パスワードリセットは HTML と API の回数を合算する' do
+    freeze_time do
+      5.times do
+        post '/user/password_forgot', params: { user_email: { email: 'x@x.com' } },
+                                      headers: { 'REMOTE_ADDR' => '4.5.6.8' }
+      end
+      post '/api/v1/password_resets', params: { email: 'x@x.com' }, as: :json,
+                                      headers: { 'REMOTE_ADDR' => '4.5.6.8' }
+      assert_equal 429, response.status
+    end
+  end
+
+  # ── メール認証スロットル (10 回/時間) ─────────────────────────────
+
+  test 'API のメール認証（PATCH）も 11 回目で 429 が返る' do
+    freeze_time do
+      10.times do
+        patch '/api/v1/email_verifications/bad_token', as: :json,
+                                                       headers: { 'REMOTE_ADDR' => '4.5.6.9' }
+      end
+      patch '/api/v1/email_verifications/bad_token', as: :json,
+                                                     headers: { 'REMOTE_ADDR' => '4.5.6.9' }
+      assert_equal 429, response.status
+    end
+  end
+
+  # ── 会員登録スロットル (10 回/時間) ───────────────────────────────
+
+  test '会員登録は HTML と API を合わせて 11 回目で 429 が返る' do
+    freeze_time do
+      10.times do
+        post '/user/create', params: { user: { name: '' } }, headers: { 'REMOTE_ADDR' => '4.5.7.0' }
+      end
+      post '/api/v1/registration', params: { user: { name: '' } }, as: :json,
+                                   headers: { 'REMOTE_ADDR' => '4.5.7.0' }
+      assert_equal 429, response.status
+    end
+  end
+
   # ── 管理者ログインスロットル (5 回/分) ────────────────────────────
 
   test '管理者ログイン 6 回目で 429 が返る' do

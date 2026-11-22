@@ -7,8 +7,14 @@ class Rack::Attack
   MATCHERS = {
     login: ->(path) { ['/user/login', '/api/v1/session'].include?(path) },
     admin_login: ->(path) { path == '/admin/login' },
-    password_reset: ->(path) { path == '/user/password_forgot' },
-    email_certified: ->(path) { path.start_with?('/email/certified/') },
+    password_reset: lambda { |path|
+      ['/user/password_forgot', '/api/v1/password_resets'].include?(path)
+    },
+    email_certified: lambda { |path|
+      path.start_with?('/email/certified/', '/api/v1/email_verifications/')
+    },
+    # 会員登録は認証メールを送るので、メールの大量送信の踏み台にされないよう絞る
+    registration: ->(path) { ['/user/create', '/api/v1/registration'].include?(path) },
     diary_post: ->(path) { ['/diary/post', '/api/v1/diaries'].include?(path) },
     diary_comment: ->(path) { path.match?(%r{\A/api/v1/diaries/[^/]+/comments\z}) },
     gallery_upload: ->(path) { path == '/api/v1/galleries' },
@@ -21,9 +27,10 @@ class Rack::Attack
     match_send: ->(path) { ['/api/v1/appeals', '/api/v1/scouts'].include?(path) },
   }.freeze
 
+  # 書き込み（POST・PATCH）だけを数える。API のメール認証は PATCH で受けるため PATCH も含める
   def self.throttle_post(name, limit:, period:)
     throttle("#{name}/ip", limit: limit, period: period) do |req|
-      req.ip if req.post? && MATCHERS.fetch(name).call(req.path)
+      req.ip if (req.post? || req.patch?) && MATCHERS.fetch(name).call(req.path)
     end
   end
 
@@ -37,6 +44,10 @@ class Rack::Attack
   # --- パスワードリセット ---
   # 同一 IP から 1 時間に 5 回まで
   throttle_post :password_reset, limit: 5, period: 1.hour
+
+  # --- 会員登録 ---
+  # 同一 IP から 1 時間に 10 回まで
+  throttle_post :registration, limit: 10, period: 1.hour
 
   # --- メール認証 ---
   # 同一 IP から 1 時間に 10 回まで

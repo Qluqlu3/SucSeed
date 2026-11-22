@@ -86,6 +86,10 @@ TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/a
 | `invalid_credentials` | 401 | ログイン失敗（メール未登録とパスワード誤りを区別しない） |
 | `forbidden` | 403 | 職人/後継者の権限が足りない |
 | `not_found` | 404 | リソースが存在しない、または自分のものではない |
+| `invalid_token` | 404 | メールのリンクのトークンが無効・期限切れ（パスワード再設定・メールアドレス認証） |
+| `already_registered` | 409 | 詳細プロフィールを登録済み |
+| `already_certified` | 409 | メールアドレスを認証済み |
+| `not_multipart` | 400 | 画像を multipart/form-data 以外で送った |
 | `page_out_of_range` | 404 | 範囲外のページ指定 |
 | `bad_request` | 400 | 必須パラメータ不足 |
 | `unprocessable_entity` | 422 | バリデーションエラー（`details` に理由） |
@@ -107,6 +111,25 @@ TypeScript 側の型定義とクライアントは [frontend/api/](../frontend/a
 | 🔓 DELETE | `/api/v1/session` | ログアウト（未ログインでもエラーにしない） |
 
 `role` は `creator` / `heir` / `user` / `guest` のいずれか。
+
+### 会員登録・パスワード再設定・メールアドレス認証
+
+| | パス | 説明 |
+|---|---|---|
+| 🔓 POST | `/api/v1/registration` | 会員登録。multipart/form-data で `user[name]` `user[email]` `user[birthday]`（YYYY-MM-DD）`user[is_man]` `user[is_creator]` `user[password]` `user[password_confirmation]`、任意で `user[avatar_path]`。201 で `{ email }` |
+| 🔓 POST | `/api/v1/password_resets` | 再設定のメールを送る。body: `{ email }`。202 |
+| 🔓 GET | `/api/v1/password_resets/:token` | リンクが有効かを確かめる。204 |
+| 🔓 PATCH | `/api/v1/password_resets/:token` | パスワードを変える。body: `{ user: { password, password_confirmation } }`。204 |
+| 🔓 GET | `/api/v1/email_verifications/:token` | 認証画面に出す `{ userName }` |
+| 🔓 PATCH | `/api/v1/email_verifications/:token` | メールアドレスを認証する。204。認証済みなら 409（`already_certified`） |
+
+- 会員登録すると認証メールを送る。ログインはしない
+- `:token` はメールのリンクに載せた署名付きトークン（パスワード再設定は1時間、メールアドレス認証は24時間）。
+  期限切れ・改竄・存在しないユーザーを区別せず 404（`invalid_token`）。`message` は画面にそのまま出せる文言
+- パスワード再設定のメール送信は、メールアドレスが登録済みかどうかを漏らさないよう、未登録でも送信に失敗しても 202。
+  空欄だけは 422
+- パスワードを変えると発行済みの再設定リンクは使えなくなる。空のパスワードは 422
+  （`has_secure_password` は空文字を「変更なし」として黙って無視するため、明示的に弾いている）
 
 ### マスタデータ
 
@@ -263,6 +286,10 @@ if (result.ok) {
 IP 単位だけだと「同じ NAT の裏にいる無関係な利用者と枠を共有する（誤検知）」と
 「IP を変えれば1人でいくらでも投稿できる（検知漏れ）」の両方が起きるため、
 軸を分けて重ねている。
+
+未ログインで使う会員登録・パスワード再設定・メールアドレス認証は IP 単位だけで、HTML 版とカウンタを共有する:
+会員登録（`/user/create`・`/api/v1/registration`）10回/時、再設定のメール送信（`/user/password_forgot`・
+`POST /api/v1/password_resets`）5回/時、メールアドレス認証（`/email/certified/:token`・`PATCH /api/v1/email_verifications/:token`）10回/時。
 
 ### ユーザー単位の上限
 

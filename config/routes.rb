@@ -130,6 +130,12 @@ Rails.application.routes.draw do
       # controller を明示するのは、単数形 resource の既定が sessions#... になるため
       resource :session, only: %i[show create destroy], controller: 'session'
 
+      # 会員登録・パスワード再設定・メールアドレス認証（どれも未ログインで使う）
+      # :token はメールのリンクに載せた署名付きトークン
+      resource :registration, only: :create, controller: 'registrations'
+      resources :password_resets, only: %i[create show update], param: :token
+      resources :email_verifications, only: %i[show update], param: :token
+
       # マスタデータ
       resources :art_categories, only: :index
       resources :traditional_crafts, only: :index
