@@ -35,7 +35,7 @@
 | 0-3 | `frontend/api` の型とクライアントを `frontend/` と `web/` の共有パッケージにする | 完了 |
 | 0-4 | 本番の構成（Next のイメージ・配置・`RAILS_ORIGIN`）。配信先の決定が先 | |
 | 1 | API が既にある画面を移す（マッチ・アピール/スカウト・メッセージ・日記/ギャラリー・職人/後継者のページ・マイページ） | 完了 |
-| 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | 2-1 完了 |
+| 2 | API が無い画面は API を足してから移す（会員登録・メール認証・パスワード再設定、詳細プロフィール、お問い合わせ、トップ・マップ・検索、お気に入りフィード） | 2-2 完了 |
 | 3 | 管理画面（`/api/v1/admin/*` を作ってから） | |
 | 4 | Rails の HTML 側（ビュー・レイアウト・Propshaft・jsbundling・Tailwind・HTML 側コントローラ）を撤去し `api_only` に | |
 | 5 | 公開ページをサーバー側で描画し `generateMetadata` を付ける | |
@@ -228,7 +228,7 @@ Sentry も Next 側は未設定。一覧は API を全ページ読んで全件�
 | 画面 | Rails | 状態 |
 |---|---|:---:|
 | 職人/後継者の詳細プロフィール（参照・登録・変更） | `CreatorController`・`HeirController` | 2-1 完了 |
-| 会員登録・メール認証・パスワード再設定 | `UserController` | |
+| 会員登録・メール認証・パスワード再設定 | `UserController` | 2-2 完了 |
 | お問い合わせ | `InquiryController` | |
 | トップ・マップ・検索 | `IndexController`・`MapController` | |
 | お気に入りフィード | | |
@@ -263,6 +263,42 @@ Sentry も Next 側は未設定。一覧は API を全ページ読んで全件�
 「保存しました」と反映（募集停止中・都道府県の変わる郵便番号）、未登録の職人が `/creator/edit` を開くと登録フォームへ・
 空で登録してエラー・登録して参照画面とマイページの「詳細情報登録」の案内が消える、後継者の参照・変更・分野未選択でエラー、
 未登録の後継者が登録してロールが `user` → `heir`、`/heir/show` の見た目が Rails 版と一致。
+
+2-2 で足した API と移した画面（どれも未ログインで使う）:
+
+| 画面 | API |
+|---|---|
+| `/user/create` 会員登録 | `POST /api/v1/registration`（新規。アバター画像を付けられるよう multipart） |
+| `/user/password_forgot` 再設定のメールを送る | `POST /api/v1/password_resets`（新規） |
+| `/user/password_reset/:token` 新しいパスワード | `GET`・`PATCH /api/v1/password_resets/:token`（新規） |
+| `/email/certified/:token` メールアドレス認証 | `GET`・`PATCH /api/v1/email_verifications/:token`（新規） |
+
+- **API**: `Api::V1::RegistrationsController`・`PasswordResetsController`・`EmailVerificationsController`。
+  リンクが無効なら 404（`invalid_token`）で、`message` に Rails の flash と同じ文言を入れて画面がそのまま出す。
+  テスト 388 件 → 413 件
+- **メールのリンクは変えていない**: メーラーは今の名前付きルート（`email_certified_url`・`password_reset_url`）のまま。
+  パスも同じなので、開発では Next、本番（まだ Rails だけ）では Rails の画面が開く
+- **空のパスワードで「変更しました」になっていた**: `has_secure_password` は空文字を「変更なし」として黙って無視するので、
+  Rails 版は空のまま送ると何も変えずに成功を出し、そのリンクも使えるまま残っていた。API は 422 にする
+- **会員登録に IP 単位の制限を足した**: 登録すると認証メールを送るのに制限が無く、メールの大量送信の踏み台にできた。
+  HTML の `/user/create` と API を合わせて同一 IP から 10回/時。再設定のメール送信・メールアドレス認証の制限は
+  API 側にも掛け、HTML 版とカウンタを共有する（`throttle_post` は PATCH も数えるようにした）
+- 再設定のメール送信に失敗しても、API は登録済みかどうかを漏らさないよう同じ 202 を返し、`Rails.error.report` で記録する
+  （Rails 版は例外を握りつぶして何も出さずにフォームへ戻していた）
+- 失敗しても入力を残す（Rails 版の会員登録は入力をすべて捨てていた）。パスワード再設定のエラーの見た目を
+  他のフォームと同じ `FormErrors` に揃えた
+- 画像を multipart 以外で送ったときの判定（`uploaded_file?`・`render_not_multipart`）が作品投稿とプロフィールに重複していたので、
+  会員登録で3つ目になる前に `Api::BaseController` にまとめた
+- `useResource` の `error` に API の `code` を足した（リンク無効の `invalid_token` を他のエラーと分けるため）
+- 残り: `/user/password_forgot` へのリンクがどこにも無い（ログインモーダルにも無い）。Rails 版も同じで、今回は足していない
+
+確認済み（e2e 用の別 DB とヘッドレス Chromium。メールは本物の SMTP に送らず、起動時だけファイルに書き出して
+リンクを取り出した）: 会員登録の不正な入力でエラー3件と入力が残る・2000年2月29日から年を変えると28日に寄る・
+アバター付きで登録して「登録完了」とトップへ・届いたリンクで認証画面に名前が出て認証・同じリンクでもう一度押すと
+「すでに認証済み」・でたらめなトークンはトップへ戻して理由を出す、登録した人でログインでき生年月日・性別・アバターが
+入っている、再設定のメール送信で空欄のエラー・未登録のアドレスでも同じ文言・届いたリンクで短いパスワードと空のパスワードの
+エラー・変更して「パスワードを変更しました」・同じリンクは送信画面へ戻す・新しいパスワードでログインできる、
+ログインモーダルの「ユーザ登録はこちらから」から Next の画面へ、会員登録とメールアドレス確認の見た目が Rails 版と一致。
 
 0-1 で Next（3100）経由の次の動作を確認済み: Rails のリダイレクト先が Next のホストになる
 （`X-Forwarded-Host`）、アセット・アップロード画像の配信、API のログインと multipart の画像アップロード、
